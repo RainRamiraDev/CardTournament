@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generate SQL Inserts for Magic: The Gathering Cards</title>
+</head>
+<body>
+    <h1>Generate SQL Inserts for Magic: The Gathering Cards</h1>
+    <button onclick="generateInserts()">Generate Inserts</button>
+    <textarea id="sqlOutput" rows="20" cols="100" readonly></textarea>
+
+    <script>
+        async function generateInserts() {
+            try {
+                let sqlInserts = 'INSERT INTO T_CARDS (id_card, illustration, attack, deffense) VALUES\n';
+
+                // Fetch data from the Magic: The Gathering API
+                const response = await fetch('https://api.magicthegathering.io/v1/cards?limit=100');
+                const data = await response.json();
+                const cards = data.cards;
+
+                // Check if cards data exists and it's not empty
+                if (cards && cards.length > 0) {
+                    // Loop through the first 100 cards to generate SQL insert statements
+                    cards.forEach((card, index) => {
+                        const cardName = card.name;
+                        // Random attack and defense between 1000 and 4000
+                        const attack = card.power ? Math.min(Math.max(parseInt(card.power), 1000), 4000) : Math.floor(Math.random() * (4000 - 1000 + 1)) + 1000;
+                        const defense = card.toughness ? Math.min(Math.max(parseInt(card.toughness), 1000), 4000) : Math.floor(Math.random() * (4000 - 1000 + 1)) + 1000;
+                        const illustration = card.imageUrl || 'No Image'; // Placeholder if no image URL
+                        const insert = `(${index + 1}, '${cardName.replace("'", "\\'")}', ${attack}, ${defense})${index !== cards.length - 1 ? ',' : ';'}\n`;
+                        sqlInserts += insert;
+                    });
+
+                    // Output the SQL statements into the textarea for easy copy-pasting
+                    document.getElementById('sqlOutput').value = sqlInserts;
+                } else {
+                    document.getElementById('sqlOutput').value = 'No cards found in the response';
+                }
+            } catch (error) {
+                console.error('Error fetching cards:', error);
+                document.getElementById('sqlOutput').value = 'Error fetching card data from API';
+            }
+        }
+    </script>
+</body>
+</html>

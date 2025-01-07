@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CTDao\CTDao.csproj" />
+    <ProjectReference Include="..\CTDataModels\CTDataModels.csproj" />
+    <ProjectReference Include="..\CTDto\CTDto.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Implementation\Game\" />
+    <Folder Include="Interfaces\Game\" />
+  </ItemGroup>
+
+</Project>
