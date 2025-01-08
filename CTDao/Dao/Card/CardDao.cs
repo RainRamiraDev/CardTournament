@@ -14,7 +14,7 @@ namespace CTDao.Dao.Card
     {
         private readonly string _connectionString;
 
-        private readonly string QueryGetAll = "SELECT * FROM T_Card";
+        private readonly string QueryGetAll = "";
 
         public CardDao(string connectionString)
         {

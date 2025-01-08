@@ -1,4 +1,4 @@
-﻿namespace Configuration
+﻿namespace CTConfigurations
 {
     public class KeysConfiguration
     {

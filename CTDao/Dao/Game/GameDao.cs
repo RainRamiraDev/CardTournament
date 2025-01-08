@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CTDao.Dao.Game
 {
-    internal class GameDao
+    public class GameDao
     {
     }
 }

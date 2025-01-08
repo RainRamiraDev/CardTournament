@@ -4,7 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RefreshTokenApp.Model
+namespace CTDataModels.RefreshToken
+
 {
     public class RefreshTokenModel
     {

@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataAccessApp.Models.Game
+namespace CTDataModels.Game
 {
-    internal class GameModel
+    public class GameModel
     {
     }
 }

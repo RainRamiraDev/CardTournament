@@ -1,13 +1,14 @@
-﻿using Dapper;
+﻿using CTDao.Interfaces.RefreshToken;
+using Dapper;
 using MySql.Data.MySqlClient;
-using RefreshTokenApp.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using UserDaoLib.Daos.Interfaces;
-namespace UserDaoLib.Daos
+
+
+namespace CTDao.Dao.RefreshToken
 {
     public class RefreshTokenDao : IRefreshTokenDao
     {
@@ -41,72 +42,72 @@ namespace UserDaoLib.Daos
             _connectionString = connectionString ?? throw new ArgumentNullException(nameof(connectionString));
         }
 
-        public async Task<UserModel> GetUserByTokenAsync(Guid refreshToken)
-        {
-            using (var connection = new MySqlConnection(_connectionString))
-            {
-                var user = await connection.QuerySingleOrDefaultAsync<UserModel>(
-                    QueryGetUser,
-                    new { Token = refreshToken, Now = DateTime.UtcNow }
-                );
+        //public async Task<UserModel> GetUserByTokenAsync(Guid refreshToken)
+        //{
+        //    using (var connection = new MySqlConnection(_connectionString))
+        //    {
+        //        var user = await connection.QuerySingleOrDefaultAsync<UserModel>(
+        //            QueryGetUser,
+        //            new { Token = refreshToken, Now = DateTime.UtcNow }
+        //        );
 
-                return user;
-            }
-        }
+        //        return user;
+        //    }
+        //}
 
-        public async Task<bool> VerifyTokenAsync(Guid token)
-        {
-            using (var connection = new MySqlConnection(_connectionString))
-            {
-                await connection.OpenAsync();
+        //public async Task<bool> VerifyTokenAsync(Guid token)
+        //{
+        //    using (var connection = new MySqlConnection(_connectionString))
+        //    {
+        //        await connection.OpenAsync();
 
                
-                var result = await connection.ExecuteScalarAsync<int>(
-                    QueryVerifyToken,
-                    new { Token = token, Now = DateTime.UtcNow }
-                );
+        //        var result = await connection.ExecuteScalarAsync<int>(
+        //            QueryVerifyToken,
+        //            new { Token = token, Now = DateTime.UtcNow }
+        //        );
 
-                return result == 1; 
-            }
-        }
+        //        return result == 1; 
+        //    }
+        //}
 
-        public async Task<int> DeleteRefreshTokenAsync(Guid token)
-        {
-            using (var connection = new MySqlConnection(_connectionString))
-            {
-                await connection.OpenAsync();
+        //public async Task<int> DeleteRefreshTokenAsync(Guid token)
+        //{
+        //    using (var connection = new MySqlConnection(_connectionString))
+        //    {
+        //        await connection.OpenAsync();
 
-                return await connection.ExecuteAsync(
-                    QueryDeleteToken,
-                    new { Token = token }
-                );
-            }
-        }
+        //        return await connection.ExecuteAsync(
+        //            QueryDeleteToken,
+        //            new { Token = token }
+        //        );
+        //    }
+        //}
 
-        public async Task<int> SaveRefreshTokenAsync(Guid token, int userId, DateTime expiryDate)
-        {
-            using (var connection = new MySqlConnection(_connectionString))
-            {
-                await connection.OpenAsync();
+        //public async Task<int> SaveRefreshTokenAsync(Guid token, int userId, DateTime expiryDate)
+        //{
+        //    using (var connection = new MySqlConnection(_connectionString))
+        //    {
+        //        await connection.OpenAsync();
 
-                return await connection.ExecuteAsync(
-                    QuerySaveToken,
-                    new { Token = token, UserId = userId, ExpiryDate = expiryDate }
-                );
-            }
-        }
+        //        return await connection.ExecuteAsync(
+        //            QuerySaveToken,
+        //            new { Token = token, UserId = userId, ExpiryDate = expiryDate }
+        //        );
+        //    }
+        //}
 
-        public async Task<Guid?> GetRefreshTokenAsync(int userId)
-        {
-            using (var connection = new MySqlConnection(_connectionString))
-            {
-                await connection.OpenAsync();
+        //public async Task<Guid?> GetRefreshTokenAsync(int userId)
+        //{
+        //    using (var connection = new MySqlConnection(_connectionString))
+        //    {
+        //        await connection.OpenAsync();
 
-                return await connection.ExecuteScalarAsync<Guid?>(
-                    QueryGetToken,
-                    new { UserId = userId }
-                );
-            }
-        }
+        //        return await connection.ExecuteScalarAsync<Guid?>(
+        //            QueryGetToken,
+        //            new { UserId = userId }
+        //        );
+        //    }
+        //}
     }
 }

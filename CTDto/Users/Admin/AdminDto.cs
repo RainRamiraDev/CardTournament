@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataAccessApp.Dtos.Users.Admin
+namespace CTDto.Users.Admin
 {
     public class AdminDto
     {

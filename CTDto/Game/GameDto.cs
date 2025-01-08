@@ -1,4 +1,4 @@
-﻿namespace GameApp.Dtos.Game
+﻿namespace CTDto.Game
 {
     public class GameDto
     {

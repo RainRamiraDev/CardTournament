@@ -1,4 +1,5 @@
-﻿namespace GameApp.Dtos.Card
+﻿namespace CTDto.Card
+
 {
     public class CardDto
     {

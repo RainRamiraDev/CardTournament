@@ -1,10 +1,11 @@
 ﻿using static System.Runtime.InteropServices.JavaScript.JSType;
 using System.Diagnostics;
 using GameApp.Dtos.Card;
-using DataAccessApp.Dtos.Users.Player;
-using DataAccessApp.Dtos.Users.Judge;
-using DataAccessApp.Dtos.Users.Organizer;
-using DataAccessApp.Dtos.Users.Admin;
+using CTDto.Users.Admin;
+using CTDto.Users.Judge;
+using CTDto.Users.Organizer;
+using CTDto.Users.Player;
+using CTDto.Card;
 
 namespace GameApp.Response
 {

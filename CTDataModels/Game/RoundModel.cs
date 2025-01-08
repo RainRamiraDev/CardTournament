@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CTDataModels.Game
 {
-    internal class RoundModel
+    public class RoundModel
     {
     }
 }

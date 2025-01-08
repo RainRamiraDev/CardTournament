@@ -1,4 +1,4 @@
-﻿namespace DataAccessApp.Dtos.Users.Player
+﻿namespace CTDto.Users.Player
 {
     public class PlayerDto
     {

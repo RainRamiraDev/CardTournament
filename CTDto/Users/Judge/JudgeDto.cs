@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataAccessApp.Dtos.Users.Judge
+namespace CTDto.Users.Judge
 {
     public class JudgeDto
     {

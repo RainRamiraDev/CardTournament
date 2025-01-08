@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\CTConfigurations\CTConfigurations.csproj" />
     <ProjectReference Include="..\CTDao\CTDao.csproj" />
     <ProjectReference Include="..\CTDataModels\CTDataModels.csproj" />
     <ProjectReference Include="..\CTDto\CTDto.csproj" />
@@ -15,6 +16,10 @@
   <ItemGroup>
     <Folder Include="Implementation\Game\" />
     <Folder Include="Interfaces\Game\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Options" Version="9.0.0" />
   </ItemGroup>
 
 </Project>

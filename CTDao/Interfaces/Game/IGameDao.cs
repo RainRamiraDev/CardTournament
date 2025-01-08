@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CTDao.Interfaces.Game
 {
-    internal interface IGameDao
+    public interface IGameDao
     {
     }
 }
