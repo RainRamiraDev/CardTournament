@@ -1,0 +1,12 @@
+[
+  {
+    "ContainingType": "CTApp.Controllers.Card.CardController",
+    "Method": "GetAllCards",
+    "RelativePath": "api/Card/GetAll",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  }
+]

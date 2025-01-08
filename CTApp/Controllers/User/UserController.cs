@@ -3,7 +3,7 @@
 using CTService.Interfaces.User;
 using Microsoft.AspNetCore.Mvc;
 
-namespace GameApp.Controllers.User
+namespace CTApp.Controllers.User
 {
 
     [ApiController]

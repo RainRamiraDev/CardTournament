@@ -1,13 +1,13 @@
 ﻿using static System.Runtime.InteropServices.JavaScript.JSType;
 using System.Diagnostics;
-using GameApp.Dtos.Card;
+
 using CTDto.Users.Admin;
 using CTDto.Users.Judge;
 using CTDto.Users.Organizer;
 using CTDto.Users.Player;
 using CTDto.Card;
 
-namespace GameApp.Response
+namespace CTApp.Response
 {
     public class ApiResponse<T>
     {

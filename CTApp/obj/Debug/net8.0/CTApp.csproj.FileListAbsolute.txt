@@ -61,3 +61,16 @@ C:\Repositorios\CardTournament\CTApp\bin\Debug\net8.0\CTDto.pdb
 C:\Repositorios\CardTournament\CTApp\bin\Debug\net8.0\CTService.pdb
 C:\Repositorios\CardTournament\CTApp\bin\Debug\net8.0\CTDao.pdb
 C:\Repositorios\CardTournament\CTApp\bin\Debug\net8.0\CTDataModels.pdb
+C:\Repositorios\CardTournament\CTApp\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Repositorios\CardTournament\CTApp\bin\Debug\net8.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+C:\Repositorios\CardTournament\CTApp\bin\Debug\net8.0\Microsoft.Extensions.Options.dll
+C:\Repositorios\CardTournament\CTApp\bin\Debug\net8.0\Microsoft.Extensions.Primitives.dll
+C:\Repositorios\CardTournament\CTApp\bin\Debug\net8.0\Microsoft.IdentityModel.Abstractions.dll
+C:\Repositorios\CardTournament\CTApp\bin\Debug\net8.0\Microsoft.IdentityModel.JsonWebTokens.dll
+C:\Repositorios\CardTournament\CTApp\bin\Debug\net8.0\Microsoft.IdentityModel.Logging.dll
+C:\Repositorios\CardTournament\CTApp\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.dll
+C:\Repositorios\CardTournament\CTApp\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+C:\Repositorios\CardTournament\CTApp\bin\Debug\net8.0\Microsoft.IdentityModel.Tokens.dll
+C:\Repositorios\CardTournament\CTApp\bin\Debug\net8.0\System.IdentityModel.Tokens.Jwt.dll
+C:\Repositorios\CardTournament\CTApp\bin\Debug\net8.0\CTConfigurations.dll
+C:\Repositorios\CardTournament\CTApp\bin\Debug\net8.0\CTConfigurations.pdb

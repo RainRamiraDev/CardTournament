@@ -31,6 +31,7 @@ builder.Services.AddScoped<IUserDao>(provider =>
 
 // Registrar Servicios
 builder.Services.AddScoped<ICardService, CardService>();
+
 builder.Services.AddScoped<IUserService, UserService>();
 
 

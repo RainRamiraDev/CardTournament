@@ -1,4 +1,5 @@
 ﻿
+using CTDataModels.Card;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,5 +10,6 @@ namespace CTDao.Interfaces.Card
 {
     public interface ICardDao
     {
+        Task<IEnumerable<CardModel>> GetAllAsync();
     }
 }
