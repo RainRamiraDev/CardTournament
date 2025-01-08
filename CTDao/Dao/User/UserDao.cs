@@ -1,4 +1,5 @@
 ﻿using CTDao.Interfaces.User;
+using CTDataModels.Users;
 using Dapper;
 using MySql.Data.MySqlClient;
 using System;
@@ -13,14 +14,33 @@ namespace CTDao.Dao.User
     {
         private readonly string _connectionString;
 
-        private readonly string QueryGetAllAdmins = "SELECT * FROM T_Admin";
-        private readonly string QueryGetAllJudges = "SELECT * FROM T_Judge";
-        private readonly string QueryGetAllOrganizers = "SELECT * FROM T_Organizer";
-        private readonly string QueryGetAllPlayers = "SELECT * FROM T_Users";
+        private readonly string QueryGetUserWhitToken = "SELECT * FROM T_Users WHERE Id_User = @IdUser";
+        //private readonly string QueryInsert = "INSERT INTO T_Users (Fullname, Email, Passcode) VALUES (@Nombre, @Email, @Passcode)";
+        private readonly string QueryLogin = "SELECT * FROM T_Users WHERE Fullname = @Fullname";
 
         public UserDao(string connectionString)
         {
             _connectionString = connectionString;
+        }
+
+        public async Task<UserModel> LogInAsync(string fullname)
+        {
+            using (var connection = new MySqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+                var user = await connection.QueryFirstOrDefaultAsync<UserModel>(QueryLogin, new { fullname });
+                return user;
+            }
+        }
+
+        public async Task<UserModel> GetUserWhitTokenAsync(int id)
+        {
+            using (var connection = new MySqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+                var user = await connection.QueryFirstOrDefaultAsync<UserModel>(QueryGetUserWhitToken, new { id });
+                return user;
+            }
         }
 
     }

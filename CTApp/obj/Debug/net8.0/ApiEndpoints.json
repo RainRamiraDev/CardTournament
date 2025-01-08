@@ -1,5 +1,58 @@
 [
   {
+    "ContainingType": "CTApp.Controllers.User.AdminController",
+    "Method": "LogIn",
+    "RelativePath": "api/Admin/LogIn/{fullname}/{passcode}",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "fullname",
+        "Type": "System.String",
+        "IsRequired": true
+      },
+      {
+        "Name": "passcode",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CTApp.Controllers.User.AdminController",
+    "Method": "Logout",
+    "RelativePath": "api/Admin/Logout",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "refreshToken",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CTApp.Controllers.User.AdminController",
+    "Method": "RefreshToken",
+    "RelativePath": "api/Admin/RefreshToken",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "oldRefreshToken",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "CTApp.Controllers.Card.CardController",
     "Method": "GetAllCards",
     "RelativePath": "api/Card/GetAll",

@@ -119,6 +119,10 @@
         "net7.0": {
           "targetAlias": "net7.0",
           "dependencies": {
+            "BCrypt.Net": {
+              "target": "Package",
+              "version": "[0.1.0, )"
+            },
             "Dapper": {
               "target": "Package",
               "version": "[2.1.35, )"
@@ -340,6 +344,10 @@
             "Microsoft.Extensions.Options": {
               "target": "Package",
               "version": "[9.0.0, )"
+            },
+            "System.IdentityModel.Tokens.Jwt": {
+              "target": "Package",
+              "version": "[7.1.2, )"
             }
           },
           "imports": [

@@ -29,6 +29,7 @@ CREATE TABLE T_USERS(
 	fullname VARCHAR(50),
 	alias VARCHAR(20),
 	email VARCHAR(100),
+	passcode VARCHAR(10),
 	games_won INT,
 	games_lost INT,
 	disqualifications INT,

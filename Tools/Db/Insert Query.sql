@@ -384,44 +384,45 @@ INSERT INTO T_ROLES (id_rol, rol) VALUES
 
 
 -- Jugadores (20 registros)
-INSERT INTO t_users (id_user, id_country, id_rol, fullname, alias, email, games_won, games_lost, disqualifications, avatar_url) VALUES
-(1, 1, 4, 'Yugi Mutou', 'KingOfGames', 'yugi.mutou@example.com', 50, 20, 0, 'https://example.com/yugi_avatar.png'),
-(2, 2, 4, 'Seto Kaiba', 'KaibaCorpCEO', 'seto.kaiba@example.com', 60, 15, 1, 'https://example.com/kaiba_avatar.png'),
-(3, 3, 4, 'Joey Wheeler', 'RedEyesFan', 'joey.wheeler@example.com', 45, 30, 2, 'https://example.com/joey_avatar.png'),
-(4, 4, 4, 'Mai Valentine', 'HarpieLady', 'mai.valentine@example.com', 40, 25, 1, 'https://example.com/mai_avatar.png'),
-(5, 5, 4, 'Tea Gardner', 'HeartOfTheCards', 'tea.gardner@example.com', 35, 20, 0, 'https://example.com/tea_avatar.png'),
-(6, 6, 4, 'Bakura Ryou', 'SpiritOfTheRing', 'bakura.ryou@example.com', 50, 20, 1, 'https://example.com/bakura_avatar.png'),
-(7, 7, 4, 'Maximillion Pegasus', 'ToonKing', 'maximillion.pegasus@example.com', 55, 10, 0, 'https://example.com/pegasus_avatar.png'),
-(8, 8, 4, 'Mokuba Kaiba', 'KaibaBro', 'mokuba.kaiba@example.com', 30, 15, 2, 'https://example.com/mokuba_avatar.png'),
-(9, 9, 4, 'Aigami', 'AigamiRuler', 'aigami@example.com', 40, 15, 0, 'https://example.com/aigami_avatar.png'),
-(10, 10, 4, 'Noah Kaiba', 'DigitalKing', 'noah.kaiba@example.com', 45, 15, 1, 'https://example.com/noah_avatar.png'),
-(11, 11, 4, 'Shadi', 'GuardianShadi', 'shadi@example.com', 20, 10, 0, 'https://example.com/shadi_avatar.png'),
-(12, 12, 4, 'Marek Ishtar', 'MarekIshtar', 'marek.ishtar@example.com', 50, 30, 1, 'https://example.com/marek_avatar.png'),
-(13, 13, 4, 'Sera', 'SeraTheStrategist', 'sera@example.com', 25, 10, 1, 'https://example.com/sera_avatar.png'),
-(14, 14, 4, 'Tristan Taylor', 'ToughTristan', 'tristan.taylor@example.com', 35, 20, 0, 'https://example.com/tristan_avatar.png'),
-(15, 15, 4, 'Yami Marik', 'DarkMarik', 'yami.marik@example.com', 60, 20, 2, 'https://example.com/yami_marik_avatar.png'),
-(16, 16, 4, 'Ishizu Ishtar', 'IshizuTheOracle', 'ishizu.ishtar@example.com', 10, 5, 0, 'https://example.com/ishizu_avatar.png'),
-(17, 17, 4, 'Shimon Muran', 'AncientEgyptian', 'shimon.muran@example.com', 50, 15, 1, 'https://example.com/shimon_avatar.png'),
-(18, 18, 4, 'Yami Yugi', 'Pharaoh', 'yami.yugi@example.com', 65, 10, 0, 'https://example.com/yami_yugi_avatar.png'),
-(19, 19, 4, 'Seto Kaiba', 'KaibaMaster', 'seto.kaiba2@example.com', 45, 25, 0, 'https://example.com/kaiba2_avatar.png'),
-(20, 20, 4, 'Marek Ishtar', 'DarkMarek', 'marek.ishtar2@example.com', 30, 20, 1, 'https://example.com/marek2_avatar.png');
+INSERT INTO t_users (id_user, id_country, id_rol, fullname, alias, email, games_won, games_lost, disqualifications, avatar_url, passcode) VALUES
+(1, 1, 4, 'Yugi Mutou', 'KingOfGames', 'yugi.mutou@example.com', 50, 20, 0, 'https://example.com/yugi_avatar.png', 'passcode1'),
+(2, 2, 4, 'Seto Kaiba', 'KaibaCorpCEO', 'seto.kaiba@example.com', 60, 15, 1, 'https://example.com/kaiba_avatar.png', 'passcode2'),
+(3, 3, 4, 'Joey Wheeler', 'RedEyesFan', 'joey.wheeler@example.com', 45, 30, 2, 'https://example.com/joey_avatar.png', 'passcode3'),
+(4, 4, 4, 'Mai Valentine', 'HarpieLady', 'mai.valentine@example.com', 40, 25, 1, 'https://example.com/mai_avatar.png', 'passcode4'),
+(5, 5, 4, 'Tea Gardner', 'HeartOfTheCards', 'tea.gardner@example.com', 35, 20, 0, 'https://example.com/tea_avatar.png', 'passcode5'),
+(6, 6, 4, 'Bakura Ryou', 'SpiritOfTheRing', 'bakura.ryou@example.com', 50, 20, 1, 'https://example.com/bakura_avatar.png', 'passcode6'),
+(7, 7, 4, 'Maximillion Pegasus', 'ToonKing', 'maximillion.pegasus@example.com', 55, 10, 0, 'https://example.com/pegasus_avatar.png', 'passcode7'),
+(8, 8, 4, 'Mokuba Kaiba', 'KaibaBro', 'mokuba.kaiba@example.com', 30, 15, 2, 'https://example.com/mokuba_avatar.png', 'passcode8'),
+(9, 9, 4, 'Aigami', 'AigamiRuler', 'aigami@example.com', 40, 15, 0, 'https://example.com/aigami_avatar.png', 'passcode9'),
+(10, 10, 4, 'Noah Kaiba', 'DigitalKing', 'noah.kaiba@example.com', 45, 15, 1, 'https://example.com/noah_avatar.png', 'passcode10'),
+(11, 11, 4, 'Shadi', 'GuardianShadi', 'shadi@example.com', 20, 10, 0, 'https://example.com/shadi_avatar.png', 'passcode11'),
+(12, 12, 4, 'Marek Ishtar', 'MarekIshtar', 'marek.ishtar@example.com', 50, 30, 1, 'https://example.com/marek_avatar.png', 'passcode12'),
+(13, 13, 4, 'Sera', 'SeraTheStrategist', 'sera@example.com', 25, 10, 1, 'https://example.com/sera_avatar.png', 'passcode13'),
+(14, 14, 4, 'Tristan Taylor', 'ToughTristan', 'tristan.taylor@example.com', 35, 20, 0, 'https://example.com/tristan_avatar.png', 'passcode14'),
+(15, 15, 4, 'Yami Marik', 'DarkMarik', 'yami.marik@example.com', 60, 20, 2, 'https://example.com/yami_marik_avatar.png', 'passcode15'),
+(16, 16, 4, 'Ishizu Ishtar', 'IshizuTheOracle', 'ishizu.ishtar@example.com', 10, 5, 0, 'https://example.com/ishizu_avatar.png', 'passcode16'),
+(17, 17, 4, 'Shimon Muran', 'AncientEgyptian', 'shimon.muran@example.com', 50, 15, 1, 'https://example.com/shimon_avatar.png', 'passcode17'),
+(18, 18, 4, 'Yami Yugi', 'Pharaoh', 'yami.yugi@example.com', 65, 10, 0, 'https://example.com/yami_yugi_avatar.png', 'passcode18'),
+(19, 19, 4, 'Seto Kaiba', 'KaibaMaster', 'seto.kaiba2@example.com', 45, 25, 0, 'https://example.com/kaiba2_avatar.png', 'passcode19'),
+(20, 20, 4, 'Marek Ishtar', 'DarkMarek', 'marek.ishtar2@example.com', 30, 20, 1, 'https://example.com/marek2_avatar.png', 'passcode20');
 
 -- Jueces (6 registros)
-INSERT INTO t_users (id_user, id_country, id_rol, fullname, alias, email, games_won, games_lost, disqualifications, avatar_url) VALUES
-(21, 1, 3, 'Maximillion Pegasus', 'JudgeToonKing', 'judge.pegasus@example.com', 0, 0, 0, 'https://example.com/judge_pegasus_avatar.png'),
-(22, 2, 3, 'Mokuba Kaiba', 'JudgeKaibaBro', 'judge.mokuba@example.com', 0, 0, 0, 'https://example.com/judge_mokuba_avatar.png'),
-(23, 3, 3, 'Tristan Taylor', 'JudgeToughTristan', 'judge.tristan@example.com', 0, 0, 0, 'https://example.com/judge_tristan_avatar.png'),
-(24, 4, 3, 'Tea Gardner', 'JudgeHeartOfTheCards', 'judge.tea@example.com', 0, 0, 0, 'https://example.com/judge_tea_avatar.png'),
-(25, 5, 3, 'Mai Valentine', 'JudgeHarpieLady', 'judge.mai@example.com', 0, 0, 0, 'https://example.com/judge_mai_avatar.png'),
-(26, 6, 3, 'Shadi', 'JudgeGuardianShadi', 'judge.shadi@example.com', 0, 0, 0, 'https://example.com/judge_shadi_avatar.png');
+INSERT INTO t_users (id_user, id_country, id_rol, fullname, alias, email, games_won, games_lost, disqualifications, avatar_url, passcode) VALUES
+(21, 1, 3, 'Maximillion Pegasus', 'JudgeToonKing', 'judge.pegasus@example.com', 0, 0, 0, 'https://example.com/judge_pegasus_avatar.png', 'judgepasscode1'),
+(22, 2, 3, 'Mokuba Kaiba', 'JudgeKaibaBro', 'judge.mokuba@example.com', 0, 0, 0, 'https://example.com/judge_mokuba_avatar.png', 'judgepasscode2'),
+(23, 3, 3, 'Tristan Taylor', 'JudgeToughTristan', 'judge.tristan@example.com', 0, 0, 0, 'https://example.com/judge_tristan_avatar.png', 'judgepasscode3'),
+(24, 4, 3, 'Tea Gardner', 'JudgeHeartOfTheCards', 'judge.tea@example.com', 0, 0, 0, 'https://example.com/judge_tea_avatar.png', 'judgepasscode4'),
+(25, 5, 3, 'Mai Valentine', 'JudgeHarpieLady', 'judge.mai@example.com', 0, 0, 0, 'https://example.com/judge_mai_avatar.png', 'judgepasscode5'),
+(26, 6, 3, 'Shadi', 'JudgeGuardianShadi', 'judge.shadi@example.com', 0, 0, 0, 'https://example.com/judge_shadi_avatar.png', 'judgepasscode6');
 
 -- Administradores (2 registros)
-INSERT INTO t_users (id_user, id_country, id_rol, fullname, alias, email, games_won, games_lost, disqualifications, avatar_url) VALUES
-(27, 7, 2, 'Yugi Mutou', 'AdminKingOfGames', 'admin.yugi@example.com', 0, 0, 0, 'https://example.com/admin_yugi_avatar.png'),
-(28, 8, 2, 'Seto Kaiba', 'AdminKaibaCorp', 'admin.seto@example.com', 0, 0, 0, 'https://example.com/admin_kaiba_avatar.png');
+INSERT INTO t_users (id_user, id_country, id_rol, fullname, alias, email, games_won, games_lost, disqualifications, avatar_url, passcode) VALUES
+(27, 7, 2, 'Yugi Mutou', 'AdminKingOfGames', 'admin.yugi@example.com', 0, 0, 0, 'https://example.com/admin_yugi_avatar.png', 'adminpasscode1'),
+(28, 8, 2, 'Seto Kaiba', 'AdminKaibaCorp', 'admin.seto@example.com', 0, 0, 0, 'https://example.com/admin_kaiba_avatar.png', 'adminpasscode2');
 
 -- Organizadores (2 registros)
-INSERT INTO t_users (id_user, id_country, id_rol, fullname, alias, email, games_won, games_lost, disqualifications, avatar_url) VALUES
-(29, 9, 1, 'Marek Ishtar', 'OrganizerMarek', 'organizer.marek@example.com', 0, 0, 0, 'https://example.com/organizer_marek_avatar.png'),
-(30, 10, 1, 'Joey Wheeler', 'OrganizerRedEyes', 'organizer.joey@example.com', 0, 0, 0, 'https://example.com/organizer_joey_avatar.png');
+INSERT INTO t_users (id_user, id_country, id_rol, fullname, alias, email, games_won, games_lost, disqualifications, avatar_url, passcode) VALUES
+(29, 9, 1, 'Marek Ishtar', 'OrganizerMarek', 'organizer.marek@example.com', 0, 0, 0, 'https://example.com/organizer_marek_avatar.png', 'organizerpasscode1'),
+(30, 10, 1, 'Joey Wheeler', 'OrganizerRedEyes', 'organizer.joey@example.com', 0, 0, 0, 'https://example.com/organizer_joey_avatar.png', 'organizerpasscode2');
+
 

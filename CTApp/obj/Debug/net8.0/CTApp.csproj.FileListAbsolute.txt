@@ -74,3 +74,4 @@ C:\Repositorios\CardTournament\CTApp\bin\Debug\net8.0\Microsoft.IdentityModel.To
 C:\Repositorios\CardTournament\CTApp\bin\Debug\net8.0\System.IdentityModel.Tokens.Jwt.dll
 C:\Repositorios\CardTournament\CTApp\bin\Debug\net8.0\CTConfigurations.dll
 C:\Repositorios\CardTournament\CTApp\bin\Debug\net8.0\CTConfigurations.pdb
+C:\Repositorios\CardTournament\CTApp\bin\Debug\net8.0\BCrypt.Net.dll

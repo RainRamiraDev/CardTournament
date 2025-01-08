@@ -30,6 +30,10 @@ builder.Services.AddScoped<IUserDao>(provider =>
 });
 
 // Registrar Servicios
+
+
+builder.Services.AddScoped<CTDao.Dao.Security.PasswordHasher>();
+
 builder.Services.AddScoped<ICardService, CardService>();
 
 builder.Services.AddScoped<IUserService, UserService>();
@@ -65,6 +69,9 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings["Key"]))
         };
     });
+
+
+
 
 
 

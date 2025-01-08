@@ -18,6 +18,14 @@
           "CTApp.dll": {}
         }
       },
+      "BCrypt.Net/0.1.0": {
+        "runtime": {
+          "lib/net35/BCrypt.Net.dll": {
+            "assemblyVersion": "0.1.4141.31969",
+            "fileVersion": "0.1.0.0"
+          }
+        }
+      },
       "BouncyCastle.Cryptography/2.3.1": {
         "runtime": {
           "lib/net6.0/BouncyCastle.Cryptography.dll": {
@@ -416,6 +424,7 @@
       },
       "CTDao/1.0.0": {
         "dependencies": {
+          "BCrypt.Net": "0.1.0",
           "CTDataModels": "1.0.0",
           "Dapper": "2.1.35",
           "MySql.Data": "9.1.0"
@@ -449,7 +458,8 @@
           "CTDao": "1.0.0",
           "CTDataModels": "1.0.0",
           "CTDto": "1.0.0",
-          "Microsoft.Extensions.Options": "9.0.0"
+          "Microsoft.Extensions.Options": "9.0.0",
+          "System.IdentityModel.Tokens.Jwt": "7.1.2"
         },
         "runtime": {
           "CTService.dll": {
@@ -465,6 +475,13 @@
       "type": "project",
       "serviceable": false,
       "sha512": ""
+    },
+    "BCrypt.Net/0.1.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-sST2w361Dxt9GGMfpOTiK50wXGV64Ybb1hiX3xjEWnhVYZNF43NuySGwADJa7X1R+bA53NsFR+tuDxcYiJeIOA==",
+      "path": "bcrypt.net/0.1.0",
+      "hashPath": "bcrypt.net.0.1.0.nupkg.sha512"
     },
     "BouncyCastle.Cryptography/2.3.1": {
       "type": "package",
