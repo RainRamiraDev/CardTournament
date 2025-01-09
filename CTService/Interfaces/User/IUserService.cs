@@ -11,7 +11,7 @@ namespace CTService.Interfaces.User
 {
     public interface IUserService
     {
-        //Task<int> CreateWhitHashedPasswordAsync(UserDbAlterDto userDto);
+        Task<int> CreateWhitHashedPasswordAsync(UserDto userDto);
         Task<UserDto> GetUserWhitTokenAsync(int id);
         Task<UserModel> LogInAsync(string fullname, string passcode);
     }

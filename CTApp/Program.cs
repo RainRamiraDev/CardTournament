@@ -1,12 +1,16 @@
 
 using CTConfigurations;
 using CTDao.Dao.Card;
+using CTDao.Dao.RefreshToken;
 using CTDao.Dao.User;
 using CTDao.Interfaces.Card;
+using CTDao.Interfaces.RefreshToken;
 using CTDao.Interfaces.User;
 using CTService.Implementation.Card;
+using CTService.Implementation.RefreshToken;
 using CTService.Implementation.User;
 using CTService.Interfaces.Card;
+using CTService.Interfaces.RefreshToken;
 using CTService.Interfaces.User;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
@@ -29,6 +33,13 @@ builder.Services.AddScoped<IUserDao>(provider =>
     return new UserDao(connectionString);
 });
 
+// Registrar IRefreshTokenDao
+builder.Services.AddScoped<IRefreshTokenDao>(provider =>
+{
+    return new RefreshTokenDao(connectionString);  // Asegúrate de tener la implementación de RefreshTokenDao
+});
+
+
 // Registrar Servicios
 
 
@@ -37,6 +48,8 @@ builder.Services.AddScoped<CTDao.Dao.Security.PasswordHasher>();
 builder.Services.AddScoped<ICardService, CardService>();
 
 builder.Services.AddScoped<IUserService, UserService>();
+
+builder.Services.AddScoped<IRefreshTokenService, RefreshTokenService>();
 
 
 //--------

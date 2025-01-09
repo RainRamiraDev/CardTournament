@@ -9,7 +9,7 @@ namespace CTDao.Interfaces.User
 {
     public interface IUserDao
     {
-        //Task<int> CreateWhitHashedPasswordAsync(UserModel user);
+        Task<int> CreateWhitHashedPasswordAsync(UserModel user);
         Task<UserModel> GetUserWhitTokenAsync(int id);
         Task<UserModel> LogInAsync(string fullname);
     }

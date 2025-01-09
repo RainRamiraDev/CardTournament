@@ -1,6 +1,22 @@
 [
   {
     "ContainingType": "CTApp.Controllers.User.AdminController",
+    "Method": "CreateUserWhitHashedPassword",
+    "RelativePath": "api/Admin/FirstLogIn",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "userDto",
+        "Type": "CTDto.Users.UserDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CTApp.Controllers.User.AdminController",
     "Method": "LogIn",
     "RelativePath": "api/Admin/LogIn/{fullname}/{passcode}",
     "HttpMethod": "GET",

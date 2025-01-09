@@ -73,7 +73,7 @@ namespace CTService.Implementation.RefreshToken
                 new Claim(ClaimTypes.Name, userName),
                 new Claim(ClaimTypes.Email, userEmail),
                 new Claim(ClaimTypes.NameIdentifier, userId.ToString()),
-                new Claim(ClaimTypes.Role, "usuario")
+                //new Claim(ClaimTypes.Role, "usuario")
             };
 
             var token = new JwtSecurityToken(

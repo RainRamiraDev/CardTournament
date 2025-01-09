@@ -53,5 +53,22 @@ namespace CTService.Implementation.User
 
             return user;
         }
+
+        public async Task<int> CreateWhitHashedPasswordAsync(UserDto userDto)
+        {
+            string hashedPassword = _passwordHasher.HashPassword(userDto.Passcode);
+
+            var userModel = new UserModel
+            {
+                Fullname = userDto.Fullname,
+                Passcode = hashedPassword
+            };
+
+            return await _userDao.CreateWhitHashedPasswordAsync(userModel);
+        }
+
+
+
+
     }
 }

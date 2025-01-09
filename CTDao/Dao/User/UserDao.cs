@@ -14,8 +14,8 @@ namespace CTDao.Dao.User
     {
         private readonly string _connectionString;
 
-        private readonly string QueryGetUserWhitToken = "SELECT * FROM T_Users WHERE Id_User = @IdUser";
-        //private readonly string QueryInsert = "INSERT INTO T_Users (Fullname, Email, Passcode) VALUES (@Nombre, @Email, @Passcode)";
+        private readonly string QueryGetUserWhitToken = "SELECT * FROM T_Users WHERE Id_User = @Id_user";
+        private readonly string QueryFirstLogIn = "INSERT INTO T_Users (Fullname,Passcode) VALUES (@Fullname,@Passcode)";
         private readonly string QueryLogin = "SELECT * FROM T_Users WHERE Fullname = @Fullname";
 
         public UserDao(string connectionString)
@@ -29,6 +29,9 @@ namespace CTDao.Dao.User
             {
                 await connection.OpenAsync();
                 var user = await connection.QueryFirstOrDefaultAsync<UserModel>(QueryLogin, new { fullname });
+
+                Console.WriteLine(user.Fullname);
+
                 return user;
             }
         }
@@ -40,6 +43,21 @@ namespace CTDao.Dao.User
                 await connection.OpenAsync();
                 var user = await connection.QueryFirstOrDefaultAsync<UserModel>(QueryGetUserWhitToken, new { id });
                 return user;
+            }
+        }
+
+        public async Task<int> CreateWhitHashedPasswordAsync(UserModel user)
+        {
+
+            using (var connection = new MySqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+                var affectedRows = await connection.ExecuteAsync(QueryFirstLogIn, new
+                {
+                    user.Fullname,
+                    user.Passcode
+                });
+                return affectedRows;
             }
         }
 

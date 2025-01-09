@@ -6,6 +6,7 @@ using CTDto.Users;
 using CTService.Interfaces.RefreshToken;
 using CTService.Interfaces.User;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 
 namespace CTApp.Controllers.User
 {
@@ -21,9 +22,11 @@ namespace CTApp.Controllers.User
 
         private readonly KeysConfiguration _keysConfiguration;
 
-        public AdminController(IUserService userService)
+        public AdminController(IUserService userService, IOptions<KeysConfiguration> keys, IRefreshTokenService refreshToken)
         {
             _userService = userService;
+            _refreshTokenService = refreshToken;
+            _keysConfiguration = keys.Value;
         }
 
         [HttpGet("LogIn/{fullname}/{passcode}")]
@@ -133,6 +136,39 @@ namespace CTApp.Controllers.User
                 return BadRequest(new { Message = "Ocurrió un error al intentar cerrar sesión.", Details = ex.Message });
             }
         }
+
+        [HttpPost("FirstLogIn")]
+        public async Task<IActionResult> CreateUserWhitHashedPassword([FromBody] UserDto userDto)
+        {
+            try
+            {
+                var userId = await _userService.CreateWhitHashedPasswordAsync(userDto);
+                var user = new UserDto
+                {
+                    Fullname = userDto.Fullname,
+                    Passcode = userDto.Passcode,
+                };
+                var response = ApiResponse<UserDto>.SuccessResponse
+                    (
+                        "Usuario creado exitosamente",
+                        userDto
+                    );
+
+                return Created(string.Empty, response);
+
+            }
+            catch (Exception ex)
+            {
+                var errors = new List<string> { ex.Message };
+                var stackTrace = ex.StackTrace;
+                var response = ApiResponse<UserDto>.ErrorResponse(errors, stackTrace);
+                return BadRequest(response);
+            }
+        }
+
+
+
+
 
     }
 }
