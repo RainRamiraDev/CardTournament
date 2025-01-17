@@ -17,6 +17,7 @@ namespace CTDao.Dao.User
         private readonly string QueryGetUserWhitToken = "SELECT * FROM T_Users WHERE Id_User = @Id_user";
         private readonly string QueryFirstLogIn = "INSERT INTO T_Users (Fullname,Passcode) VALUES (@Fullname,@Passcode)";
         private readonly string QueryLogin = "SELECT * FROM T_Users WHERE Fullname = @Fullname";
+        private readonly string QueryGetAllJudges = "SELECT u.Fullname,u.Alias,u.Email,c.country_name as Country,u.avatar_url FROM t_users u JOIN t_countries c ON u.id_country = c.id_country WHERE Id_rol = 3";
 
         public UserDao(string connectionString)
         {
@@ -58,5 +59,14 @@ namespace CTDao.Dao.User
             }
         }
 
+        public async Task<IEnumerable<UserModel>> GetAllJudgeAsync()
+        {
+            using (var connection = new MySqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+                var judges = await connection.QueryAsync<UserModel>(QueryGetAllJudges);
+                return judges;
+            }
+        }
     }
 }

@@ -102,6 +102,18 @@
           }
         }
       }
+    },
+    "/api/Organizer/GetJudges": {
+      "get": {
+        "tags": [
+          "Organizer"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
     }
   },
   "components": {
