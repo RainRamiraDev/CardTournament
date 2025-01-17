@@ -1,8 +1,18 @@
 [
   {
-    "ContainingType": "CTApp.Controllers.User.AdminController",
+    "ContainingType": "CTApp.Controllers.Card.CardController",
+    "Method": "GetAllCards",
+    "RelativePath": "api/Card/GetAll",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CTApp.Controllers.User.LogInController",
     "Method": "CreateUserWhitHashedPassword",
-    "RelativePath": "api/Admin/FirstLogIn",
+    "RelativePath": "api/LogIn/FirstLogIn",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
@@ -16,46 +26,41 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "CTApp.Controllers.User.AdminController",
+    "ContainingType": "CTApp.Controllers.User.LogInController",
     "Method": "LogIn",
-    "RelativePath": "api/Admin/LogIn/{fullname}/{passcode}",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "fullname",
-        "Type": "System.String",
-        "IsRequired": true
-      },
-      {
-        "Name": "passcode",
-        "Type": "System.String",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "CTApp.Controllers.User.AdminController",
-    "Method": "Logout",
-    "RelativePath": "api/Admin/Logout",
+    "RelativePath": "api/LogIn/LogIn",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
-        "Name": "refreshToken",
-        "Type": "System.Guid",
+        "Name": "loginRequest",
+        "Type": "CTDto.Users.LogIn.LoginRequestDto",
         "IsRequired": true
       }
     ],
     "ReturnTypes": []
   },
   {
-    "ContainingType": "CTApp.Controllers.User.AdminController",
+    "ContainingType": "CTApp.Controllers.User.LogInController",
+    "Method": "Logout",
+    "RelativePath": "api/LogIn/Logout",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "CTDto.Users.LogIn.LogOutDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CTApp.Controllers.User.LogInController",
     "Method": "RefreshToken",
-    "RelativePath": "api/Admin/RefreshToken",
+    "RelativePath": "api/LogIn/RefreshToken",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
@@ -66,16 +71,6 @@
         "IsRequired": true
       }
     ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "CTApp.Controllers.Card.CardController",
-    "Method": "GetAllCards",
-    "RelativePath": "api/Card/GetAll",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [],
     "ReturnTypes": []
   }
 ]
