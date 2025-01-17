@@ -21,11 +21,25 @@ namespace CTService.Implementation.RefreshToken
         private readonly IRefreshTokenDao _refreshTokenDao;
         private readonly KeysConfiguration _keysConfiguration;
 
+
         public RefreshTokenService(IRefreshTokenDao refreshTokenDao, IOptions<KeysConfiguration> keysConfiguration)
         {
             _refreshTokenDao = refreshTokenDao ?? throw new ArgumentNullException(nameof(refreshTokenDao));
             _keysConfiguration = keysConfiguration.Value; 
+          
         }
+
+        private (Guid Token, DateTime Expiration) GenerateRefreshToken()
+        {
+            Guid newRefreshToken = Guid.NewGuid();
+            DateTime expirationDate = DateTime.UtcNow.AddDays(_keysConfiguration.ExpirationDays);
+
+            return (newRefreshToken, expirationDate);
+        }
+
+
+
+
 
         public async Task<(string AccessToken, Guid RefreshToken)> RefreshAccessTokenAsync(Guid oldRefreshToken)
         {
@@ -46,10 +60,7 @@ namespace CTService.Implementation.RefreshToken
 
             string newAccessToken = await GenerateAccessToken(user.IdRole, user.Fullname, user.Email);
 
-
-            Guid newRefreshToken = Guid.NewGuid();
-            DateTime expirationDate = DateTime.UtcNow.AddDays(7);
-
+            var (newRefreshToken, expirationDate) = GenerateRefreshToken();
 
             await _refreshTokenDao.SaveRefreshTokenAsync(newRefreshToken, user.Id_User, expirationDate);
 
@@ -73,14 +84,14 @@ namespace CTService.Implementation.RefreshToken
                 new Claim(ClaimTypes.Name, userName),
                 new Claim(ClaimTypes.Email, userEmail),
                 new Claim(ClaimTypes.NameIdentifier, userId.ToString()),
-                //new Claim(ClaimTypes.Role, "usuario")
+                
             };
 
             var token = new JwtSecurityToken(
                 issuer: _keysConfiguration.Issuer,
                 audience: _keysConfiguration.Audience,
                 claims: claims,
-                expires: DateTime.Now.AddMinutes(120),
+                expires: DateTime.UtcNow.AddDays(_keysConfiguration.ExpirationDays),
                 signingCredentials: credentials
             );
 

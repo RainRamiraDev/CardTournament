@@ -38,7 +38,7 @@ namespace CTApp.Controllers.User
                     HttpOnly = true,
                     Secure = true,
                     SameSite = SameSiteMode.Strict,
-                    Expires = expirationDate ?? DateTime.UtcNow.AddDays(7) // Si no se pasa una fecha de expiración, usar la predeterminada
+                    Expires = expirationDate ?? DateTime.UtcNow.AddDays(_keysConfiguration.ExpirationDays) // Usar el valor desde la configuración
                 });
         }
 
@@ -57,7 +57,7 @@ namespace CTApp.Controllers.User
             var accessToken = _refreshTokenService.GenerateAccessToken(user.Id_User, user.Fullname, user.Email);
 
             Guid refreshToken = Guid.NewGuid();
-            DateTime expirationDate = DateTime.UtcNow.AddDays(7);
+            DateTime expirationDate = DateTime.UtcNow.AddDays(_keysConfiguration.ExpirationDays); // Usar el valor desde la configuración
 
             await _refreshTokenService.SaveRefreshTokenAsync(refreshToken, user.Id_User, expirationDate);
 

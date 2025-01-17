@@ -66,9 +66,5 @@ namespace CTService.Implementation.User
 
             return await _userDao.CreateWhitHashedPasswordAsync(userModel);
         }
-
-
-
-
     }
 }
