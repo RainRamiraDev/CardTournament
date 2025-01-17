@@ -10,10 +10,10 @@ namespace CTService.Interfaces.RefreshToken
     public interface IRefreshTokenService
     {
 
-        //Task<(string AccessToken, Guid RefreshToken)> RefreshAccessTokenAsync(Guid oldRefreshToken);
-        //Task<bool> LogoutAsync(Guid refreshToken);
-        //Task SaveRefreshTokenAsync(Guid token, int userId, DateTime expiryDate);
-        //Task<string> GenerateAccessToken(int userId, string userName, string userEmail);
+        Task<(string AccessToken, Guid RefreshToken)> RefreshAccessTokenAsync(Guid oldRefreshToken);
+        Task<bool> LogoutAsync(Guid refreshToken);
+        Task SaveRefreshTokenAsync(Guid token, int userId, DateTime expiryDate);
+        Task<string> GenerateAccessToken(int userId, string userName, string userEmail);
 
     }
 }

@@ -1,4 +1,6 @@
 ﻿
+using CTDataModels.Users;
+using CTDto.Users;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +11,8 @@ namespace CTService.Interfaces.User
 {
     public interface IUserService
     {
-    
+        Task<int> CreateWhitHashedPasswordAsync(UserDto userDto);
+        Task<UserDto> GetUserWhitTokenAsync(int id);
+        Task<UserModel> LogInAsync(string fullname, string passcode);
     }
 }

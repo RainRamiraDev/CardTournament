@@ -1,34 +1,35 @@
 
 CREATE TABLE T_SERIES(
-	id_series INT PRIMARY KEY,
+	id_series INT PRIMARY KEY AUTO_INCREMENT,
 	series_name VARCHAR(30) NOT NULL,
 	release_date DATETIME NOT NULL
 );
 
 CREATE TABLE T_CARDS(
-	id_card INT PRIMARY KEY,
+	id_card INT PRIMARY KEY AUTO_INCREMENT,
 	illustration VARCHAR(30) NOT NULL,
 	attack INT,
 	deffense INT
 );
 
 CREATE TABLE T_COUNTRIES(
-	id_country INT PRIMARY KEY,
+	id_country INT PRIMARY KEY AUTO_INCREMENT,
 	country_name VARCHAR(100)
 );
 
 CREATE TABLE T_ROLES(
-	id_rol INT PRIMARY KEY,
+	id_rol INT PRIMARY KEY AUTO_INCREMENT,
 	rol VARCHAR(20)
 );
 
 CREATE TABLE T_USERS(
-	id_user INT PRIMARY KEY,
+	id_user INT PRIMARY KEY AUTO_INCREMENT,
 	id_country INT,
 	id_rol INT,
 	fullname VARCHAR(50),
 	alias VARCHAR(20),
 	email VARCHAR(100),
+	passcode VARCHAR(255),
 	games_won INT,
 	games_lost INT,
 	disqualifications INT,
@@ -39,7 +40,7 @@ CREATE TABLE T_USERS(
 
 
 CREATE TABLE T_REFRESH_TOKENS(
-	id_token INT PRIMARY KEY,
+	id_token INT PRIMARY KEY AUTO_INCREMENT,
 	id_user INT,
 	token VARCHAR(255) NOT NULL UNIQUE,
 	expiry_date DATETIME NOT NULL,
@@ -48,7 +49,7 @@ CREATE TABLE T_REFRESH_TOKENS(
 );
 
 CREATE TABLE T_CARD_SERIES(
-	id_card_series INT PRIMARY KEY,
+	id_card_series INT PRIMARY KEY AUTO_INCREMENT,
 	id_card INT,
 	id_series INT,
 	CONSTRAINT fk_card_cseries FOREIGN KEY (id_card) REFERENCES T_CARDS (id_card),
@@ -57,7 +58,7 @@ CREATE TABLE T_CARD_SERIES(
 
 
 CREATE TABLE T_TOURNAMENTS(
-	id_tournament INT PRIMARY KEY,
+	id_tournament INT PRIMARY KEY AUTO_INCREMENT,
 	id_country INT,
 	id_organizer INT,
 	start_datetime DATETIME,
@@ -69,7 +70,7 @@ CREATE TABLE T_TOURNAMENTS(
 
 
 CREATE TABLE T_ROUNDS(
-	id_round INT PRIMARY KEY,
+	id_round INT PRIMARY KEY AUTO_INCREMENT,
 	id_player1 INT,
 	id_player2 INT,
 	id_winner INT,
@@ -80,7 +81,7 @@ CREATE TABLE T_ROUNDS(
 );
 
 CREATE TABLE T_GAMES(
-	id_game INT PRIMARY KEY,
+	id_game INT PRIMARY KEY AUTO_INCREMENT,
 	id_round INT,
 	id_tournament INT,
 	start_datetime DATETIME,
@@ -89,7 +90,7 @@ CREATE TABLE T_GAMES(
 );
 
 CREATE TABLE T_TOURN_JUDGES(
-	id_tourn_judge INT PRIMARY KEY,
+	id_tourn_judge INT PRIMARY KEY AUTO_INCREMENT,
 	id_tournament INT,
 	id_judge INT,
 	CONSTRAINT fk_tourn_judges_tourn FOREIGN KEY (id_tournament) REFERENCES T_TOURNAMENTS (id_tournament),
@@ -97,7 +98,7 @@ CREATE TABLE T_TOURN_JUDGES(
 );
 
 CREATE TABLE T_TOURN_SERIES(
-	id_tourn_series INT PRIMARY KEY,
+	id_tourn_series INT PRIMARY KEY AUTO_INCREMENT,
 	id_tournament INT,
 	id_series INT,
 	CONSTRAINT fk_tourn_series_tourn FOREIGN KEY (id_tournament) REFERENCES T_TOURNAMENTS (id_tournament),
@@ -105,7 +106,7 @@ CREATE TABLE T_TOURN_SERIES(
 );
 
 CREATE TABLE T_TOURN_PLAYERS(
-	id_tourn_player INT PRIMARY KEY,
+	id_tourn_player INT PRIMARY KEY AUTO_INCREMENT,
 	id_tournament INT,
 	id_player INT,
 	CONSTRAINT fk_tourn_player_tourn FOREIGN KEY (id_tournament) REFERENCES T_TOURNAMENTS (id_tournament),
@@ -113,7 +114,7 @@ CREATE TABLE T_TOURN_PLAYERS(
 );
 
 CREATE TABLE T_TOURN_DISQUALIFICATIONS(
-	id_tourn_disqualification INT PRIMARY KEY,
+	id_tourn_disqualification INT PRIMARY KEY AUTO_INCREMENT,
 	id_tournament INT,
 	id_player INT,
 	CONSTRAINT fk_tourn_disq_tourn FOREIGN KEY (id_tournament) REFERENCES T_TOURNAMENTS (id_tournament),
@@ -121,7 +122,7 @@ CREATE TABLE T_TOURN_DISQUALIFICATIONS(
 );
 
 CREATE TABLE T_TOURN_DECKS(
-	id_tourn_deck INT PRIMARY KEY,
+	id_tourn_deck INT PRIMARY KEY AUTO_INCREMENT,
 	id_tournament INT,
 	id_card_series INT,
 	id_owner INT,
