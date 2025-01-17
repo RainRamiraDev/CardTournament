@@ -1,6 +1,4 @@
-﻿
-
-using CTApp.Response;
+﻿using CTApp.Response;
 using CTConfigurations;
 using CTDto.Users;
 using CTDto.Users.LogIn;
@@ -31,139 +29,76 @@ namespace CTApp.Controllers.User
         }
 
 
+        // Método auxiliar para gestionar cookies
+        private void ManageRefreshTokenCookie(string refreshTokenValue, DateTime? expirationDate = null)
+        {
+            Response.Cookies.Append("RefreshToken", refreshTokenValue,
+                new CookieOptions
+                {
+                    HttpOnly = true,
+                    Secure = true,
+                    SameSite = SameSiteMode.Strict,
+                    Expires = expirationDate ?? DateTime.UtcNow.AddDays(7) // Si no se pasa una fecha de expiración, usar la predeterminada
+                });
+        }
+
         [HttpPost("LogIn")]
         public async Task<IActionResult> LogIn([FromBody] LoginRequestDto loginRequest)
         {
-            try
+            var user = await _userService.LogInAsync(loginRequest.Fullname, loginRequest.Passcode);
+
+            if (user == null)
             {
-                if (loginRequest == null || string.IsNullOrWhiteSpace(loginRequest.Fullname) || string.IsNullOrWhiteSpace(loginRequest.Passcode))
-                {
-                    return BadRequest(ApiResponse<UserDto>.ErrorResponse(
-                        new List<string> { "Nombre de usuario y contraseña son requeridos." },
-                        "LogIn: Datos inválidos en la solicitud."
-                    ));
-                }
-
-                var user = await _userService.LogInAsync(loginRequest.Fullname, loginRequest.Passcode);
-
-                if (user == null)
-                {
-                    return NotFound(ApiResponse<UserDto>.ErrorResponse(
-                        new List<string> { "Usuario no encontrado o contraseña incorrecta." },
-                        $"LogIn: No se encontró el usuario con Nombre: {loginRequest.Fullname}"
-                    ));
-                }
-
-                var accessToken = _refreshTokenService.GenerateAccessToken(user.Id_User, user.Fullname, user.Email);
-
-                Guid refreshToken = Guid.NewGuid();
-                DateTime expirationDate = DateTime.UtcNow.AddDays(7);
-
-                await _refreshTokenService.SaveRefreshTokenAsync(refreshToken, user.Id_User, expirationDate);
-
-                Response.Cookies.Append("RefreshToken", refreshToken.ToString(),
-                    new CookieOptions
-                    {
-                        HttpOnly = true,
-                        Secure = true,
-                        SameSite = SameSiteMode.Strict,
-                        Expires = expirationDate
-                    });
-
-                return Ok(new { AccessToken = accessToken });
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ApiResponse<UserDto>.ErrorResponse(
-                    new List<string> { "Ocurrió un error al intentar iniciar sesión." },
-                    ex.StackTrace
+                return NotFound(ApiResponse<UserDto>.ErrorResponse(
+                    new List<string> { "Usuario o contraseña incorrectos." }
                 ));
             }
+
+            var accessToken = _refreshTokenService.GenerateAccessToken(user.Id_User, user.Fullname, user.Email);
+
+            Guid refreshToken = Guid.NewGuid();
+            DateTime expirationDate = DateTime.UtcNow.AddDays(7);
+
+            await _refreshTokenService.SaveRefreshTokenAsync(refreshToken, user.Id_User, expirationDate);
+
+            ManageRefreshTokenCookie(refreshToken.ToString(), expirationDate);  // Utilizamos el método auxiliar para la cookie
+            return Ok(new { AccessToken = accessToken });
         }
-
-
 
 
         [HttpPost("RefreshToken")]
-        public async Task<IActionResult> RefreshToken([FromBody] Guid oldRefreshToken)
+        public async Task<IActionResult> RefreshToken()
         {
-            try
+            var refreshTokenFromCookie = Request.Cookies["RefreshToken"];
+
+            if (string.IsNullOrEmpty(refreshTokenFromCookie) || !Guid.TryParse(refreshTokenFromCookie, out Guid refreshToken))
             {
-                var refreshTokenFromCookie = Request.Cookies["RefreshToken"];
-
-                if (string.IsNullOrEmpty(refreshTokenFromCookie))
-                {
-                    return Unauthorized(new { Message = "No se encontró el refresh token." });
-                }
-
-                var (newAccessToken, newRefreshToken) = await _refreshTokenService.RefreshAccessTokenAsync(Guid.Parse(refreshTokenFromCookie));
-
-                Response.Cookies.Append("RefreshToken", newRefreshToken.ToString(),
-                    new CookieOptions
-                    {
-                        HttpOnly = true,
-                        Secure = true,
-                        SameSite = SameSiteMode.Strict,
-                        Expires = DateTime.UtcNow.AddDays(7)
-                    });
-
-                return Ok(new { AccessToken = newAccessToken, RefreshToken = newRefreshToken });
+                return Unauthorized(new { Message = "No se encontró un refresh token válido." });
             }
-            catch (UnauthorizedAccessException ex)
-            {
-                return Unauthorized(new { Message = ex.Message });
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(new { Message = "Ocurrió un error al intentar renovar el token.", Details = ex.Message });
-            }
+
+            var (newAccessToken, newRefreshToken) = await _refreshTokenService.RefreshAccessTokenAsync(refreshToken);
+
+            ManageRefreshTokenCookie(newRefreshToken.ToString(), DateTime.UtcNow.AddDays(7)); // Usamos el método auxiliar para la nueva cookie
+            return Ok(new { AccessToken = newAccessToken });
         }
 
-        //[HttpPost("Logout")]
-        //public async Task<IActionResult> Logout([FromBody] Guid refreshToken)
-        //{
-        //    try
-        //    {
-        //        bool result = await _refreshTokenService.LogoutAsync(refreshToken);
 
-        //        if (!result)
-        //            return NotFound(new { Message = "El token no fue encontrado o ya se eliminó." });
-
-        //        Response.Cookies.Append("RefreshToken", "", new CookieOptions
-        //        {
-        //            Expires = DateTime.Now,
-        //            HttpOnly = true,
-        //            Secure = true,
-        //            SameSite = SameSiteMode.Strict
-        //        });
-
-        //        return Ok(new { Message = "Sesión cerrada exitosamente." });
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return BadRequest(new { Message = "Ocurrió un error al intentar cerrar sesión.", Details = ex.Message });
-        //    }
-        //}
 
         [HttpPost("Logout")]
-        public async Task<IActionResult> Logout([FromBody] LogOutDto request)
+        public async Task<IActionResult> Logout()
         {
-            if (request.RefreshToken == Guid.Empty)
-                return BadRequest(new { Message = "El refresh token es inválido." });
+            string refreshTokenFromCookies = Request.Cookies["RefreshToken"];
 
-            bool result = await _refreshTokenService.LogoutAsync(request.RefreshToken);
+            Guid.TryParse(refreshTokenFromCookies, out Guid refreshToken);
+
+            bool result = await _refreshTokenService.LogoutAsync(refreshToken);
 
             if (!result)
-                return NotFound(new { Message = "El token no fue encontrado o ya se eliminó." });
-
-            Response.Cookies.Append("RefreshToken", "", new CookieOptions
             {
-                Expires = DateTime.Now,
-                HttpOnly = true,
-                Secure = true,
-                SameSite = SameSiteMode.Strict
-            });
+                return NotFound(new { Message = "El token no fue encontrado o ya se eliminó." });
+            }
 
+            ManageRefreshTokenCookie("", DateTime.Now);
             return Ok(new { Message = "Sesión cerrada exitosamente." });
         }
 
@@ -171,35 +106,15 @@ namespace CTApp.Controllers.User
         [HttpPost("FirstLogIn")]
         public async Task<IActionResult> CreateUserWhitHashedPassword([FromBody] UserDto userDto)
         {
-            try
+            var userId = await _userService.CreateWhitHashedPasswordAsync(userDto);
+            var user = new UserDto
             {
-                var userId = await _userService.CreateWhitHashedPasswordAsync(userDto);
-                var user = new UserDto
-                {
-                    Fullname = userDto.Fullname,
-                    Passcode = userDto.Passcode,
-                };
-                var response = ApiResponse<UserDto>.SuccessResponse
-                    (
-                        "Usuario creado exitosamente",
-                        userDto
-                    );
+                Fullname = userDto.Fullname,
+                Passcode = userDto.Passcode,
+            };
 
-                return Created(string.Empty, response);
-
-            }
-            catch (Exception ex)
-            {
-                var errors = new List<string> { ex.Message };
-                var stackTrace = ex.StackTrace;
-                var response = ApiResponse<UserDto>.ErrorResponse(errors, stackTrace);
-                return BadRequest(response);
-            }
+            var response = ApiResponse<UserDto>.SuccessResponse("Usuario creado exitosamente", userDto);
+            return Created(string.Empty, response);
         }
-
-
-
-
-
     }
 }

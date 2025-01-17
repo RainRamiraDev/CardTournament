@@ -1,4 +1,6 @@
 
+
+using CTApp.Middleware;
 using CTConfigurations;
 using CTDao.Dao.Card;
 using CTDao.Dao.RefreshToken;
@@ -6,12 +8,15 @@ using CTDao.Dao.User;
 using CTDao.Interfaces.Card;
 using CTDao.Interfaces.RefreshToken;
 using CTDao.Interfaces.User;
+using CTDto.Validations.Users.LogIn;
 using CTService.Implementation.Card;
 using CTService.Implementation.RefreshToken;
 using CTService.Implementation.User;
 using CTService.Interfaces.Card;
 using CTService.Interfaces.RefreshToken;
 using CTService.Interfaces.User;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
@@ -36,12 +41,18 @@ builder.Services.AddScoped<IUserDao>(provider =>
 // Registrar IRefreshTokenDao
 builder.Services.AddScoped<IRefreshTokenDao>(provider =>
 {
-    return new RefreshTokenDao(connectionString);  // Asegúrate de tener la implementación de RefreshTokenDao
+    return new RefreshTokenDao(connectionString);
 });
 
 
-// Registrar Servicios
+//validaciones
 
+builder.Services.AddValidatorsFromAssemblyContaining<LogInRequestDtoValidation>();
+builder.Services.AddValidatorsFromAssemblyContaining<LogOutRequestDtoValidation>();
+
+builder.Services.AddFluentValidationAutoValidation();
+
+// Registrar Servicios
 
 builder.Services.AddScoped<CTDao.Dao.Security.PasswordHasher>();
 
@@ -92,18 +103,17 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
-
-
-
-
-
 builder.Services.AddControllers();
-
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+
+// middleware
+
+app.UseMiddleware<ErrorHandlerMiddleware>();
+
+
 
 
 if (app.Environment.IsDevelopment())
@@ -111,6 +121,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+
+
 
 app.UseHttpsRedirection();
 

@@ -29,9 +29,6 @@ namespace CTDao.Dao.User
             {
                 await connection.OpenAsync();
                 var user = await connection.QueryFirstOrDefaultAsync<UserModel>(QueryLogin, new { fullname });
-
-                Console.WriteLine(user.Fullname);
-
                 return user;
             }
         }

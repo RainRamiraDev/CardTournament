@@ -7,7 +7,8 @@
       "RelativeMoniker": "D:0:0:{044F8FA9-5241-4DFD-9606-88BD2C275654}|CTApp.csproj|solutionrelative:controllers\\user\\logincontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{75A57AC1-08F0-4329-A586-BB717D5AF03E}|..\\CTDto\\CTDto.csproj|c:\\repositorios\\cardtournament\\ctdto\\users\\login\\logoutdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{044F8FA9-5241-4DFD-9606-88BD2C275654}|CTApp.csproj|c:\\repositorios\\cardtournament\\ctapp\\to-do.txt||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{044F8FA9-5241-4DFD-9606-88BD2C275654}|CTApp.csproj|solutionrelative:to-do.txt||{8B382828-6202-11D1-8870-0000F87579D2}"
     }
   ],
   "DocumentGroupContainers": [
@@ -17,7 +18,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 145,
-          "SelectedChildIndex": 5,
+          "SelectedChildIndex": 4,
           "Children": [
             {
               "$type": "Bookmark",
@@ -37,28 +38,49 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "LogOutDto.cs",
-              "DocumentMoniker": "C:\\Repositorios\\CardTournament\\CTDto\\Users\\LogIn\\LogOutDto.cs",
-              "RelativeDocumentMoniker": "..\\CTDto\\Users\\LogIn\\LogOutDto.cs",
-              "ToolTip": "C:\\Repositorios\\CardTournament\\CTDto\\Users\\LogIn\\LogOutDto.cs",
-              "RelativeToolTip": "..\\CTDto\\Users\\LogIn\\LogOutDto.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-17T10:29:46.071Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
               "DocumentIndex": 0,
               "Title": "LogInController.cs",
               "DocumentMoniker": "C:\\Repositorios\\CardTournament\\CTApp\\Controllers\\User\\LogInController.cs",
               "RelativeDocumentMoniker": "Controllers\\User\\LogInController.cs",
               "ToolTip": "C:\\Repositorios\\CardTournament\\CTApp\\Controllers\\User\\LogInController.cs",
               "RelativeToolTip": "Controllers\\User\\LogInController.cs",
-              "ViewState": "AgIAAI4AAAAAAAAAAAAmwKYAAAA/AAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAxAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-17T10:14:49.378Z",
+              "WhenOpened": "2025-01-17T13:06:10.022Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "FloatingWindowState": {
+        "Id": "b9413fc1-97c8-4583-a03e-ac748bff52f7",
+        "Display": 0,
+        "X": -22,
+        "Y": 249,
+        "Width": 1582,
+        "Height": 1006,
+        "WindowState": 0
+      },
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "TO-DO.txt",
+              "DocumentMoniker": "C:\\Repositorios\\CardTournament\\CTApp\\TO-DO.txt",
+              "RelativeDocumentMoniker": "TO-DO.txt",
+              "ToolTip": "C:\\Repositorios\\CardTournament\\CTApp\\TO-DO.txt",
+              "RelativeToolTip": "TO-DO.txt",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003109|",
+              "WhenOpened": "2025-01-17T11:28:43.508Z",
               "EditorCaption": ""
             }
           ]

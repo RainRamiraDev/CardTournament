@@ -53,28 +53,6 @@
         "tags": [
           "LogIn"
         ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "string",
-                "format": "uuid"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "type": "string",
-                "format": "uuid"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "type": "string",
-                "format": "uuid"
-              }
-            }
-          }
-        },
         "responses": {
           "200": {
             "description": "OK"
@@ -87,25 +65,6 @@
         "tags": [
           "LogIn"
         ],
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/LogOutDto"
-              }
-            },
-            "text/json": {
-              "schema": {
-                "$ref": "#/components/schemas/LogOutDto"
-              }
-            },
-            "application/*+json": {
-              "schema": {
-                "$ref": "#/components/schemas/LogOutDto"
-              }
-            }
-          }
-        },
         "responses": {
           "200": {
             "description": "OK"
@@ -147,16 +106,6 @@
   },
   "components": {
     "schemas": {
-      "LogOutDto": {
-        "type": "object",
-        "properties": {
-          "refreshToken": {
-            "type": "string",
-            "format": "uuid"
-          }
-        },
-        "additionalProperties": false
-      },
       "LoginRequestDto": {
         "type": "object",
         "properties": {

@@ -75,3 +75,6 @@ C:\Repositorios\CardTournament\CTApp\bin\Debug\net8.0\System.IdentityModel.Token
 C:\Repositorios\CardTournament\CTApp\bin\Debug\net8.0\CTConfigurations.dll
 C:\Repositorios\CardTournament\CTApp\bin\Debug\net8.0\CTConfigurations.pdb
 C:\Repositorios\CardTournament\CTApp\bin\Debug\net8.0\BCrypt.Net.dll
+C:\Repositorios\CardTournament\CTApp\bin\Debug\net8.0\FluentValidation.dll
+C:\Repositorios\CardTournament\CTApp\bin\Debug\net8.0\FluentValidation.AspNetCore.dll
+C:\Repositorios\CardTournament\CTApp\bin\Debug\net8.0\FluentValidation.DependencyInjectionExtensions.dll
