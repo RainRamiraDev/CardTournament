@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("CTApp")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+04bf6f90b5ee7627b59472de4c46f1f92b98f5e1")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+dd93eda07d746ca937d979012723a64d809c16e6")]
 [assembly: System.Reflection.AssemblyProductAttribute("CTApp")]
 [assembly: System.Reflection.AssemblyTitleAttribute("CTApp")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

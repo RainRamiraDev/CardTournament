@@ -37,10 +37,6 @@ namespace CTService.Implementation.RefreshToken
             return (newRefreshToken, expirationDate);
         }
 
-
-
-
-
         public async Task<(string AccessToken, Guid RefreshToken)> RefreshAccessTokenAsync(Guid oldRefreshToken)
         {
             bool isValidToken = await _refreshTokenDao.VerifyTokenAsync(oldRefreshToken);
@@ -84,7 +80,7 @@ namespace CTService.Implementation.RefreshToken
                 new Claim(ClaimTypes.Name, userName),
                 new Claim(ClaimTypes.Email, userEmail),
                 new Claim(ClaimTypes.NameIdentifier, userId.ToString()),
-                new Claim(ClaimTypes.Role,rol.ToString())
+                new Claim(ClaimTypes.Role, "Admin","Judge","Player","Organizer")
             };
 
             var token = new JwtSecurityToken(
