@@ -10,8 +10,7 @@ namespace CTDataModels.Users
     {
         public int Id_User { get; set; }
         public string Country { get; set; }
-        public int IdRole { get; set; }
-
+        public int Id_Rol { get; set; }
         public string Passcode { get; set; }
         public string Fullname { get; set; }
         public string Alias { get; set; }

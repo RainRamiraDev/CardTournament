@@ -54,7 +54,7 @@ namespace CTApp.Controllers.User
                 ));
             }
 
-            var accessToken = _refreshTokenService.GenerateAccessToken(user.Id_User, user.Fullname, user.Email,user.IdRole);
+            var accessToken = _refreshTokenService.GenerateAccessToken(user.Id_User, user.Fullname,user.Id_Rol);
 
             Guid refreshToken = Guid.NewGuid();
             DateTime expirationDate = DateTime.UtcNow.AddDays(_keysConfiguration.ExpirationDays); // Usar el valor desde la configuración

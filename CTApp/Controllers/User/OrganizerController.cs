@@ -2,6 +2,7 @@
 using CTDto.Users.Judge;
 using CTService.Implementation.User;
 using CTService.Interfaces.User;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CTApp.Controllers.User
@@ -20,6 +21,8 @@ namespace CTApp.Controllers.User
             _userService = userService;
         }
 
+
+        [Authorize(Roles = "1")] // Solo los usuarios organizadores puede ver
         [HttpGet("GetJudges")]
         public async Task<IActionResult> GetJudges()
         {
