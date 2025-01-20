@@ -4,16 +4,20 @@ using CTApp.Middleware;
 using CTConfigurations;
 using CTDao.Dao.Card;
 using CTDao.Dao.RefreshToken;
+using CTDao.Dao.Tournaments;
 using CTDao.Dao.User;
 using CTDao.Interfaces.Card;
 using CTDao.Interfaces.RefreshToken;
+using CTDao.Interfaces.Tournaments;
 using CTDao.Interfaces.User;
 using CTDto.Validations.Users.LogIn;
 using CTService.Implementation.Card;
 using CTService.Implementation.RefreshToken;
+using CTService.Implementation.Tournament;
 using CTService.Implementation.User;
 using CTService.Interfaces.Card;
 using CTService.Interfaces.RefreshToken;
+using CTService.Interfaces.Tournaments;
 using CTService.Interfaces.User;
 using FluentValidation;
 using FluentValidation.AspNetCore;
@@ -24,10 +28,10 @@ using System.Text;
 var builder = WebApplication.CreateBuilder(args);
 
 
-// Registrar servicios antes de Build
+
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
-// Registrar DAOs
+
 builder.Services.AddScoped<ICardDao>(provider =>
 {
     return new CardDao(connectionString);
@@ -38,10 +42,16 @@ builder.Services.AddScoped<IUserDao>(provider =>
     return new UserDao(connectionString);
 });
 
-// Registrar IRefreshTokenDao
+
 builder.Services.AddScoped<IRefreshTokenDao>(provider =>
 {
     return new RefreshTokenDao(connectionString);
+});
+
+
+builder.Services.AddScoped<ITournamentDao>(provider =>
+{
+    return new TournamentDao(connectionString);
 });
 
 
@@ -62,11 +72,12 @@ builder.Services.AddScoped<IUserService, UserService>();
 
 builder.Services.AddScoped<IRefreshTokenService, RefreshTokenService>();
 
+builder.Services.AddScoped<ITournamentService, TournamentService>();
+
 
 //--------
 builder.Services.Configure<KeysConfiguration>(builder.Configuration.GetSection("Jwt"));
 //--------
-
 
 
 builder.Services.AddCors(options =>
@@ -95,24 +106,15 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     });
 
 
-
-
-
-
-// Registrar otros servicios
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddControllers();
 
 var app = builder.Build();
 
+
 // middleware
 
 app.UseMiddleware<ErrorHandlerMiddleware>();
-
-
-
-
-
 
 app.UseHttpsRedirection();
 

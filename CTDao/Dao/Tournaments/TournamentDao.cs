@@ -15,11 +15,12 @@ namespace CTDao.Dao.Tournaments
 
         private readonly string _connectionString;
 
-        private readonly string QueryGetAll = @" ";
+        private readonly string QueryGetAll = @"SELECT * FROM T_TOURNAMENTS";
 
         private readonly string QueryCreateTournament = @"
-            INSERT INTO prestamos (id_country, id_organizer, start_datetime, end_datetime, current_phase) 
-            VALUES (@id_country,@id_organizer,@start_date,@end_datetime,@current_phase);";
+    INSERT INTO T_TOURNAMENTS (id_country, id_organizer, start_datetime, end_datetime, current_phase) 
+    VALUES (@IdCountry, @IdOrganizer, @StartDatetime, @EndDatetime, @CurrentPhase);";
+
 
 
         public TournamentDao(string connectionString)
@@ -35,20 +36,28 @@ namespace CTDao.Dao.Tournaments
 
                 var affectedRows = await connection.ExecuteAsync(QueryCreateTournament, new
                 {
-                    tournament.Country,
-                    tournament.Organizer,
-                    tournament.Start_datetime,
-                    tournament.End_datetime,
-                    tournament.Current_Phase
+                    IdCountry = tournament.Id_Country,  // Debe ser INT
+                    IdOrganizer = tournament.Id_Organizer,  // Debe ser INT
+                    StartDatetime = tournament.Start_datetime,  // DATETIME
+                    EndDatetime = tournament.End_datetime,  // DATETIME
+                    CurrentPhase = tournament.Current_Phase  // VARCHAR(20)
                 });
+
 
                 return affectedRows;
             }
         }
 
-        public Task<IEnumerable<TournamentModel>> GetAllTournamentAsync()
+        public async Task<IEnumerable<TournamentModel>> GetAllTournamentAsync()
         {
-            throw new NotImplementedException();
+            using (var connection = new MySqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+
+                var prestamos = await connection.QueryAsync<TournamentModel>(QueryGetAll);
+
+                return prestamos;
+            }
         }
     }
 }

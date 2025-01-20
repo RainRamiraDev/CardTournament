@@ -1,6 +1,9 @@
 ﻿using CTApp.Response;
+using CTDto.Tournaments;
+using CTDto.Users;
 using CTDto.Users.Judge;
 using CTService.Implementation.User;
+using CTService.Interfaces.Tournaments;
 using CTService.Interfaces.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -16,9 +19,12 @@ namespace CTApp.Controllers.User
     {
         private readonly IUserService _userService;
 
-        public OrganizerController(IUserService userService)
+        private readonly ITournamentService _tournamentService;
+
+        public OrganizerController(IUserService userService, ITournamentService tournamentService)
         {
             _userService = userService;
+            _tournamentService = tournamentService;
         }
 
 
@@ -33,6 +39,34 @@ namespace CTApp.Controllers.User
 
             return Ok(ApiResponse<IEnumerable<JudgeDto>>.SuccessResponse("Jueces obtenidos exitosamente.", judges));
         }
+
+
+
+        [Authorize(Roles = "1")]
+        [HttpPost("CreateTournament")]
+        public async Task<IActionResult> CreateTournament([FromBody] TournamentDto tournamentDto)
+        {
+            if (tournamentDto == null)
+            {
+                return BadRequest("Invalid tournament data.");
+            }
+
+            var id = await _tournamentService.CreateTournamentAsync(tournamentDto);
+
+            if (id == 0)
+            {
+                return StatusCode(500, "Error creating tournament.");
+            }
+
+            return Created("", new { id });
+        }
+
+
+
+
+
+
+
 
     }
 }
