@@ -12,7 +12,7 @@ namespace CTDto.Tournaments
         public int Id_Organizer { get; set; }  // Nuevo campo
         public DateTime Start_datetime { get; set; }
         public DateTime End_datetime { get; set; }
-        public string Current_Phase { get; set; }
+        public int Current_Phase { get; set; }
 
     }
 }

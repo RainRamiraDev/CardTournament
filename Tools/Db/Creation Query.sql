@@ -63,7 +63,7 @@ CREATE TABLE T_TOURNAMENTS(
 	id_organizer INT,
 	start_datetime DATETIME,
 	end_datetime DATETIME,
-	current_phase VARCHAR(20),
+	current_phase INT,
 	CONSTRAINT fk_tourn_country FOREIGN KEY (id_country) REFERENCES T_COUNTRIES (id_country),
 	CONSTRAINT fk_tourn_organizer FOREIGN KEY (id_organizer) REFERENCES T_USERS (id_user)
 );

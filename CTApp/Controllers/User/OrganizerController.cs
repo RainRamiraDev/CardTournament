@@ -1,4 +1,5 @@
 ﻿using CTApp.Response;
+using CTDataModels.Tournamets;
 using CTDto.Tournaments;
 using CTDto.Users;
 using CTDto.Users.Judge;
@@ -60,6 +61,33 @@ namespace CTApp.Controllers.User
 
             return Created("", new { id });
         }
+
+
+        [Authorize(Roles = "1")]
+        [HttpPost("SetTournamentJudges")]
+        public async Task<IActionResult> SetTournamentJudges([FromBody] TournamentJudgeDto tournamentJudgeDto)
+        {
+            try
+            {
+                var affectedRows = await _tournamentService.InsertTournamentJudgesAsync(tournamentJudgeDto);
+
+                if (affectedRows == 0)
+                {
+                    return StatusCode(500, "Error assigning judges to tournament.");
+                }
+
+                return Created("", new { affectedRows });
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, "An unexpected error occurred.");
+            }
+        }
+
 
 
 
