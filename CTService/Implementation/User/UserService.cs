@@ -2,6 +2,7 @@
 using CTDao.Interfaces.User;
 using CTDataModels.Users;
 using CTDto.Users;
+using CTDto.Users.Judge;
 using CTService.Interfaces.User;
 using System;
 using System.Collections.Generic;
@@ -65,6 +66,20 @@ namespace CTService.Implementation.User
             };
 
             return await _userDao.CreateWhitHashedPasswordAsync(userModel);
+        }
+
+        //Judge
+        public async Task<IEnumerable<JudgeDto>> GetAllJudgesAsync()
+        {
+            var userModels = await _userDao.GetAllJudgeAsync();
+            return userModels.Select(judge => new JudgeDto
+            {
+                Fullname = judge.Fullname,
+                Alias = judge.Alias,
+                Email = judge.Email,
+                Avatar_Url = judge.Avatar_Url,
+                Country = judge.Country,
+            });
         }
     }
 }

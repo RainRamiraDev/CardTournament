@@ -1,6 +1,7 @@
 ﻿
 using CTDataModels.Users;
 using CTDto.Users;
+using CTDto.Users.Judge;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,8 +12,12 @@ namespace CTService.Interfaces.User
 {
     public interface IUserService
     {
+        //LogIn
         Task<int> CreateWhitHashedPasswordAsync(UserDto userDto);
         Task<UserDto> GetUserWhitTokenAsync(int id);
         Task<UserModel> LogInAsync(string fullname, string passcode);
+
+        //Judges
+        Task<IEnumerable<JudgeDto>> GetAllJudgesAsync();
     }
 }

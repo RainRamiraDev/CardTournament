@@ -9,9 +9,8 @@ namespace CTDataModels.Users
     public class UserModel
     {
         public int Id_User { get; set; }
-        public int IdCountry { get; set; }
-        public int IdRole { get; set; }
-
+        public string Country { get; set; }
+        public int Id_Rol { get; set; }
         public string Passcode { get; set; }
         public string Fullname { get; set; }
         public string Alias { get; set; }
@@ -19,6 +18,6 @@ namespace CTDataModels.Users
         public int GamesWon { get; set; }
         public int GamesLost { get; set; }
         public int Disqualifications { get; set; }
-        public string AvatarUrl { get; set; }
+        public string Avatar_Url { get; set; }
     }
 }

@@ -37,10 +37,6 @@ namespace CTService.Implementation.RefreshToken
             return (newRefreshToken, expirationDate);
         }
 
-
-
-
-
         public async Task<(string AccessToken, Guid RefreshToken)> RefreshAccessTokenAsync(Guid oldRefreshToken)
         {
             bool isValidToken = await _refreshTokenDao.VerifyTokenAsync(oldRefreshToken);
@@ -58,7 +54,7 @@ namespace CTService.Implementation.RefreshToken
             await _refreshTokenDao.DeleteRefreshTokenAsync(oldRefreshToken);
 
 
-            string newAccessToken = await GenerateAccessToken(user.IdRole, user.Fullname, user.Email);
+            string newAccessToken = await GenerateAccessToken(user.Id_Rol, user.Fullname,user.Id_Rol);
 
             var (newRefreshToken, expirationDate) = GenerateRefreshToken();
 
@@ -74,18 +70,17 @@ namespace CTService.Implementation.RefreshToken
             return rowsAffected > 0;
         }
 
-        public async Task<string> GenerateAccessToken(int userId, string userName, string userEmail)
+        public async Task<string> GenerateAccessToken(int userId, string userName, int userRole)
         {
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_keysConfiguration.Key));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
             var claims = new List<Claim>
-            {
-                new Claim(ClaimTypes.Name, userName),
-                new Claim(ClaimTypes.Email, userEmail),
-                new Claim(ClaimTypes.NameIdentifier, userId.ToString()),
-                
-            };
+    {
+        new Claim(ClaimTypes.Name, userName),
+        new Claim(ClaimTypes.NameIdentifier, userId.ToString()),
+        new Claim(ClaimTypes.Role, userRole.ToString()) // El rol se guarda en el token
+    };
 
             var token = new JwtSecurityToken(
                 issuer: _keysConfiguration.Issuer,
@@ -97,6 +92,7 @@ namespace CTService.Implementation.RefreshToken
 
             return await Task.FromResult(new JwtSecurityTokenHandler().WriteToken(token));
         }
+
 
         public async Task SaveRefreshTokenAsync(Guid token, int userId, DateTime expiryDate)
         {
