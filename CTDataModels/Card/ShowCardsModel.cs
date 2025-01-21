@@ -8,12 +8,13 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace CTDataModels.Card
 {
-    public class CardModel
+    public class ShowCardsModel
     {
-        public int Id_card { get; set; }
+        public string Series_name { get; set; }
         public string Illustration { get; set; }
         public int Attack { get; set; }
         public int Deffense { get; set; }
+        public DateTime Release_Date { get; set; }
 
     }
 }

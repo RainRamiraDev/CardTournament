@@ -9,6 +9,6 @@ namespace CTService.Interfaces.Card
 {
     public interface ICardService
     {
-        Task<IEnumerable<CardDto>> GetAllCardsAsync();
+        Task<IEnumerable<ShowCardsDto>> GetAllCardsAsync();
     }
 }

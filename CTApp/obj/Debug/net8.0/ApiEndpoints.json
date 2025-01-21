@@ -1,15 +1,5 @@
 [
   {
-    "ContainingType": "CTApp.Controllers.Card.CardController",
-    "Method": "GetAllCards",
-    "RelativePath": "api/Card/GetAll",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [],
-    "ReturnTypes": []
-  },
-  {
     "ContainingType": "CTApp.Controllers.User.LogInController",
     "Method": "CreateUserWhitHashedPassword",
     "RelativePath": "api/LogIn/FirstLogIn",
@@ -117,6 +107,16 @@
     "ContainingType": "CTApp.Controllers.User.PlayerController",
     "Method": "GetTournaments",
     "RelativePath": "api/Player/GetTournaments",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CTApp.Controllers.User.PlayerController",
+    "Method": "GetAllCards",
+    "RelativePath": "api/Player/ShowCards",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,

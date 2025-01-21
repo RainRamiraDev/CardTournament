@@ -14,19 +14,19 @@ namespace CTDao.Dao.Card
     {
         private readonly string _connectionString;
 
-        private readonly string QueryGetAll = "SELECT * FROM T_Cards";
+        private readonly string QueryGetAll = "SELECT s.series_name, c.illustration, c.attack, c.deffense, s.release_date FROM T_CARDS c JOIN T_CARD_SERIES cs ON c.id_card = cs.id_card JOIN T_SERIES s ON cs.id_series = s.id_series ORDER BY 1 asc";
 
         public CardDao(string connectionString)
         {
             _connectionString = connectionString;
         }
 
-        public async Task<IEnumerable<CardModel>> GetAllAsync()
+        public async Task<IEnumerable<ShowCardsModel>> GetAllAsync()
         {
             using (var connection = new MySqlConnection(_connectionString))
             {
                 await connection.OpenAsync();
-                var cards = await connection.QueryAsync<CardModel>(QueryGetAll);
+                var cards = await connection.QueryAsync<ShowCardsModel>(QueryGetAll);
                 return cards;
             }
         }

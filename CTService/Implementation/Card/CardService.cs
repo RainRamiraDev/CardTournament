@@ -18,17 +18,18 @@ namespace CTService.Implementation.Card
             _cardDao = cardDao;
         }
 
-        public async Task<IEnumerable<CardDto>> GetAllCardsAsync()
+        public async Task<IEnumerable<ShowCardsDto>> GetAllCardsAsync()
         {
             var cards = await _cardDao.GetAllAsync();
 
             // Mapeo de CardModel a CardDto
-            var cardDtos = cards.Select(card => new CardDto
+            var cardDtos = cards.Select(card => new ShowCardsDto
             {
-                //Id_card = card.Id_card,
+                Series_name = card.Series_name,
                 Illustration = card.Illustration,
                 Attack = card.Attack,
-                Deffense = card.Deffense
+                Deffense = card.Deffense,
+                Release_Date = card.Release_Date,
             }).ToList();
 
             return cardDtos;

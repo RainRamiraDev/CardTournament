@@ -10,6 +10,6 @@ namespace CTDao.Interfaces.Card
 {
     public interface ICardDao
     {
-        Task<IEnumerable<CardModel>> GetAllAsync();
+        Task<IEnumerable<ShowCardsModel>> GetAllAsync();
     }
 }
