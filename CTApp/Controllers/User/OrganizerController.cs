@@ -4,6 +4,7 @@ using CTDto.Tournaments;
 using CTDto.Users;
 using CTDto.Users.Judge;
 using CTService.Implementation.User;
+using CTService.Interfaces.Card;
 using CTService.Interfaces.Tournaments;
 using CTService.Interfaces.User;
 using Microsoft.AspNetCore.Authorization;
@@ -22,6 +23,8 @@ namespace CTApp.Controllers.User
 
         private readonly ITournamentService _tournamentService;
 
+     
+
         public OrganizerController(IUserService userService, ITournamentService tournamentService)
         {
             _userService = userService;
@@ -29,7 +32,7 @@ namespace CTApp.Controllers.User
         }
 
 
-        [Authorize(Roles = "1")] // Solo los usuarios organizadores puede ver
+        [Authorize(Roles = "1")]
         [HttpGet("GetJudges")]
         public async Task<IActionResult> GetJudges()
         {
@@ -41,6 +44,7 @@ namespace CTApp.Controllers.User
             return Ok(ApiResponse<IEnumerable<JudgeDto>>.SuccessResponse("Jueces obtenidos exitosamente.", judges));
         }
 
+        
 
 
         [Authorize(Roles = "1")]

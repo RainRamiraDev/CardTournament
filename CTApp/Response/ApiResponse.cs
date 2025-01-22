@@ -61,7 +61,7 @@ namespace CTApp.Response
         return new ApiResponse<T>(false, errors, stackTrace);
     }
 
-    public static ApiResponse<T> SuccessResponse(string message, IEnumerable<CardDto> cards)
+    public static ApiResponse<T> SuccessResponse(string message, IEnumerable<ShowCardsDto> cards)
     {
         return new ApiResponse<T>(true, message, (T)(object)cards);
     }

@@ -10,6 +10,8 @@ namespace CTDao.Interfaces.Card
 {
     public interface ICardDao
     {
-        Task<IEnumerable<CardModel>> GetAllAsync();
+        Task<IEnumerable<ShowCardsModel>> GetAllAsync();
+        Task<List<int>> GetCardIdsByIllustrationAsync(List<string> cardsIllustrations);          //elegir las cartas limitadas por la serie buscadas por la ilustracion
+        Task<IEnumerable<ShowCardsModel>> GetCardsBySeriesNames(List<string> cardSeries);           //trae las cartas filtradas por las series elegidas
     }
 }

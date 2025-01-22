@@ -1,11 +1,12 @@
 ﻿namespace CTDto.Card
 
 {
-    public class CardDto
+    public class ShowCardsDto
     {
-        //public int Id_card { get; set; }
+        public string Series_name { get; set; }
         public string Illustration { get; set; }
         public int Attack { get; set; }
         public int Deffense { get; set; }
+        public DateTime Release_Date { get; set; }
     }
 }

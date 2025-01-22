@@ -1,6 +1,8 @@
 ﻿using CTApp.Response;
+using CTDto.Card;
 using CTDto.Tournaments;
 using CTDto.Users.Judge;
+using CTService.Interfaces.Card;
 using CTService.Interfaces.Tournaments;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -12,15 +14,16 @@ namespace CTApp.Controllers.User
     public class PlayerController : ControllerBase
     {
         private readonly ITournamentService _tournamentService;
+        private readonly ICardService _cardService;
 
 
-        public PlayerController(ITournamentService tournamentService)
+        public PlayerController(ITournamentService tournamentService, ICardService cardService)
         {
             _tournamentService = tournamentService;
+            _cardService = cardService;
         }
 
-
-        //[Authorize(Roles = "1")] // Solo los usuarios players puede ver
+        [Authorize(Roles = "4")] 
         [HttpGet("GetTournaments")]
         public async Task<IActionResult> GetTournaments()
         {
@@ -33,7 +36,7 @@ namespace CTApp.Controllers.User
         }
 
 
-        //[Authorize(Roles = "1")] // Solo los usuarios organizadores puede ver
+        [Authorize(Roles = "4")] 
         [HttpGet("GetAvailableTournaments")]
         public async Task<IActionResult> GetAvailableTournaments()
         {
@@ -46,5 +49,52 @@ namespace CTApp.Controllers.User
         }
 
 
+        [Authorize(Roles = "4")]
+        [HttpGet("ShowCards")]
+        public async Task<IActionResult> GetAllCards()
+        {
+            try
+            {
+                var cards = await _cardService.GetAllCardsAsync();
+
+                if (cards == null || !cards.Any())
+                {
+                    return NotFound(ApiResponse<IEnumerable<ShowCardsDto>>.ErrorResponse("Cartas no encontradas."));
+                }
+
+                var response = ApiResponse<IEnumerable<ShowCardsDto>>.SuccessResponse("Cartas obtenidas exitosamente.", cards);
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                var errors = new List<string> { "Ocurrió un error al obtener las cartas." };
+                var stackTrace = ex.StackTrace;
+                var response = ApiResponse<ShowCardsDto>.ErrorResponse(errors, stackTrace);
+                return BadRequest(response);
+            }
+        }
+
+
+        [Authorize(Roles = "4")]
+        [HttpPost("GetCardsBySeriesName")]
+        public async Task<IActionResult> GetCardsBySeriesName([FromBody] CardsBySeriesNameDto series_names)
+        {
+            if (series_names == null || series_names.Series_Name == null || !series_names.Series_Name.Any())
+                return BadRequest(ApiResponse<IEnumerable<ShowCardsDto>>.ErrorResponse("Debe proporcionar al menos un nombre de serie."));
+
+            var cards = await _cardService.GetCardsBySeriesNames(series_names.Series_Name);
+
+            if (cards is null || !cards.Any())
+                return NotFound(ApiResponse<IEnumerable<ShowCardsDto>>.ErrorResponse("Cartas no encontradas."));
+
+            return Ok(ApiResponse<IEnumerable<ShowCardsDto>>.SuccessResponse("Cartas obtenidas exitosamente.", cards));
+        }
+
+
+
+
     }
+
+
+
 }

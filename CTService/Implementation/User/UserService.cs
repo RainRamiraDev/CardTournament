@@ -1,8 +1,10 @@
 ﻿using CTDao.Dao.Security;
 using CTDao.Interfaces.User;
 using CTDataModels.Users;
+using CTDataModels.Users.LogIn;
 using CTDto.Users;
 using CTDto.Users.Judge;
+using CTDto.Users.LogIn;
 using CTService.Interfaces.User;
 using System;
 using System.Collections.Generic;
@@ -55,18 +57,20 @@ namespace CTService.Implementation.User
             return user;
         }
 
-        public async Task<int> CreateWhitHashedPasswordAsync(UserDto userDto)
+        public async Task<int> CreateWhitHashedPasswordAsync(LoginRequestDto LoginDto)
         {
-            string hashedPassword = _passwordHasher.HashPassword(userDto.Passcode);
+            string hashedPassword = _passwordHasher.HashPassword(LoginDto.Passcode);
 
-            var userModel = new UserModel
+            var loginModel = new LoginRequestModel
             {
-                Fullname = userDto.Fullname,
-                Passcode = hashedPassword
+                Fullname = LoginDto.Fullname,
+                Passcode = hashedPassword,
+                Id_Rol = LoginDto.Id_Rol  // Agregado el id_rol al modelo
             };
 
-            return await _userDao.CreateWhitHashedPasswordAsync(userModel);
+            return await _userDao.CreateWhitHashedPasswordAsync(loginModel);
         }
+
 
         //Judge
         public async Task<IEnumerable<JudgeDto>> GetAllJudgesAsync()

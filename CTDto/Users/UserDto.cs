@@ -10,7 +10,7 @@ namespace CTDto.Users
     {
         public int Id_User { get; set; }
         public int IdCountry { get; set; }
-        public int IdRole { get; set; }
+        public int Id_Rol { get; set; }
         public string Fullname { get; set; }
         public string Alias { get; set; }
         public string Email { get; set; }
@@ -19,7 +19,7 @@ namespace CTDto.Users
         public int GamesWon { get; set; }
         public int GamesLost { get; set; }
         public int Disqualifications { get; set; }
-        public string AvatarUrl { get; set; }
+        public string Avatar_Url { get; set; }
 
     }
 }

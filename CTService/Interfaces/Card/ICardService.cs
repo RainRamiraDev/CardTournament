@@ -1,4 +1,5 @@
-﻿using CTDto.Card;
+﻿using CTDataModels.Card;
+using CTDto.Card;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,10 @@ namespace CTService.Interfaces.Card
 {
     public interface ICardService
     {
-        Task<IEnumerable<CardDto>> GetAllCardsAsync();
+        Task<IEnumerable<ShowCardsDto>> GetAllCardsAsync();
+        Task<List<int>> GetCardsIdsByIllustrationAsync(List<string> cardsIllustrations);
+        Task<IEnumerable<ShowCardsDto>> GetCardsBySeriesNames(List<string> cardSeries);
+
+
     }
 }

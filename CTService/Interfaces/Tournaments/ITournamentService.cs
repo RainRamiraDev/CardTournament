@@ -1,4 +1,5 @@
-﻿using CTDto.Tournaments;
+﻿using CTDto.Card;
+using CTDto.Tournaments;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,10 +10,16 @@ namespace CTService.Interfaces.Tournaments
 {
     public interface ITournamentService
     {
+        //Tournament
         Task<int> CreateTournamentAsync(TournamentDto tournamentDto);
         Task<IEnumerable<TournamentDto>> GetAllTournamentAsync();
+
+        Task<IEnumerable<AvailableTournamentsDto>> GetAllAvailableTournamentsAsync();
+
+        //Judges
         Task<int> InsertTournamentJudgesAsync(TournamentJudgeDto tournamentJudgeDto);
         Task<List<int>> GetJudgeIdsByAliasAsync(List<string> judgeAliases);
-        Task<IEnumerable<AvailableTournamentsDto>> GetAllAvailableTournamentsAsync();
+
+        //Cards
     }
 }

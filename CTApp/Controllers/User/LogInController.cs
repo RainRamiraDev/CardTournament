@@ -104,17 +104,19 @@ namespace CTApp.Controllers.User
 
 
         [HttpPost("FirstLogIn")]
-        public async Task<IActionResult> CreateUserWhitHashedPassword([FromBody] UserDto userDto)
+        public async Task<IActionResult> CreateUserWhitHashedPassword([FromBody] LoginRequestDto loginDto)
         {
-            var userId = await _userService.CreateWhitHashedPasswordAsync(userDto);
+            var userId = await _userService.CreateWhitHashedPasswordAsync(loginDto);
             var user = new UserDto
             {
-                Fullname = userDto.Fullname,
-                Passcode = userDto.Passcode,
+                Fullname = loginDto.Fullname,
+                Passcode = loginDto.Passcode,
+                Id_Rol = loginDto.Id_Rol  // Aseguramos que el id_rol también esté en la respuesta
             };
 
-            var response = ApiResponse<UserDto>.SuccessResponse("Usuario creado exitosamente", userDto);
+            var response = ApiResponse<LoginRequestDto>.SuccessResponse("Usuario creado exitosamente", loginDto);
             return Created(string.Empty, response);
         }
+
     }
 }
