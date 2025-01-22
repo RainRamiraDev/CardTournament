@@ -1,4 +1,5 @@
 ﻿using CTDataModels.Users;
+using CTDataModels.Users.LogIn;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +12,7 @@ namespace CTDao.Interfaces.User
     {
         //log In
 
-        Task<int> CreateWhitHashedPasswordAsync(UserModel user);
+        Task<int> CreateWhitHashedPasswordAsync(LoginRequestModel user);
         Task<UserModel> GetUserWhitTokenAsync(int id);
         Task<UserModel> LogInAsync(string fullname);
 

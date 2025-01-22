@@ -8,8 +8,8 @@
     "Order": 0,
     "Parameters": [
       {
-        "Name": "userDto",
-        "Type": "CTDto.Users.UserDto",
+        "Name": "loginDto",
+        "Type": "CTDto.Users.LogIn.LoginRequestDto",
         "IsRequired": true
       }
     ],

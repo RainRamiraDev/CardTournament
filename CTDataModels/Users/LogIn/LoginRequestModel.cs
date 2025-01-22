@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CTDto.Users.LogIn
+namespace CTDataModels.Users.LogIn
 {
-    public class LoginRequestDto
+    public class LoginRequestModel
     {
         public string Fullname { get; set; }
         public string Passcode { get; set; }

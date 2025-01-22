@@ -1,5 +1,6 @@
 ﻿using CTDao.Interfaces.User;
 using CTDataModels.Users;
+using CTDataModels.Users.LogIn;
 using Dapper;
 using MySql.Data.MySqlClient;
 using System;
@@ -15,7 +16,7 @@ namespace CTDao.Dao.User
         private readonly string _connectionString;
 
         private readonly string QueryGetUserWhitToken = "SELECT * FROM T_Users WHERE Id_User = @Id_user";
-        private readonly string QueryFirstLogIn = "INSERT INTO T_Users (Fullname,Passcode) VALUES (@Fullname,@Passcode)";
+        private readonly string QueryFirstLogIn = "INSERT INTO T_Users (Fullname, Passcode, Id_Rol) VALUES (@Fullname, @Passcode, @Id_Rol)";
         private readonly string QueryLogin = "SELECT Id_User, Fullname, Passcode, Id_Rol FROM T_Users WHERE Fullname = @Fullname";
         private readonly string QueryGetAllJudges = "SELECT u.Fullname,u.Alias,u.Email,c.country_name as Country,u.avatar_url FROM t_users u JOIN t_countries c ON u.id_country = c.id_country WHERE Id_rol = 3";
 
@@ -44,16 +45,16 @@ namespace CTDao.Dao.User
             }
         }
 
-        public async Task<int> CreateWhitHashedPasswordAsync(UserModel user)
+        public async Task<int> CreateWhitHashedPasswordAsync(LoginRequestModel user)
         {
-
             using (var connection = new MySqlConnection(_connectionString))
             {
                 await connection.OpenAsync();
                 var affectedRows = await connection.ExecuteAsync(QueryFirstLogIn, new
                 {
                     user.Fullname,
-                    user.Passcode
+                    user.Passcode,
+                    user.Id_Rol  // Aseguramos que el id_rol se inserte en la base de datos
                 });
                 return affectedRows;
             }
