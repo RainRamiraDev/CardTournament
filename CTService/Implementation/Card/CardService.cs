@@ -35,7 +35,7 @@ namespace CTService.Implementation.Card
             return cardDtos;
         }
 
-        public async Task<IEnumerable<ShowCardsDto>> GetCardsBySeries(List<string> cardSeries)
+        public async Task<IEnumerable<ShowCardsDto>> GetCardsBySeriesNames(List<string> cardSeries)
         {
             if (cardSeries == null || !cardSeries.Any())
             {
@@ -53,6 +53,7 @@ namespace CTService.Implementation.Card
                 Release_Date = card.Release_Date,
             });
         }
+
 
         public async Task<List<int>> GetCardsIdsByIllustrationAsync(List<string> cardsIllustrations)
         {

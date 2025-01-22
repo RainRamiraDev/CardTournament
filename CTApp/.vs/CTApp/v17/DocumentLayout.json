@@ -5,9 +5,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{044F8FA9-5241-4DFD-9606-88BD2C275654}|CTApp.csproj|c:\\repositorios\\cardtournament\\ctapp\\controllers\\user\\logincontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{044F8FA9-5241-4DFD-9606-88BD2C275654}|CTApp.csproj|solutionrelative:controllers\\user\\logincontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{75A57AC1-08F0-4329-A586-BB717D5AF03E}|..\\CTDto\\CTDto.csproj|c:\\repositorios\\cardtournament\\ctdto\\users\\userdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -17,7 +14,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 176,
-          "SelectedChildIndex": 5,
+          "SelectedChildIndex": 4,
           "Children": [
             {
               "$type": "Bookmark",
@@ -37,28 +34,15 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "UserDto.cs",
-              "DocumentMoniker": "C:\\Repositorios\\CardTournament\\CTDto\\Users\\UserDto.cs",
-              "RelativeDocumentMoniker": "..\\CTDto\\Users\\UserDto.cs",
-              "ToolTip": "C:\\Repositorios\\CardTournament\\CTDto\\Users\\UserDto.cs",
-              "RelativeToolTip": "..\\CTDto\\Users\\UserDto.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAqwBgAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-22T11:06:26.011Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
               "DocumentIndex": 0,
               "Title": "LogInController.cs",
               "DocumentMoniker": "C:\\Repositorios\\CardTournament\\CTApp\\Controllers\\User\\LogInController.cs",
               "RelativeDocumentMoniker": "Controllers\\User\\LogInController.cs",
               "ToolTip": "C:\\Repositorios\\CardTournament\\CTApp\\Controllers\\User\\LogInController.cs",
               "RelativeToolTip": "Controllers\\User\\LogInController.cs",
-              "ViewState": "AgIAAFMAAAAAAAAAAAAIwHUAAAAIAAAAAAAAAA==",
+              "ViewState": "AgIAAF4AAAAAAAAAAAAcwGwAAAA7AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-22T10:59:50.244Z",
+              "WhenOpened": "2025-01-22T13:09:37.725Z",
               "EditorCaption": ""
             }
           ]
