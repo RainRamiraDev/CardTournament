@@ -52,8 +52,6 @@ namespace CTService.Implementation.Tournament
             });
         }
 
-       
-
         public async Task<int> InsertTournamentJudgesAsync(TournamentJudgeDto tournamentJudgeDto)
         {
             if (tournamentJudgeDto == null || tournamentJudgeDto.Judges == null || !tournamentJudgeDto.Judges.Any())
@@ -74,9 +72,14 @@ namespace CTService.Implementation.Tournament
         }
 
 
-        public Task<List<int>> GetJudgeIdsByAliasAsync(List<string> judgeAliases)
+        public async Task<List<int>> GetJudgeIdsByAliasAsync(List<string> judgeAliases)
         {
-            throw new NotImplementedException();
+            if (judgeAliases == null || !judgeAliases.Any())
+            {
+                throw new ArgumentException("The list of judge aliases cannot be empty.", nameof(judgeAliases));
+            }
+
+            return await _tournamentDao.GetJudgeIdsByAliasAsync(judgeAliases);
         }
 
         public async Task<IEnumerable<AvailableTournamentsDto>> GetAllAvailableTournamentsAsync()

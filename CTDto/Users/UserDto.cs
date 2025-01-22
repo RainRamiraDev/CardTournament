@@ -19,7 +19,7 @@ namespace CTDto.Users
         public int GamesWon { get; set; }
         public int GamesLost { get; set; }
         public int Disqualifications { get; set; }
-        public string AvatarUrl { get; set; }
+        public string Avatar_Url { get; set; }
 
     }
 }
