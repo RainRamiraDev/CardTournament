@@ -16,15 +16,26 @@ namespace CTDao.Dao.Tournaments
 
         private readonly string _connectionString;
 
+        public static int createdtournamentId { get; set; }
+
         private readonly string QueryGetAll = @"SELECT * FROM T_TOURNAMENTS";
 
         private readonly string QueryCreateTournament = @"
         INSERT INTO T_TOURNAMENTS (id_country, id_organizer, start_datetime, end_datetime, current_phase) 
-        VALUES (@IdCountry, @IdOrganizer, @StartDatetime, @EndDatetime, @CurrentPhase);";
+        VALUES (@IdCountry, @IdOrganizer, @StartDatetime, @EndDatetime, @CurrentPhase); SELECT LAST_INSERT_ID();";
+
+
+        private readonly string QueryAfterInsertTournament = @"
+        INSERT INTO T_TOURN_PLAYERS (id_tournament) VALUES (@TournamentId);
+        INSERT INTO T_TOURN_DECKS (id_tournament) VALUES (@TournamentId);
+        INSERT INTO T_TOURN_SERIES (id_tournament) VALUES (@TournamentId);
+        INSERT INTO T_GAMES (id_tournament) VALUES (@TournamentId);
+        INSERT INTO T_TOURN_JUDGES (id_tournament) VALUES (@TournamentId);
+        INSERT INTO T_TOURN_DISQUALIFICATIONS (id_tournament) VALUES (@TournamentId);";
 
         private readonly string QueryInsertJudges = @"INSERT INTO T_TOURN_JUDGES (id_tournament, id_judge) VALUES (@id_tournament, @id_judge);";
 
-        private readonly string QueryGetJudgeByAlias = "SELECT id_user FROM T_USERS WHERE alias IN @Aliases AND Id_rol = 3;";
+        private readonly string QueryGetJudgeByAlias = @"SELECT id_user FROM T_USERS WHERE alias IN @Aliases AND Id_rol = 3;";
 
         private readonly string QueryAvailableTournaments = @"
 SELECT 
@@ -75,22 +86,55 @@ GROUP BY
 
         public async Task<int> CreateTournamentAsync(TournamentModel tournament)
         {
+            Console.WriteLine("ORGANIZADOR:"+tournament.Id_Organizer);
+
+
             using (var connection = new MySqlConnection(_connectionString))
             {
                 await connection.OpenAsync();
-
-                var affectedRows = await connection.ExecuteAsync(QueryCreateTournament, new
+                using (var transaction = await connection.BeginTransactionAsync())
                 {
-                    IdCountry = tournament.Id_Country,  // Debe ser INT
-                    IdOrganizer = tournament.Id_Organizer,  // Debe ser INT
-                    StartDatetime = tournament.Start_datetime,  // DATETIME
-                    EndDatetime = tournament.End_datetime,  // DATETIME
-                    CurrentPhase = tournament.Current_Phase  // VARCHAR(20)
-                });
+                    try
+                    {
+                        // Insert Tournament
+                        var tournamentId = await connection.ExecuteScalarAsync<int>(QueryCreateTournament, new
+                        {
+                            IdCountry = tournament.Id_Country,
+                            IdOrganizer = tournament.Id_Organizer,
+                            StartDatetime = tournament.Start_datetime,
+                            EndDatetime = tournament.End_datetime,
+                            CurrentPhase = tournament.Current_Phase
+                        }, transaction);
 
+                        // Insert into related tables
+                        await InsertTournamentRelationsAsync(connection, tournamentId, transaction);
 
-                return affectedRows;
+                        await transaction.CommitAsync();
+
+                        StorageTournamentId(tournamentId);
+
+                        return tournamentId;
+                    }
+                    catch (Exception)
+                    {
+                        await transaction.RollbackAsync();
+                        throw;
+                    }
+                }
             }
+        }
+
+
+        public void StorageTournamentId(int id)
+        {
+            createdtournamentId =  id;
+        }
+
+
+
+        private async Task InsertTournamentRelationsAsync(MySqlConnection connection, int tournamentId, MySqlTransaction transaction)
+        {
+            await connection.ExecuteAsync(QueryAfterInsertTournament, new { TournamentId = tournamentId }, transaction);
         }
 
         public async Task<IEnumerable<TournamentModel>> GetAllTournamentAsync()
@@ -105,7 +149,7 @@ GROUP BY
             }
         }
 
-        public async Task<int> InsertTournamentJudgesAsync(int idTournament, List<int> judgeIds)
+        public async Task<int> InsertTournamentJudgesAsync(List<int> judgeIds)
         {
             if (judgeIds == null || !judgeIds.Any())
             {
@@ -125,7 +169,7 @@ GROUP BY
                         {
                             affectedRows += await connection.ExecuteAsync(QueryInsertJudges, new
                             {
-                                Id_tournament = idTournament,
+                                Id_tournament = createdtournamentId,
                                 Id_Judge = judgeId
                             }, transaction);
                         }
@@ -166,11 +210,6 @@ GROUP BY
                 return tournaments;
             }
         }
-
-
-
-
-
 
     }
 }

@@ -16,7 +16,7 @@ namespace CTDao.Interfaces.Tournaments
         Task<IEnumerable<AvailableTournamentsModel>> GetAllAvailableTournamentsAsync();
 
         //Judge
-        Task<int> InsertTournamentJudgesAsync(int IdTournament, List<int> judgeIds);
+        Task<int> InsertTournamentJudgesAsync(List<int> judgeIds);
         Task<List<int>> GetJudgeIdsByAliasAsync(List<string> judgeAliases);
 
         //Card

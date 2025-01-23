@@ -29,7 +29,7 @@ namespace CTService.Implementation.Tournament
             var tournamentModel = new TournamentModel
             {
                 Id_Country = tournamentDto.Id_Country,
-                Id_Organizer = tournamentDto.Id_Country,
+                Id_Organizer = tournamentDto.Id_Organizer,
                 Start_datetime = tournamentDto.Start_datetime,
                 End_datetime = tournamentDto.End_datetime,
                 Current_Phase = tournamentDto.Current_Phase
@@ -68,9 +68,8 @@ namespace CTService.Implementation.Tournament
             }
 
             // Insertar los jueces en el torneo
-            return await _tournamentDao.InsertTournamentJudgesAsync(tournamentJudgeDto.Id_Tournament, judgeIds);
+            return await _tournamentDao.InsertTournamentJudgesAsync(judgeIds);
         }
-
 
         public async Task<List<int>> GetJudgeIdsByAliasAsync(List<string> judgeAliases)
         {
