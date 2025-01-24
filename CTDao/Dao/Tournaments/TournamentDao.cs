@@ -97,7 +97,7 @@ GROUP BY
 
         private readonly string QueryInsertSeries = @"INSERT INTO T_TOURN_SERIES (id_tournament, id_series) VALUES (@id_tournament, @id_series);";
 
-        private readonly string QueryInsertDecks = @"INSERT INTO T_TOURN_DECK (id_tournament, id_card_series, id_owner) 
+        private readonly string QueryInsertDecks = @"INSERT INTO T_TOURN_DECKS (id_tournament, id_card_series, id_owner) 
                                              VALUES (@id_tournament, @id_card_series, @id_owner);";
 
 
@@ -262,10 +262,10 @@ GROUP BY
 
                 foreach (var cardId in cardsIds)
                 {
-                    affectedRows += await connection.ExecuteAsync(QueryInsertSeries, new
+                    affectedRows += await connection.ExecuteAsync(QueryInsertDecks, new
                     {
                         Id_tournament = createdtournamentId,
-                        Id_Card_Series = CardDao.createdTournamentCardSeriesIds,
+                        Id_Card_Series = cardId,  // Correcto
                         Id_Owner = owner
                     }, transaction).ConfigureAwait(false);
                 }

@@ -52,9 +52,7 @@ namespace CTDao.Dao.Card
 
         private readonly string QueryGetCards = "SELECT s.series_name, c.illustration, c.attack, c.deffense, s.release_date  FROM T_CARDS c JOIN T_CARD_SERIES cs ON c.id_card = cs.id_card JOIN T_SERIES s ON cs.id_series = s.id_series WHERE s.id_series IN @idSeries ORDER BY 1 asc";
 
-        private readonly string QueryGetCardsByIllustration = @"SELECT tc.id_card
-        FROM t_cards tc
-        WHERE tc.illustration IN @Illustration";
+        private readonly string QueryGetCardsByIllustration = @"SELECT id_card FROM t_cards WHERE illustration IN @Illustration";
 
         private readonly string QueryGetSeriesByName = @"SELECT ts.id_series FROM t_series ts WHERE ts.series_name IN @SeriesNames";
         

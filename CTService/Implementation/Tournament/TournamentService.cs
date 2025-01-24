@@ -42,7 +42,7 @@ namespace CTService.Implementation.Tournament
 
             var cardSeriesIds = await _cardDao.GetIdCardSeriesByCardIdAsync(cardIds);
 
-            Console.WriteLine("card series: "+cardSeriesIds);
+            Console.WriteLine(string.Join(",",cardSeriesIds));
 
             if (cardSeriesIds == null || cardSeriesIds.Count == 0)
             {
