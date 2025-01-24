@@ -1,11 +1,14 @@
-﻿using CTDao.Interfaces.Tournaments;
+﻿using CTDao.Dao.Card;
+using CTDao.Interfaces.Tournaments;
 using CTDataModels.Tournamets;
 using Dapper;
 using MySql.Data.MySqlClient;
 using Org.BouncyCastle.Asn1;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlTypes;
 using System.Linq;
+using System.Net.NetworkInformation;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -13,25 +16,41 @@ namespace CTDao.Dao.Tournaments
 {
     public class TournamentDao : ITournamentDao
     {
-
-        private readonly string _connectionString;
+        private static readonly object _lockObject = new object();
 
         public static int createdtournamentId { get; set; }
 
+        public static int createdtournamentOrganizer { get; set; }
+
+        public void StorageTournamentId(int id)
+        {
+            lock (_lockObject)
+            {
+                createdtournamentId = id;
+            }
+        }
+
+        public void StorageTournamentOrganizer(int id)
+        {
+            lock (_lockObject)
+            {
+                createdtournamentOrganizer = id;
+            }
+        }
+
+        public TournamentDao(string connectionString)
+        {
+            _connectionString = connectionString;
+        }
+
+        private readonly string _connectionString;
+
+        
         private readonly string QueryGetAll = @"SELECT * FROM T_TOURNAMENTS";
 
         private readonly string QueryCreateTournament = @"
         INSERT INTO T_TOURNAMENTS (id_country, id_organizer, start_datetime, end_datetime, current_phase) 
         VALUES (@IdCountry, @IdOrganizer, @StartDatetime, @EndDatetime, @CurrentPhase); SELECT LAST_INSERT_ID();";
-
-
-        private readonly string QueryAfterInsertTournament = @"
-        INSERT INTO T_TOURN_PLAYERS (id_tournament) VALUES (@TournamentId);
-        INSERT INTO T_TOURN_DECKS (id_tournament) VALUES (@TournamentId);
-        INSERT INTO T_TOURN_SERIES (id_tournament) VALUES (@TournamentId);
-        INSERT INTO T_GAMES (id_tournament) VALUES (@TournamentId);
-        INSERT INTO T_TOURN_JUDGES (id_tournament) VALUES (@TournamentId);
-        INSERT INTO T_TOURN_DISQUALIFICATIONS (id_tournament) VALUES (@TournamentId);";
 
         private readonly string QueryInsertJudges = @"INSERT INTO T_TOURN_JUDGES (id_tournament, id_judge) VALUES (@id_tournament, @id_judge);";
 
@@ -76,18 +95,14 @@ GROUP BY
     u.email;
 ";
 
+        private readonly string QueryInsertSeries = @"INSERT INTO T_TOURN_SERIES (id_tournament, id_series) VALUES (@id_tournament, @id_series);";
 
+        private readonly string QueryInsertDecks = @"INSERT INTO T_TOURN_DECK (id_tournament, id_card_series, id_owner) 
+                                             VALUES (@id_tournament, @id_card_series, @id_owner);";
 
-
-        public TournamentDao(string connectionString)
-        {
-            _connectionString = connectionString;
-        }
 
         public async Task<int> CreateTournamentAsync(TournamentModel tournament)
         {
-            Console.WriteLine("ORGANIZADOR:"+tournament.Id_Organizer);
-
 
             using (var connection = new MySqlConnection(_connectionString))
             {
@@ -96,7 +111,6 @@ GROUP BY
                 {
                     try
                     {
-                        // Insert Tournament
                         var tournamentId = await connection.ExecuteScalarAsync<int>(QueryCreateTournament, new
                         {
                             IdCountry = tournament.Id_Country,
@@ -105,13 +119,11 @@ GROUP BY
                             EndDatetime = tournament.End_datetime,
                             CurrentPhase = tournament.Current_Phase
                         }, transaction);
-
-                        // Insert into related tables
-                        await InsertTournamentRelationsAsync(connection, tournamentId, transaction);
-
+   
                         await transaction.CommitAsync();
 
                         StorageTournamentId(tournamentId);
+                        StorageTournamentOrganizer(tournament.Id_Organizer);
 
                         return tournamentId;
                     }
@@ -122,19 +134,7 @@ GROUP BY
                     }
                 }
             }
-        }
 
-
-        public void StorageTournamentId(int id)
-        {
-            createdtournamentId =  id;
-        }
-
-
-
-        private async Task InsertTournamentRelationsAsync(MySqlConnection connection, int tournamentId, MySqlTransaction transaction)
-        {
-            await connection.ExecuteAsync(QueryAfterInsertTournament, new { TournamentId = tournamentId }, transaction);
         }
 
         public async Task<IEnumerable<TournamentModel>> GetAllTournamentAsync()
@@ -211,5 +211,77 @@ GROUP BY
             }
         }
 
-    }
+        public async Task<int> InsertTournamentSeriesAsync(List<int> cardsIds)
+        {
+            if (cardsIds == null || !cardsIds.Any())
+            {
+                throw new ArgumentException("La lista de series no puede estar vacía.", nameof(cardsIds));
+            }
+
+            await using var connection = new MySqlConnection(_connectionString);
+            await connection.OpenAsync().ConfigureAwait(false);
+
+            await using var transaction = await connection.BeginTransactionAsync().ConfigureAwait(false);
+            try
+            {
+                var affectedRows = 0;
+
+                foreach (var cardId in cardsIds)
+                {
+                    affectedRows += await connection.ExecuteAsync(QueryInsertSeries, new
+                    {
+                        Id_tournament = createdtournamentId,
+                        Id_Series = cardId
+                    }, transaction).ConfigureAwait(false);
+                }
+
+                await transaction.CommitAsync().ConfigureAwait(false);
+                return affectedRows;
+            }
+            catch (Exception ex)
+            {
+                await transaction.RollbackAsync().ConfigureAwait(false);
+                throw new ApplicationException("Error al insertar series en el torneo.", ex);
+            }
+        }
+
+        public async Task<int> InsertTournamentDecksAsync(List<int> cardsIds, int owner)
+        {
+            if (cardsIds == null || !cardsIds.Any())
+            {
+                throw new ArgumentException("La lista de series no puede estar vacía.", nameof(cardsIds));
+            }
+
+            await using var connection = new MySqlConnection(_connectionString);
+            await connection.OpenAsync().ConfigureAwait(false);
+
+            await using var transaction = await connection.BeginTransactionAsync().ConfigureAwait(false);
+            try
+            {
+                var affectedRows = 0;
+
+                foreach (var cardId in cardsIds)
+                {
+                    affectedRows += await connection.ExecuteAsync(QueryInsertSeries, new
+                    {
+                        Id_tournament = createdtournamentId,
+                        Id_Card_Series = CardDao.createdTournamentCardSeriesIds,
+                        Id_Owner = owner
+                    }, transaction).ConfigureAwait(false);
+                }
+
+                await transaction.CommitAsync().ConfigureAwait(false);
+                return affectedRows;
+            }
+
+
+            catch (Exception ex)
+            {
+                await transaction.RollbackAsync().ConfigureAwait(false);
+                throw new ApplicationException("Error al insertar series en el torneo.", ex);
+
+            }
+        }
 }
+    }
+

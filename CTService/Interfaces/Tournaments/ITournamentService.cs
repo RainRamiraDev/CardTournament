@@ -21,5 +21,9 @@ namespace CTService.Interfaces.Tournaments
         Task<List<int>> GetJudgeIdsByAliasAsync(List<string> judgeAliases);
 
         //Cards
+        Task<int> InsertTournamentSeriesAsync(TournamentSeriesDto tournamentseriesDto);
+
+        Task<int> InsertTournamentDecksAsync(TournamentDecksDto tournamentDecksDto);
+
     }
 }

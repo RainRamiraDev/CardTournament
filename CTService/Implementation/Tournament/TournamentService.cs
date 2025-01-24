@@ -1,7 +1,10 @@
 ﻿using CTDao.Dao.Tournaments;
+using CTDao.Interfaces.Card;
 using CTDao.Interfaces.Tournaments;
 using CTDataModels.Tournamets;
+using CTDto.Card;
 using CTDto.Tournaments;
+using CTService.Interfaces.Card;
 using CTService.Interfaces.Tournaments;
 using MySql.Data.MySqlClient;
 using System;
@@ -17,11 +20,41 @@ namespace CTService.Implementation.Tournament
 
         private readonly ITournamentDao _tournamentDao;
 
+        private readonly ICardDao _cardDao;
 
-        public TournamentService(ITournamentDao tournamentDao)
+
+        public TournamentService(ITournamentDao tournamentDao, ICardDao cardDao)
         {
             _tournamentDao = tournamentDao;
+            _cardDao = cardDao;
         }
+
+
+        public async Task<int> InsertTournamentDecksAsync(TournamentDecksDto tournamentDecksDto)
+        {
+            if (tournamentDecksDto == null)
+            {
+                throw new ArgumentException("Invalid tournament data.");
+            }
+
+            var cardIds = await _cardDao.GetCardIdsByIllustrationAsync(tournamentDecksDto.illustration);
+
+
+            var cardSeriesIds = await _cardDao.GetIdCardSeriesByCardIdAsync(cardIds);
+
+            Console.WriteLine("card series: "+cardSeriesIds);
+
+            if (cardSeriesIds == null || cardSeriesIds.Count == 0)
+            {
+                throw new ArgumentException("Invalid series name provided.");
+            }
+
+
+            return await _tournamentDao.InsertTournamentDecksAsync(cardSeriesIds,tournamentDecksDto.Id_Owner);
+        }
+
+
+
 
         public async Task<int> CreateTournamentAsync(TournamentDto tournamentDto)
         {
@@ -102,5 +135,26 @@ namespace CTService.Implementation.Tournament
                 Total_Rounds = tournament.Total_Rounds,
             });
         }
+
+        public async Task<int> InsertTournamentSeriesAsync(TournamentSeriesDto tournamentseriesDto)
+        {
+            if (tournamentseriesDto == null || tournamentseriesDto.Series_name == null || !tournamentseriesDto.Series_name.Any())
+            {
+                throw new ArgumentException("Invalid tournament data.");
+            }
+
+            // Obtener los IDs de los jueces a partir de los alias
+            var seriesIds = await _cardDao.GetSeriesIdsByNameAsync(tournamentseriesDto.Series_name);
+
+            if (seriesIds == null || seriesIds.Count == 0)
+            {
+                throw new ArgumentException("Invalid series name provided.");
+            }
+
+            // Insertar los jueces en el torneo
+            return await _tournamentDao.InsertTournamentSeriesAsync(seriesIds);
+        }
+
+       
     }
 }

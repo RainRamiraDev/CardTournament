@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("CTDto")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+333b5554829039881e97c5b479ffab171cd6effe")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e35e0d3b5d942e81abdf47b872969425230547d6")]
 [assembly: System.Reflection.AssemblyProductAttribute("CTDto")]
 [assembly: System.Reflection.AssemblyTitleAttribute("CTDto")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

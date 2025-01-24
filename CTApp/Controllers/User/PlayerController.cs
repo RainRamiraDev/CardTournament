@@ -91,6 +91,31 @@ namespace CTApp.Controllers.User
         }
 
 
+        [Authorize(Roles = "4")]
+        [HttpPost("SetTournamentDecks")]
+        public async Task<IActionResult> SetTournamentSeries([FromBody] TournamentDecksDto tournamentDeckDto)
+        {
+            try
+            {
+                var affectedRows = await _tournamentService.InsertTournamentDecksAsync(tournamentDeckDto);
+
+                if (affectedRows == 0)
+                {
+                    return StatusCode(500, "Error assigning Decks to tournament.");
+                }
+
+                return Created("", new { affectedRows });
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, "An unexpected error occurred.");
+            }
+        }
+
 
 
     }
