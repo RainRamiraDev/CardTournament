@@ -64,5 +64,15 @@ namespace CTService.Implementation.Card
 
             return await _cardDao.GetCardIdsByIllustrationAsync(cardsIllustrations);
         }
+
+        public async Task<List<int>> GetSeriesIdsByNameAsync(List<string> names)
+        {
+            if (names == null || !names.Any())
+            {
+                throw new ArgumentException("La lista de cartas no puede estar vacia.", nameof(names));
+            }
+
+            return await _cardDao.GetSeriesIdsByNameAsync(names);
+        }
     }
 }

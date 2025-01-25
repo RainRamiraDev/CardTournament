@@ -14,18 +14,49 @@ namespace CTDao.Dao.Card
     {
         private readonly string _connectionString;
 
-        
-        
-        private readonly string QueryGetAll = "SELECT s.series_name, c.illustration, c.attack, c.deffense, s.release_date FROM T_CARDS c JOIN T_CARD_SERIES cs ON c.id_card = cs.id_card JOIN T_SERIES s ON cs.id_series = s.id_series ORDER BY 1 asc";
+        private static readonly object _lockObject = new object();
 
-        private readonly string QueryGetCardsByIllustration = @"SELECT tc.id_card,
-		tc.illustration,
-		tc.attack,
-		tc.deffense
-        FROM t_cards tc
-        WHERE tc.illustration = @Illustration";
+        public static List<int> createdTournamentSeries { get; set; }
 
-        private readonly string QueryGetCardsBySeriesNames = @"SELECT s.series_name,
+        public static List<int> createdTournamentCards { get; set; }
+
+        public static List<int> createdTournamentCardSeriesIds { get; set; }
+
+        public void StorageTournamentSeries(List<int> series)
+        {
+            lock (_lockObject)
+            {
+                createdTournamentSeries = series;
+            }
+        }
+
+        public void StorageTournamentCardSeriesIds(List<int> CardSeriesIds)
+        {
+            lock (_lockObject)
+            {
+                createdTournamentSeries = CardSeriesIds;
+            }
+        }
+
+        public void StorageTournamentCards(List<int> cards)
+        {
+            lock (_lockObject)
+            {
+                createdTournamentCards = cards;
+            }
+        }
+
+        private readonly string QueryGetIdCardSeries = @"SELECT distinct tcs.id_card_series
+        FROM t_card_series tcs
+        WHERE tcs.id_card IN @IdCard;";
+
+        private readonly string QueryGetCards = "SELECT s.series_name, c.illustration, c.attack, c.deffense, s.release_date  FROM T_CARDS c JOIN T_CARD_SERIES cs ON c.id_card = cs.id_card JOIN T_SERIES s ON cs.id_series = s.id_series WHERE s.id_series IN @idSeries ORDER BY 1 asc";
+
+        private readonly string QueryGetCardsByIllustration = @"SELECT id_card FROM t_cards WHERE illustration IN @Illustration";
+
+        private readonly string QueryGetSeriesByName = @"SELECT ts.id_series FROM t_series ts WHERE ts.series_name IN @SeriesNames";
+        
+        private readonly string QueryGetCardsBySeriesName = @"SELECT s.series_name,
         c.illustration,
         c.attack,
         c.deffense,
@@ -36,18 +67,32 @@ namespace CTDao.Dao.Card
         WHERE s.series_name IN @SeriesName
         ORDER BY 1 asc";
         
-        
         public CardDao(string connectionString)
         {
             _connectionString = connectionString;
         }
 
+
+        public async Task<List<int>> GetIdCardSeriesByCardIdAsync(List<int> cardsId)
+        {
+            using var connection = new MySqlConnection(_connectionString);
+            await connection.OpenAsync();
+
+            var cardSeriesIds = await connection.QueryAsync<int>(QueryGetIdCardSeries, new { IdCard = cardsId });
+
+            StorageTournamentCardSeriesIds(cardSeriesIds.ToList());
+
+            return cardSeriesIds.ToList();
+        }
+
+
         public async Task<IEnumerable<ShowCardsModel>> GetAllAsync()
         {
             using (var connection = new MySqlConnection(_connectionString))
             {
-                await connection.OpenAsync();
-                var cards = await connection.QueryAsync<ShowCardsModel>(QueryGetAll);
+                await connection.OpenAsync();   
+                var cards = await connection.QueryAsync<ShowCardsModel>(QueryGetCards, new { idseries = createdTournamentSeries });
+
                 return cards;
             }
         }
@@ -60,6 +105,8 @@ namespace CTDao.Dao.Card
 
                 var cardsIds = await connection.QueryAsync<int>(QueryGetCardsByIllustration, new { Illustration = cardsIllustrations });
 
+                StorageTournamentCards(cardsIds.ToList());
+
                 return cardsIds.ToList();
             }
         }
@@ -70,10 +117,24 @@ namespace CTDao.Dao.Card
             {
                 await connection.OpenAsync();
 
-                var cards = await connection.QueryAsync<ShowCardsModel>(QueryGetCardsBySeriesNames, new { SeriesName = cardSeries });
+                var cards = await connection.QueryAsync<ShowCardsModel>(QueryGetCardsBySeriesName, new { SeriesName = cardSeries });
 
                 return cards.ToList();
             }
         }
+
+        public async Task<List<int>> GetSeriesIdsByNameAsync(List<string> seriesNames)
+        {
+            using var connection = new MySqlConnection(_connectionString);
+            await connection.OpenAsync();
+
+            var seriesIds = await connection.QueryAsync<int>(QueryGetSeriesByName, new { SeriesNames = seriesNames });
+
+            StorageTournamentSeries(seriesIds.ToList());
+
+            return seriesIds.ToList();
+        }
+
+      
     }
 }

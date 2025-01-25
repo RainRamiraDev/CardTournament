@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace CTDto.Tournaments
 {
-    public class TournamentJudgeDto
+    public class TournamentSeriesDto
     {
-        public List<string> Judges { get; set; } // Lista de alias de los jueces
+        public List<string> Series_name { get; set; }
+
     }
 }

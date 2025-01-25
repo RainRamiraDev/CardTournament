@@ -13,5 +13,9 @@ namespace CTDao.Interfaces.Card
         Task<IEnumerable<ShowCardsModel>> GetAllAsync();
         Task<List<int>> GetCardIdsByIllustrationAsync(List<string> cardsIllustrations);          //elegir las cartas limitadas por la serie buscadas por la ilustracion
         Task<IEnumerable<ShowCardsModel>> GetCardsBySeriesNames(List<string> cardSeries);           //trae las cartas filtradas por las series elegidas
+        Task<List<int>> GetSeriesIdsByNameAsync(List<string> seriesNames);
+        Task<List<int>> GetIdCardSeriesByCardIdAsync(List<int> cardsId);
+
+
     }
 }

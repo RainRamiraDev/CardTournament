@@ -13,8 +13,8 @@ namespace CTDto.Validations.Users.Tournament
     {
         public TournamentJudgeDtoValidation()
         {
-            RuleFor(t => t.Id_Tournament)
-                .GreaterThan(0).WithMessage("El Id_Tournament debe ser un número positivo.");
+            //RuleFor(t => t.Id_Tournament)
+            //    .GreaterThan(0).WithMessage("El Id_Tournament debe ser un número positivo.");
 
             RuleFor(t => t.Judges)
                 .NotEmpty().WithMessage("Debe haber al menos un juez en la lista.")

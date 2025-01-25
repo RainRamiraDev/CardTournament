@@ -94,6 +94,22 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "CTApp.Controllers.User.OrganizerController",
+    "Method": "SetTournamentSeries",
+    "RelativePath": "api/Organizer/SetTournamentSeries",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "tournamentSeriesDto",
+        "Type": "CTDto.Tournaments.TournamentSeriesDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "CTApp.Controllers.User.PlayerController",
     "Method": "GetAvailableTournaments",
     "RelativePath": "api/Player/GetAvailableTournaments",
@@ -127,6 +143,22 @@
     "IsController": true,
     "Order": 0,
     "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CTApp.Controllers.User.PlayerController",
+    "Method": "SetTournamentSeries",
+    "RelativePath": "api/Player/SetTournamentDecks",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "tournamentDeckDto",
+        "Type": "CTDto.Card.TournamentDecksDto",
+        "IsRequired": true
+      }
+    ],
     "ReturnTypes": []
   },
   {

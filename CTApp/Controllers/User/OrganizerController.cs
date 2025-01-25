@@ -44,8 +44,6 @@ namespace CTApp.Controllers.User
             return Ok(ApiResponse<IEnumerable<JudgeDto>>.SuccessResponse("Jueces obtenidos exitosamente.", judges));
         }
 
-        
-
 
         [Authorize(Roles = "1")]
         [HttpPost("CreateTournament")]
@@ -92,7 +90,30 @@ namespace CTApp.Controllers.User
             }
         }
 
+        [Authorize(Roles = "1")]
+        [HttpPost("SetTournamentSeries")]
+        public async Task<IActionResult> SetTournamentSeries([FromBody] TournamentSeriesDto tournamentSeriesDto)
+        {
+            try
+            {
+                var affectedRows = await _tournamentService.InsertTournamentSeriesAsync(tournamentSeriesDto);
 
+                if (affectedRows == 0)
+                {
+                    return StatusCode(500, "Error assigning series to tournament.");
+                }
+
+                return Created("", new { affectedRows });
+            }
+            catch (ArgumentException ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, "An unexpected error occurred.");
+            }
+        }
 
 
 

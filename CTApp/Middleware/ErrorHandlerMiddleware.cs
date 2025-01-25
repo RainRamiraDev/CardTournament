@@ -33,12 +33,8 @@ namespace CTApp.Middleware
         private Task HandleExceptionAsync(HttpContext context, Exception exception)
         {
             context.Response.ContentType = "application/json";
-            context.Response.StatusCode = 500; // Código de error interno del servidor
+            context.Response.StatusCode = 500;
 
-            // Log de la excepción
-            // Aquí puedes registrar el error a un sistema de logs si lo deseas
-
-            // Construir la respuesta de error
             var response = ApiResponse<object>.ErrorResponse(
                 new List<string> { "Ocurrió un error inesperado." },
                 exception.StackTrace
