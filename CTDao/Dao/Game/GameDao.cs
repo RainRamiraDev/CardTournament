@@ -33,7 +33,7 @@ namespace CTDao.Dao.Game
             _connectionString = connectionString;
         }
 
-        private readonly string QueryCreateGame = @"INSERT INTO T_GAMES (id_tournament,start_datetime) VALUES (@id_tournament,@start_datetime)";
+        private readonly string QueryCreateGame = @"INSERT INTO T_GAMES (id_tournament,start_datetime) VALUES (@id_tournament,@start_datetime); SELECT LAST_INSERT_ID();";
 
         private readonly string QueryInsertGamePlayers = @"INSERT INTO T_GAME_PLAYERS (id_game, id_player) VALUES (@id_game, @id_player);";
 
@@ -59,6 +59,8 @@ namespace CTDao.Dao.Game
                         }, transaction);
 
                         await transaction.CommitAsync();
+
+                        Console.WriteLine("game id = "+gameId);
 
                         StorageGameId(gameId);
 

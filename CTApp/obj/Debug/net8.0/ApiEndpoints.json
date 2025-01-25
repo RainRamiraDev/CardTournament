@@ -1,5 +1,37 @@
 [
   {
+    "ContainingType": "CTApp.Controllers.GameController",
+    "Method": "CreateGame",
+    "RelativePath": "api/Game/CreateGame",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "gameDto",
+        "Type": "CTDto.Game.GameDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CTApp.Controllers.GameController",
+    "Method": "InsertGamePlayers",
+    "RelativePath": "api/Game/InsertGamePlayers",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "gamePlayersDto",
+        "Type": "CTDto.Game.GamePlayersDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "CTApp.Controllers.User.LogInController",
     "Method": "CreateUserWhitHashedPassword",
     "RelativePath": "api/LogIn/FirstLogIn",

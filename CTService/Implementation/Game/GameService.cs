@@ -29,7 +29,6 @@ namespace CTService.Implementation.Game
 
         public async Task<int> CreateGameAsync(GameDto gameDto)
         {
-            // pasara los datos de la creacion del torneo y seteara los usuarios para el InsertGamePlayersAsync
 
             if (gameDto == null)
             {
@@ -42,6 +41,8 @@ namespace CTService.Implementation.Game
                 Start_Date = DateTime.Now,
             };
 
+            Console.WriteLine("Torneo actual:"+gameModel.Id_Tournament);
+
             return await _gameDao.CreateGameAsync(gameModel);
         }
 
@@ -53,6 +54,8 @@ namespace CTService.Implementation.Game
             }
 
             var tournamentPlayersId = await _gameDao.GetTournamentPlayers(TournamentDao.createdtournamentId);
+
+            Console.WriteLine(string.Join(","+tournamentPlayersId));
 
             var gamePlayersModel = new GamePlayersModel
             {

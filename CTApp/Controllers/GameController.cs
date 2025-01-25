@@ -1,0 +1,59 @@
+﻿using CTDto.Game;
+using CTDto.Tournaments;
+using CTService.Interfaces.Game;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+
+namespace CTApp.Controllers
+{
+    [ApiController]
+    [Route("api/[controller]")]
+    public class GameController : ControllerBase
+    {
+        private readonly IGameService _gameService;
+
+        public GameController(IGameService gameService)
+        {
+            _gameService = gameService;
+        }
+
+        [Authorize(Roles = "1")]
+        [HttpPost("CreateGame")]
+        public async Task<IActionResult> CreateGame([FromBody] GameDto gameDto)
+        {
+            if (gameDto == null)
+            {
+                return BadRequest("Invalid tournament data.");
+            }
+
+            var id = await _gameService.CreateGameAsync(gameDto);
+
+            if (id == 0)
+            {
+                return StatusCode(500, "Error creating tournament.");
+            }
+
+            return Created("", new { id });
+        }
+
+
+        [Authorize(Roles = "1")]
+        [HttpPost("InsertGamePlayers")]
+        public async Task<IActionResult> InsertGamePlayers([FromBody] GamePlayersDto gamePlayersDto)
+        {
+            if (gamePlayersDto == null)
+            {
+                return BadRequest("Invalid game data.");
+            }
+
+            var id = await _gameService.InsertGamePlayersAsync(gamePlayersDto);
+
+            if (id == 0)
+            {
+                return StatusCode(500, "Error creating tournament.");
+            }
+
+            return Created("", new { id });
+        }
+    }
+}
