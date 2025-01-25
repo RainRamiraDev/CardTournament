@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("CTService")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c0ae08d8168813000485618ce2db4b57989f2e9a")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+0b6acfcda67d26e4f32b8cd5cb9f0ba2b7deb89a")]
 [assembly: System.Reflection.AssemblyProductAttribute("CTService")]
 [assembly: System.Reflection.AssemblyTitleAttribute("CTService")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

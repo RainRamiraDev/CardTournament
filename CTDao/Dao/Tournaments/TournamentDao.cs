@@ -23,6 +23,16 @@ namespace CTDao.Dao.Tournaments
 
         public static int createdtournamentOrganizer { get; set; }
 
+        public static List<int> createdtournamentPlayers { get; set; }
+
+        public void StorageTournamentPlayersId(List<int> ids)
+        {
+            lock (_lockObject)
+            {
+                createdtournamentPlayers = ids;
+            }
+        }
+
         public void StorageTournamentId(int id)
         {
             lock (_lockObject)
@@ -286,7 +296,6 @@ GROUP BY
             }
         }
 
-
         public async Task<int> InsertTournamentPlayersAsync(int player)
         {
             if (player == null)
@@ -311,6 +320,7 @@ GROUP BY
                         }, transaction);
 
                         await transaction.CommitAsync();
+
                         return affectedRows;
                     }
                     catch (Exception ex)

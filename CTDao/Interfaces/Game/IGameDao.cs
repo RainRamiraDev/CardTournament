@@ -1,4 +1,5 @@
-﻿using CTDataModels.Tournamets;
+﻿using CTDataModels.Game;
+using CTDataModels.Tournamets;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,7 @@ namespace CTDao.Interfaces.Game
     public interface IGameDao
     {
         Task<int> CreateGameAsync(GameModel game);
-
+        Task<int> InsertGamePlayersAsync(List<int>players);
+        Task<int> SetGameWinnerAsync(int winner);
     }
 }

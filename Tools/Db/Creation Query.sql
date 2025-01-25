@@ -22,6 +22,7 @@ CREATE TABLE T_ROLES(
 	rol VARCHAR(20)
 );
 
+
 CREATE TABLE T_USERS(
 	id_user INT PRIMARY KEY AUTO_INCREMENT,
 	id_country INT,
@@ -69,24 +70,20 @@ CREATE TABLE T_TOURNAMENTS(
 );
 
 
-CREATE TABLE T_ROUNDS(
-	id_round INT PRIMARY KEY AUTO_INCREMENT,
-	id_player1 INT,
-	id_player2 INT,
-	id_winner INT,
-	round_number INT,
-	CONSTRAINT fk_round_p1 FOREIGN KEY (id_player1) REFERENCES T_USERS (id_user),
-	CONSTRAINT fk_round_p2 FOREIGN KEY (id_player2) REFERENCES T_USERS (id_user),
-	CONSTRAINT fk_round_winner FOREIGN KEY (id_winner) REFERENCES T_USERS (id_user)
+CREATE TABLE T_GAMES (
+    id_game INT PRIMARY KEY AUTO_INCREMENT,
+    id_tournament INT,
+    start_datetime DATETIME,
+    CONSTRAINT fk_game_tournament FOREIGN KEY (id_tournament) REFERENCES T_TOURNAMENTS (id_tournament)
 );
 
-CREATE TABLE T_GAMES(
-	id_game INT PRIMARY KEY AUTO_INCREMENT,
-	id_round INT,
-	id_tournament INT,
-	start_datetime DATETIME,
-	CONSTRAINT fk_game_round FOREIGN KEY (id_round) REFERENCES T_ROUNDS (id_round),
-	CONSTRAINT fk_game_tournament FOREIGN KEY (id_tournament) REFERENCES T_TOURNAMENTS (id_tournament)
+CREATE TABLE T_GAME_PLAYERS (
+    id_game_players INT PRIMARY KEY AUTO_INCREMENT,
+    id_game INT,
+    id_player INT,
+    is_winner BOOLEAN DEFAULT FALSE,
+    CONSTRAINT fk_gp_game FOREIGN KEY (id_game) REFERENCES T_GAMES (id_game),
+    CONSTRAINT fk_gp_player FOREIGN KEY (id_player) REFERENCES T_USERS (id_user)
 );
 
 CREATE TABLE T_TOURN_JUDGES(
