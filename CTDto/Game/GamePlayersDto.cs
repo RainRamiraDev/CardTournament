@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CTDto.Game
 {
-    public class GamePlayersDtp
+    public class GamePlayersDto
     {
         public int Id_Game { get; set; }
         public List<int> Id_Player { get; set; }

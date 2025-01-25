@@ -42,6 +42,7 @@ namespace CTDao.Dao.Game
         WHERE id_game_players = @id_game_players;
         ";
 
+        private readonly string QueryGetPlayersIds = @"SELECT id_player FROM T_TOURN_PLAYERS WHERE id_tournament = @id_tournament";
         public async Task<int> CreateGameAsync(GameModel game)
         {
             using (var connection = new MySqlConnection(_connectionString))
@@ -72,11 +73,11 @@ namespace CTDao.Dao.Game
             }
         }
 
-        public async Task<int> InsertGamePlayersAsync(List<int> players)
+        public async Task<int> InsertGamePlayersAsync(GamePlayersModel playerModel)
         {
-            if (players == null || !players.Any())
+            if (playerModel == null || !playerModel.Id_Player.Any())
             {
-                throw new ArgumentException("La lista de judadores no puede estar vacía.", nameof(players));
+                throw new ArgumentException("La lista de judadores no puede estar vacía.", nameof(playerModel));
             }
 
             using (var connection = new MySqlConnection(_connectionString))
@@ -88,7 +89,7 @@ namespace CTDao.Dao.Game
                     {
                         var affectedRows = 0;
 
-                        foreach (var player in players)
+                        foreach (var player in playerModel.Id_Player)
                         {
                             affectedRows += await connection.ExecuteAsync(QueryInsertGamePlayers, new
                             {
@@ -135,6 +136,18 @@ namespace CTDao.Dao.Game
                         throw;
                     }
                 }
+            }
+        }
+
+        public async Task<List<int>> GetTournamentPlayers(int tournamentId)
+        {
+            using (var connection = new MySqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+
+                var playersIds = await connection.QueryAsync<int>(QueryGetPlayersIds, new { id_tournament = tournamentId });
+
+                return playersIds.ToList();
             }
         }
     }

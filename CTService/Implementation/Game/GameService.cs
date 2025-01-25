@@ -1,6 +1,8 @@
-﻿using CTDao.Interfaces.Game;
+﻿using CTDao.Dao.Tournaments;
+using CTDao.Interfaces.Game;
 using CTDao.Interfaces.Tournaments;
 using CTDataModels.Game;
+using CTDataModels.Tournamets;
 using CTDto.Card;
 using CTDto.Game;
 using CTDto.Tournaments;
@@ -25,7 +27,7 @@ namespace CTService.Implementation.Game
             _touurnamentDao = touurnamentDao;
         }
 
-        public Task<int> CreateGameAsync(GameDto gameDto)
+        public async Task<int> CreateGameAsync(GameDto gameDto)
         {
             // pasara los datos de la creacion del torneo y seteara los usuarios para el InsertGamePlayersAsync
 
@@ -34,13 +36,32 @@ namespace CTService.Implementation.Game
                 throw new ArgumentException("Invalid tournament data.");
             }
 
+            var gameModel = new GameModel
+            {
+                Id_Tournament = TournamentDao.createdtournamentId,
+                Start_Date = DateTime.Now,
+            };
 
-            throw new NotImplementedException();
+            return await _gameDao.CreateGameAsync(gameModel);
         }
 
-        public Task<int> ResolveGameAsync()
+        public async Task<int> InsertGamePlayersAsync(GamePlayersDto gamePlayers)
         {
-            throw new NotImplementedException();
+            if (gamePlayers == null || gamePlayers.Id_Player.Count == 0)
+            {
+                throw new ArgumentException("Invalid series name provided.");
+            }
+
+            var tournamentPlayersId = await _gameDao.GetTournamentPlayers(TournamentDao.createdtournamentId);
+
+            var gamePlayersModel = new GamePlayersModel
+            {
+                Id_Game = gamePlayers.Id_Game,
+                Id_Player = tournamentPlayersId,
+            };
+
+            return await _gameDao.InsertGamePlayersAsync(gamePlayersModel);
+
         }
     }
 }
