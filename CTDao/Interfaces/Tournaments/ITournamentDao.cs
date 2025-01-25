@@ -22,7 +22,7 @@ namespace CTDao.Interfaces.Tournaments
 
         //cards
         Task<int> InsertTournamentSeriesAsync(List<int> cardsIds);
-
         Task<int> InsertTournamentDecksAsync(List<int> cardsIds, int owner);
+        Task<int> InsertTournamentPlayersAsync(int player);
     }
 }

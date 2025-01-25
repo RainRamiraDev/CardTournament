@@ -22,8 +22,8 @@ namespace CTService.Interfaces.Tournaments
 
         //Cards
         Task<int> InsertTournamentSeriesAsync(TournamentSeriesDto tournamentseriesDto);
-
         Task<int> InsertTournamentDecksAsync(TournamentDecksDto tournamentDecksDto);
+
 
     }
 }

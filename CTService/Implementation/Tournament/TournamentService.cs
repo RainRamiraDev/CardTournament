@@ -7,6 +7,7 @@ using CTDto.Tournaments;
 using CTService.Interfaces.Card;
 using CTService.Interfaces.Tournaments;
 using MySql.Data.MySqlClient;
+using Mysqlx.Crud;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -49,12 +50,10 @@ namespace CTService.Implementation.Tournament
                 throw new ArgumentException("Invalid series name provided.");
             }
 
+           var userCreationResponse =  await _tournamentDao.InsertTournamentPlayersAsync(tournamentDecksDto.Id_Owner);
 
             return await _tournamentDao.InsertTournamentDecksAsync(cardSeriesIds,tournamentDecksDto.Id_Owner);
         }
-
-
-
 
         public async Task<int> CreateTournamentAsync(TournamentDto tournamentDto)
         {

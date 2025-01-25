@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Data.SqlTypes;
 using System.Linq;
 using System.Net.NetworkInformation;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -45,7 +46,7 @@ namespace CTDao.Dao.Tournaments
 
         private readonly string _connectionString;
 
-        
+
         private readonly string QueryGetAll = @"SELECT * FROM T_TOURNAMENTS";
 
         private readonly string QueryCreateTournament = @"
@@ -100,6 +101,8 @@ GROUP BY
         private readonly string QueryInsertDecks = @"INSERT INTO T_TOURN_DECKS (id_tournament, id_card_series, id_owner) 
                                              VALUES (@id_tournament, @id_card_series, @id_owner);";
 
+        private readonly string QueryInsertPlayers = @"INSERT INTO T_TOURN_PLAYERS (id_tournament, id_player) VALUES (@Id_tournament,@id_player);";
+
 
         public async Task<int> CreateTournamentAsync(TournamentModel tournament)
         {
@@ -119,7 +122,7 @@ GROUP BY
                             EndDatetime = tournament.End_datetime,
                             CurrentPhase = tournament.Current_Phase
                         }, transaction);
-   
+
                         await transaction.CommitAsync();
 
                         StorageTournamentId(tournamentId);
@@ -282,6 +285,45 @@ GROUP BY
 
             }
         }
-}
+
+
+        public async Task<int> InsertTournamentPlayersAsync(int player)
+        {
+            if (player == null)
+            {
+                throw new ArgumentException("La lista de jueces no puede estar vacía.", nameof(player));
+            }
+
+            using (var connection = new MySqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+                using (var transaction = await connection.BeginTransactionAsync())
+                {
+                    try
+                    {
+                        var affectedRows = 0;
+
+
+                        affectedRows += await connection.ExecuteAsync(QueryInsertPlayers, new
+                        {
+                            Id_tournament = createdtournamentId,
+                            Id_player = player
+                        }, transaction);
+
+                        await transaction.CommitAsync();
+                        return affectedRows;
+                    }
+                    catch (Exception ex)
+                    {
+                        await transaction.RollbackAsync();
+                        Console.WriteLine($"Error al insertar jueces en el torneo: {ex.Message}");
+                        throw;
+                    }
+                }
+            }
+        }
     }
+}
+ 
+  
 
