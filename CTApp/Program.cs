@@ -3,19 +3,23 @@
 using CTApp.Middleware;
 using CTConfigurations;
 using CTDao.Dao.Card;
+using CTDao.Dao.Game;
 using CTDao.Dao.RefreshToken;
 using CTDao.Dao.Tournaments;
 using CTDao.Dao.User;
 using CTDao.Interfaces.Card;
+using CTDao.Interfaces.Game;
 using CTDao.Interfaces.RefreshToken;
 using CTDao.Interfaces.Tournaments;
 using CTDao.Interfaces.User;
 using CTDto.Validations.Users.LogIn;
 using CTService.Implementation.Card;
+using CTService.Implementation.Game;
 using CTService.Implementation.RefreshToken;
 using CTService.Implementation.Tournament;
 using CTService.Implementation.User;
 using CTService.Interfaces.Card;
+using CTService.Interfaces.Game;
 using CTService.Interfaces.RefreshToken;
 using CTService.Interfaces.Tournaments;
 using CTService.Interfaces.User;
@@ -54,6 +58,11 @@ builder.Services.AddScoped<ITournamentDao>(provider =>
     return new TournamentDao(connectionString);
 });
 
+builder.Services.AddScoped<IGameDao>(provider =>
+{
+    return new GameDao(connectionString);
+});
+
 
 //validaciones
 
@@ -73,6 +82,8 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IRefreshTokenService, RefreshTokenService>();
 
 builder.Services.AddScoped<ITournamentService, TournamentService>();
+
+builder.Services.AddScoped<IGameService, GameService>();
 
 
 //--------
