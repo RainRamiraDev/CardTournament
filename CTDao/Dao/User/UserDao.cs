@@ -20,6 +20,8 @@ namespace CTDao.Dao.User
         private readonly string QueryLogin = "SELECT Id_User, Fullname, Passcode, Id_Rol FROM T_Users WHERE Fullname = @Fullname";
         private readonly string QueryGetAllJudges = "SELECT u.Fullname,u.Alias,u.Email,c.country_name as Country,u.avatar_url FROM t_users u JOIN t_countries c ON u.id_country = c.id_country WHERE Id_rol = 3";
 
+        private readonly string QueryGetPlayersRankIds = @"SELECT rank FROM t_users WHERE Id_user IN @Ids;";
+
         public UserDao(string connectionString)
         {
             _connectionString = connectionString;
@@ -54,7 +56,7 @@ namespace CTDao.Dao.User
                 {
                     user.Fullname,
                     user.Passcode,
-                    user.Id_Rol  // Aseguramos que el id_rol se inserte en la base de datos
+                    user.Id_Rol
                 });
                 return affectedRows;
             }
@@ -67,6 +69,19 @@ namespace CTDao.Dao.User
                 await connection.OpenAsync();
                 var judges = await connection.QueryAsync<UserModel>(QueryGetAllJudges);
                 return judges;
+            }
+        }
+
+        public async Task<List<UserModel>> GetPlayersRanksByIdAsync(List<int> playersIds)
+        {
+            using (var connection = new MySqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+
+                // Usamos un parámetro de lista en Dapper para pasarlo a la consulta
+                var playerRanks = await connection.QueryAsync<UserModel>(QueryGetPlayersRankIds, new { Ids = playersIds });
+
+                return playerRanks.ToList();
             }
         }
     }

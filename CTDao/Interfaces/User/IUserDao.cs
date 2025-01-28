@@ -19,6 +19,9 @@ namespace CTDao.Interfaces.User
         //Judge
         Task<IEnumerable<UserModel>> GetAllJudgeAsync();
 
+        //Player
+        Task<List<UserModel>> GetPlayersRanksByIdAsync(List<int> playersIds);
+
 
     }
 }

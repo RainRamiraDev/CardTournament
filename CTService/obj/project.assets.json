@@ -724,6 +724,7 @@
         "dependencies": {
           "BCrypt.Net": "0.1.0",
           "CTDataModels": "1.0.0",
+          "CTDto": "1.0.0",
           "Dapper": "2.1.35",
           "MySql.Data": "9.1.0"
         },
