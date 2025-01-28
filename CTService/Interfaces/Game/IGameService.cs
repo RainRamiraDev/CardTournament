@@ -15,11 +15,11 @@ namespace CTService.Interfaces.Game
         Task<int> InsertGamePlayersAsync(GamePlayersDto gamePlayers);
 
 
-        Task<int> CreateRoundAsync(RoundDto round);
+        Task<int> CreateRoundAsync(int roundNumber);
 
         Task<int> CreateMatchAsync(MatchDto match);
 
-        Task<int> ResolveGameAsync(GameResultDto result);
+        Task<GameResultDto> ResolveGameAsync();
 
 
     }

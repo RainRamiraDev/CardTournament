@@ -3,6 +3,7 @@ using CTDao.Interfaces.Game;
 using CTDataModels.Game;
 using Dapper;
 using MySql.Data.MySqlClient;
+using Mysqlx.Crud;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -48,17 +49,17 @@ namespace CTDao.Dao.Game
 
         private readonly string QueryInsertGamePlayers = @"INSERT INTO T_GAME_PLAYERS (id_game, id_player) VALUES (@id_game, @id_player);";
 
-        private readonly string QuerySetWinner = @"
-          UPDATE T_MATCHES 
-          SET winner = @id_player
-          WHERE id_match = @id_match;
-        ";
 
+        private readonly string QuerySetWinner = @"
+        UPDATE T_USERS 
+        SET games_win = games_win + 1 
+        WHERE id_user = @id_player;
+    ";
 
         private readonly string QuerySetLosers = @"
-          UPDATE T_USERS 
-          SET games_lost = games_lost + 1 
-          WHERE id_user = @id_User;
+            UPDATE T_USERS 
+            SET games_lost = games_lost + 1 
+            WHERE id_user IN @losers;
         ";
 
 
@@ -151,7 +152,8 @@ namespace CTDao.Dao.Game
             }
         }
 
-        public async Task<int> SetGameMatchWinnerAsync(int winner, int match)
+
+        public async Task<int> SetGameWinnerAsync(int winner)
         {
             using (var connection = new MySqlConnection(_connectionString))
             {
@@ -160,15 +162,11 @@ namespace CTDao.Dao.Game
                 {
                     try
                     {
-                        var winnerId = await connection.ExecuteScalarAsync<int>(QuerySetWinner, new
-                        {
-                            id_player = winner,
-                            id_match = match,
-                        }, transaction);
+                        // Se usa ExecuteAsync ya que UPDATE no devuelve un valor escalar
+                        int rowsAffected = await connection.ExecuteAsync(QuerySetWinner, new { id_player = winner }, transaction);
 
                         await transaction.CommitAsync();
-
-                        return winnerId;
+                        return rowsAffected;
                     }
                     catch (Exception)
                     {
@@ -191,8 +189,13 @@ namespace CTDao.Dao.Game
             }
         }
 
-        public async Task<int> SetGameLoserAsync(int loser)
+        public async Task<int> SetGameLoserAsync(List<int> losers)
         {
+            if (losers == null || losers.Count == 0)
+            {
+                throw new ArgumentException("La lista de perdedores no puede estar vacía.");
+            }
+
             using (var connection = new MySqlConnection(_connectionString))
             {
                 await connection.OpenAsync();
@@ -200,13 +203,9 @@ namespace CTDao.Dao.Game
                 {
                     try
                     {
-                        int rowsAffected = await connection.ExecuteAsync(QuerySetLosers, new
-                        {
-                            id_User = loser
-                        }, transaction);
+                        int rowsAffected = await connection.ExecuteAsync(QuerySetLosers, new { losers }, transaction);
 
                         await transaction.CommitAsync();
-
                         return rowsAffected;
                     }
                     catch (Exception)

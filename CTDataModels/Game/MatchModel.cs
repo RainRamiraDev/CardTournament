@@ -12,6 +12,7 @@ namespace CTDataModels.Game
         public int Id_Game { get; set; }
         public int Id_Player1 { get; set; }
         public int Id_Player2 { get; set; }
-        //public int Winner { get; set; }
+
+        public int Winner { get; set; }
     }
 }

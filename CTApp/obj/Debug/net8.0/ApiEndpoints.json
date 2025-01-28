@@ -32,6 +32,16 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "CTApp.Controllers.GameController",
+    "Method": "ResolveGame",
+    "RelativePath": "api/Game/resolve",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "CTApp.Controllers.User.LogInController",
     "Method": "CreateUserWhitHashedPassword",
     "RelativePath": "api/LogIn/FirstLogIn",

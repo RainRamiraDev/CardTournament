@@ -13,8 +13,8 @@ namespace CTDao.Interfaces.Game
     {
         Task<int> CreateGameAsync(GameModel game); 
         Task<int> InsertGamePlayersAsync(GamePlayersModel playerModel);
-        Task<int> SetGameMatchWinnerAsync(int winner, int match);
-        Task<int> SetGameLoserAsync(int loser);
+        Task<int> SetGameWinnerAsync(int winner);
+        Task<int> SetGameLoserAsync(List<int> losers);
         Task<List<int>> GetTournamentPlayers(int tournamentId);
         Task<int> CreateRoundAsync(RoundModel round); // !!!
         Task<int> CreateMatchAsync(MatchModel match); // !!!

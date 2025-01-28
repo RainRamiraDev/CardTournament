@@ -14,3 +14,5 @@ C:\Repositorios\CardTournament\CTDao\bin\Debug\net7.0\CTDataModels.dll
 C:\Repositorios\CardTournament\CTDao\bin\Debug\net7.0\CTDataModels.pdb
 C:\Repositorios\CardTournament\CTDao\obj\Debug\net7.0\CTDao.csproj.AssemblyReference.cache
 C:\Repositorios\CardTournament\CTDao\obj\Debug\net7.0\CTDao.csproj.Up2Date
+C:\Repositorios\CardTournament\CTDao\bin\Debug\net7.0\CTDto.dll
+C:\Repositorios\CardTournament\CTDao\bin\Debug\net7.0\CTDto.pdb

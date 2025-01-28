@@ -20,7 +20,7 @@ namespace CTDao.Interfaces.User
         Task<IEnumerable<UserModel>> GetAllJudgeAsync();
 
         //Player
-        Task<List<UserModel>> GetPlayersRanksByIdAsync(List<int> playersIds);
+        Task<int> GetPlayerKiByIdAsync(int playerIds);
 
 
     }

@@ -55,5 +55,25 @@ namespace CTApp.Controllers
 
             return Created("", new { id });
         }
+
+        [Authorize(Roles = "1")]
+        [HttpPost("resolve")]
+        public async Task<IActionResult> ResolveGame()
+        {
+            try
+            {
+                GameResultDto result = await _gameService.ResolveGameAsync();
+                return Ok(result);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Error interno del servidor.", error = ex.Message });
+            }
+        }
+
     }
 }
