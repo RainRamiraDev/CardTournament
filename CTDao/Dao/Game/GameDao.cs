@@ -6,6 +6,7 @@ using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Reflection.Metadata;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,11 +19,21 @@ namespace CTDao.Dao.Game
 
         public static int createdGameId { get; set; }
 
+        public static int createdRoundId { get; set; }
+
         public void StorageGameId(int id)
         {
             lock (_lockObject)
             {
                 createdGameId = id;
+            }
+        }
+
+        public void StorageRoundId(int id)
+        {
+            lock (_lockObject)
+            {
+                createdRoundId = id;
             }
         }
 
@@ -37,12 +48,39 @@ namespace CTDao.Dao.Game
 
         private readonly string QueryInsertGamePlayers = @"INSERT INTO T_GAME_PLAYERS (id_game, id_player) VALUES (@id_game, @id_player);";
 
-        private readonly string QuerySetWinner = @"UPDATE T_GAME_PLAYERS 
-        SET is_winner = TRUE 
-        WHERE id_game_players = @id_game_players;
+        private readonly string QuerySetWinner = @"
+          UPDATE T_MATCHES 
+          SET winner = @id_player
+          WHERE id_match = @id_match;
         ";
 
+
+        private readonly string QuerySetLosers = @"
+          UPDATE T_USERS 
+          SET games_lost = games_lost + 1 
+          WHERE id_user = @id_User;
+        ";
+
+
         private readonly string QueryGetPlayersIds = @"SELECT id_player FROM T_TOURN_PLAYERS WHERE id_tournament = @id_tournament";
+
+        private readonly string QueryCreateRound = @"
+            INSERT INTO T_ROUNDS (id_tournament, round_number) 
+            VALUES (@id_tournament, @round_number);
+            SELECT LAST_INSERT_ID();
+        ";
+
+        private readonly string QueryCreateMatch = @"INSERT INTO T_MATCHES (id_round, id_game, id_player1, id_player2) 
+        VALUES (@id_round, @id_game, @id_player1, @id_player2);
+        SELECT LAST_INSERT_ID();
+        ";
+
+        private readonly string QuerySetNextRound = @"
+        UPDATE T_ROUNDS 
+        SET round_number = round_number + 1 
+        WHERE id_tournament = @id_tournament;
+    ";
+
         public async Task<int> CreateGameAsync(GameModel game)
         {
             using (var connection = new MySqlConnection(_connectionString))
@@ -113,7 +151,7 @@ namespace CTDao.Dao.Game
             }
         }
 
-        public async Task<int> SetGameWinnerAsync(int winner)
+        public async Task<int> SetGameMatchWinnerAsync(int winner, int match)
         {
             using (var connection = new MySqlConnection(_connectionString))
             {
@@ -124,8 +162,8 @@ namespace CTDao.Dao.Game
                     {
                         var winnerId = await connection.ExecuteScalarAsync<int>(QuerySetWinner, new
                         {
-                            id_game_players = winner,
-
+                            id_player = winner,
+                            id_match = match,
                         }, transaction);
 
                         await transaction.CommitAsync();
@@ -152,6 +190,126 @@ namespace CTDao.Dao.Game
                 return playersIds.ToList();
             }
         }
+
+        public async Task<int> SetGameLoserAsync(int loser)
+        {
+            using (var connection = new MySqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+                using (var transaction = await connection.BeginTransactionAsync())
+                {
+                    try
+                    {
+                        int rowsAffected = await connection.ExecuteAsync(QuerySetLosers, new
+                        {
+                            id_User = loser
+                        }, transaction);
+
+                        await transaction.CommitAsync();
+
+                        return rowsAffected;
+                    }
+                    catch (Exception)
+                    {
+                        await transaction.RollbackAsync();
+                        throw;
+                    }
+                }
+            }
+        }
+
+        public async Task<int> CreateRoundAsync(RoundModel round)
+        {
+            using (var connection = new MySqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+                using (var transaction = await connection.BeginTransactionAsync())
+                {
+                    try
+                    {
+                        var roundId = await connection.ExecuteScalarAsync<int>(QueryCreateRound, new
+                        {
+                            Id_Tournament = TournamentDao.createdtournamentId,
+                            round_number = round.Round_Number,
+                        }, transaction);
+
+                        await transaction.CommitAsync();
+
+                        //Console.WriteLine("game id = " + gameId);
+
+                        StorageRoundId(roundId);
+
+                        return roundId;
+                    }
+                    catch (Exception)
+                    {
+                        await transaction.RollbackAsync();
+                        throw;
+                    }
+                }
+            }
+        }
+
+        public async Task<int> CreateMatchAsync(MatchModel match)
+        {
+            using (var connection = new MySqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+                using (var transaction = await connection.BeginTransactionAsync())
+                {
+                    try
+                    {
+                        var matchId = await connection.ExecuteScalarAsync<int>(QueryCreateMatch, new
+                        {
+                            id_round = GameDao.createdRoundId,
+                            id_game = GameDao.createdGameId,
+                            id_player1 = match.Id_Player1,
+                            id_player2 = match.Id_Player2,
+
+                        }, transaction);
+
+                        await transaction.CommitAsync();
+
+                        //Console.WriteLine("game id = " + gameId);
+
+
+                        return matchId;
+                    }
+                    catch (Exception)
+                    {
+                        await transaction.RollbackAsync();
+                        throw;
+                    }
+                }
+            }
+        }
+
+        public async Task<int> SetNextRoundAsync()
+        {
+            using (var connection = new MySqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+                using (var transaction = await connection.BeginTransactionAsync())
+                {
+                    try
+                    {
+                        var affectedRows = await connection.ExecuteAsync(QuerySetNextRound, new
+                        {
+                            id_tournament = TournamentDao.createdtournamentId,
+                        }, transaction: transaction);
+
+                        await transaction.CommitAsync();
+
+                        return affectedRows;
+                    }
+                    catch (Exception)
+                    {
+                        await transaction.RollbackAsync();
+                        throw;
+                    }
+                }
+            }
+        }
     }
- }
+}
 

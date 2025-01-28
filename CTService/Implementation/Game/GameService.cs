@@ -1,4 +1,5 @@
-﻿using CTDao.Dao.Tournaments;
+﻿using CTDao.Dao.Game;
+using CTDao.Dao.Tournaments;
 using CTDao.Interfaces.Game;
 using CTDao.Interfaces.Tournaments;
 using CTDataModels.Game;
@@ -46,6 +47,45 @@ namespace CTService.Implementation.Game
             return await _gameDao.CreateGameAsync(gameModel);
         }
 
+        public async Task<int> CreateMatchAsync(MatchDto match)
+        {
+            if (match == null)
+            {
+                throw new ArgumentException("Invalid match data.");
+            }
+
+            var matchModel = new MatchModel
+            {
+                Id_Round = match.Id_Round,
+                Id_Game = match.Id_Game,
+                Id_Player1 = match.Id_Player1,
+                Id_Player2 = match.Id_Player2,
+            };
+
+            //    Console.WriteLine("Match actual:" + gameModel.Id_Tournament);
+
+            return await _gameDao.CreateMatchAsync(matchModel);
+        }
+
+        public async Task<int> CreateRoundAsync(RoundDto round)
+        {
+            if (round == null)
+            {
+                throw new ArgumentException("Invalid round data.");
+            }
+
+            var roundModel = new RoundModel
+            {
+                Id_Tournament = TournamentDao.createdtournamentId,
+                Round_Number = round.Round_Number,
+                Is_Completed = false,
+
+            };
+
+
+            return await _gameDao.CreateRoundAsync(roundModel);
+        }
+
         public async Task<int> InsertGamePlayersAsync(GamePlayersDto gamePlayers)
         {
             if (gamePlayers == null || gamePlayers.Id_Player.Count == 0)
@@ -64,6 +104,54 @@ namespace CTService.Implementation.Game
             };
 
             return await _gameDao.InsertGamePlayersAsync(gamePlayersModel);
+
+        }
+
+        public Task<int> ResolveGameAsync(GameResultDto result)
+        {
+            throw new NotImplementedException();
+
+
+            //1) CREAR LA RONDA
+           
+           
+       
+            //2) TRAER LA LISTA DE USUARIOS Y SEPARARLOS POR PARES DENTRO DE LOS MATCH
+
+            //3) AVANZA A LA SIGUIENTE MATCH
+
+            //4) TERMINA TODOS LOS MATCH Y DAR EL RESULTADO 
+
+            //5)
+
+
+            //7)
+
+            //8)
+            //9)
+
+
+            //10)
+            //)
+
+            //)
+            //)
+
+            //)
+            //)
+
+            //)
+            //)
+
+
+
+
+
+
+
+
+
+
 
         }
     }

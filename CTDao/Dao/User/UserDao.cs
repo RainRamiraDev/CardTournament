@@ -20,7 +20,7 @@ namespace CTDao.Dao.User
         private readonly string QueryLogin = "SELECT Id_User, Fullname, Passcode, Id_Rol FROM T_Users WHERE Fullname = @Fullname";
         private readonly string QueryGetAllJudges = "SELECT u.Fullname,u.Alias,u.Email,c.country_name as Country,u.avatar_url FROM t_users u JOIN t_countries c ON u.id_country = c.id_country WHERE Id_rol = 3";
 
-        private readonly string QueryGetPlayersRankIds = @"SELECT rank FROM t_users WHERE Id_user IN @Ids;";
+        private readonly string QueryGetPlayersRankIds = @"SELECT ki FROM t_users WHERE Id_user IN @Ids;";
 
         public UserDao(string connectionString)
         {
