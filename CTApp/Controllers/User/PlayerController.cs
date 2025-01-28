@@ -23,17 +23,17 @@ namespace CTApp.Controllers.User
             _cardService = cardService;
         }
 
-        [Authorize(Roles = "4")] 
-        [HttpGet("GetTournaments")]
-        public async Task<IActionResult> GetTournaments()
-        {
-            var tournaments = await _tournamentService.GetAllTournamentAsync();
+        //[Authorize(Roles = "4")] 
+        //[HttpGet("GetTournaments")]
+        //public async Task<IActionResult> GetTournaments()
+        //{
+        //    var tournaments = await _tournamentService.GetAllTournamentAsync();
 
-            if (tournaments is null || !tournaments.Any())
-                return NotFound(ApiResponse<IEnumerable<TournamentDto>>.ErrorResponse("Torneos no encontrados."));
+        //    if (tournaments is null || !tournaments.Any())
+        //        return NotFound(ApiResponse<IEnumerable<TournamentDto>>.ErrorResponse("Torneos no encontrados."));
 
-            return Ok(ApiResponse<IEnumerable<TournamentDto>>.SuccessResponse("torneos obtenidos exitosamente.", tournaments));
-        }
+        //    return Ok(ApiResponse<IEnumerable<TournamentDto>>.SuccessResponse("torneos obtenidos exitosamente.", tournaments));
+        //}
 
 
         [Authorize(Roles = "4")] 

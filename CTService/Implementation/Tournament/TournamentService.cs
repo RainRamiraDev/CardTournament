@@ -121,11 +121,8 @@ namespace CTService.Implementation.Tournament
             {
                 Start_DateTime = tournament.Start_DateTime,
                 End_DateTime = tournament.End_DateTime,
-                Current_Phase = tournament.Current_Phase,
                 Tournament_Country = tournament.Tournament_Country ?? string.Empty,  // Asignar vacío si es null
-                Organizer_Name = tournament.Organizer_Name ?? string.Empty,  // Asignar vacío si es null
                 Organizer_Alias = tournament.Organizer_Alias ?? string.Empty,  // Asignar vacío si es null
-                Organizer_Email = tournament.Organizer_Email ?? string.Empty,  // Asignar vacío si es null
                 Judges = tournament.Judges ?? string.Empty,  // Asignar vacío si es null
                 Series_Played = tournament.Series_Played ?? string.Empty,  // Asignar vacío si es null
                 Players = tournament.Players ?? string.Empty,  // Asignar vacío si es null

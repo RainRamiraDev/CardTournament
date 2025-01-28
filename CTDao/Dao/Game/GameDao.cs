@@ -185,6 +185,8 @@ namespace CTDao.Dao.Game
 
                 var playersIds = await connection.QueryAsync<int>(QueryGetPlayersIds, new { id_tournament = tournamentId });
 
+                Console.WriteLine(String.Concat(","+playersIds));
+
                 return playersIds.ToList();
             }
         }
