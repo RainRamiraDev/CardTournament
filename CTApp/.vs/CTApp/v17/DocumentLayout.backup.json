@@ -3,10 +3,28 @@
   "WorkspaceRootPath": "C:\\Repositorios\\CardTournament\\CTApp\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{044F8FA9-5241-4DFD-9606-88BD2C275654}|CTApp.csproj|c:\\repositorios\\cardtournament\\ctapp\\controllers\\gamecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{044F8FA9-5241-4DFD-9606-88BD2C275654}|CTApp.csproj|solutionrelative:controllers\\gamecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{A8904742-057E-4415-B867-60EE8A95FC92}|..\\CTService\\CTService.csproj|c:\\repositorios\\cardtournament\\ctservice\\implementation\\game\\gameservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{B7618BD3-70F2-4885-97AD-F372B59C2CF7}|..\\CTDao\\CTDao.csproj|c:\\repositorios\\cardtournament\\ctdao\\dao\\game\\gamedao.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{044F8FA9-5241-4DFD-9606-88BD2C275654}|CTApp.csproj|c:\\repositorios\\cardtournament\\ctapp\\controllers\\user\\organizercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{044F8FA9-5241-4DFD-9606-88BD2C275654}|CTApp.csproj|solutionrelative:controllers\\user\\organizercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{044F8FA9-5241-4DFD-9606-88BD2C275654}|CTApp.csproj|c:\\repositorios\\cardtournament\\ctapp\\controllers\\user\\playercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{044F8FA9-5241-4DFD-9606-88BD2C275654}|CTApp.csproj|solutionrelative:controllers\\user\\playercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\r4yn1\\AppData\\Local\\SourceServer\\3b0135e0ada3f0d89e8f4d1d7df2daacc2af9398e5c4cfbcc4136fde8fa87bb1\\CTService\\Implementation\\Game\\GameService.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B7618BD3-70F2-4885-97AD-F372B59C2CF7}|..\\CTDao\\CTDao.csproj|c:\\repositorios\\cardtournament\\ctdao\\interfaces\\game\\igamedao.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -16,17 +34,17 @@
       "DocumentGroups": [
         {
           "DockedWidth": 176,
-          "SelectedChildIndex": 0,
+          "SelectedChildIndex": 7,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "GameService.cs",
               "DocumentMoniker": "C:\\Repositorios\\CardTournament\\CTService\\Implementation\\Game\\GameService.cs",
               "RelativeDocumentMoniker": "..\\CTService\\Implementation\\Game\\GameService.cs",
               "ToolTip": "C:\\Repositorios\\CardTournament\\CTService\\Implementation\\Game\\GameService.cs",
               "RelativeToolTip": "..\\CTService\\Implementation\\Game\\GameService.cs",
-              "ViewState": "AgIAAIgAAAAAAAAAAAAgwKoAAAAMAAAAAAAAAA==",
+              "ViewState": "AgIAAIsAAAAAAAAAAAAEwKcAAAAQAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-01-29T04:45:12.187Z",
               "IsPinned": true,
@@ -50,15 +68,80 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 5,
+              "Title": "GameService.cs",
+              "DocumentMoniker": "C:\\Users\\r4yn1\\AppData\\Local\\SourceServer\\3b0135e0ada3f0d89e8f4d1d7df2daacc2af9398e5c4cfbcc4136fde8fa87bb1\\CTService\\Implementation\\Game\\GameService.cs",
+              "RelativeDocumentMoniker": "..\\..\\..\\Users\\r4yn1\\AppData\\Local\\SourceServer\\3b0135e0ada3f0d89e8f4d1d7df2daacc2af9398e5c4cfbcc4136fde8fa87bb1\\CTService\\Implementation\\Game\\GameService.cs",
+              "ToolTip": "C:\\Users\\r4yn1\\AppData\\Local\\SourceServer\\3b0135e0ada3f0d89e8f4d1d7df2daacc2af9398e5c4cfbcc4136fde8fa87bb1\\CTService\\Implementation\\Game\\GameService.cs [Read Only]",
+              "RelativeToolTip": "..\\..\\..\\Users\\r4yn1\\AppData\\Local\\SourceServer\\3b0135e0ada3f0d89e8f4d1d7df2daacc2af9398e5c4cfbcc4136fde8fa87bb1\\CTService\\Implementation\\Game\\GameService.cs [Read Only]",
+              "ViewState": "AgIAAFYAAAAAAAAAAAAEwG4AAAAMAAAAAQAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-01-29T20:08:20.39Z",
+              "EditorCaption": " [Read Only]"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "IGameDao.cs",
+              "DocumentMoniker": "C:\\Repositorios\\CardTournament\\CTDao\\Interfaces\\Game\\IGameDao.cs",
+              "RelativeDocumentMoniker": "..\\CTDao\\Interfaces\\Game\\IGameDao.cs",
+              "ToolTip": "C:\\Repositorios\\CardTournament\\CTDao\\Interfaces\\Game\\IGameDao.cs",
+              "RelativeToolTip": "..\\CTDao\\Interfaces\\Game\\IGameDao.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABgAAAAmAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-01-29T19:27:17.042Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "GameController.cs",
+              "DocumentMoniker": "C:\\Repositorios\\CardTournament\\CTApp\\Controllers\\GameController.cs",
+              "RelativeDocumentMoniker": "Controllers\\GameController.cs",
+              "ToolTip": "C:\\Repositorios\\CardTournament\\CTApp\\Controllers\\GameController.cs",
+              "RelativeToolTip": "Controllers\\GameController.cs",
+              "ViewState": "AgIAACcAAAAAAAAAAAAnwEEAAAAQAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-01-29T18:23:15.427Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "PlayerController.cs",
+              "DocumentMoniker": "C:\\Repositorios\\CardTournament\\CTApp\\Controllers\\User\\PlayerController.cs",
+              "RelativeDocumentMoniker": "Controllers\\User\\PlayerController.cs",
+              "ToolTip": "C:\\Repositorios\\CardTournament\\CTApp\\Controllers\\User\\PlayerController.cs",
+              "RelativeToolTip": "Controllers\\User\\PlayerController.cs",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAAAF8AAABtAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-01-29T18:23:15.363Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "OrganizerController.cs",
+              "DocumentMoniker": "C:\\Repositorios\\CardTournament\\CTApp\\Controllers\\User\\OrganizerController.cs",
+              "RelativeDocumentMoniker": "Controllers\\User\\OrganizerController.cs",
+              "ToolTip": "C:\\Repositorios\\CardTournament\\CTApp\\Controllers\\User\\OrganizerController.cs",
+              "RelativeToolTip": "Controllers\\User\\OrganizerController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACUAAAAIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-01-29T18:23:15.439Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
               "Title": "GameDao.cs",
               "DocumentMoniker": "C:\\Repositorios\\CardTournament\\CTDao\\Dao\\Game\\GameDao.cs",
               "RelativeDocumentMoniker": "..\\CTDao\\Dao\\Game\\GameDao.cs",
               "ToolTip": "C:\\Repositorios\\CardTournament\\CTDao\\Dao\\Game\\GameDao.cs",
               "RelativeToolTip": "..\\CTDao\\Dao\\Game\\GameDao.cs",
-              "ViewState": "AgIAABABAAAAAAAAAAAIwH0BAAAIAAAAAAAAAA==",
+              "ViewState": "AgIAAFwAAAAAAAAAAIAzwAIBAABOAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-29T04:57:08.698Z",
+              "WhenOpened": "2025-01-29T18:00:30.369Z",
               "EditorCaption": ""
             }
           ]

@@ -117,7 +117,9 @@ namespace CTService.Implementation.Game
                 throw new InvalidOperationException("Se necesitan al menos dos jugadores para iniciar el torneo.");
             }
 
-            int roundNumber = 1;
+            //int roundNumber = 1;
+            int roundNumber = await _gameDao.GetLastRoundAsync();
+
             HashSet<int> eliminatedPlayers = new HashSet<int>(); // Evita duplicados
 
             while (playersIds.Count > 1)
@@ -142,7 +144,7 @@ namespace CTService.Implementation.Game
                     int winner = player1Ki > player2Ki ? player1 : player2;
                     int loser = player1Ki > player2Ki ? player2 : player1;
 
-                    Console.WriteLine($"player1Ki: {player1Ki}, player2Ki: {player2Ki}, winner: {winner}");
+                    //Console.WriteLine($"player1Ki: {player1Ki}, player2Ki: {player2Ki}, winner: {winner}");
 
                     winners.Add(winner);
                     eliminatedPlayers.Add(loser);
@@ -161,11 +163,13 @@ namespace CTService.Implementation.Game
 
                 playersIds = winners;
 
-                await _gameDao.SetRoundCompletedAsync(roundNumber); //⚠️
+              
 
                 await _gameDao.SetNextRoundAsync(); // mejorar no funciona como esperado;
-                
+
                 roundNumber++;
+
+                await _gameDao.SetRoundCompletedAsync(roundNumber); //⚠️ //roundNumber
 
                 Console.WriteLine("[Round number incrised]");
             }
@@ -194,6 +198,7 @@ namespace CTService.Implementation.Game
             };
             return await _gameDao.CreateRoundAsync(roundModel);
         }
+
 
 
     }

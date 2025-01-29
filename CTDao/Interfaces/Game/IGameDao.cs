@@ -21,5 +21,7 @@ namespace CTDao.Interfaces.Game
         Task<int> SetNextRoundAsync();
 
         Task<int> SetRoundCompletedAsync(int roundNumber);
+
+        Task<int> GetLastRoundAsync();
     }
 }
