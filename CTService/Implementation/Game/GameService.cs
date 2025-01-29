@@ -161,9 +161,13 @@ namespace CTService.Implementation.Game
 
                 playersIds = winners;
 
+                await _gameDao.SetRoundCompletedAsync(roundNumber); //⚠️
+
                 await _gameDao.SetNextRoundAsync(); // mejorar no funciona como esperado;
                 
                 roundNumber++;
+
+                Console.WriteLine("[Round number incrised]");
             }
 
             await _gameDao.SetGameWinnerAsync(playersIds[0]);

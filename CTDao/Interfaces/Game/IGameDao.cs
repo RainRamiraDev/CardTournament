@@ -19,5 +19,7 @@ namespace CTDao.Interfaces.Game
         Task<int> CreateRoundAsync(RoundModel round); // !!!
         Task<int> CreateMatchAsync(MatchModel match); // !!!
         Task<int> SetNextRoundAsync();
+
+        Task<int> SetRoundCompletedAsync(int roundNumber);
     }
 }

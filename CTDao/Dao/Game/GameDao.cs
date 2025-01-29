@@ -10,6 +10,7 @@ using System.Linq;
 using System.Reflection;
 using System.Reflection.Metadata;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace CTDao.Dao.Game
@@ -66,8 +67,8 @@ namespace CTDao.Dao.Game
         private readonly string QueryGetPlayersIds = @"SELECT id_player FROM T_TOURN_PLAYERS WHERE id_tournament = @id_tournament";
 
         private readonly string QueryCreateRound = @"
-            INSERT INTO T_ROUNDS (id_tournament, round_number) 
-            VALUES (@id_tournament, @round_number);
+            INSERT INTO T_ROUNDS (id_tournament) 
+            VALUES (@id_tournament);
             SELECT LAST_INSERT_ID();
         ";
 
@@ -77,9 +78,22 @@ namespace CTDao.Dao.Game
         ";
 
         private readonly string QuerySetNextRound = @"
-        UPDATE T_ROUNDS 
-        SET round_number = round_number + 1 
-        WHERE id_tournament = @id_tournament;
+        INSERT INTO T_ROUNDS (id_tournament, round_number, is_completed) 
+        VALUES (@id_tournament, @round_number, FALSE);
+
+    ";
+
+        private readonly string QueryGetLastRound = @"
+        SELECT IFNULL(MAX(round_number), 0) AS round_number
+        FROM T_ROUNDS
+        WHERE id_tournament = @id_tournament";
+
+        
+        private readonly string QueryCompleteRound = @"
+         UPDATE T_ROUNDS
+         SET is_completed = TRUE
+         WHERE id_tournament = @id_tournament AND
+	  	 round_number = @round_number;
     ";
 
         public async Task<int> CreateGameAsync(GameModel game)
@@ -219,6 +233,23 @@ namespace CTDao.Dao.Game
             }
         }
 
+        public async Task<int> GetLastRoundAsync()
+        {
+            using (var connection = new MySqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+                int lastRoundNumber = await connection.ExecuteScalarAsync<int>(QueryGetLastRound,
+                    new { id_tournament = TournamentDao.createdtournamentId });
+
+
+                Console.WriteLine("[Last round number register in db]:" + lastRoundNumber);
+
+                int nextRoundNumber = lastRoundNumber + 1;
+
+                return nextRoundNumber; // Se devuelve la siguiente ronda
+            }
+        }
+
         public async Task<int> CreateRoundAsync(RoundModel round)
         {
             using (var connection = new MySqlConnection(_connectionString))
@@ -231,7 +262,7 @@ namespace CTDao.Dao.Game
                         var roundId = await connection.ExecuteScalarAsync<int>(QueryCreateRound, new
                         {
                             Id_Tournament = TournamentDao.createdtournamentId,
-                            round_number = round.Round_Number,
+                            round_number = GetLastRoundAsync(),
                         }, transaction);
 
                         await transaction.CommitAsync();
@@ -250,6 +281,7 @@ namespace CTDao.Dao.Game
                 }
             }
         }
+
 
         public async Task<int> CreateMatchAsync(MatchModel match)
         {
@@ -295,13 +327,19 @@ namespace CTDao.Dao.Game
                 {
                     try
                     {
+                        int round_number = await GetLastRoundAsync();
+
+                        Console.WriteLine("[Next Round number]:"+round_number);
+
+                        
+
                         var affectedRows = await connection.ExecuteAsync(QuerySetNextRound, new
                         {
                             id_tournament = TournamentDao.createdtournamentId,
-                        }, transaction: transaction);
+                            round_number = round_number
+                        }, transaction);
 
                         await transaction.CommitAsync();
-
                         return affectedRows;
                     }
                     catch (Exception)
@@ -312,6 +350,38 @@ namespace CTDao.Dao.Game
                 }
             }
         }
+
+        public async Task<int> SetRoundCompletedAsync(int roundNumber)
+        {
+            using (var connection = new MySqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+                using (var transaction = await connection.BeginTransactionAsync())
+                {
+                    try
+                    {
+                        int affectedRows = await connection.ExecuteAsync(QueryCompleteRound, new
+                        {
+                            id_tournament = TournamentDao.createdtournamentId,
+                            round_number = roundNumber
+                        }, transaction: transaction);
+
+
+                        Console.WriteLine("[Completed Round Number]:"+roundNumber);
+
+                        await transaction.CommitAsync();
+                        return affectedRows;
+                    }
+                    catch (Exception)
+                    {
+                        await transaction.RollbackAsync();
+                        throw;
+                    }
+                }
+            }
+        }
+
+
     }
 }
 
