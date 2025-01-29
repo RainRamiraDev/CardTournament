@@ -49,8 +49,7 @@
               "RelativeToolTip": "..\\CTDao\\Dao\\Game\\GameDao.cs",
               "ViewState": "AgIAAJAAAAAAAAAAAADwv78AAAAIAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-28T23:30:53.813Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-01-28T23:30:53.813Z"
             },
             {
               "$type": "Document",
@@ -62,8 +61,7 @@
               "RelativeToolTip": "Controllers\\User\\PlayerController.cs",
               "ViewState": "AgIAAEgAAAAAAAAAAAAAwGIAAAAMAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-01-28T23:19:07.82Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-01-28T23:19:07.82Z"
             },
             {
               "$type": "Document",
@@ -73,7 +71,7 @@
               "RelativeDocumentMoniker": "Controllers\\GameController.cs",
               "ToolTip": "C:\\Repositorios\\CardTournament\\CTApp\\Controllers\\GameController.cs",
               "RelativeToolTip": "Controllers\\GameController.cs",
-              "ViewState": "AgIAADEAAAAAAAAAAAAkwEAAAABAAAAAAAAAAA==",
+              "ViewState": "AgIAADEAAAAAAAAAAAAkwEAAAABHAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-01-28T23:19:07.873Z",
               "EditorCaption": ""
