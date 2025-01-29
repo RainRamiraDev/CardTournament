@@ -159,20 +159,28 @@ namespace CTService.Implementation.Game
                     };
 
                     await CreateMatchAsync(match);
+               
+                
                 }
 
                 playersIds = winners;
 
-              
 
-                await _gameDao.SetNextRoundAsync(); // mejorar no funciona como esperado;
 
-                roundNumber++;
 
                 await _gameDao.SetRoundCompletedAsync(roundNumber); //⚠️ //roundNumber
 
+                roundNumber++;
+
                 Console.WriteLine("[Round number incrised]");
             }
+
+
+            await _gameDao.SetRoundCompletedAsync(roundNumber); // completar la ultima ronda
+
+            await _gameDao.SetNextRoundAsync();
+
+            
 
             await _gameDao.SetGameWinnerAsync(playersIds[0]);
 
