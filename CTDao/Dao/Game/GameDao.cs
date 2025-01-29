@@ -52,7 +52,7 @@ namespace CTDao.Dao.Game
 
         private readonly string QuerySetWinner = @"
         UPDATE T_USERS 
-        SET games_win = games_win + 1 
+        SET games_won = games_won + 1 
         WHERE id_user = @id_player;
     ";
 
@@ -71,8 +71,8 @@ namespace CTDao.Dao.Game
             SELECT LAST_INSERT_ID();
         ";
 
-        private readonly string QueryCreateMatch = @"INSERT INTO T_MATCHES (id_round, id_game, id_player1, id_player2) 
-        VALUES (@id_round, @id_game, @id_player1, @id_player2);
+        private readonly string QueryCreateMatch = @"INSERT INTO T_MATCHES (id_round, id_game, id_player1, id_player2, winner) 
+        VALUES (@id_round, @id_game, @id_player1, @id_player2,@winner);
         SELECT LAST_INSERT_ID();
         ";
 
@@ -266,6 +266,7 @@ namespace CTDao.Dao.Game
                             id_game = GameDao.createdGameId,
                             id_player1 = match.Id_Player1,
                             id_player2 = match.Id_Player2,
+                            winner = match.Winner
 
                         }, transaction);
 

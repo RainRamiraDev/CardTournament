@@ -65,6 +65,7 @@ namespace CTService.Implementation.Game
                 Id_Game = match.Id_Game,
                 Id_Player1 = match.Id_Player1,
                 Id_Player2 = match.Id_Player2,
+                Winner = match.Winner
             };
 
             //    Console.WriteLine("Match actual:" + gameModel.Id_Tournament);
@@ -109,6 +110,8 @@ namespace CTService.Implementation.Game
         {
             List<int> playersIds = await _gameDao.GetTournamentPlayers(TournamentDao.createdtournamentId);
 
+            Console.WriteLine(string.Join("players ids :,"+playersIds));
+
             if (playersIds.Count < 2)
             {
                 throw new InvalidOperationException("Se necesitan al menos dos jugadores para iniciar el torneo.");
@@ -126,7 +129,7 @@ namespace CTService.Implementation.Game
                 {
                     if (i + 1 >= playersIds.Count)
                     {
-                        winners.Add(playersIds[i]); // Jugador avanza sin jugar
+                        winners.Add(playersIds[i]);
                         continue;
                     }
 
@@ -139,8 +142,10 @@ namespace CTService.Implementation.Game
                     int winner = player1Ki > player2Ki ? player1 : player2;
                     int loser = player1Ki > player2Ki ? player2 : player1;
 
+                    Console.WriteLine($"player1Ki: {player1Ki}, player2Ki: {player2Ki}, winner: {winner}");
+
                     winners.Add(winner);
-                    eliminatedPlayers.Add(loser); // Evita valores duplicados
+                    eliminatedPlayers.Add(loser);
 
                     var match = new MatchDto
                     {
@@ -155,7 +160,9 @@ namespace CTService.Implementation.Game
                 }
 
                 playersIds = winners;
-                await _gameDao.SetNextRoundAsync();
+
+                await _gameDao.SetNextRoundAsync(); // mejorar no funciona como esperado;
+                
                 roundNumber++;
             }
 
