@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generate SQL Inserts for Magic: The Gathering Series</title>
+</head>
+<body>
+    <h1>Generate SQL Inserts for Magic: The Gathering Series</h1>
+    <button onclick="generateInserts()">Generate Inserts</button>
+    <textarea id="sqlOutput" rows="20" cols="100" readonly></textarea>
+
+    <script>
+        function generateInserts() {
+            const series = [
+                { name: 'Alpha', releaseDate: '1993-10-01' },
+                { name: 'Beta', releaseDate: '1993-10-01' },
+                { name: 'Unlimited', releaseDate: '1993-12-01' },
+                { name: 'Arabian Nights', releaseDate: '1993-12-17' },
+                { name: 'Antiquities', releaseDate: '1994-03-01' },
+                { name: 'Legends', releaseDate: '1994-06-01' },
+                { name: 'The Dark', releaseDate: '1994-08-05' },
+                { name: 'Mirage', releaseDate: '1996-05-20' },
+                { name: 'Tempest', releaseDate: '1997-02-24' },
+                { name: 'Urza\'s Saga', releaseDate: '1998-10-12' }
+            ];
+
+            let sqlInserts = 'INSERT INTO T_SERIES (id_series, series_name, release_date) VALUES\n';
+
+            series.forEach((serie, index) => {
+                const insert = `(${index + 1}, '${serie.name}', '${serie.releaseDate}')${index !== series.length - 1 ? ',' : ';'}\n`;
+                sqlInserts += insert;
+            });
+
+            // Output the SQL statements into the textarea for easy copy-pasting
+            document.getElementById('sqlOutput').value = sqlInserts;
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,12 @@
+C:\Repositorios\CardTournament\CTConfigurations\bin\Debug\net7.0\CTConfigurations.deps.json
+C:\Repositorios\CardTournament\CTConfigurations\bin\Debug\net7.0\CTConfigurations.dll
+C:\Repositorios\CardTournament\CTConfigurations\bin\Debug\net7.0\CTConfigurations.pdb
+C:\Repositorios\CardTournament\CTConfigurations\obj\Debug\net7.0\CTConfigurations.GeneratedMSBuildEditorConfig.editorconfig
+C:\Repositorios\CardTournament\CTConfigurations\obj\Debug\net7.0\CTConfigurations.AssemblyInfoInputs.cache
+C:\Repositorios\CardTournament\CTConfigurations\obj\Debug\net7.0\CTConfigurations.AssemblyInfo.cs
+C:\Repositorios\CardTournament\CTConfigurations\obj\Debug\net7.0\CTConfigurations.csproj.CoreCompileInputs.cache
+C:\Repositorios\CardTournament\CTConfigurations\obj\Debug\net7.0\CTConfigurations.sourcelink.json
+C:\Repositorios\CardTournament\CTConfigurations\obj\Debug\net7.0\CTConfigurations.dll
+C:\Repositorios\CardTournament\CTConfigurations\obj\Debug\net7.0\refint\CTConfigurations.dll
+C:\Repositorios\CardTournament\CTConfigurations\obj\Debug\net7.0\CTConfigurations.pdb
+C:\Repositorios\CardTournament\CTConfigurations\obj\Debug\net7.0\ref\CTConfigurations.dll
