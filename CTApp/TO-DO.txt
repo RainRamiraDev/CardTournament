@@ -1,9 +1,0 @@
-Tasks:
-
-- manejar la validacion de los endpoints de forma gloval y general						(/)
-- usar fluent validations para validar los dto											(/)
-- extraer la definicion de las cookies a metodos privados								(/)
-- manejar el error de base de datos														()
--revizar los servicios																	()
-
--revizar los dao																		()
