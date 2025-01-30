@@ -62,22 +62,6 @@ namespace CTApp.Controllers.User
         }
 
 
-        //[Authorize(Roles = "4")]
-        //[HttpPost("GetCardsBySeriesName")]
-        //public async Task<IActionResult> GetCardsBySeriesName([FromBody] CardsBySeriesNameDto series_names)
-        //{
-        //    if (series_names == null || series_names.Series_Name == null || !series_names.Series_Name.Any())
-        //        return BadRequest(ApiResponse<IEnumerable<ShowCardsDto>>.ErrorResponse("Debe proporcionar al menos un nombre de serie."));
-
-        //    var cards = await _cardService.GetCardsBySeriesNames(series_names.Series_Name);
-
-        //    if (cards is null || !cards.Any())
-        //        return NotFound(ApiResponse<IEnumerable<ShowCardsDto>>.ErrorResponse("Cartas no encontradas."));
-
-        //    return Ok(ApiResponse<IEnumerable<ShowCardsDto>>.SuccessResponse("Cartas obtenidas exitosamente.", cards));
-        //}
-
-
         [Authorize(Roles = "4")]
         [HttpPost("SetTournamentDecks")]
         public async Task<IActionResult> SetTournamentSeries([FromBody] TournamentDecksDto tournamentDeckDto)
