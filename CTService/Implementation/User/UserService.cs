@@ -65,14 +65,12 @@ namespace CTService.Implementation.User
             {
                 Fullname = LoginDto.Fullname,
                 Passcode = hashedPassword,
-                Id_Rol = LoginDto.Id_Rol  // Agregado el id_rol al modelo
+                Id_Rol = LoginDto.Id_Rol 
             };
 
             return await _userDao.CreateWhitHashedPasswordAsync(loginModel);
         }
 
-
-        //Judge
         public async Task<IEnumerable<JudgeDto>> GetAllJudgesAsync()
         {
             var userModels = await _userDao.GetAllJudgeAsync();

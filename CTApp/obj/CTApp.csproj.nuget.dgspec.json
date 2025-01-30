@@ -187,6 +187,9 @@
             "projectReferences": {
               "C:\\Repositorios\\CardTournament\\CTDataModels\\CTDataModels.csproj": {
                 "projectPath": "C:\\Repositorios\\CardTournament\\CTDataModels\\CTDataModels.csproj"
+              },
+              "C:\\Repositorios\\CardTournament\\CTDto\\CTDto.csproj": {
+                "projectPath": "C:\\Repositorios\\CardTournament\\CTDto\\CTDto.csproj"
               }
             }
           }

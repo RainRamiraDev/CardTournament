@@ -85,7 +85,6 @@ namespace CTDao.Dao.Card
             return cardSeriesIds.ToList();
         }
 
-
         public async Task<IEnumerable<ShowCardsModel>> GetAllAsync()
         {
             using (var connection = new MySqlConnection(_connectionString))

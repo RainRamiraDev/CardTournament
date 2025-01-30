@@ -38,7 +38,7 @@ namespace CTApp.Controllers.User
                     HttpOnly = true,
                     Secure = true,
                     SameSite = SameSiteMode.Strict,
-                    Expires = expirationDate ?? DateTime.UtcNow.AddDays(_keysConfiguration.ExpirationDays) // Usar el valor desde la configuración
+                    Expires = expirationDate ?? DateTime.UtcNow.AddDays(_keysConfiguration.ExpirationDays)
                 });
         }
 
@@ -57,11 +57,11 @@ namespace CTApp.Controllers.User
             var accessToken = _refreshTokenService.GenerateAccessToken(user.Id_User, user.Fullname,user.Id_Rol);
 
             Guid refreshToken = Guid.NewGuid();
-            DateTime expirationDate = DateTime.UtcNow.AddDays(_keysConfiguration.ExpirationDays); // Usar el valor desde la configuración
+            DateTime expirationDate = DateTime.UtcNow.AddDays(_keysConfiguration.ExpirationDays);
 
             await _refreshTokenService.SaveRefreshTokenAsync(refreshToken, user.Id_User, expirationDate);
 
-            ManageRefreshTokenCookie(refreshToken.ToString(), expirationDate);  // Utilizamos el método auxiliar para la cookie
+            ManageRefreshTokenCookie(refreshToken.ToString(), expirationDate);
             return Ok(new { AccessToken = accessToken });
         }
 
@@ -78,7 +78,7 @@ namespace CTApp.Controllers.User
 
             var (newAccessToken, newRefreshToken) = await _refreshTokenService.RefreshAccessTokenAsync(refreshToken);
 
-            ManageRefreshTokenCookie(newRefreshToken.ToString(), DateTime.UtcNow.AddDays(7)); // Usamos el método auxiliar para la nueva cookie
+            ManageRefreshTokenCookie(newRefreshToken.ToString(), DateTime.UtcNow.AddDays(7));
             return Ok(new { AccessToken = newAccessToken });
         }
 
@@ -111,9 +111,8 @@ namespace CTApp.Controllers.User
             {
                 Fullname = loginDto.Fullname,
                 Passcode = loginDto.Passcode,
-                Id_Rol = loginDto.Id_Rol  // Aseguramos que el id_rol también esté en la respuesta
+                Id_Rol = loginDto.Id_Rol 
             };
-
             var response = ApiResponse<LoginRequestDto>.SuccessResponse("Usuario creado exitosamente", loginDto);
             return Created(string.Empty, response);
         }

@@ -63,7 +63,6 @@ namespace CTService.Implementation.RefreshToken
             return (newAccessToken, newRefreshToken);
         }
 
-
         public async Task<bool> LogoutAsync(Guid refreshToken)
         {
             int rowsAffected = await _refreshTokenDao.DeleteRefreshTokenAsync(refreshToken);
@@ -79,7 +78,7 @@ namespace CTService.Implementation.RefreshToken
     {
         new Claim(ClaimTypes.Name, userName),
         new Claim(ClaimTypes.NameIdentifier, userId.ToString()),
-        new Claim(ClaimTypes.Role, userRole.ToString()) // El rol se guarda en el token
+        new Claim(ClaimTypes.Role, userRole.ToString())
     };
 
             var token = new JwtSecurityToken(
@@ -92,7 +91,6 @@ namespace CTService.Implementation.RefreshToken
 
             return await Task.FromResult(new JwtSecurityTokenHandler().WriteToken(token));
         }
-
 
         public async Task SaveRefreshTokenAsync(Guid token, int userId, DateTime expiryDate)
         {

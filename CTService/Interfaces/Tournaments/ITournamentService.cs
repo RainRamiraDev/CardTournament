@@ -13,7 +13,6 @@ namespace CTService.Interfaces.Tournaments
         //Tournament
         Task<int> CreateTournamentAsync(TournamentDto tournamentDto);
         Task<IEnumerable<TournamentDto>> GetAllTournamentAsync();
-
         Task<IEnumerable<AvailableTournamentsDto>> GetAllAvailableTournamentsAsync();
 
         //Judges

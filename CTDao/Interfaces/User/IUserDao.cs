@@ -11,13 +11,15 @@ namespace CTDao.Interfaces.User
     public interface IUserDao
     {
         //log In
-
         Task<int> CreateWhitHashedPasswordAsync(LoginRequestModel user);
         Task<UserModel> GetUserWhitTokenAsync(int id);
         Task<UserModel> LogInAsync(string fullname);
 
         //Judge
         Task<IEnumerable<UserModel>> GetAllJudgeAsync();
+
+        //Player
+        Task<int> GetPlayerKiByIdAsync(int playerIds);
 
 
     }

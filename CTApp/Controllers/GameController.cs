@@ -23,14 +23,14 @@ namespace CTApp.Controllers
         {
             if (gameDto == null)
             {
-                return BadRequest("Invalid tournament data.");
+                return BadRequest("Invalid game data.");
             }
 
             var id = await _gameService.CreateGameAsync(gameDto);
 
             if (id == 0)
             {
-                return StatusCode(500, "Error creating tournament.");
+                return StatusCode(500, "Error creating game.");
             }
 
             return Created("", new { id });
@@ -50,10 +50,30 @@ namespace CTApp.Controllers
 
             if (id == 0)
             {
-                return StatusCode(500, "Error creating tournament.");
+                return StatusCode(500, "Error creating game.");
             }
 
             return Created("", new { id });
         }
+
+        [Authorize(Roles = "1")]
+        [HttpPost("resolve")]
+        public async Task<IActionResult> ResolveGame()
+        {
+            try
+            {
+                GameResultDto result = await _gameService.ResolveGameAsync();
+                return Ok(result);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Error interno del servidor.", error = ex.Message });
+            }
+        }
+
     }
 }
