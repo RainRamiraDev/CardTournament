@@ -23,19 +23,6 @@ namespace CTApp.Controllers.User
             _cardService = cardService;
         }
 
-        //[Authorize(Roles = "4")] 
-        //[HttpGet("GetTournaments")]
-        //public async Task<IActionResult> GetTournaments()
-        //{
-        //    var tournaments = await _tournamentService.GetAllTournamentAsync();
-
-        //    if (tournaments is null || !tournaments.Any())
-        //        return NotFound(ApiResponse<IEnumerable<TournamentDto>>.ErrorResponse("Torneos no encontrados."));
-
-        //    return Ok(ApiResponse<IEnumerable<TournamentDto>>.SuccessResponse("torneos obtenidos exitosamente.", tournaments));
-        //}
-
-
         [Authorize(Roles = "4")] 
         [HttpGet("GetAvailableTournaments")]
         public async Task<IActionResult> GetAvailableTournaments()
@@ -75,20 +62,20 @@ namespace CTApp.Controllers.User
         }
 
 
-        [Authorize(Roles = "4")]
-        [HttpPost("GetCardsBySeriesName")]
-        public async Task<IActionResult> GetCardsBySeriesName([FromBody] CardsBySeriesNameDto series_names)
-        {
-            if (series_names == null || series_names.Series_Name == null || !series_names.Series_Name.Any())
-                return BadRequest(ApiResponse<IEnumerable<ShowCardsDto>>.ErrorResponse("Debe proporcionar al menos un nombre de serie."));
+        //[Authorize(Roles = "4")]
+        //[HttpPost("GetCardsBySeriesName")]
+        //public async Task<IActionResult> GetCardsBySeriesName([FromBody] CardsBySeriesNameDto series_names)
+        //{
+        //    if (series_names == null || series_names.Series_Name == null || !series_names.Series_Name.Any())
+        //        return BadRequest(ApiResponse<IEnumerable<ShowCardsDto>>.ErrorResponse("Debe proporcionar al menos un nombre de serie."));
 
-            var cards = await _cardService.GetCardsBySeriesNames(series_names.Series_Name);
+        //    var cards = await _cardService.GetCardsBySeriesNames(series_names.Series_Name);
 
-            if (cards is null || !cards.Any())
-                return NotFound(ApiResponse<IEnumerable<ShowCardsDto>>.ErrorResponse("Cartas no encontradas."));
+        //    if (cards is null || !cards.Any())
+        //        return NotFound(ApiResponse<IEnumerable<ShowCardsDto>>.ErrorResponse("Cartas no encontradas."));
 
-            return Ok(ApiResponse<IEnumerable<ShowCardsDto>>.SuccessResponse("Cartas obtenidas exitosamente.", cards));
-        }
+        //    return Ok(ApiResponse<IEnumerable<ShowCardsDto>>.SuccessResponse("Cartas obtenidas exitosamente.", cards));
+        //}
 
 
         [Authorize(Roles = "4")]

@@ -26,6 +26,7 @@ namespace CTService.Implementation.Game
 
         private readonly IUserDao _userDao;
 
+
         public GameService(IGameDao gameDao, ITournamentDao touurnamentDao,IUserDao userDao)
         {
             _gameDao = gameDao;
@@ -46,8 +47,6 @@ namespace CTService.Implementation.Game
                 Id_Tournament = TournamentDao.createdtournamentId,
                 Start_Date = DateTime.Now,
             };
-
-            Console.WriteLine("Torneo actual:"+gameModel.Id_Tournament);
 
             return await _gameDao.CreateGameAsync(gameModel);
         }
@@ -108,17 +107,17 @@ namespace CTService.Implementation.Game
         {
             List<int> playersIds = await _gameDao.GetTournamentPlayers(TournamentDao.createdtournamentId);
 
-            Console.WriteLine(string.Join("players ids :,"+playersIds));
-
             if (playersIds.Count < 2)
             {
                 throw new InvalidOperationException("Se necesitan al menos dos jugadores para iniciar el torneo.");
             }
 
             int roundNumber = await _gameDao.GetLastRoundAsync();
-            Console.WriteLine($"[DEBUG] Última ronda obtenida: {roundNumber}");
 
             HashSet<int> eliminatedPlayers = new HashSet<int>();
+
+            // torneo fase 2
+            await _tournamentDao.SetTournamentToNextPhase();
 
             while (playersIds.Count > 1)
             {
@@ -156,29 +155,21 @@ namespace CTService.Implementation.Game
                     };
 
                     await CreateMatchAsync(match);
-               
-                
                 }
 
                 playersIds = winners;
 
-
-
-
-                await _gameDao.SetRoundCompletedAsync(roundNumber); //⚠️ //roundNumber
+                await _gameDao.SetRoundCompletedAsync(roundNumber);
 
                 roundNumber++;
 
                 Console.WriteLine("[Round number incrised]");
             }
 
-            Console.WriteLine($"Marcando como completada la ronda {roundNumber - 1}");
-            await _gameDao.SetRoundCompletedAsync(roundNumber - 1); // completar la ultima ronda como is_completed
+            // torneo fase 3
+            await _tournamentDao.SetTournamentToNextPhase();
 
-            //await _gameDao.SetNextRoundAsync();
-
-            
-
+            await _gameDao.SetRoundCompletedAsync(roundNumber - 1);
             await _gameDao.SetGameWinnerAsync(playersIds[0]);
 
             if (eliminatedPlayers.Count > 0)
@@ -203,8 +194,6 @@ namespace CTService.Implementation.Game
             };
             return await _gameDao.CreateRoundAsync(roundModel);
         }
-
-
 
     }
 }

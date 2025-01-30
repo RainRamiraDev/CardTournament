@@ -1,5 +1,3 @@
-
-
 using CTApp.Middleware;
 using CTConfigurations;
 using CTDao.Dao.Card;

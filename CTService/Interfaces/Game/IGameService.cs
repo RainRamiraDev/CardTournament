@@ -14,7 +14,6 @@ namespace CTService.Interfaces.Game
 
         Task<int> InsertGamePlayersAsync(GamePlayersDto gamePlayers);
 
-
         Task<int> CreateRoundAsync(int roundNumber);
 
         Task<int> CreateMatchAsync(MatchDto match);

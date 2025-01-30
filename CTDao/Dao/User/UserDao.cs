@@ -77,8 +77,6 @@ namespace CTDao.Dao.User
             using (var connection = new MySqlConnection(_connectionString))
             {
                 await connection.OpenAsync();
-
-            
                 var ki = await connection.QueryFirstOrDefaultAsync<int>(
                     QueryGetPlayersRankIds,
                     new { Id = playerId }

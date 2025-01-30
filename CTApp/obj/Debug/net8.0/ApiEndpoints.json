@@ -163,22 +163,6 @@
   },
   {
     "ContainingType": "CTApp.Controllers.User.PlayerController",
-    "Method": "GetCardsBySeriesName",
-    "RelativePath": "api/Player/GetCardsBySeriesName",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "series_names",
-        "Type": "CTDto.Card.CardsBySeriesNameDto",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "CTApp.Controllers.User.PlayerController",
     "Method": "SetTournamentSeries",
     "RelativePath": "api/Player/SetTournamentDecks",
     "HttpMethod": "POST",

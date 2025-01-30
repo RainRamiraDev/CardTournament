@@ -21,8 +21,6 @@ namespace CTService.Implementation.Card
         public async Task<IEnumerable<ShowCardsDto>> GetAllCardsAsync()
         {
             var cards = await _cardDao.GetAllAsync();
-
-            // Mapeo de CardModel a CardDto
             var cardDtos = cards.Select(card => new ShowCardsDto
             {
                 Series_name = card.Series_name,
@@ -53,7 +51,6 @@ namespace CTService.Implementation.Card
                 Release_Date = card.Release_Date,
             });
         }
-
 
         public async Task<List<int>> GetCardsIdsByIllustrationAsync(List<string> cardsIllustrations)
         {

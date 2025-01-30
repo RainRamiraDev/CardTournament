@@ -12,8 +12,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace CTApp.Controllers.User
 {
-
-
     [ApiController]
     [Route("api/[controller]")]
 
@@ -22,8 +20,6 @@ namespace CTApp.Controllers.User
         private readonly IUserService _userService;
 
         private readonly ITournamentService _tournamentService;
-
-     
 
         public OrganizerController(IUserService userService, ITournamentService tournamentService)
         {
@@ -114,12 +110,6 @@ namespace CTApp.Controllers.User
                 return StatusCode(500, "An unexpected error occurred.");
             }
         }
-
-
-
-
-
-
 
     }
 }

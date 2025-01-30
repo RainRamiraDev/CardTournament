@@ -90,6 +90,8 @@ namespace CTDao.Dao.Game
 	  	 round_number = @round_number;
     ";
 
+        private readonly string QueryGetLastInsertId = "SELECT LAST_INSERT_ID();";
+
         public async Task<int> CreateGameAsync(GameModel game)
         {
             using (var connection = new MySqlConnection(_connectionString))
@@ -106,8 +108,6 @@ namespace CTDao.Dao.Game
                         }, transaction);
 
                         await transaction.CommitAsync();
-
-                        Console.WriteLine("game id = "+gameId);
 
                         StorageGameId(gameId);
 
@@ -160,7 +160,6 @@ namespace CTDao.Dao.Game
             }
         }
 
-
         public async Task<int> SetGameWinnerAsync(int winner)
         {
             using (var connection = new MySqlConnection(_connectionString))
@@ -170,7 +169,6 @@ namespace CTDao.Dao.Game
                 {
                     try
                     {
-                        // Se usa ExecuteAsync ya que UPDATE no devuelve un valor escalar
                         int rowsAffected = await connection.ExecuteAsync(QuerySetWinner, new { id_player = winner }, transaction);
 
                         await transaction.CommitAsync();
@@ -192,8 +190,6 @@ namespace CTDao.Dao.Game
                 await connection.OpenAsync();
 
                 var playersIds = await connection.QueryAsync<int>(QueryGetPlayersIds, new { id_tournament = tournamentId });
-
-                Console.WriteLine(String.Concat(","+playersIds));
 
                 return playersIds.ToList();
             }
@@ -235,14 +231,10 @@ namespace CTDao.Dao.Game
                 int lastRoundNumber = await connection.ExecuteScalarAsync<int>(
                     QueryGetLastRound,
                     new { id_tournament = TournamentDao.createdtournamentId });
-
-                // Asegurar que no hay huecos en la numeración
                 int nextRoundNumber = lastRoundNumber + 1;
                 return nextRoundNumber;
             }
         }
-
-        private readonly string QueryGetLastInsertId = "SELECT LAST_INSERT_ID();";
 
         public async Task<int> CreateRoundAsync(RoundModel round)
         {
@@ -253,19 +245,16 @@ namespace CTDao.Dao.Game
                 {
                     try
                     {
-                        // Ejecuta el INSERT
                         await connection.ExecuteAsync(QueryCreateRound, new
                         {
                             Id_Tournament = TournamentDao.createdtournamentId,
                             round_number = round.Round_Number
                         }, transaction);
 
-                        // Ejecuta el SELECT LAST_INSERT_ID() para obtener el ID
                         int roundId = await connection.ExecuteScalarAsync<int>(QueryGetLastInsertId, transaction);
 
                         await transaction.CommitAsync();
 
-                        // Almacenar el roundId
                         StorageRoundId(roundId);
 
                         return roundId;
@@ -278,7 +267,6 @@ namespace CTDao.Dao.Game
                 }
             }
         }
-
 
         public async Task<int> CreateMatchAsync(MatchModel match)
         {
@@ -300,10 +288,6 @@ namespace CTDao.Dao.Game
                         }, transaction);
 
                         await transaction.CommitAsync();
-
-                        //Console.WriteLine("game id = " + gameId);
-
-
                         return matchId;
                     }
                     catch (Exception)
@@ -327,7 +311,6 @@ namespace CTDao.Dao.Game
                         int lastRoundNumber = await GetLastRoundAsync();
                         Console.WriteLine("[Next Round number]:" + lastRoundNumber);
 
-                        // Insertar solo si la última ronda realmente existe
                         int affectedRows = await connection.ExecuteAsync(
                             QuerySetNextRound,
                             new { id_tournament = TournamentDao.createdtournamentId, round_number = lastRoundNumber },
@@ -344,7 +327,6 @@ namespace CTDao.Dao.Game
                 }
             }
         }
-
 
         public async Task<int> SetRoundCompletedAsync(int roundNumber)
         {

@@ -23,14 +23,14 @@ namespace CTApp.Controllers
         {
             if (gameDto == null)
             {
-                return BadRequest("Invalid tournament data.");
+                return BadRequest("Invalid game data.");
             }
 
             var id = await _gameService.CreateGameAsync(gameDto);
 
             if (id == 0)
             {
-                return StatusCode(500, "Error creating tournament.");
+                return StatusCode(500, "Error creating game.");
             }
 
             return Created("", new { id });
@@ -50,7 +50,7 @@ namespace CTApp.Controllers
 
             if (id == 0)
             {
-                return StatusCode(500, "Error creating tournament.");
+                return StatusCode(500, "Error creating game.");
             }
 
             return Created("", new { id });

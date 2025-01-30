@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Data.SqlTypes;
 using System.Linq;
 using System.Net.NetworkInformation;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
@@ -110,6 +111,13 @@ namespace CTDao.Dao.Tournaments
                                              VALUES (@id_tournament, @id_card_series, @id_owner);";
 
         private readonly string QueryInsertPlayers = @"INSERT INTO T_TOURN_PLAYERS (id_tournament, id_player) VALUES (@Id_tournament,@id_player);";
+
+        private readonly string QuerySetTournamentNextPhase = @"UPDATE T_TOURNAMENTS
+        SET current_phase = current_phase + 1
+        WHERE id_tournament = @id_tournament AND current_phase < 3";
+
+
+        private readonly string QueryGetCurrentPhase = @"SELECT current_phase FROM T_TOURNAMENTS WHERE id_tournament = @id_tournament;";
 
 
         public async Task<int> CreateTournamentAsync(TournamentModel tournament)
@@ -276,7 +284,7 @@ namespace CTDao.Dao.Tournaments
                     affectedRows += await connection.ExecuteAsync(QueryInsertDecks, new
                     {
                         Id_tournament = createdtournamentId,
-                        Id_Card_Series = cardId,  // Correcto
+                        Id_Card_Series = cardId,
                         Id_Owner = owner
                     }, transaction).ConfigureAwait(false);
                 }
@@ -284,8 +292,6 @@ namespace CTDao.Dao.Tournaments
                 await transaction.CommitAsync().ConfigureAwait(false);
                 return affectedRows;
             }
-
-
             catch (Exception ex)
             {
                 await transaction.RollbackAsync().ConfigureAwait(false);
@@ -298,7 +304,7 @@ namespace CTDao.Dao.Tournaments
         {
             if (player == null)
             {
-                throw new ArgumentException("La lista de jueces no puede estar vacía.", nameof(player));
+                throw new ArgumentException("La lista de players no puede estar vacía.", nameof(player));
             }
 
             using (var connection = new MySqlConnection(_connectionString))
@@ -324,10 +330,71 @@ namespace CTDao.Dao.Tournaments
                     catch (Exception ex)
                     {
                         await transaction.RollbackAsync();
-                        Console.WriteLine($"Error al insertar jueces en el torneo: {ex.Message}");
+                        Console.WriteLine($"Error al insertar players en el torneo: {ex.Message}");
                         throw;
                     }
                 }
+            }
+        }
+
+        public async Task<int> SetTournamentToNextPhase()
+        {
+            using (var connection = new MySqlConnection(_connectionString))
+            {
+                var id_tournament = createdtournamentId;
+
+             
+                int current_phase = await GetTournamentCurrentPhase(id_tournament);
+
+                if (current_phase >= 3)
+                {
+                    throw new InvalidOperationException("El torneo ya está en la fase final (fase 3).");
+                }
+
+                await connection.OpenAsync();
+                using (var transaction = await connection.BeginTransactionAsync())
+                {
+                    try
+                    {
+                        int rowsAffected = await connection.ExecuteAsync(QuerySetTournamentNextPhase,
+                                                                         new { id_tournament = id_tournament },
+                                                                         transaction);
+
+                        if (rowsAffected == 0)
+                        {
+                            throw new InvalidOperationException("No se pudo actualizar la fase del torneo, podría estar ya en la fase 3.");
+                        }
+
+                        await transaction.CommitAsync();
+                        return rowsAffected;
+                    }
+                    catch (Exception)
+                    {
+                        await transaction.RollbackAsync();
+                        throw;
+                    }
+                }
+            }
+        }
+
+        public async Task<int> GetTournamentCurrentPhase(int id_tournament)
+        {
+            using (var connection = new MySqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+
+               
+                var current_phase = await connection.QuerySingleOrDefaultAsync<int>(QueryGetCurrentPhase,
+                                                                                    new { id_tournament = id_tournament });
+
+                Console.WriteLine("[Creation Current Phase]:"+current_phase);
+
+                if (current_phase == 0)
+                {
+                    throw new InvalidOperationException("El torneo no existe o no tiene una fase definida.");
+                }
+
+                return current_phase;
             }
         }
     }

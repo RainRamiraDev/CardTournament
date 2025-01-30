@@ -16,12 +16,10 @@ namespace CTDao.Interfaces.Game
         Task<int> SetGameWinnerAsync(int winner);
         Task<int> SetGameLoserAsync(List<int> losers);
         Task<List<int>> GetTournamentPlayers(int tournamentId);
-        Task<int> CreateRoundAsync(RoundModel round); // !!!
-        Task<int> CreateMatchAsync(MatchModel match); // !!!
+        Task<int> CreateRoundAsync(RoundModel round); 
+        Task<int> CreateMatchAsync(MatchModel match); 
         Task<int> SetNextRoundAsync();
-
         Task<int> SetRoundCompletedAsync(int roundNumber);
-
         Task<int> GetLastRoundAsync();
     }
 }

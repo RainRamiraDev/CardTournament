@@ -39,11 +39,7 @@ namespace CTService.Implementation.Tournament
             }
 
             var cardIds = await _cardDao.GetCardIdsByIllustrationAsync(tournamentDecksDto.illustration);
-
-
             var cardSeriesIds = await _cardDao.GetIdCardSeriesByCardIdAsync(cardIds);
-
-            Console.WriteLine(string.Join(",",cardSeriesIds));
 
             if (cardSeriesIds == null || cardSeriesIds.Count == 0)
             {
@@ -121,12 +117,12 @@ namespace CTService.Implementation.Tournament
             {
                 Start_DateTime = tournament.Start_DateTime,
                 End_DateTime = tournament.End_DateTime,
-                Tournament_Country = tournament.Tournament_Country ?? string.Empty,  // Asignar vacío si es null
-                Organizer_Alias = tournament.Organizer_Alias ?? string.Empty,  // Asignar vacío si es null
-                Judges = tournament.Judges ?? string.Empty,  // Asignar vacío si es null
-                Series_Played = tournament.Series_Played ?? string.Empty,  // Asignar vacío si es null
-                Players = tournament.Players ?? string.Empty,  // Asignar vacío si es null
-                Disqualified_Players = tournament.Disqualified_Players ?? string.Empty,  // Asignar vacío si es null
+                Tournament_Country = tournament.Tournament_Country ?? string.Empty, 
+                Organizer_Alias = tournament.Organizer_Alias ?? string.Empty,  
+                Judges = tournament.Judges ?? string.Empty,  
+                Series_Played = tournament.Series_Played ?? string.Empty,  
+                Players = tournament.Players ?? string.Empty,  
+                Disqualified_Players = tournament.Disqualified_Players ?? string.Empty,
                 Total_Games = tournament.Total_Games,
                 Total_Rounds = tournament.Total_Rounds,
             });
@@ -139,7 +135,6 @@ namespace CTService.Implementation.Tournament
                 throw new ArgumentException("Invalid tournament data.");
             }
 
-            // Obtener los IDs de los jueces a partir de los alias
             var seriesIds = await _cardDao.GetSeriesIdsByNameAsync(tournamentseriesDto.Series_name);
 
             if (seriesIds == null || seriesIds.Count == 0)
@@ -147,10 +142,13 @@ namespace CTService.Implementation.Tournament
                 throw new ArgumentException("Invalid series name provided.");
             }
 
-            // Insertar los jueces en el torneo
             return await _tournamentDao.InsertTournamentSeriesAsync(seriesIds);
         }
 
-       
+        public async Task<int> SetTournamentToNextPhase()
+        {
+            var id_tournament = TournamentDao.createdtournamentId;
+            return await _tournamentDao.GetTournamentCurrentPhase(id_tournament);
+        }
     }
 }
