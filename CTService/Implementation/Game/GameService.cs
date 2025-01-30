@@ -119,6 +119,7 @@ namespace CTService.Implementation.Game
 
             //int roundNumber = 1;
             int roundNumber = await _gameDao.GetLastRoundAsync();
+            Console.WriteLine($"[DEBUG] Última ronda obtenida: {roundNumber}");
 
             HashSet<int> eliminatedPlayers = new HashSet<int>(); // Evita duplicados
 
@@ -175,10 +176,10 @@ namespace CTService.Implementation.Game
                 Console.WriteLine("[Round number incrised]");
             }
 
+            Console.WriteLine($"Marcando como completada la ronda {roundNumber - 1}");
+            await _gameDao.SetRoundCompletedAsync(roundNumber - 1); // completar la ultima ronda como is_completed
 
-            await _gameDao.SetRoundCompletedAsync(roundNumber); // completar la ultima ronda
-
-            await _gameDao.SetNextRoundAsync();
+            //await _gameDao.SetNextRoundAsync();
 
             
 
