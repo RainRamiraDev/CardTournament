@@ -291,7 +291,7 @@ namespace CTDao.Dao.Game
                     {
                         var matchId = await connection.ExecuteScalarAsync<int>(QueryCreateMatch, new
                         {
-                            id_round = GameDao.createdRoundId,
+                            id_round = match.Id_Round,
                             id_game = GameDao.createdGameId,
                             id_player1 = match.Id_Player1,
                             id_player2 = match.Id_Player2,
