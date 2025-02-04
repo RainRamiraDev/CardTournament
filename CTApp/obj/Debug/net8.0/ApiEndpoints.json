@@ -1,22 +1,6 @@
 [
   {
     "ContainingType": "CTApp.Controllers.GameController",
-    "Method": "CreateGame",
-    "RelativePath": "api/Game/CreateGame",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "gameDto",
-        "Type": "CTDto.Game.GameDto",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "CTApp.Controllers.GameController",
     "Method": "InsertGamePlayers",
     "RelativePath": "api/Game/InsertGamePlayers",
     "HttpMethod": "POST",
@@ -117,38 +101,6 @@
     "IsController": true,
     "Order": 0,
     "Parameters": [],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "CTApp.Controllers.User.OrganizerController",
-    "Method": "SetTournamentJudges",
-    "RelativePath": "api/Organizer/SetTournamentJudges",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "tournamentJudgeDto",
-        "Type": "CTDto.Tournaments.TournamentJudgeDto",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "CTApp.Controllers.User.OrganizerController",
-    "Method": "SetTournamentSeries",
-    "RelativePath": "api/Organizer/SetTournamentSeries",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "tournamentSeriesDto",
-        "Type": "CTDto.Tournaments.TournamentSeriesDto",
-        "IsRequired": true
-      }
-    ],
     "ReturnTypes": []
   },
   {

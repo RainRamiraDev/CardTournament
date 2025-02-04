@@ -1,6 +1,7 @@
 ﻿using CTDao.Dao.Card;
 using CTDao.Interfaces.Tournaments;
 using CTDataModels.Tournamets;
+using CTDto.Card;
 using Dapper;
 using MySql.Data.MySqlClient;
 using Org.BouncyCastle.Asn1;
@@ -216,11 +217,11 @@ namespace CTDao.Dao.Tournaments
 
        
 
-        public async Task<int> InsertTournamentDecksAsync(List<int> cardsIds, int owner)
+        public async Task<int> InsertTournamentDecksAsync(TournamentDecksModel tournamentDecks)
         {
-            if (cardsIds == null || !cardsIds.Any())
+            if (tournamentDecks.Id_card_series == null || !tournamentDecks.Id_card_series.Any())
             {
-                throw new ArgumentException("La lista de series no puede estar vacía.", nameof(cardsIds));
+                throw new ArgumentException("La lista de series no puede estar vacía.", nameof(tournamentDecks.Id_card_series));
             }
 
             await using var connection = new MySqlConnection(_connectionString);
@@ -231,13 +232,13 @@ namespace CTDao.Dao.Tournaments
             {
                 var affectedRows = 0;
 
-                foreach (var cardId in cardsIds)
+                foreach (var cardId in tournamentDecks.Id_card_series)
                 {
                     affectedRows += await connection.ExecuteAsync(QueryInsertDecks, new
                     {
-                        Id_tournament = createdtournamentId,
+                        Id_tournament = tournamentDecks.Id_Tournament,
                         Id_Card_Series = cardId,
-                        Id_Owner = owner
+                        Id_Owner = tournamentDecks.Id_Owner,
                     }, transaction).ConfigureAwait(false);
                 }
 
@@ -252,11 +253,11 @@ namespace CTDao.Dao.Tournaments
             }
         }
 
-        public async Task<int> InsertTournamentPlayersAsync(int player)
+        public async Task<int> InsertTournamentPlayersAsync(TournamentDecksModel tournamentDecks)
         {
-            if (player == null)
+            if (tournamentDecks.Id_Owner == null)
             {
-                throw new ArgumentException("La lista de players no puede estar vacía.", nameof(player));
+                throw new ArgumentException("La lista de players no puede estar vacía.", nameof(tournamentDecks.Id_Owner));
             }
 
             using (var connection = new MySqlConnection(_connectionString))
@@ -271,8 +272,8 @@ namespace CTDao.Dao.Tournaments
 
                         affectedRows += await connection.ExecuteAsync(QueryInsertPlayers, new
                         {
-                            Id_tournament = createdtournamentId,
-                            Id_player = player
+                            Id_tournament = tournamentDecks.Id_Tournament,
+                            Id_player = tournamentDecks.Id_Owner
                         }, transaction);
 
                         await transaction.CommitAsync();

@@ -30,7 +30,6 @@ namespace CTService.Implementation.Tournament
             _cardDao = cardDao;
         }
 
-
         public async Task<int> InsertTournamentDecksAsync(TournamentDecksDto tournamentDecksDto)
         {
             if (tournamentDecksDto == null)
@@ -46,9 +45,19 @@ namespace CTService.Implementation.Tournament
                 throw new ArgumentException("Invalid series name provided.");
             }
 
-           var userCreationResponse =  await _tournamentDao.InsertTournamentPlayersAsync(tournamentDecksDto.Id_Owner);
+            var tournamentDecksModel = new TournamentDecksModel
+            {
+                Id_Tournament = tournamentDecksDto.Id_Tournament,
+                Id_card_series = cardSeriesIds,
+                Id_Owner = tournamentDecksDto.Id_Owner,
+            };
 
-            return await _tournamentDao.InsertTournamentDecksAsync(cardSeriesIds,tournamentDecksDto.Id_Owner);
+
+           var userCreationResponse =  await _tournamentDao.InsertTournamentPlayersAsync(tournamentDecksModel);
+
+
+
+            return await _tournamentDao.InsertTournamentDecksAsync(tournamentDecksModel);
         }
 
         public async Task<int> CreateTournamentAsync(TournamentDto tournamentDto)

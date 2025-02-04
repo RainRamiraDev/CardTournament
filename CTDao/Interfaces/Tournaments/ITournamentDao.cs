@@ -1,5 +1,6 @@
 ﻿using CTDataModels.Card;
 using CTDataModels.Tournamets;
+using CTDto.Card;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,7 +23,7 @@ namespace CTDao.Interfaces.Tournaments
         Task<List<int>> GetJudgeIdsByAliasAsync(List<string> judgeAliases);
 
         //cards
-        Task<int> InsertTournamentDecksAsync(List<int> cardsIds, int owner);
-        Task<int> InsertTournamentPlayersAsync(int player);
+        Task<int> InsertTournamentDecksAsync(TournamentDecksModel tournamentDecks);
+        Task<int> InsertTournamentPlayersAsync(TournamentDecksModel tournamentDecks);
     }
 }
