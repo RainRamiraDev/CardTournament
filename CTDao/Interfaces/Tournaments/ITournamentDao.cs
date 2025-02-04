@@ -19,11 +19,9 @@ namespace CTDao.Interfaces.Tournaments
         Task<int> GetTournamentCurrentPhase(int id_tournament);
 
         //Judge
-        Task<int> InsertTournamentJudgesAsync(List<int> judgeIds);
         Task<List<int>> GetJudgeIdsByAliasAsync(List<string> judgeAliases);
 
         //cards
-        Task<int> InsertTournamentSeriesAsync(List<int> cardsIds);
         Task<int> InsertTournamentDecksAsync(List<int> cardsIds, int owner);
         Task<int> InsertTournamentPlayersAsync(int player);
     }

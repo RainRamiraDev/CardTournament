@@ -188,43 +188,7 @@ namespace CTDao.Dao.Tournaments
             }
         }
 
-        public async Task<int> InsertTournamentJudgesAsync(List<int> judgeIds)
-        {
-            if (judgeIds == null || !judgeIds.Any())
-            {
-                throw new ArgumentException("La lista de jueces no puede estar vacía.", nameof(judgeIds));
-            }
-
-            using (var connection = new MySqlConnection(_connectionString))
-            {
-                await connection.OpenAsync();
-                using (var transaction = await connection.BeginTransactionAsync())
-                {
-                    try
-                    {
-                        var affectedRows = 0;
-
-                        foreach (var judgeId in judgeIds)
-                        {
-                            affectedRows += await connection.ExecuteAsync(QueryInsertJudges, new
-                            {
-                                Id_tournament = createdtournamentId,
-                                Id_Judge = judgeId
-                            }, transaction);
-                        }
-
-                        await transaction.CommitAsync();
-                        return affectedRows;
-                    }
-                    catch (Exception ex)
-                    {
-                        await transaction.RollbackAsync();
-                        Console.WriteLine($"Error al insertar jueces en el torneo: {ex.Message}");
-                        throw;
-                    }
-                }
-            }
-        }
+       
 
         public async Task<List<int>> GetJudgeIdsByAliasAsync(List<string> judgeAliases)
         {
@@ -250,39 +214,7 @@ namespace CTDao.Dao.Tournaments
             }
         }
 
-        public async Task<int> InsertTournamentSeriesAsync(List<int> cardsIds)
-        {
-            if (cardsIds == null || !cardsIds.Any())
-            {
-                throw new ArgumentException("La lista de series no puede estar vacía.", nameof(cardsIds));
-            }
-
-            await using var connection = new MySqlConnection(_connectionString);
-            await connection.OpenAsync().ConfigureAwait(false);
-
-            await using var transaction = await connection.BeginTransactionAsync().ConfigureAwait(false);
-            try
-            {
-                var affectedRows = 0;
-
-                foreach (var cardId in cardsIds)
-                {
-                    affectedRows += await connection.ExecuteAsync(QueryInsertSeries, new
-                    {
-                        Id_tournament = createdtournamentId,
-                        Id_Series = cardId
-                    }, transaction).ConfigureAwait(false);
-                }
-
-                await transaction.CommitAsync().ConfigureAwait(false);
-                return affectedRows;
-            }
-            catch (Exception ex)
-            {
-                await transaction.RollbackAsync().ConfigureAwait(false);
-                throw new ApplicationException("Error al insertar series en el torneo.", ex);
-            }
-        }
+       
 
         public async Task<int> InsertTournamentDecksAsync(List<int> cardsIds, int owner)
         {

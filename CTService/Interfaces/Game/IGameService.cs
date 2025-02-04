@@ -10,7 +10,6 @@ namespace CTService.Interfaces.Game
 {
     public interface IGameService
     {
-        Task<int> CreateGameAsync(GameDto gameDto);
 
         Task<int> InsertGamePlayersAsync(GamePlayersDto gamePlayers);
 

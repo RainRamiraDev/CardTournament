@@ -34,22 +34,6 @@ namespace CTService.Implementation.Game
             _userDao = userDao;
         }
 
-        public async Task<int> CreateGameAsync(GameDto gameDto)
-        {
-
-            if (gameDto == null)
-            {
-                throw new ArgumentException("Invalid tournament data.");
-            }
-
-            var gameModel = new GameModel
-            {
-                Id_Tournament = TournamentDao.createdtournamentId,
-                Start_Date = DateTime.Now,
-            };
-
-            return await _gameDao.CreateGameAsync(gameModel);
-        }
 
         public async Task<int> CreateMatchAsync(MatchDto match)
         {

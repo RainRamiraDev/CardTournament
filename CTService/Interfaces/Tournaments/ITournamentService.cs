@@ -16,11 +16,9 @@ namespace CTService.Interfaces.Tournaments
         Task<IEnumerable<AvailableTournamentsDto>> GetAllAvailableTournamentsAsync();
 
         //Judges
-        Task<int> InsertTournamentJudgesAsync(TournamentJudgeDto tournamentJudgeDto);
         Task<List<int>> GetJudgeIdsByAliasAsync(List<string> judgeAliases);
 
         //Cards
-        Task<int> InsertTournamentSeriesAsync(TournamentSeriesDto tournamentseriesDto);
         Task<int> InsertTournamentDecksAsync(TournamentDecksDto tournamentDecksDto);
 
 

@@ -93,24 +93,6 @@ namespace CTService.Implementation.Tournament
             });
         }
 
-        public async Task<int> InsertTournamentJudgesAsync(TournamentJudgeDto tournamentJudgeDto)
-        {
-            if (tournamentJudgeDto == null || tournamentJudgeDto.Judges == null || !tournamentJudgeDto.Judges.Any())
-            {
-                throw new ArgumentException("Invalid tournament data.");
-            }
-
-            // Obtener los IDs de los jueces a partir de los alias
-            var judgeIds = await _tournamentDao.GetJudgeIdsByAliasAsync(tournamentJudgeDto.Judges);
-
-            if (judgeIds == null || judgeIds.Count == 0)
-            {
-                throw new ArgumentException("Invalid judge aliases provided.");
-            }
-
-            // Insertar los jueces en el torneo
-            return await _tournamentDao.InsertTournamentJudgesAsync(judgeIds);
-        }
 
         public async Task<List<int>> GetJudgeIdsByAliasAsync(List<string> judgeAliases)
         {
@@ -139,23 +121,6 @@ namespace CTService.Implementation.Tournament
                 Total_Games = tournament.Total_Games,
                 Total_Rounds = tournament.Total_Rounds,
             });
-        }
-
-        public async Task<int> InsertTournamentSeriesAsync(TournamentSeriesDto tournamentseriesDto)
-        {
-            if (tournamentseriesDto == null || tournamentseriesDto.Series_name == null || !tournamentseriesDto.Series_name.Any())
-            {
-                throw new ArgumentException("Invalid tournament data.");
-            }
-
-            var seriesIds = await _cardDao.GetSeriesIdsByNameAsync(tournamentseriesDto.Series_name);
-
-            if (seriesIds == null || seriesIds.Count == 0)
-            {
-                throw new ArgumentException("Invalid series name provided.");
-            }
-
-            return await _tournamentDao.InsertTournamentSeriesAsync(seriesIds);
         }
 
         public async Task<int> SetTournamentToNextPhase()

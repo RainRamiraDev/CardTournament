@@ -92,35 +92,7 @@ namespace CTDao.Dao.Game
 
         private readonly string QueryGetLastInsertId = "SELECT LAST_INSERT_ID();";
 
-        public async Task<int> CreateGameAsync(GameModel game)
-        {
-            using (var connection = new MySqlConnection(_connectionString))
-            {
-                await connection.OpenAsync();
-                using (var transaction = await connection.BeginTransactionAsync())
-                {
-                    try
-                    {
-                        var gameId = await connection.ExecuteScalarAsync<int>(QueryCreateGame, new
-                        {
-                            Id_Tournament = TournamentDao.createdtournamentId,
-                            start_datetime = DateTime.Now,
-                        }, transaction);
-
-                        await transaction.CommitAsync();
-
-                        StorageGameId(gameId);
-
-                        return gameId;
-                    }
-                    catch (Exception)
-                    {
-                        await transaction.RollbackAsync();
-                        throw;
-                    }
-                }
-            }
-        }
+        
 
         public async Task<int> InsertGamePlayersAsync(GamePlayersModel playerModel)
         {
