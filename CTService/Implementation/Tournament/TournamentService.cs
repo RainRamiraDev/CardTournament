@@ -59,9 +59,8 @@ namespace CTService.Implementation.Tournament
                 Id_Country = tournamentDto.Id_Country,
                 Id_Organizer = tournamentDto.Id_Organizer,
                 Start_datetime = tournamentDto.Start_datetime,
-                Current_Phase = tournamentDto.Current_Phase,
-                Judges = tournamentDto.Judges,
-                Series_name = tournamentDto.Series_name,
+                End_datetime = tournamentDto.End_datetime,
+                Current_Phase = tournamentDto.Current_Phase
             };
 
             return await _tournamentDao.CreateTournamentAsync(tournamentModel);

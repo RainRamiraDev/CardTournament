@@ -18,11 +18,11 @@ namespace CTDto.Validations.Users.Tournament
             RuleFor(t => t.Id_Organizer)
                 .GreaterThan(0).WithMessage("El Id_Organizer debe ser un número positivo.");
 
-            //RuleFor(t => t.Start_datetime)
-            //    .LessThan(t => t.End_datetime).WithMessage("La fecha de inicio debe ser anterior a la fecha de fin.");
+            RuleFor(t => t.Start_datetime)
+                .LessThan(t => t.End_datetime).WithMessage("La fecha de inicio debe ser anterior a la fecha de fin.");
 
-            //RuleFor(t => t.End_datetime)
-            //    .GreaterThan(t => t.Start_datetime).WithMessage("La fecha de fin debe ser posterior a la fecha de inicio.");
+            RuleFor(t => t.End_datetime)
+                .GreaterThan(t => t.Start_datetime).WithMessage("La fecha de fin debe ser posterior a la fecha de inicio.");
 
             RuleFor(t => t.Current_Phase)
                 .NotEmpty().WithMessage("La fase actual no puede estar vacía.");
