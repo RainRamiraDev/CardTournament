@@ -61,8 +61,8 @@ namespace CTDao.Dao.Tournaments
         private readonly string QueryGetAll = @"SELECT * FROM T_TOURNAMENTS";
 
         private readonly string QueryCreateTournament = @"
-        INSERT INTO T_TOURNAMENTS (id_country, id_organizer, start_datetime, end_datetime, current_phase) 
-        VALUES (@IdCountry, @IdOrganizer, @StartDatetime, @EndDatetime, @CurrentPhase); SELECT LAST_INSERT_ID();";
+        INSERT INTO T_TOURNAMENTS (id_country, id_organizer, start_datetime,current_phase) 
+        VALUES (@IdCountry, @IdOrganizer, @StartDatetime,@CurrentPhase); SELECT LAST_INSERT_ID();";
 
         private readonly string QueryInsertJudges = @"INSERT INTO T_TOURN_JUDGES (id_tournament, id_judge) VALUES (@id_tournament, @id_judge);";
 
@@ -122,39 +122,59 @@ namespace CTDao.Dao.Tournaments
 
         public async Task<int> CreateTournamentAsync(TournamentModel tournament)
         {
+            using var connection = new MySqlConnection(_connectionString);
+            await connection.OpenAsync();
 
-            using (var connection = new MySqlConnection(_connectionString))
+            using var transaction = await connection.BeginTransactionAsync();
+            try
             {
-                await connection.OpenAsync();
-                using (var transaction = await connection.BeginTransactionAsync())
+                var tournamentId = await connection.ExecuteScalarAsync<int>(QueryCreateTournament, new
                 {
-                    try
+                    IdCountry = tournament.Id_Country,
+                    IdOrganizer = tournament.Id_Organizer,
+                    StartDatetime = tournament.Start_datetime,
+                    CurrentPhase = tournament.Current_Phase
+                }, transaction);
+
+                Console.WriteLine($"Tournament ID: {tournamentId}");
+
+                foreach (var judgeId in tournament.Judges)
+                {
+                    Console.WriteLine($"Inserting Judge {judgeId} into tournament {tournamentId}");
+
+                    await connection.ExecuteAsync(QueryInsertJudges, new
                     {
-                        var tournamentId = await connection.ExecuteScalarAsync<int>(QueryCreateTournament, new
-                        {
-                            IdCountry = tournament.Id_Country,
-                            IdOrganizer = tournament.Id_Organizer,
-                            StartDatetime = tournament.Start_datetime,
-                            EndDatetime = tournament.End_datetime,
-                            CurrentPhase = tournament.Current_Phase
-                        }, transaction);
-
-                        await transaction.CommitAsync();
-
-                        StorageTournamentId(tournamentId);
-                        StorageTournamentOrganizer(tournament.Id_Organizer);
-
-                        return tournamentId;
-                    }
-                    catch (Exception)
-                    {
-                        await transaction.RollbackAsync();
-                        throw;
-                    }
+                        Id_tournament = tournamentId,
+                        Id_Judge = judgeId
+                    }, transaction);
                 }
-            }
 
+                foreach (var cardId in tournament.Series_name)
+                {
+
+                    Console.WriteLine($"Inserting Series {cardId} into tournament {tournamentId}");
+
+                    await connection.ExecuteAsync(QueryInsertSeries, new
+                    {
+                        Id_tournament = tournamentId,
+                        Id_Series = cardId
+                    }, transaction);
+                }
+
+                await transaction.CommitAsync();
+                Console.WriteLine("Transaction committed successfully.");
+
+
+
+                return tournamentId;
+            }
+            catch (Exception)
+            {
+                await transaction.RollbackAsync();
+                throw;
+            }
         }
+
 
         public async Task<IEnumerable<TournamentModel>> GetAllTournamentAsync()
         {

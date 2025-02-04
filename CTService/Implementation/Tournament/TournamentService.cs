@@ -54,17 +54,30 @@ namespace CTService.Implementation.Tournament
         public async Task<int> CreateTournamentAsync(TournamentDto tournamentDto)
         {
 
+            // Obtener los IDs de los jueces a partir de los alias
+            var judgeIds = await _tournamentDao.GetJudgeIdsByAliasAsync(tournamentDto.Judges);
+
+            Console.WriteLine($"Judges IDs: {string.Join(", ", judgeIds)}");
+
+            // Obtener los IDs de las series a partir de los nombres
+            var seriesIds = await _cardDao.GetSeriesIdsByNameAsync(tournamentDto.Series_name);
+
+            Console.WriteLine($"Series IDs: {string.Join(", ", seriesIds)}");
+
+
             var tournamentModel = new TournamentModel
             {
                 Id_Country = tournamentDto.Id_Country,
                 Id_Organizer = tournamentDto.Id_Organizer,
                 Start_datetime = tournamentDto.Start_datetime,
-                End_datetime = tournamentDto.End_datetime,
-                Current_Phase = tournamentDto.Current_Phase
+                Current_Phase = tournamentDto.Current_Phase,
+                Judges = judgeIds,
+                Series_name = seriesIds
             };
 
             return await _tournamentDao.CreateTournamentAsync(tournamentModel);
         }
+
 
         public async Task<IEnumerable<TournamentDto>> GetAllTournamentAsync()
         {
