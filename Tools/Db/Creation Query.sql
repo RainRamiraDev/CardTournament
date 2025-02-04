@@ -72,22 +72,6 @@ CREATE TABLE T_TOURNAMENTS(
 );
 
 
-CREATE TABLE T_GAMES (
-    id_game INT PRIMARY KEY AUTO_INCREMENT,
-    id_tournament INT,
-    start_datetime DATETIME,
-    CONSTRAINT fk_game_tournament FOREIGN KEY (id_tournament) REFERENCES T_TOURNAMENTS (id_tournament)
-);
-
-CREATE TABLE T_GAME_PLAYERS (
-    id_game_players INT PRIMARY KEY AUTO_INCREMENT,
-    id_game INT,
-    id_player INT,
-    is_winner BOOLEAN DEFAULT FALSE,
-    CONSTRAINT fk_gp_game FOREIGN KEY (id_game) REFERENCES T_GAMES (id_game),
-    CONSTRAINT fk_gp_player FOREIGN KEY (id_player) REFERENCES T_USERS (id_user)
-);
-
 CREATE TABLE T_ROUNDS (
     id_round INT PRIMARY KEY AUTO_INCREMENT,
     id_tournament INT,
@@ -99,12 +83,10 @@ CREATE TABLE T_ROUNDS (
 CREATE TABLE T_MATCHES (
     id_match INT PRIMARY KEY AUTO_INCREMENT,
     id_round INT, -- Se relaciona con la fase
-    id_game INT,
     id_player1 INT,
     id_player2 INT,
     winner INT DEFAULT NULL, -- Se actualiza con el ID del ganador
     CONSTRAINT fk_match_round FOREIGN KEY (id_round) REFERENCES T_ROUNDS (id_round),
-    CONSTRAINT fk_match_game FOREIGN KEY (id_game) REFERENCES T_GAMES (id_game),
     CONSTRAINT fk_match_player1 FOREIGN KEY (id_player1) REFERENCES T_USERS (id_user),
     CONSTRAINT fk_match_player2 FOREIGN KEY (id_player2) REFERENCES T_USERS (id_user),
     CONSTRAINT fk_match_winner FOREIGN KEY (winner) REFERENCES T_USERS (id_user)
