@@ -19,38 +19,6 @@ namespace CTDao.Dao.Tournaments
 {
     public class TournamentDao : ITournamentDao
     {
-        private static readonly object _lockObject = new object();
-
-        public static int createdtournamentId { get; set; }
-
-        public static int createdtournamentOrganizer { get; set; }
-
-        public static List<int> createdtournamentPlayers { get; set; }
-
-        public void StorageTournamentPlayersId(List<int> ids)
-        {
-            lock (_lockObject)
-            {
-                createdtournamentPlayers = ids;
-            }
-        }
-
-        public void StorageTournamentId(int id)
-        {
-            lock (_lockObject)
-            {
-                createdtournamentId = id;
-            }
-        }
-
-        public void StorageTournamentOrganizer(int id)
-        {
-            lock (_lockObject)
-            {
-                createdtournamentOrganizer = id;
-            }
-        }
-
         public TournamentDao(string connectionString)
         {
             _connectionString = connectionString;
@@ -119,6 +87,8 @@ namespace CTDao.Dao.Tournaments
 
 
         private readonly string QueryGetCurrentPhase = @"SELECT current_phase FROM T_TOURNAMENTS WHERE id_tournament = @id_tournament;";
+
+        private readonly string QueryTournamentExist = "SELECT COUNT(1) FROM T_TOURNAMENTS WHERE id_tournament = @id_tournament";
 
 
         public async Task<int> CreateTournamentAsync(TournamentModel tournament)
@@ -189,7 +159,6 @@ namespace CTDao.Dao.Tournaments
             }
         }
 
-       
 
         public async Task<List<int>> GetJudgeIdsByAliasAsync(List<string> judgeAliases)
         {
@@ -214,8 +183,6 @@ namespace CTDao.Dao.Tournaments
                 return tournaments;
             }
         }
-
-       
 
         public async Task<int> InsertTournamentDecksAsync(TournamentDecksModel tournamentDecks)
         {
@@ -290,11 +257,11 @@ namespace CTDao.Dao.Tournaments
             }
         }
 
-        public async Task<int> SetTournamentToNextPhase()
+        public async Task<int> SetTournamentToNextPhase(int tournament_id)
         {
             using (var connection = new MySqlConnection(_connectionString))
             {
-                var id_tournament = createdtournamentId;
+                var id_tournament = tournament_id;
 
              
                 int current_phase = await GetTournamentCurrentPhase(id_tournament);
@@ -348,6 +315,18 @@ namespace CTDao.Dao.Tournaments
                 }
 
                 return current_phase;
+            }
+        }
+
+        public async Task<bool> TournamentExistsAsync(int tournamentId)
+        {
+            using (var connection = new MySqlConnection(_connectionString))
+            {
+                int count = await connection.ExecuteScalarAsync<int>(QueryTournamentExist, new { id_tournament = tournamentId });
+
+                Console.WriteLine("es 1 si existe el torneo" + count);
+
+                return count > 0;
             }
         }
     }

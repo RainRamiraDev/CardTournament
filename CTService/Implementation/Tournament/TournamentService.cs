@@ -132,9 +132,9 @@ namespace CTService.Implementation.Tournament
             });
         }
 
-        public async Task<int> SetTournamentToNextPhase()
+        public async Task<int> SetTournamentToNextPhase(int tournament_id)
         {
-            var id_tournament = TournamentDao.createdtournamentId;
+            var id_tournament = tournament_id;
             return await _tournamentDao.GetTournamentCurrentPhase(id_tournament);
         }
     }

@@ -1,28 +1,18 @@
 [
   {
     "ContainingType": "CTApp.Controllers.GameController",
-    "Method": "InsertGamePlayers",
-    "RelativePath": "api/Game/InsertGamePlayers",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "gamePlayersDto",
-        "Type": "CTDto.Game.GamePlayersDto",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "CTApp.Controllers.GameController",
     "Method": "ResolveGame",
     "RelativePath": "api/Game/resolve",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
-    "Parameters": [],
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "CTDto.Tournaments.TournamentRequestDto",
+        "IsRequired": true
+      }
+    ],
     "ReturnTypes": []
   },
   {

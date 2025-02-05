@@ -17,27 +17,6 @@ namespace CTDao.Dao.Game
 {
     public class GameDao : IGameDao
     {
-        private static readonly object _lockObject = new object();
-
-        public static int createdGameId { get; set; }
-
-        public static int createdRoundId { get; set; }
-
-        public void StorageGameId(int id)
-        {
-            lock (_lockObject)
-            {
-                createdGameId = id;
-            }
-        }
-
-        public void StorageRoundId(int id)
-        {
-            lock (_lockObject)
-            {
-                createdRoundId = id;
-            }
-        }
 
         private readonly string _connectionString;
 
@@ -71,8 +50,8 @@ namespace CTDao.Dao.Game
             VALUES (@id_tournament,@round_number);
         ";
 
-        private readonly string QueryCreateMatch = @"INSERT INTO T_MATCHES (id_round, id_game, id_player1, id_player2, winner) 
-        VALUES (@id_round, @id_game, @id_player1, @id_player2,@winner);
+        private readonly string QueryCreateMatch = @"INSERT INTO T_MATCHES (id_round,id_player1, id_player2, winner) 
+        VALUES (@id_round,@id_player1, @id_player2,@winner);
         SELECT LAST_INSERT_ID();
         ";
 
@@ -92,45 +71,6 @@ namespace CTDao.Dao.Game
 
         private readonly string QueryGetLastInsertId = "SELECT LAST_INSERT_ID();";
 
-        
-
-        //public async Task<int> InsertGamePlayersAsync(GamePlayersModel playerModel)
-        //{
-        //    if (playerModel == null || !playerModel.Id_Player.Any())
-        //    {
-        //        throw new ArgumentException("La lista de judadores no puede estar vacía.", nameof(playerModel));
-        //    }
-
-        //    using (var connection = new MySqlConnection(_connectionString))
-        //    {
-        //        await connection.OpenAsync();
-        //        using (var transaction = await connection.BeginTransactionAsync())
-        //        {
-        //            try
-        //            {
-        //                var affectedRows = 0;
-
-        //                foreach (var player in playerModel.Id_Player)
-        //                {
-        //                    affectedRows += await connection.ExecuteAsync(QueryInsertGamePlayers, new
-        //                    {
-        //                        Id_game = createdGameId,
-        //                        Id_player = player
-        //                    }, transaction);
-        //                }
-
-        //                await transaction.CommitAsync();
-        //                return affectedRows;
-        //            }
-        //            catch (Exception ex)
-        //            {
-        //                await transaction.RollbackAsync();
-        //                Console.WriteLine($"Error al insertar jugadores en el juego: {ex.Message}");
-        //                throw;
-        //            }
-        //        }
-        //    }
-        //}
 
         public async Task<int> SetGameWinnerAsync(int winner)
         {
@@ -195,14 +135,14 @@ namespace CTDao.Dao.Game
             }
         }
 
-        public async Task<int> GetLastRoundAsync()
+        public async Task<int> GetLastRoundAsync(int tournament_id)
         {
             using (var connection = new MySqlConnection(_connectionString))
             {
                 await connection.OpenAsync();
                 int lastRoundNumber = await connection.ExecuteScalarAsync<int>(
                     QueryGetLastRound,
-                    new { id_tournament = TournamentDao.createdtournamentId });
+                    new { id_tournament = tournament_id });
                 int nextRoundNumber = lastRoundNumber + 1;
                 return nextRoundNumber;
             }
@@ -219,15 +159,13 @@ namespace CTDao.Dao.Game
                     {
                         await connection.ExecuteAsync(QueryCreateRound, new
                         {
-                            Id_Tournament = TournamentDao.createdtournamentId,
+                            Id_Tournament = round.Id_Tournament,
                             round_number = round.Round_Number
                         }, transaction);
 
                         int roundId = await connection.ExecuteScalarAsync<int>(QueryGetLastInsertId, transaction);
 
                         await transaction.CommitAsync();
-
-                        StorageRoundId(roundId);
 
                         return roundId;
                     }
@@ -252,7 +190,6 @@ namespace CTDao.Dao.Game
                         var matchId = await connection.ExecuteScalarAsync<int>(QueryCreateMatch, new
                         {
                             id_round = match.Id_Round,
-                            id_game = GameDao.createdGameId,
                             id_player1 = match.Id_Player1,
                             id_player2 = match.Id_Player2,
                             winner = match.Winner
@@ -271,7 +208,7 @@ namespace CTDao.Dao.Game
             }
         }
 
-        public async Task<int> SetNextRoundAsync()
+        public async Task<int> SetNextRoundAsync(int tournament_id)
         {
             using (var connection = new MySqlConnection(_connectionString))
             {
@@ -280,12 +217,12 @@ namespace CTDao.Dao.Game
                 {
                     try
                     {
-                        int lastRoundNumber = await GetLastRoundAsync();
+                        int lastRoundNumber = await GetLastRoundAsync(tournament_id);
                         Console.WriteLine("[Next Round number]:" + lastRoundNumber);
 
                         int affectedRows = await connection.ExecuteAsync(
                             QuerySetNextRound,
-                            new { id_tournament = TournamentDao.createdtournamentId, round_number = lastRoundNumber },
+                            new { id_tournament = tournament_id, round_number = lastRoundNumber },
                             transaction);
 
                         await transaction.CommitAsync();
@@ -300,7 +237,7 @@ namespace CTDao.Dao.Game
             }
         }
 
-        public async Task<int> SetRoundCompletedAsync(int roundNumber)
+        public async Task<int> SetRoundCompletedAsync(int roundNumber, int tournament_id)
         {
             using (var connection = new MySqlConnection(_connectionString))
             {
@@ -311,7 +248,7 @@ namespace CTDao.Dao.Game
                     {
                         int affectedRows = await connection.ExecuteAsync(QueryCompleteRound, new
                         {
-                            id_tournament = TournamentDao.createdtournamentId,
+                            id_tournament = tournament_id,
                             round_number = roundNumber
                         }, transaction: transaction);
 
@@ -329,7 +266,6 @@ namespace CTDao.Dao.Game
                 }
             }
         }
-
 
     }
 }

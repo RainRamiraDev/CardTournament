@@ -16,8 +16,10 @@ namespace CTDao.Interfaces.Tournaments
         Task<IEnumerable<TournamentModel>> GetAllTournamentAsync();
         Task<IEnumerable<AvailableTournamentsModel>> GetAllAvailableTournamentsAsync();
 
-        Task<int> SetTournamentToNextPhase();
+        Task<int> SetTournamentToNextPhase(int tournament_id);
         Task<int> GetTournamentCurrentPhase(int id_tournament);
+
+        Task<bool> TournamentExistsAsync(int tournamentId);
 
         //Judge
         Task<List<int>> GetJudgeIdsByAliasAsync(List<string> judgeAliases);
