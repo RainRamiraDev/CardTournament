@@ -1,0 +1,13 @@
+C:\Repositorios\CardTournament\DataAccess\bin\Debug\net7.0\DataAccess.deps.json
+C:\Repositorios\CardTournament\DataAccess\bin\Debug\net7.0\DataAccess.dll
+C:\Repositorios\CardTournament\DataAccess\bin\Debug\net7.0\DataAccess.pdb
+C:\Repositorios\CardTournament\DataAccess\obj\Debug\net7.0\DataAccess.csproj.AssemblyReference.cache
+C:\Repositorios\CardTournament\DataAccess\obj\Debug\net7.0\DataAccess.GeneratedMSBuildEditorConfig.editorconfig
+C:\Repositorios\CardTournament\DataAccess\obj\Debug\net7.0\DataAccess.AssemblyInfoInputs.cache
+C:\Repositorios\CardTournament\DataAccess\obj\Debug\net7.0\DataAccess.AssemblyInfo.cs
+C:\Repositorios\CardTournament\DataAccess\obj\Debug\net7.0\DataAccess.csproj.CoreCompileInputs.cache
+C:\Repositorios\CardTournament\DataAccess\obj\Debug\net7.0\DataAccess.sourcelink.json
+C:\Repositorios\CardTournament\DataAccess\obj\Debug\net7.0\DataAccess.dll
+C:\Repositorios\CardTournament\DataAccess\obj\Debug\net7.0\refint\DataAccess.dll
+C:\Repositorios\CardTournament\DataAccess\obj\Debug\net7.0\DataAccess.pdb
+C:\Repositorios\CardTournament\DataAccess\obj\Debug\net7.0\ref\DataAccess.dll

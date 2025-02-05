@@ -15,6 +15,7 @@
   <ItemGroup>
     <ProjectReference Include="..\CTDataModels\CTDataModels.csproj" />
     <ProjectReference Include="..\CTDto\CTDto.csproj" />
+    <ProjectReference Include="..\DataAccess\DataAccess.csproj" />
   </ItemGroup>
 
 </Project>

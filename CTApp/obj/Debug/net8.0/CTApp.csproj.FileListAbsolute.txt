@@ -78,3 +78,6 @@ C:\Repositorios\CardTournament\CTApp\bin\Debug\net8.0\BCrypt.Net.dll
 C:\Repositorios\CardTournament\CTApp\bin\Debug\net8.0\FluentValidation.dll
 C:\Repositorios\CardTournament\CTApp\bin\Debug\net8.0\FluentValidation.AspNetCore.dll
 C:\Repositorios\CardTournament\CTApp\bin\Debug\net8.0\FluentValidation.DependencyInjectionExtensions.dll
+C:\Repositorios\CardTournament\CTApp\bin\Debug\net8.0\Newtonsoft.Json.dll
+C:\Repositorios\CardTournament\CTApp\bin\Debug\net8.0\DataAccess.dll
+C:\Repositorios\CardTournament\CTApp\bin\Debug\net8.0\DataAccess.pdb
