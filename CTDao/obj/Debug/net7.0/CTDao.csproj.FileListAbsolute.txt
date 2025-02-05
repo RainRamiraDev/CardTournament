@@ -18,3 +18,4 @@ C:\Repositorios\CardTournament\CTDao\bin\Debug\net7.0\CTDto.dll
 C:\Repositorios\CardTournament\CTDao\bin\Debug\net7.0\CTDto.pdb
 C:\Repositorios\CardTournament\CTDao\bin\Debug\net7.0\DataAccess.dll
 C:\Repositorios\CardTournament\CTDao\bin\Debug\net7.0\DataAccess.pdb
+C:\Repositorios\CardTournament\CTDao\bin\Debug\net7.0\queries.json

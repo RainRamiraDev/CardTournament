@@ -1,5 +1,6 @@
 ﻿using CTDataModels.Card;
 using CTDto.Card;
+using CTDto.Tournaments;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +11,7 @@ namespace CTService.Interfaces.Card
 {
     public interface ICardService
     {
-        Task<IEnumerable<ShowCardsDto>> GetAllCardsAsync();
+        Task<IEnumerable<ShowCardsDto>> GetAllCardsAsync(TournamentRequestDto tournamentRequestDto);
         Task<List<int>> GetCardsIdsByIllustrationAsync(List<string> cardsIllustrations);
         Task<List<int>> GetSeriesIdsByNameAsync(List<string> names);
         Task<IEnumerable<ShowCardsDto>> GetCardsBySeriesNames(List<string> cardSeries);

@@ -126,7 +126,13 @@
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
-    "Parameters": [],
+    "Parameters": [
+      {
+        "Name": "tournamentId",
+        "Type": "CTDto.Tournaments.TournamentRequestDto",
+        "IsRequired": true
+      }
+    ],
     "ReturnTypes": []
   }
 ]

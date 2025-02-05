@@ -38,11 +38,12 @@ namespace CTApp.Controllers.User
 
         [Authorize(Roles = "4")]
         [HttpGet("ShowCards")]
-        public async Task<IActionResult> GetAllCards()
+        public async Task<IActionResult> GetAllCards([FromBody] TournamentRequestDto tournamentId)
         {
             try
             {
-                var cards = await _cardService.GetAllCardsAsync();
+
+                var cards = await _cardService.GetAllCardsAsync(tournamentId);
 
                 if (cards == null || !cards.Any())
                 {

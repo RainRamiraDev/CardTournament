@@ -21,6 +21,9 @@ namespace CTDao.Interfaces.Tournaments
 
         Task<bool> TournamentExistsAsync(int tournamentId);
 
+        Task<List<int>> GetSeriesFromTournamentAsync(int tournamentId);
+
+
         //Judge
         Task<List<int>> GetJudgeIdsByAliasAsync(List<string> judgeAliases);
 
