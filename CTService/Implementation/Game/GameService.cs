@@ -34,22 +34,6 @@ namespace CTService.Implementation.Game
             _userDao = userDao;
         }
 
-        public async Task<int> CreateGameAsync(GameDto gameDto)
-        {
-
-            if (gameDto == null)
-            {
-                throw new ArgumentException("Invalid tournament data.");
-            }
-
-            var gameModel = new GameModel
-            {
-                Id_Tournament = TournamentDao.createdtournamentId,
-                Start_Date = DateTime.Now,
-            };
-
-            return await _gameDao.CreateGameAsync(gameModel);
-        }
 
         public async Task<int> CreateMatchAsync(MatchDto match)
         {
@@ -61,7 +45,6 @@ namespace CTService.Implementation.Game
             var matchModel = new MatchModel
             {
                 Id_Round = match.Id_Round,
-                Id_Game = match.Id_Game,
                 Id_Player1 = match.Id_Player1,
                 Id_Player2 = match.Id_Player2,
                 Winner = match.Winner
@@ -70,11 +53,11 @@ namespace CTService.Implementation.Game
             return await _gameDao.CreateMatchAsync(matchModel);
         }
 
-        public async Task<int> CreateRoundAsync()
+        public async Task<int> CreateRoundAsync(int tournament_id)
         {
             var roundModel = new RoundModel
             {
-                Id_Tournament = TournamentDao.createdtournamentId,
+                Id_Tournament = tournament_id,
                 Round_Number = 0,
                 Is_Completed = false,
 
@@ -82,46 +65,39 @@ namespace CTService.Implementation.Game
             return await _gameDao.CreateRoundAsync(roundModel);
         }
 
-        public async Task<int> InsertGamePlayersAsync(GamePlayersDto gamePlayers)
+        public async Task<GameResultDto> ResolveGameAsync(int tournament_id)
         {
-            if (gamePlayers == null || gamePlayers.Id_Player.Count == 0)
+            //validar que el tournament_id exista
+
+            bool tournamentExists = await _tournamentDao.TournamentExistsAsync(tournament_id);
+
+            
+
+            if (!tournamentExists)
             {
-                throw new ArgumentException("Invalid series name provided.");
+                throw new InvalidOperationException("El torneo especificado no existe.");
             }
 
-            var tournamentPlayersId = await _gameDao.GetTournamentPlayers(TournamentDao.createdtournamentId);
 
-            Console.WriteLine(string.Join(","+tournamentPlayersId));
-
-            var gamePlayersModel = new GamePlayersModel
-            {
-                Id_Game = gamePlayers.Id_Game,
-                Id_Player = tournamentPlayersId,
-            };
-
-            return await _gameDao.InsertGamePlayersAsync(gamePlayersModel);
-
-        }
-
-        public async Task<GameResultDto> ResolveGameAsync()
-        {
-            List<int> playersIds = await _gameDao.GetTournamentPlayers(TournamentDao.createdtournamentId);
+            List<int> playersIds = await _gameDao.GetTournamentPlayers(tournament_id);
 
             if (playersIds.Count < 2)
             {
                 throw new InvalidOperationException("Se necesitan al menos dos jugadores para iniciar el torneo.");
             }
 
-            int roundNumber = await _gameDao.GetLastRoundAsync();
+            int roundNumber = await _gameDao.GetLastRoundAsync(tournament_id);
+
 
             HashSet<int> eliminatedPlayers = new HashSet<int>();
 
             // torneo fase 2
-            await _tournamentDao.SetTournamentToNextPhase();
+            await _tournamentDao.SetTournamentToNextPhase(tournament_id);
 
             while (playersIds.Count > 1)
             {
-                int createdRoundId = await CreateRoundAsync(roundNumber);
+                int createdRoundId = await CreateRoundAsync(roundNumber, tournament_id);
+
                 List<int> winners = new List<int>();
 
                 for (int i = 0; i < playersIds.Count; i += 2)
@@ -148,7 +124,6 @@ namespace CTService.Implementation.Game
                     var match = new MatchDto
                     {
                         Id_Round = createdRoundId,
-                        Id_Game = GameDao.createdGameId,
                         Id_Player1 = player1,
                         Id_Player2 = player2,
                         Winner = winner
@@ -159,7 +134,7 @@ namespace CTService.Implementation.Game
 
                 playersIds = winners;
 
-                await _gameDao.SetRoundCompletedAsync(roundNumber);
+                await _gameDao.SetRoundCompletedAsync(roundNumber, tournament_id);
 
                 roundNumber++;
 
@@ -167,9 +142,9 @@ namespace CTService.Implementation.Game
             }
 
             // torneo fase 3
-            await _tournamentDao.SetTournamentToNextPhase();
+            await _tournamentDao.SetTournamentToNextPhase(tournament_id);
 
-            await _gameDao.SetRoundCompletedAsync(roundNumber - 1);
+            await _gameDao.SetRoundCompletedAsync(roundNumber - 1, tournament_id);
             await _gameDao.SetGameWinnerAsync(playersIds[0]);
 
             if (eliminatedPlayers.Count > 0)
@@ -184,11 +159,11 @@ namespace CTService.Implementation.Game
             };
         }
 
-        public async Task<int> CreateRoundAsync(int roundNumber)
+        public async Task<int> CreateRoundAsync(int roundNumber, int tournament_id)
         {
             var roundModel = new RoundModel
             {
-                Id_Tournament = TournamentDao.createdtournamentId,
+                Id_Tournament = tournament_id,
                 Round_Number = roundNumber,
                 Is_Completed = false,
             };

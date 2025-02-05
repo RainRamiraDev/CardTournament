@@ -60,56 +60,5 @@ namespace CTApp.Controllers.User
             return Created("", new { id });
         }
 
-
-        [Authorize(Roles = "1")]
-        [HttpPost("SetTournamentJudges")]
-        public async Task<IActionResult> SetTournamentJudges([FromBody] TournamentJudgeDto tournamentJudgeDto)
-        {
-            try
-            {
-                var affectedRows = await _tournamentService.InsertTournamentJudgesAsync(tournamentJudgeDto);
-
-                if (affectedRows == 0)
-                {
-                    return StatusCode(500, "Error assigning judges to tournament.");
-                }
-
-                return Created("", new { affectedRows });
-            }
-            catch (ArgumentException ex)
-            {
-                return BadRequest(ex.Message);
-            }
-            catch (Exception)
-            {
-                return StatusCode(500, "An unexpected error occurred.");
-            }
-        }
-
-        [Authorize(Roles = "1")]
-        [HttpPost("SetTournamentSeries")]
-        public async Task<IActionResult> SetTournamentSeries([FromBody] TournamentSeriesDto tournamentSeriesDto)
-        {
-            try
-            {
-                var affectedRows = await _tournamentService.InsertTournamentSeriesAsync(tournamentSeriesDto);
-
-                if (affectedRows == 0)
-                {
-                    return StatusCode(500, "Error assigning series to tournament.");
-                }
-
-                return Created("", new { affectedRows });
-            }
-            catch (ArgumentException ex)
-            {
-                return BadRequest(ex.Message);
-            }
-            catch (Exception)
-            {
-                return StatusCode(500, "An unexpected error occurred.");
-            }
-        }
-
     }
 }

@@ -30,7 +30,6 @@ namespace CTService.Implementation.Tournament
             _cardDao = cardDao;
         }
 
-
         public async Task<int> InsertTournamentDecksAsync(TournamentDecksDto tournamentDecksDto)
         {
             if (tournamentDecksDto == null)
@@ -46,25 +45,48 @@ namespace CTService.Implementation.Tournament
                 throw new ArgumentException("Invalid series name provided.");
             }
 
-           var userCreationResponse =  await _tournamentDao.InsertTournamentPlayersAsync(tournamentDecksDto.Id_Owner);
+            var tournamentDecksModel = new TournamentDecksModel
+            {
+                Id_Tournament = tournamentDecksDto.Id_Tournament,
+                Id_card_series = cardSeriesIds,
+                Id_Owner = tournamentDecksDto.Id_Owner,
+            };
 
-            return await _tournamentDao.InsertTournamentDecksAsync(cardSeriesIds,tournamentDecksDto.Id_Owner);
+
+           var userCreationResponse =  await _tournamentDao.InsertTournamentPlayersAsync(tournamentDecksModel);
+
+
+
+            return await _tournamentDao.InsertTournamentDecksAsync(tournamentDecksModel);
         }
 
         public async Task<int> CreateTournamentAsync(TournamentDto tournamentDto)
         {
+
+            // Obtener los IDs de los jueces a partir de los alias
+            var judgeIds = await _tournamentDao.GetJudgeIdsByAliasAsync(tournamentDto.Judges);
+
+            Console.WriteLine($"Judges IDs: {string.Join(", ", judgeIds)}");
+
+            // Obtener los IDs de las series a partir de los nombres
+            var seriesIds = await _cardDao.GetSeriesIdsByNameAsync(tournamentDto.Series_name);
+
+            Console.WriteLine($"Series IDs: {string.Join(", ", seriesIds)}");
+
 
             var tournamentModel = new TournamentModel
             {
                 Id_Country = tournamentDto.Id_Country,
                 Id_Organizer = tournamentDto.Id_Organizer,
                 Start_datetime = tournamentDto.Start_datetime,
-                End_datetime = tournamentDto.End_datetime,
-                Current_Phase = tournamentDto.Current_Phase
+                Current_Phase = tournamentDto.Current_Phase,
+                Judges = judgeIds,
+                Series_name = seriesIds
             };
 
             return await _tournamentDao.CreateTournamentAsync(tournamentModel);
         }
+
 
         public async Task<IEnumerable<TournamentDto>> GetAllTournamentAsync()
         {
@@ -80,24 +102,6 @@ namespace CTService.Implementation.Tournament
             });
         }
 
-        public async Task<int> InsertTournamentJudgesAsync(TournamentJudgeDto tournamentJudgeDto)
-        {
-            if (tournamentJudgeDto == null || tournamentJudgeDto.Judges == null || !tournamentJudgeDto.Judges.Any())
-            {
-                throw new ArgumentException("Invalid tournament data.");
-            }
-
-            // Obtener los IDs de los jueces a partir de los alias
-            var judgeIds = await _tournamentDao.GetJudgeIdsByAliasAsync(tournamentJudgeDto.Judges);
-
-            if (judgeIds == null || judgeIds.Count == 0)
-            {
-                throw new ArgumentException("Invalid judge aliases provided.");
-            }
-
-            // Insertar los jueces en el torneo
-            return await _tournamentDao.InsertTournamentJudgesAsync(judgeIds);
-        }
 
         public async Task<List<int>> GetJudgeIdsByAliasAsync(List<string> judgeAliases)
         {
@@ -128,26 +132,9 @@ namespace CTService.Implementation.Tournament
             });
         }
 
-        public async Task<int> InsertTournamentSeriesAsync(TournamentSeriesDto tournamentseriesDto)
+        public async Task<int> SetTournamentToNextPhase(int tournament_id)
         {
-            if (tournamentseriesDto == null || tournamentseriesDto.Series_name == null || !tournamentseriesDto.Series_name.Any())
-            {
-                throw new ArgumentException("Invalid tournament data.");
-            }
-
-            var seriesIds = await _cardDao.GetSeriesIdsByNameAsync(tournamentseriesDto.Series_name);
-
-            if (seriesIds == null || seriesIds.Count == 0)
-            {
-                throw new ArgumentException("Invalid series name provided.");
-            }
-
-            return await _tournamentDao.InsertTournamentSeriesAsync(seriesIds);
-        }
-
-        public async Task<int> SetTournamentToNextPhase()
-        {
-            var id_tournament = TournamentDao.createdtournamentId;
+            var id_tournament = tournament_id;
             return await _tournamentDao.GetTournamentCurrentPhase(id_tournament);
         }
     }

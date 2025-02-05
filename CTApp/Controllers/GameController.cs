@@ -17,52 +17,16 @@ namespace CTApp.Controllers
             _gameService = gameService;
         }
 
-        [Authorize(Roles = "1")]
-        [HttpPost("CreateGame")]
-        public async Task<IActionResult> CreateGame([FromBody] GameDto gameDto)
-        {
-            if (gameDto == null)
-            {
-                return BadRequest("Invalid game data.");
-            }
-
-            var id = await _gameService.CreateGameAsync(gameDto);
-
-            if (id == 0)
-            {
-                return StatusCode(500, "Error creating game.");
-            }
-
-            return Created("", new { id });
-        }
-
-
-        [Authorize(Roles = "1")]
-        [HttpPost("InsertGamePlayers")]
-        public async Task<IActionResult> InsertGamePlayers([FromBody] GamePlayersDto gamePlayersDto)
-        {
-            if (gamePlayersDto == null)
-            {
-                return BadRequest("Invalid game data.");
-            }
-
-            var id = await _gameService.InsertGamePlayersAsync(gamePlayersDto);
-
-            if (id == 0)
-            {
-                return StatusCode(500, "Error creating game.");
-            }
-
-            return Created("", new { id });
-        }
 
         [Authorize(Roles = "1")]
         [HttpPost("resolve")]
-        public async Task<IActionResult> ResolveGame()
+        public async Task<IActionResult> ResolveGame([FromBody] TournamentRequestDto request)
         {
             try
             {
-                GameResultDto result = await _gameService.ResolveGameAsync();
+                Console.WriteLine("id recibido: " + request.Tournament_Id);
+
+                GameResultDto result = await _gameService.ResolveGameAsync(request.Tournament_Id);
                 return Ok(result);
             }
             catch (InvalidOperationException ex)
@@ -74,6 +38,7 @@ namespace CTApp.Controllers
                 return StatusCode(500, new { message = "Error interno del servidor.", error = ex.Message });
             }
         }
+
 
     }
 }

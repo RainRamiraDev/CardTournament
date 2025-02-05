@@ -10,15 +10,12 @@ namespace CTService.Interfaces.Game
 {
     public interface IGameService
     {
-        Task<int> CreateGameAsync(GameDto gameDto);
 
-        Task<int> InsertGamePlayersAsync(GamePlayersDto gamePlayers);
-
-        Task<int> CreateRoundAsync(int roundNumber);
+        Task<int> CreateRoundAsync(int roundNumber, int tournament_id);
 
         Task<int> CreateMatchAsync(MatchDto match);
 
-        Task<GameResultDto> ResolveGameAsync();
+        Task<GameResultDto> ResolveGameAsync(int tournament_id);
 
 
     }

@@ -1,6 +1,7 @@
 ﻿using CTDao.Dao.Card;
 using CTDao.Interfaces.Tournaments;
 using CTDataModels.Tournamets;
+using CTDto.Card;
 using Dapper;
 using MySql.Data.MySqlClient;
 using Org.BouncyCastle.Asn1;
@@ -18,38 +19,6 @@ namespace CTDao.Dao.Tournaments
 {
     public class TournamentDao : ITournamentDao
     {
-        private static readonly object _lockObject = new object();
-
-        public static int createdtournamentId { get; set; }
-
-        public static int createdtournamentOrganizer { get; set; }
-
-        public static List<int> createdtournamentPlayers { get; set; }
-
-        public void StorageTournamentPlayersId(List<int> ids)
-        {
-            lock (_lockObject)
-            {
-                createdtournamentPlayers = ids;
-            }
-        }
-
-        public void StorageTournamentId(int id)
-        {
-            lock (_lockObject)
-            {
-                createdtournamentId = id;
-            }
-        }
-
-        public void StorageTournamentOrganizer(int id)
-        {
-            lock (_lockObject)
-            {
-                createdtournamentOrganizer = id;
-            }
-        }
-
         public TournamentDao(string connectionString)
         {
             _connectionString = connectionString;
@@ -61,8 +30,8 @@ namespace CTDao.Dao.Tournaments
         private readonly string QueryGetAll = @"SELECT * FROM T_TOURNAMENTS";
 
         private readonly string QueryCreateTournament = @"
-        INSERT INTO T_TOURNAMENTS (id_country, id_organizer, start_datetime, end_datetime, current_phase) 
-        VALUES (@IdCountry, @IdOrganizer, @StartDatetime, @EndDatetime, @CurrentPhase); SELECT LAST_INSERT_ID();";
+        INSERT INTO T_TOURNAMENTS (id_country, id_organizer, start_datetime,current_phase) 
+        VALUES (@IdCountry, @IdOrganizer, @StartDatetime,@CurrentPhase); SELECT LAST_INSERT_ID();";
 
         private readonly string QueryInsertJudges = @"INSERT INTO T_TOURN_JUDGES (id_tournament, id_judge) VALUES (@id_tournament, @id_judge);";
 
@@ -119,42 +88,64 @@ namespace CTDao.Dao.Tournaments
 
         private readonly string QueryGetCurrentPhase = @"SELECT current_phase FROM T_TOURNAMENTS WHERE id_tournament = @id_tournament;";
 
+        private readonly string QueryTournamentExist = "SELECT COUNT(1) FROM T_TOURNAMENTS WHERE id_tournament = @id_tournament";
+
 
         public async Task<int> CreateTournamentAsync(TournamentModel tournament)
         {
+            using var connection = new MySqlConnection(_connectionString);
+            await connection.OpenAsync();
 
-            using (var connection = new MySqlConnection(_connectionString))
+            using var transaction = await connection.BeginTransactionAsync();
+            try
             {
-                await connection.OpenAsync();
-                using (var transaction = await connection.BeginTransactionAsync())
+                var tournamentId = await connection.ExecuteScalarAsync<int>(QueryCreateTournament, new
                 {
-                    try
+                    IdCountry = tournament.Id_Country,
+                    IdOrganizer = tournament.Id_Organizer,
+                    StartDatetime = tournament.Start_datetime,
+                    CurrentPhase = tournament.Current_Phase
+                }, transaction);
+
+                Console.WriteLine($"Tournament ID: {tournamentId}");
+
+                foreach (var judgeId in tournament.Judges)
+                {
+                    Console.WriteLine($"Inserting Judge {judgeId} into tournament {tournamentId}");
+
+                    await connection.ExecuteAsync(QueryInsertJudges, new
                     {
-                        var tournamentId = await connection.ExecuteScalarAsync<int>(QueryCreateTournament, new
-                        {
-                            IdCountry = tournament.Id_Country,
-                            IdOrganizer = tournament.Id_Organizer,
-                            StartDatetime = tournament.Start_datetime,
-                            EndDatetime = tournament.End_datetime,
-                            CurrentPhase = tournament.Current_Phase
-                        }, transaction);
-
-                        await transaction.CommitAsync();
-
-                        StorageTournamentId(tournamentId);
-                        StorageTournamentOrganizer(tournament.Id_Organizer);
-
-                        return tournamentId;
-                    }
-                    catch (Exception)
-                    {
-                        await transaction.RollbackAsync();
-                        throw;
-                    }
+                        Id_tournament = tournamentId,
+                        Id_Judge = judgeId
+                    }, transaction);
                 }
-            }
 
+                foreach (var cardId in tournament.Series_name)
+                {
+
+                    Console.WriteLine($"Inserting Series {cardId} into tournament {tournamentId}");
+
+                    await connection.ExecuteAsync(QueryInsertSeries, new
+                    {
+                        Id_tournament = tournamentId,
+                        Id_Series = cardId
+                    }, transaction);
+                }
+
+                await transaction.CommitAsync();
+                Console.WriteLine("Transaction committed successfully.");
+
+
+
+                return tournamentId;
+            }
+            catch (Exception)
+            {
+                await transaction.RollbackAsync();
+                throw;
+            }
         }
+
 
         public async Task<IEnumerable<TournamentModel>> GetAllTournamentAsync()
         {
@@ -168,43 +159,6 @@ namespace CTDao.Dao.Tournaments
             }
         }
 
-        public async Task<int> InsertTournamentJudgesAsync(List<int> judgeIds)
-        {
-            if (judgeIds == null || !judgeIds.Any())
-            {
-                throw new ArgumentException("La lista de jueces no puede estar vacía.", nameof(judgeIds));
-            }
-
-            using (var connection = new MySqlConnection(_connectionString))
-            {
-                await connection.OpenAsync();
-                using (var transaction = await connection.BeginTransactionAsync())
-                {
-                    try
-                    {
-                        var affectedRows = 0;
-
-                        foreach (var judgeId in judgeIds)
-                        {
-                            affectedRows += await connection.ExecuteAsync(QueryInsertJudges, new
-                            {
-                                Id_tournament = createdtournamentId,
-                                Id_Judge = judgeId
-                            }, transaction);
-                        }
-
-                        await transaction.CommitAsync();
-                        return affectedRows;
-                    }
-                    catch (Exception ex)
-                    {
-                        await transaction.RollbackAsync();
-                        Console.WriteLine($"Error al insertar jueces en el torneo: {ex.Message}");
-                        throw;
-                    }
-                }
-            }
-        }
 
         public async Task<List<int>> GetJudgeIdsByAliasAsync(List<string> judgeAliases)
         {
@@ -230,11 +184,11 @@ namespace CTDao.Dao.Tournaments
             }
         }
 
-        public async Task<int> InsertTournamentSeriesAsync(List<int> cardsIds)
+        public async Task<int> InsertTournamentDecksAsync(TournamentDecksModel tournamentDecks)
         {
-            if (cardsIds == null || !cardsIds.Any())
+            if (tournamentDecks.Id_card_series == null || !tournamentDecks.Id_card_series.Any())
             {
-                throw new ArgumentException("La lista de series no puede estar vacía.", nameof(cardsIds));
+                throw new ArgumentException("La lista de series no puede estar vacía.", nameof(tournamentDecks.Id_card_series));
             }
 
             await using var connection = new MySqlConnection(_connectionString);
@@ -245,47 +199,13 @@ namespace CTDao.Dao.Tournaments
             {
                 var affectedRows = 0;
 
-                foreach (var cardId in cardsIds)
-                {
-                    affectedRows += await connection.ExecuteAsync(QueryInsertSeries, new
-                    {
-                        Id_tournament = createdtournamentId,
-                        Id_Series = cardId
-                    }, transaction).ConfigureAwait(false);
-                }
-
-                await transaction.CommitAsync().ConfigureAwait(false);
-                return affectedRows;
-            }
-            catch (Exception ex)
-            {
-                await transaction.RollbackAsync().ConfigureAwait(false);
-                throw new ApplicationException("Error al insertar series en el torneo.", ex);
-            }
-        }
-
-        public async Task<int> InsertTournamentDecksAsync(List<int> cardsIds, int owner)
-        {
-            if (cardsIds == null || !cardsIds.Any())
-            {
-                throw new ArgumentException("La lista de series no puede estar vacía.", nameof(cardsIds));
-            }
-
-            await using var connection = new MySqlConnection(_connectionString);
-            await connection.OpenAsync().ConfigureAwait(false);
-
-            await using var transaction = await connection.BeginTransactionAsync().ConfigureAwait(false);
-            try
-            {
-                var affectedRows = 0;
-
-                foreach (var cardId in cardsIds)
+                foreach (var cardId in tournamentDecks.Id_card_series)
                 {
                     affectedRows += await connection.ExecuteAsync(QueryInsertDecks, new
                     {
-                        Id_tournament = createdtournamentId,
+                        Id_tournament = tournamentDecks.Id_Tournament,
                         Id_Card_Series = cardId,
-                        Id_Owner = owner
+                        Id_Owner = tournamentDecks.Id_Owner,
                     }, transaction).ConfigureAwait(false);
                 }
 
@@ -300,11 +220,11 @@ namespace CTDao.Dao.Tournaments
             }
         }
 
-        public async Task<int> InsertTournamentPlayersAsync(int player)
+        public async Task<int> InsertTournamentPlayersAsync(TournamentDecksModel tournamentDecks)
         {
-            if (player == null)
+            if (tournamentDecks.Id_Owner == null)
             {
-                throw new ArgumentException("La lista de players no puede estar vacía.", nameof(player));
+                throw new ArgumentException("La lista de players no puede estar vacía.", nameof(tournamentDecks.Id_Owner));
             }
 
             using (var connection = new MySqlConnection(_connectionString))
@@ -319,8 +239,8 @@ namespace CTDao.Dao.Tournaments
 
                         affectedRows += await connection.ExecuteAsync(QueryInsertPlayers, new
                         {
-                            Id_tournament = createdtournamentId,
-                            Id_player = player
+                            Id_tournament = tournamentDecks.Id_Tournament,
+                            Id_player = tournamentDecks.Id_Owner
                         }, transaction);
 
                         await transaction.CommitAsync();
@@ -337,11 +257,11 @@ namespace CTDao.Dao.Tournaments
             }
         }
 
-        public async Task<int> SetTournamentToNextPhase()
+        public async Task<int> SetTournamentToNextPhase(int tournament_id)
         {
             using (var connection = new MySqlConnection(_connectionString))
             {
-                var id_tournament = createdtournamentId;
+                var id_tournament = tournament_id;
 
              
                 int current_phase = await GetTournamentCurrentPhase(id_tournament);
@@ -395,6 +315,18 @@ namespace CTDao.Dao.Tournaments
                 }
 
                 return current_phase;
+            }
+        }
+
+        public async Task<bool> TournamentExistsAsync(int tournamentId)
+        {
+            using (var connection = new MySqlConnection(_connectionString))
+            {
+                int count = await connection.ExecuteScalarAsync<int>(QueryTournamentExist, new { id_tournament = tournamentId });
+
+                Console.WriteLine("es 1 si existe el torneo" + count);
+
+                return count > 0;
             }
         }
     }

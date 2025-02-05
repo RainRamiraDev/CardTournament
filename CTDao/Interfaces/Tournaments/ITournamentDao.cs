@@ -1,5 +1,6 @@
 ﻿using CTDataModels.Card;
 using CTDataModels.Tournamets;
+using CTDto.Card;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,16 +16,16 @@ namespace CTDao.Interfaces.Tournaments
         Task<IEnumerable<TournamentModel>> GetAllTournamentAsync();
         Task<IEnumerable<AvailableTournamentsModel>> GetAllAvailableTournamentsAsync();
 
-        Task<int> SetTournamentToNextPhase();
+        Task<int> SetTournamentToNextPhase(int tournament_id);
         Task<int> GetTournamentCurrentPhase(int id_tournament);
 
+        Task<bool> TournamentExistsAsync(int tournamentId);
+
         //Judge
-        Task<int> InsertTournamentJudgesAsync(List<int> judgeIds);
         Task<List<int>> GetJudgeIdsByAliasAsync(List<string> judgeAliases);
 
         //cards
-        Task<int> InsertTournamentSeriesAsync(List<int> cardsIds);
-        Task<int> InsertTournamentDecksAsync(List<int> cardsIds, int owner);
-        Task<int> InsertTournamentPlayersAsync(int player);
+        Task<int> InsertTournamentDecksAsync(TournamentDecksModel tournamentDecks);
+        Task<int> InsertTournamentPlayersAsync(TournamentDecksModel tournamentDecks);
     }
 }
