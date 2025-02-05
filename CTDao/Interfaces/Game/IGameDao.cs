@@ -11,7 +11,7 @@ namespace CTDao.Interfaces.Game
 {
     public interface IGameDao
     {
-        Task<int> InsertGamePlayersAsync(GamePlayersModel playerModel);
+        //Task<int> InsertGamePlayersAsync(GamePlayersModel playerModel);
         Task<int> SetGameWinnerAsync(int winner);
         Task<int> SetGameLoserAsync(List<int> losers);
         Task<List<int>> GetTournamentPlayers(int tournamentId);

@@ -94,43 +94,43 @@ namespace CTDao.Dao.Game
 
         
 
-        public async Task<int> InsertGamePlayersAsync(GamePlayersModel playerModel)
-        {
-            if (playerModel == null || !playerModel.Id_Player.Any())
-            {
-                throw new ArgumentException("La lista de judadores no puede estar vacía.", nameof(playerModel));
-            }
+        //public async Task<int> InsertGamePlayersAsync(GamePlayersModel playerModel)
+        //{
+        //    if (playerModel == null || !playerModel.Id_Player.Any())
+        //    {
+        //        throw new ArgumentException("La lista de judadores no puede estar vacía.", nameof(playerModel));
+        //    }
 
-            using (var connection = new MySqlConnection(_connectionString))
-            {
-                await connection.OpenAsync();
-                using (var transaction = await connection.BeginTransactionAsync())
-                {
-                    try
-                    {
-                        var affectedRows = 0;
+        //    using (var connection = new MySqlConnection(_connectionString))
+        //    {
+        //        await connection.OpenAsync();
+        //        using (var transaction = await connection.BeginTransactionAsync())
+        //        {
+        //            try
+        //            {
+        //                var affectedRows = 0;
 
-                        foreach (var player in playerModel.Id_Player)
-                        {
-                            affectedRows += await connection.ExecuteAsync(QueryInsertGamePlayers, new
-                            {
-                                Id_game = createdGameId,
-                                Id_player = player
-                            }, transaction);
-                        }
+        //                foreach (var player in playerModel.Id_Player)
+        //                {
+        //                    affectedRows += await connection.ExecuteAsync(QueryInsertGamePlayers, new
+        //                    {
+        //                        Id_game = createdGameId,
+        //                        Id_player = player
+        //                    }, transaction);
+        //                }
 
-                        await transaction.CommitAsync();
-                        return affectedRows;
-                    }
-                    catch (Exception ex)
-                    {
-                        await transaction.RollbackAsync();
-                        Console.WriteLine($"Error al insertar jugadores en el juego: {ex.Message}");
-                        throw;
-                    }
-                }
-            }
-        }
+        //                await transaction.CommitAsync();
+        //                return affectedRows;
+        //            }
+        //            catch (Exception ex)
+        //            {
+        //                await transaction.RollbackAsync();
+        //                Console.WriteLine($"Error al insertar jugadores en el juego: {ex.Message}");
+        //                throw;
+        //            }
+        //        }
+        //    }
+        //}
 
         public async Task<int> SetGameWinnerAsync(int winner)
         {
