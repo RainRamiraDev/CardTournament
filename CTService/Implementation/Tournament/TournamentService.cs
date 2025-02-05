@@ -24,6 +24,8 @@ namespace CTService.Implementation.Tournament
         private readonly ICardDao _cardDao;
 
 
+
+
         public TournamentService(ITournamentDao tournamentDao, ICardDao cardDao)
         {
             _tournamentDao = tournamentDao;

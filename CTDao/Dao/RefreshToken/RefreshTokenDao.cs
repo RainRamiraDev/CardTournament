@@ -1,6 +1,7 @@
 ﻿using CTDao.Interfaces.RefreshToken;
 using CTDataModels.Users;
 using Dapper;
+using DataAccess;
 using MySql.Data.MySqlClient;
 
 
@@ -9,36 +10,6 @@ namespace CTDao.Dao.RefreshToken
     public class RefreshTokenDao : IRefreshTokenDao
     {
         private readonly string _connectionString;
-
-        private const string QueryVerifyToken = @"
-    SELECT 1
-    FROM T_REFRESH_TOKENS 
-    WHERE token = @Token AND expiry_date > @Now 
-    LIMIT 1";
-
-        private const string QueryDeleteToken = @"
-    DELETE FROM T_REFRESH_TOKENS 
-    WHERE token = @Token";
-
-        private const string QuerySaveToken = @"
-    INSERT INTO T_REFRESH_TOKENS (token, id_user, expiry_date) 
-    VALUES (@Token, @id_user, @ExpiryDate)";
-
-        private const string QueryGetToken = @"
-    SELECT token 
-    FROM T_REFRESH_TOKENS 
-    WHERE id_user = @id_user 
-    LIMIT 1";
-
-        private const string QueryGetUser = @"
-    SELECT u.id_user,
-           u.fullname,
-           u.email
-    FROM T_USERS u 
-    INNER JOIN T_REFRESH_TOKENS rt 
-        ON rt.id_user = u.id_user
-    WHERE rt.token = @Token AND rt.expiry_date > @Now";
-
 
         public RefreshTokenDao(string connectionString)
         {
@@ -50,7 +21,7 @@ namespace CTDao.Dao.RefreshToken
             using (var connection = new MySqlConnection(_connectionString))
             {
                 var user = await connection.QuerySingleOrDefaultAsync<UserModel>(
-                    QueryGetUser,
+                    QueryLoader.GetQuery("QueryGetUser"),
                     new { Token = refreshToken.ToString(), Now = DateTime.UtcNow }
                 );
 
@@ -66,7 +37,7 @@ namespace CTDao.Dao.RefreshToken
 
 
                 var result = await connection.ExecuteScalarAsync<int>(
-                    QueryVerifyToken,
+                    QueryLoader.GetQuery("QueryVerifyToken"),
                     new { Token = token.ToString(), Now = DateTime.UtcNow }
                 );
 
@@ -81,7 +52,7 @@ namespace CTDao.Dao.RefreshToken
                 await connection.OpenAsync();
 
                 return await connection.ExecuteAsync(
-                    QueryDeleteToken,
+                    QueryLoader.GetQuery("QueryDeleteToken"),
                     new { Token = token }
                 );
             }
@@ -94,7 +65,7 @@ namespace CTDao.Dao.RefreshToken
                 await connection.OpenAsync();
 
                 return await connection.ExecuteAsync(
-                    QuerySaveToken,
+                    QueryLoader.GetQuery("QuerySaveToken"),
                     new { Token = token.ToString(), id_user = userId, ExpiryDate = expiryDate }
                 );
             }
@@ -107,7 +78,7 @@ namespace CTDao.Dao.RefreshToken
                 await connection.OpenAsync();
 
                 return await connection.ExecuteScalarAsync<Guid?>(
-                    QueryGetToken,
+                    QueryLoader.GetQuery("QueryGetToken"),
                     new { id_User = userId }
                 );
             }

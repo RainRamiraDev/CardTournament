@@ -2,6 +2,7 @@
 using CTDao.Interfaces.Game;
 using CTDataModels.Game;
 using Dapper;
+using DataAccess;
 using MySql.Data.MySqlClient;
 using Mysqlx.Crud;
 using System;
@@ -25,53 +26,6 @@ namespace CTDao.Dao.Game
             _connectionString = connectionString;
         }
 
-        private readonly string QueryCreateGame = @"INSERT INTO T_GAMES (id_tournament,start_datetime) VALUES (@id_tournament,@start_datetime); SELECT LAST_INSERT_ID();";
-
-        private readonly string QueryInsertGamePlayers = @"INSERT INTO T_GAME_PLAYERS (id_game, id_player) VALUES (@id_game, @id_player);";
-
-
-        private readonly string QuerySetWinner = @"
-        UPDATE T_USERS 
-        SET games_won = games_won + 1 
-        WHERE id_user = @id_player;
-    ";
-
-        private readonly string QuerySetLosers = @"
-            UPDATE T_USERS 
-            SET games_lost = games_lost + 1 
-            WHERE id_user IN @losers;
-        ";
-
-
-        private readonly string QueryGetPlayersIds = @"SELECT id_player FROM T_TOURN_PLAYERS WHERE id_tournament = @id_tournament";
-
-        private readonly string QueryCreateRound = @"
-            INSERT INTO T_ROUNDS (id_tournament,round_number) 
-            VALUES (@id_tournament,@round_number);
-        ";
-
-        private readonly string QueryCreateMatch = @"INSERT INTO T_MATCHES (id_round,id_player1, id_player2, winner) 
-        VALUES (@id_round,@id_player1, @id_player2,@winner);
-        SELECT LAST_INSERT_ID();
-        ";
-
-        private readonly string QuerySetNextRound = @"
-        INSERT INTO T_ROUNDS (id_tournament, round_number, is_completed) VALUES (@id_tournament, @round_number, FALSE)";
-
-        private readonly string QueryGetLastRound = @"
-        SELECT COALESCE(MAX(round_number), 0) FROM T_ROUNDS WHERE id_tournament = @id_tournament";
-
-        
-        private readonly string QueryCompleteRound = @"
-         UPDATE T_ROUNDS
-         SET is_completed = TRUE
-         WHERE id_tournament = @id_tournament AND
-	  	 round_number = @round_number;
-    ";
-
-        private readonly string QueryGetLastInsertId = "SELECT LAST_INSERT_ID();";
-
-
         public async Task<int> SetGameWinnerAsync(int winner)
         {
             using (var connection = new MySqlConnection(_connectionString))
@@ -81,7 +35,7 @@ namespace CTDao.Dao.Game
                 {
                     try
                     {
-                        int rowsAffected = await connection.ExecuteAsync(QuerySetWinner, new { id_player = winner }, transaction);
+                        int rowsAffected = await connection.ExecuteAsync(QueryLoader.GetQuery("QuerySetWinner"), new { id_player = winner }, transaction);
 
                         await transaction.CommitAsync();
                         return rowsAffected;
@@ -101,7 +55,7 @@ namespace CTDao.Dao.Game
             {
                 await connection.OpenAsync();
 
-                var playersIds = await connection.QueryAsync<int>(QueryGetPlayersIds, new { id_tournament = tournamentId });
+                var playersIds = await connection.QueryAsync<int>(QueryLoader.GetQuery("QueryGetPlayersIds"), new { id_tournament = tournamentId });
 
                 return playersIds.ToList();
             }
@@ -121,7 +75,7 @@ namespace CTDao.Dao.Game
                 {
                     try
                     {
-                        int rowsAffected = await connection.ExecuteAsync(QuerySetLosers, new { losers }, transaction);
+                        int rowsAffected = await connection.ExecuteAsync(QueryLoader.GetQuery("QuerySetLosers"), new { losers }, transaction);
 
                         await transaction.CommitAsync();
                         return rowsAffected;
@@ -141,7 +95,7 @@ namespace CTDao.Dao.Game
             {
                 await connection.OpenAsync();
                 int lastRoundNumber = await connection.ExecuteScalarAsync<int>(
-                    QueryGetLastRound,
+                    QueryLoader.GetQuery("QueryGetLastRound"),
                     new { id_tournament = tournament_id });
                 int nextRoundNumber = lastRoundNumber + 1;
                 return nextRoundNumber;
@@ -157,13 +111,13 @@ namespace CTDao.Dao.Game
                 {
                     try
                     {
-                        await connection.ExecuteAsync(QueryCreateRound, new
+                        await connection.ExecuteAsync(QueryLoader.GetQuery("QueryCreateRound"), new
                         {
                             Id_Tournament = round.Id_Tournament,
                             round_number = round.Round_Number
                         }, transaction);
 
-                        int roundId = await connection.ExecuteScalarAsync<int>(QueryGetLastInsertId, transaction);
+                        int roundId = await connection.ExecuteScalarAsync<int>(QueryLoader.GetQuery("QueryGetLastInsertId"), transaction);
 
                         await transaction.CommitAsync();
 
@@ -187,7 +141,7 @@ namespace CTDao.Dao.Game
                 {
                     try
                     {
-                        var matchId = await connection.ExecuteScalarAsync<int>(QueryCreateMatch, new
+                        var matchId = await connection.ExecuteScalarAsync<int>(QueryLoader.GetQuery("QueryCreateMatch"), new
                         {
                             id_round = match.Id_Round,
                             id_player1 = match.Id_Player1,
@@ -221,7 +175,7 @@ namespace CTDao.Dao.Game
                         Console.WriteLine("[Next Round number]:" + lastRoundNumber);
 
                         int affectedRows = await connection.ExecuteAsync(
-                            QuerySetNextRound,
+                            QueryLoader.GetQuery("QuerySetNextRound"),
                             new { id_tournament = tournament_id, round_number = lastRoundNumber },
                             transaction);
 
@@ -246,7 +200,7 @@ namespace CTDao.Dao.Game
                 {
                     try
                     {
-                        int affectedRows = await connection.ExecuteAsync(QueryCompleteRound, new
+                        int affectedRows = await connection.ExecuteAsync(QueryLoader.GetQuery("QueryCompleteRound"), new
                         {
                             id_tournament = tournament_id,
                             round_number = roundNumber

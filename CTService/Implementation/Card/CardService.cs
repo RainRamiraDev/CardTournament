@@ -1,6 +1,10 @@
 ﻿using CTDao.Interfaces.Card;
+using CTDao.Interfaces.Tournaments;
 using CTDto.Card;
+using CTDto.Tournaments;
 using CTService.Interfaces.Card;
+using CTService.Interfaces.Tournaments;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,14 +17,26 @@ namespace CTService.Implementation.Card
     {
         private readonly ICardDao _cardDao;
 
-        public CardService(ICardDao cardDao)
+        private readonly ITournamentDao _tournamentDao;
+
+        public CardService(ICardDao cardDao, ITournamentDao tournamentDao)
         {
             _cardDao = cardDao;
+            _tournamentDao = tournamentDao;
         }
 
-        public async Task<IEnumerable<ShowCardsDto>> GetAllCardsAsync()
+
+        public async Task<IEnumerable<ShowCardsDto>> GetAllCardsAsync(TournamentRequestDto tournamentRequestDto)
         {
-            var cards = await _cardDao.GetAllAsync();
+
+            var seriesIds = await _tournamentDao.GetSeriesFromTournamentAsync(tournamentRequestDto.Tournament_Id);
+
+            if (seriesIds.Count < 1)
+            {
+                throw new ArgumentException("Las series no pueden estar vacias");
+            }
+
+            var cards = await _cardDao.GetAllAsync(seriesIds);
             var cardDtos = cards.Select(card => new ShowCardsDto
             {
                 Series_name = card.Series_name,

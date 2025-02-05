@@ -3,6 +3,7 @@ using CTDao.Interfaces.Tournaments;
 using CTDataModels.Tournamets;
 using CTDto.Card;
 using Dapper;
+using DataAccess;
 using MySql.Data.MySqlClient;
 using Org.BouncyCastle.Asn1;
 using System;
@@ -26,71 +27,6 @@ namespace CTDao.Dao.Tournaments
 
         private readonly string _connectionString;
 
-
-        private readonly string QueryGetAll = @"SELECT * FROM T_TOURNAMENTS";
-
-        private readonly string QueryCreateTournament = @"
-        INSERT INTO T_TOURNAMENTS (id_country, id_organizer, start_datetime,current_phase) 
-        VALUES (@IdCountry, @IdOrganizer, @StartDatetime,@CurrentPhase); SELECT LAST_INSERT_ID();";
-
-        private readonly string QueryInsertJudges = @"INSERT INTO T_TOURN_JUDGES (id_tournament, id_judge) VALUES (@id_tournament, @id_judge);";
-
-        private readonly string QueryGetJudgeByAlias = @"SELECT id_user FROM T_USERS WHERE alias IN @Aliases AND Id_rol = 3;";
-
-        private readonly string QueryAvailableTournaments = @"
-        SELECT 
-            t.start_datetime,
-            t.end_datetime,
-            c.country_name AS tournament_country,
-            u.alias AS organizer_alias,
-            GROUP_CONCAT(DISTINCT j.fullname SEPARATOR ', ') AS judges,
-            GROUP_CONCAT(DISTINCT s.series_name SEPARATOR ', ') AS series_played,
-            GROUP_CONCAT(DISTINCT p.fullname SEPARATOR ', ') AS players,
-            GROUP_CONCAT(DISTINCT d.fullname SEPARATOR ', ') AS disqualified_players,
-            COUNT(DISTINCT g.id_game) AS total_games,
-            COUNT(DISTINCT r.id_round) AS total_rounds
-        FROM T_TOURNAMENTS t
-        LEFT JOIN T_COUNTRIES c ON t.id_country = c.id_country
-        LEFT JOIN T_USERS u ON t.id_organizer = u.id_user
-        LEFT JOIN T_TOURN_JUDGES tj ON t.id_tournament = tj.id_tournament
-        LEFT JOIN T_USERS j ON tj.id_judge = j.id_user
-        LEFT JOIN T_TOURN_SERIES ts ON t.id_tournament = ts.id_tournament
-        LEFT JOIN T_SERIES s ON ts.id_series = s.id_series
-        LEFT JOIN T_TOURN_PLAYERS tp ON t.id_tournament = tp.id_tournament
-        LEFT JOIN T_USERS p ON tp.id_player = p.id_user
-        LEFT JOIN T_TOURN_DISQUALIFICATIONS td ON t.id_tournament = td.id_tournament
-        LEFT JOIN T_USERS d ON td.id_player = d.id_user
-        LEFT JOIN T_GAMES g ON t.id_tournament = g.id_tournament
-        LEFT JOIN T_MATCHES m ON g.id_game = m.id_game 
-        LEFT JOIN T_ROUNDS r ON m.id_round = r.id_round 
-        WHERE t.current_phase = 1
-        GROUP BY 
-            t.start_datetime,
-            t.end_datetime,
-            t.current_phase,
-            c.country_name,
-            u.fullname, 
-            u.alias, 
-            u.email;
-";
-
-        private readonly string QueryInsertSeries = @"INSERT INTO T_TOURN_SERIES (id_tournament, id_series) VALUES (@id_tournament, @id_series);";
-
-        private readonly string QueryInsertDecks = @"INSERT INTO T_TOURN_DECKS (id_tournament, id_card_series, id_owner) 
-                                             VALUES (@id_tournament, @id_card_series, @id_owner);";
-
-        private readonly string QueryInsertPlayers = @"INSERT INTO T_TOURN_PLAYERS (id_tournament, id_player) VALUES (@Id_tournament,@id_player);";
-
-        private readonly string QuerySetTournamentNextPhase = @"UPDATE T_TOURNAMENTS
-        SET current_phase = current_phase + 1
-        WHERE id_tournament = @id_tournament AND current_phase < 3";
-
-
-        private readonly string QueryGetCurrentPhase = @"SELECT current_phase FROM T_TOURNAMENTS WHERE id_tournament = @id_tournament;";
-
-        private readonly string QueryTournamentExist = "SELECT COUNT(1) FROM T_TOURNAMENTS WHERE id_tournament = @id_tournament";
-
-
         public async Task<int> CreateTournamentAsync(TournamentModel tournament)
         {
             using var connection = new MySqlConnection(_connectionString);
@@ -99,7 +35,7 @@ namespace CTDao.Dao.Tournaments
             using var transaction = await connection.BeginTransactionAsync();
             try
             {
-                var tournamentId = await connection.ExecuteScalarAsync<int>(QueryCreateTournament, new
+                var tournamentId = await connection.ExecuteScalarAsync<int>(QueryLoader.GetQuery("QueryCreateTournament"), new
                 {
                     IdCountry = tournament.Id_Country,
                     IdOrganizer = tournament.Id_Organizer,
@@ -113,7 +49,7 @@ namespace CTDao.Dao.Tournaments
                 {
                     Console.WriteLine($"Inserting Judge {judgeId} into tournament {tournamentId}");
 
-                    await connection.ExecuteAsync(QueryInsertJudges, new
+                    await connection.ExecuteAsync(QueryLoader.GetQuery("QueryInsertJudges"), new
                     {
                         Id_tournament = tournamentId,
                         Id_Judge = judgeId
@@ -125,7 +61,7 @@ namespace CTDao.Dao.Tournaments
 
                     Console.WriteLine($"Inserting Series {cardId} into tournament {tournamentId}");
 
-                    await connection.ExecuteAsync(QueryInsertSeries, new
+                    await connection.ExecuteAsync(QueryLoader.GetQuery("QueryInsertSeries"), new
                     {
                         Id_tournament = tournamentId,
                         Id_Series = cardId
@@ -153,7 +89,7 @@ namespace CTDao.Dao.Tournaments
             {
                 await connection.OpenAsync();
 
-                var tournaments = await connection.QueryAsync<TournamentModel>(QueryGetAll);
+                var tournaments = await connection.QueryAsync<TournamentModel>(QueryLoader.GetQuery("QueryGetAll"));
 
                 return tournaments;
             }
@@ -166,7 +102,7 @@ namespace CTDao.Dao.Tournaments
             {
                 await connection.OpenAsync();
 
-                var judgeIds = await connection.QueryAsync<int>(QueryGetJudgeByAlias, new { Aliases = judgeAliases });
+                var judgeIds = await connection.QueryAsync<int>(QueryLoader.GetQuery("QueryGetJudgeByAlias"), new { Aliases = judgeAliases });
 
                 return judgeIds.ToList();
             }
@@ -178,7 +114,7 @@ namespace CTDao.Dao.Tournaments
             {
                 await connection.OpenAsync();
 
-                var tournaments = await connection.QueryAsync<AvailableTournamentsModel>(QueryAvailableTournaments);
+                var tournaments = await connection.QueryAsync<AvailableTournamentsModel>(QueryLoader.GetQuery("QueryAvailableTournaments"));
 
                 return tournaments;
             }
@@ -201,7 +137,7 @@ namespace CTDao.Dao.Tournaments
 
                 foreach (var cardId in tournamentDecks.Id_card_series)
                 {
-                    affectedRows += await connection.ExecuteAsync(QueryInsertDecks, new
+                    affectedRows += await connection.ExecuteAsync(QueryLoader.GetQuery("QueryInsertDecks"), new
                     {
                         Id_tournament = tournamentDecks.Id_Tournament,
                         Id_Card_Series = cardId,
@@ -237,7 +173,7 @@ namespace CTDao.Dao.Tournaments
                         var affectedRows = 0;
 
 
-                        affectedRows += await connection.ExecuteAsync(QueryInsertPlayers, new
+                        affectedRows += await connection.ExecuteAsync(QueryLoader.GetQuery("QueryInsertPlayers"), new
                         {
                             Id_tournament = tournamentDecks.Id_Tournament,
                             Id_player = tournamentDecks.Id_Owner
@@ -276,7 +212,7 @@ namespace CTDao.Dao.Tournaments
                 {
                     try
                     {
-                        int rowsAffected = await connection.ExecuteAsync(QuerySetTournamentNextPhase,
+                        int rowsAffected = await connection.ExecuteAsync(QueryLoader.GetQuery("QuerySetTournamentNextPhase"),
                                                                          new { id_tournament = id_tournament },
                                                                          transaction);
 
@@ -304,7 +240,7 @@ namespace CTDao.Dao.Tournaments
                 await connection.OpenAsync();
 
                
-                var current_phase = await connection.QuerySingleOrDefaultAsync<int>(QueryGetCurrentPhase,
+                var current_phase = await connection.QuerySingleOrDefaultAsync<int>(QueryLoader.GetQuery("QueryGetCurrentPhase"),
                                                                                     new { id_tournament = id_tournament });
 
                 Console.WriteLine("[Creation Current Phase]:"+current_phase);
@@ -322,11 +258,23 @@ namespace CTDao.Dao.Tournaments
         {
             using (var connection = new MySqlConnection(_connectionString))
             {
-                int count = await connection.ExecuteScalarAsync<int>(QueryTournamentExist, new { id_tournament = tournamentId });
+                int count = await connection.ExecuteScalarAsync<int>(QueryLoader.GetQuery("QueryTournamentExist"), new { id_tournament = tournamentId });
 
                 Console.WriteLine("es 1 si existe el torneo" + count);
 
                 return count > 0;
+            }
+        }
+
+        public async Task<List<int>> GetSeriesFromTournamentAsync(int tournamentId)
+        {
+            using (var connection = new MySqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+
+                var seriesIds = await connection.QueryAsync<int>(QueryLoader.GetQuery("QueryGetSeriesFromTournament"), new { id_tournament = tournamentId });
+
+                return seriesIds.ToList();
             }
         }
     }

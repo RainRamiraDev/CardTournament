@@ -67,11 +67,8 @@ namespace CTService.Implementation.Game
 
         public async Task<GameResultDto> ResolveGameAsync(int tournament_id)
         {
-            //validar que el tournament_id exista
 
             bool tournamentExists = await _tournamentDao.TournamentExistsAsync(tournament_id);
-
-            
 
             if (!tournamentExists)
             {

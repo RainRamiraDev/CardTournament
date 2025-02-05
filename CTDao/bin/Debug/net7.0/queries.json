@@ -1,0 +1,54 @@
+{
+  "QueryGetAll": "SELECT * FROM T_TOURNAMENTS;",
+  "QueryCreateTournament": "INSERT INTO T_TOURNAMENTS (id_country, id_organizer, start_datetime, current_phase) VALUES (@IdCountry, @IdOrganizer, @StartDatetime, @CurrentPhase); SELECT LAST_INSERT_ID();",
+  "QueryInsertJudges": "INSERT INTO T_TOURN_JUDGES (id_tournament, id_judge) VALUES (@id_tournament, @id_judge);",
+  "QueryGetJudgeByAlias": "SELECT id_user FROM T_USERS WHERE alias IN @Aliases AND Id_rol = 3;",
+  "QueryAvailableTournaments": "SELECT t.start_datetime, t.end_datetime, c.country_name AS tournament_country, u.alias AS organizer_alias, GROUP_CONCAT(DISTINCT j.fullname SEPARATOR ', ') AS judges, GROUP_CONCAT(DISTINCT s.series_name SEPARATOR ', ') AS series_played, GROUP_CONCAT(DISTINCT p.fullname SEPARATOR ', ') AS players, GROUP_CONCAT(DISTINCT d.fullname SEPARATOR ', ') AS disqualified_players, COUNT(DISTINCT g.id_game) AS total_games, COUNT(DISTINCT r.id_round) AS total_rounds FROM T_TOURNAMENTS t LEFT JOIN T_COUNTRIES c ON t.id_country = c.id_country LEFT JOIN T_USERS u ON t.id_organizer = u.id_user LEFT JOIN T_TOURN_JUDGES tj ON t.id_tournament = tj.id_tournament LEFT JOIN T_USERS j ON tj.id_judge = j.id_user LEFT JOIN T_TOURN_SERIES ts ON t.id_tournament = ts.id_tournament LEFT JOIN T_SERIES s ON ts.id_series = s.id_series LEFT JOIN T_TOURN_PLAYERS tp ON t.id_tournament = tp.id_tournament LEFT JOIN T_USERS p ON tp.id_player = p.id_user LEFT JOIN T_TOURN_DISQUALIFICATIONS td ON t.id_tournament = td.id_tournament LEFT JOIN T_USERS d ON td.id_player = d.id_user LEFT JOIN T_GAMES g ON t.id_tournament = g.id_tournament LEFT JOIN T_MATCHES m ON g.id_game = m.id_game LEFT JOIN T_ROUNDS r ON m.id_round = r.id_round WHERE t.current_phase = 1 GROUP BY t.start_datetime, t.end_datetime, t.current_phase, c.country_name, u.fullname, u.alias, u.email;",
+  "QueryInsertSeries": "INSERT INTO T_TOURN_SERIES (id_tournament, id_series) VALUES (@id_tournament, @id_series);",
+  "QueryInsertDecks": "INSERT INTO T_TOURN_DECKS (id_tournament, id_card_series, id_owner) VALUES (@id_tournament, @id_card_series, @id_owner);",
+  "QueryInsertPlayers": "INSERT INTO T_TOURN_PLAYERS (id_tournament, id_player) VALUES (@Id_tournament,@id_player);",
+  "QuerySetTournamentNextPhase": "UPDATE T_TOURNAMENTS SET current_phase = current_phase + 1 WHERE id_tournament = @id_tournament AND current_phase < 3;",
+  "QueryGetCurrentPhase": "SELECT current_phase FROM T_TOURNAMENTS WHERE id_tournament = @id_tournament;",
+  "QueryTournamentExist": "SELECT COUNT(1) FROM T_TOURNAMENTS WHERE id_tournament = @id_tournament;",
+  "QueryGetSeriesFromTournament": "SELECT ts.id_series FROM t_tournaments tt JOIN t_tourn_series ts ON tt.id_tournament = ts.id_tournament WHERE tt.id_tournament = @id_tournament",
+
+
+
+
+
+
+  "QueryGetIdCardSeries": "SELECT DISTINCT tcs.id_card_series FROM t_card_series tcs WHERE tcs.id_card IN @IdCard;",
+  "QueryGetCards": "SELECT s.series_name, c.illustration, c.attack, c.deffense, s.release_date FROM T_CARDS c JOIN T_CARD_SERIES cs ON c.id_card = cs.id_card JOIN T_SERIES s ON cs.id_series = s.id_series WHERE s.id_series IN @idSeries ORDER BY 1 ASC;",
+  "QueryGetCardsByIllustration": "SELECT id_card FROM t_cards WHERE illustration IN @Illustration;",
+  "QueryGetSeriesByName": "SELECT ts.id_series FROM t_series ts WHERE ts.series_name IN @SeriesNames;",
+  "QueryGetCardsBySeriesName": "SELECT s.series_name, c.illustration, c.attack, c.deffense, s.release_date FROM T_CARDS c JOIN T_CARD_SERIES cs ON c.id_card = cs.id_card JOIN T_SERIES s ON cs.id_series = s.id_series WHERE s.series_name IN @SeriesName ORDER BY 1 ASC;",
+
+
+  "QueryCreateGame": "INSERT INTO T_GAMES (id_tournament, start_datetime) VALUES (@id_tournament, @start_datetime); SELECT LAST_INSERT_ID();",
+  "QueryInsertGamePlayers": "INSERT INTO T_GAME_PLAYERS (id_game, id_player) VALUES (@id_game, @id_player);",
+  "QuerySetWinner": "UPDATE T_USERS SET games_won = games_won + 1 WHERE id_user = @id_player;",
+  "QuerySetLosers": "UPDATE T_USERS SET games_lost = games_lost + 1 WHERE id_user IN @losers;",
+  "QueryGetPlayersIds": "SELECT id_player FROM T_TOURN_PLAYERS WHERE id_tournament = @id_tournament;",
+  "QueryCreateRound": "INSERT INTO T_ROUNDS (id_tournament, round_number) VALUES (@id_tournament, @round_number);",
+  "QueryCreateMatch": "INSERT INTO T_MATCHES (id_round, id_player1, id_player2, winner) VALUES (@id_round, @id_player1, @id_player2, @winner); SELECT LAST_INSERT_ID();",
+  "QuerySetNextRound": "INSERT INTO T_ROUNDS (id_tournament, round_number, is_completed) VALUES (@id_tournament, @round_number, FALSE);",
+  "QueryGetLastRound": "SELECT COALESCE(MAX(round_number), 0) FROM T_ROUNDS WHERE id_tournament = @id_tournament;",
+  "QueryCompleteRound": "UPDATE T_ROUNDS SET is_completed = TRUE WHERE id_tournament = @id_tournament AND round_number = @round_number;",
+  "QueryGetLastInsertId": "SELECT LAST_INSERT_ID();",
+
+
+  "QueryVerifyToken": "SELECT 1 FROM T_REFRESH_TOKENS WHERE token = @Token AND expiry_date > @Now LIMIT 1;",
+  "QueryDeleteToken": "DELETE FROM T_REFRESH_TOKENS WHERE token = @Token;",
+  "QuerySaveToken": "INSERT INTO T_REFRESH_TOKENS (token, id_user, expiry_date) VALUES (@Token, @id_user, @ExpiryDate);",
+  "QueryGetToken": "SELECT token FROM T_REFRESH_TOKENS WHERE id_user = @id_user LIMIT 1;",
+  "QueryGetUser": "SELECT u.id_user, u.fullname, u.email FROM T_USERS u INNER JOIN T_REFRESH_TOKENS rt ON rt.id_user = u.id_user WHERE rt.token = @Token AND rt.expiry_date > @Now;",
+
+
+  "QueryGetUserWhitToken": "SELECT * FROM T_Users WHERE Id_User = @Id_user;",
+  "QueryFirstLogIn": "INSERT INTO T_Users (Fullname, Passcode, Id_Rol) VALUES (@Fullname, @Passcode, @Id_Rol);",
+  "QueryLogin": "SELECT Id_User, Fullname, Passcode, Id_Rol FROM T_Users WHERE Fullname = @Fullname;",
+  "QueryGetAllJudges": "SELECT u.Fullname, u.Alias, u.Email, c.country_name as Country, u.avatar_url FROM t_users u JOIN t_countries c ON u.id_country = c.id_country WHERE Id_rol = 3;",
+  "QueryGetPlayersRankIds": "SELECT ki FROM t_users WHERE Id_user = @Id;"
+
+
+}
