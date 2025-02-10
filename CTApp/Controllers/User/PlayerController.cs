@@ -88,8 +88,6 @@ namespace CTApp.Controllers.User
             }
         }
 
-
-
     }
 
 

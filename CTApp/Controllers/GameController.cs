@@ -24,9 +24,9 @@ namespace CTApp.Controllers
         {
             try
             {
-                Console.WriteLine("id recibido: " + request.Tournament_Id);
+                //Console.WriteLine("id recibido: " + request.Tournament_Id);
 
-                GameResultDto result = await _gameService.ResolveGameAsync(request.Tournament_Id);
+                GameResultDto result = await _gameService.ResolveGameAsync(request);
                 return Ok(result);
             }
             catch (InvalidOperationException ex)

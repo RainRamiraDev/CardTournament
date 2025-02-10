@@ -65,10 +65,16 @@ namespace CTService.Implementation.Game
             return await _gameDao.CreateRoundAsync(roundModel);
         }
 
-        public async Task<GameResultDto> ResolveGameAsync(int tournament_id)
+        public async Task<GameResultDto> ResolveGameAsync(TournamentRequestDto tournamentDto)
         {
+            var tournamentModel = new TournamentRequestModel
+            {
+               Tournament_Id = tournamentDto.Tournament_Id,
+               dailyHoursAvailable = tournamentDto.dailyHoursAvailable,
+            };
 
-            bool tournamentExists = await _tournamentDao.TournamentExistsAsync(tournament_id);
+
+            bool tournamentExists = await _tournamentDao.TournamentExistsAsync(tournamentModel.Tournament_Id);
 
             if (!tournamentExists)
             {
@@ -76,24 +82,28 @@ namespace CTService.Implementation.Game
             }
 
 
-            List<int> playersIds = await _gameDao.GetTournamentPlayers(tournament_id);
+            List<int> playersIds = await _gameDao.GetTournamentPlayers(tournamentModel.Tournament_Id);
 
             if (playersIds.Count < 2)
             {
                 throw new InvalidOperationException("Se necesitan al menos dos jugadores para iniciar el torneo.");
             }
 
-            int roundNumber = await _gameDao.GetLastRoundAsync(tournament_id);
+            int roundNumber = await _gameDao.GetLastRoundAsync(tournamentModel.Tournament_Id);
 
 
             HashSet<int> eliminatedPlayers = new HashSet<int>();
 
             // torneo fase 2
-            await _tournamentDao.SetTournamentToNextPhase(tournament_id);
+            await _tournamentDao.SetTournamentToNextPhase(tournamentModel.Tournament_Id);
+
+
+            int totalMatches = 0; //💡
+
 
             while (playersIds.Count > 1)
             {
-                int createdRoundId = await CreateRoundAsync(roundNumber, tournament_id);
+                int createdRoundId = await CreateRoundAsync(roundNumber, tournamentModel.Tournament_Id);
 
                 List<int> winners = new List<int>();
 
@@ -127,33 +137,107 @@ namespace CTService.Implementation.Game
                     };
 
                     await CreateMatchAsync(match);
+
+
+
+                    totalMatches++; //💡
+
+                    Console.WriteLine("Bandera de Match aumentada "+ totalMatches);
+
+
+
                 }
 
                 playersIds = winners;
 
-                await _gameDao.SetRoundCompletedAsync(roundNumber, tournament_id);
+                await _gameDao.SetRoundCompletedAsync(roundNumber, tournamentModel.Tournament_Id);
 
                 roundNumber++;
 
-                Console.WriteLine("[Round number incrised]");
+                //Console.WriteLine("[Round number incrised]");
             }
 
             // torneo fase 3
-            await _tournamentDao.SetTournamentToNextPhase(tournament_id);
+            await _tournamentDao.SetTournamentToNextPhase(tournamentModel.Tournament_Id);
 
-            await _gameDao.SetRoundCompletedAsync(roundNumber - 1, tournament_id);
+            await _gameDao.SetRoundCompletedAsync(roundNumber - 1, tournamentModel.Tournament_Id);
             await _gameDao.SetGameWinnerAsync(playersIds[0]);
+
 
             if (eliminatedPlayers.Count > 0)
             {
                 await _gameDao.SetGameLoserAsync(eliminatedPlayers.ToList());
             }
 
+            Console.WriteLine("Bandera pre definicion " + totalMatches);
+
+            var tournamentDuration =  await UpdateTournamentEndDate(totalMatches, tournamentModel.Tournament_Id, tournamentModel.dailyHoursAvailable); //💡
+
+            Console.WriteLine("Duracion del torneo "+ tournamentDuration);
+           
             return new GameResultDto
             {
                 WinnerId = playersIds[0],
-                Message = $"El ganador del torneo es el jugador {playersIds[0]}.",
+                Message = $"El ganador del torneo es el jugador {playersIds[0]}." +
+                          $"La cantidad de rondas ha sido {totalMatches}" +
+                          $"La Duracion Total del Torneo ha sido de {tournamentDuration}",
             };
+        }
+
+
+        public async Task<TimeSpan> UpdateTournamentEndDate(int total_Matches, int id_tournament, int dailyHoursAvailable)
+        {
+            //definir la cantidad de horas diarias que se puede jugar por dia (6 horas)
+            //tomar la variable de duracion y dividirla en la cantidad disponible de horas (6 horas diarias)
+            //si la variable de duration excede a la de un dia se pasa a un siguiente dia y se ajusta la fecha
+            //se llama al dao para ingresar la End_datetime del torneo pasandole la fecha final y el id del torneo a ingresar
+            // algo como await _gameDao.SetTournamentEndDate(End_Datetime, id_tournament);
+
+
+
+            int totalDurationMinutes = total_Matches * 30;
+
+            int dailyMinutesAvailable = dailyHoursAvailable * 60;
+
+
+
+
+            DateTime startDatetime = await _tournamentDao.GetTournamentStartDateAsync(id_tournament);
+
+
+
+
+            DateTime endDatetime = startDatetime;
+
+            while (totalDurationMinutes > 0)
+            {
+                if (totalDurationMinutes > dailyMinutesAvailable)
+                {
+                    // Si excede el tiempo disponible en un día, sumamos un día y restamos el tiempo jugado
+                    endDatetime = endDatetime.AddDays(1).Date.AddHours(9);
+                    totalDurationMinutes -= dailyMinutesAvailable;
+                }
+                else
+                {
+                    // Si cabe en el mismo día, simplemente sumamos la duración restante
+                    endDatetime = endDatetime.AddMinutes(totalDurationMinutes);
+                    totalDurationMinutes = 0;
+                }
+            }
+
+            var setTournamentEndDateTime = new TournamentUpdateEndDatetimeModel
+            {
+                Id_tournament = id_tournament,
+                End_DateTime = endDatetime,
+            };
+
+
+            await _tournamentDao.SetTournamentEndDate(setTournamentEndDateTime);
+
+            TimeSpan tournamentDuration = endDatetime - startDatetime;
+
+
+            return tournamentDuration;
         }
 
         public async Task<int> CreateRoundAsync(int roundNumber, int tournament_id)
