@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CTDto.Tournaments
 {
-    public class TournamentRequestDto
+    public class TournamentRequestToResolveDto
     {
         public int Tournament_Id { get; set; }
 

@@ -17,7 +17,6 @@ namespace CTDto.Validations.Users.LogIn
            .Must(BeAValidGuid).WithMessage("El refresh token debe ser un GUID válido.");
         }
 
-        // Método para validar si el GUID no es un valor vacío
         private bool BeAValidGuid(Guid refreshToken)
         {
             return refreshToken != Guid.Empty;

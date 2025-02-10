@@ -38,7 +38,7 @@ namespace CTApp.Controllers.User
 
         [Authorize(Roles = "4")]
         [HttpGet("ShowCards")]
-        public async Task<IActionResult> GetAllCards([FromBody] TournamentRequestDto tournamentId)
+        public async Task<IActionResult> GetAllCards([FromBody] TournamentRequestToResolveDto tournamentId)
         {
             try
             {

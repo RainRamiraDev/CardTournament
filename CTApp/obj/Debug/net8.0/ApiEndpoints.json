@@ -9,7 +9,7 @@
     "Parameters": [
       {
         "Name": "request",
-        "Type": "CTDto.Tournaments.TournamentRequestDto",
+        "Type": "CTDto.Tournaments.TournamentRequestToResolveDto",
         "IsRequired": true
       }
     ],
@@ -129,7 +129,7 @@
     "Parameters": [
       {
         "Name": "tournamentId",
-        "Type": "CTDto.Tournaments.TournamentRequestDto",
+        "Type": "CTDto.Tournaments.TournamentRequestToResolveDto",
         "IsRequired": true
       }
     ],
