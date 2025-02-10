@@ -32,15 +32,38 @@ namespace CTService.Implementation.Tournament
 
         public async Task<int> InsertTournamentDecksAsync(TournamentDecksDto tournamentDecksDto)
         {
+
             if (tournamentDecksDto == null)
             {
                 throw new ArgumentException("Invalid tournament data.");
             }
 
-            var cardIds = await _cardDao.GetCardIdsByIllustrationAsync(tournamentDecksDto.illustration);
-            var cardSeriesIds = await _cardDao.GetIdCardSeriesByCardIdAsync(cardIds);
+            bool tournamentExists = await _tournamentDao.TournamentExistsAsync(tournamentDecksDto.Id_Tournament);
 
-            if (cardSeriesIds == null || cardSeriesIds.Count == 0)
+            if (!tournamentExists)
+            {
+                throw new InvalidOperationException("El torneo especificado no existe.");
+            }
+
+
+            //!
+
+            var cardIds = await _cardDao.GetCardIdsByIllustrationAsync(tournamentDecksDto.illustration);
+
+            Console.WriteLine($"[INFO] Se encontraron {cardIds.Count} cartas para la ilustración proporcionada.");
+
+
+            var validatedCards = await ValidatePlayersDecks(cardIds, tournamentDecksDto);
+
+            Console.WriteLine($"[INFO] Se validaron {validatedCards.Count} cartas.");
+
+
+            var cardSeriesIds = await _cardDao.GetIdCardSeriesByCardIdAsync(validatedCards);
+
+            Console.WriteLine($"[INFO] Se encontraron {cardSeriesIds.Count} series de cartas.");
+
+
+            if (cardSeriesIds == null || !cardSeriesIds.Any())
             {
                 throw new ArgumentException("Invalid series name provided.");
             }
@@ -52,12 +75,80 @@ namespace CTService.Implementation.Tournament
                 Id_Owner = tournamentDecksDto.Id_Owner,
             };
 
-
-           var userCreationResponse =  await _tournamentDao.InsertTournamentPlayersAsync(tournamentDecksModel);
-
-
+            var userCreationResponse = await _tournamentDao.InsertTournamentPlayersAsync(tournamentDecksModel);
 
             return await _tournamentDao.InsertTournamentDecksAsync(tournamentDecksModel);
+        }
+
+        public async Task<List<int>> ValidatePlayersDecks(List<int> cardIds, TournamentDecksDto tournament)
+        {
+            if (cardIds == null || !cardIds.Any())
+                throw new ArgumentException("No se proporcionaron cartas para validar.");
+
+
+            Console.WriteLine($"[INFO] Cantidad de cartas recibidas: {cardIds.Count}");
+
+
+            var registeredPlayers = await _tournamentDao.GetPlayersFromDb();
+
+
+            if (registeredPlayers == null || !registeredPlayers.Any())
+                throw new ArgumentException("No se encontraron Jugadores en la Base de datos");
+
+
+            Console.WriteLine($"[INFO] Se encontraron {registeredPlayers?.Count ?? 0} jugadores registrados.");
+
+
+
+            if (!registeredPlayers.Contains(tournament.Id_Owner))
+                throw new ArgumentException("Este Dueño no es un jugador");
+
+
+
+            var tournamentSeries = await _tournamentDao.GetSeriesFromTournamentAsync(tournament.Id_Tournament);
+
+            Console.WriteLine($"[INFO] Se encontraron {tournamentSeries?.Count ?? 0} series para el torneo.");
+
+
+
+            if (tournamentSeries == null || !tournamentSeries.Any())
+                throw new InvalidOperationException("El torneo no tiene series pactadas.");
+
+            var validCardsFromSeries = await _tournamentDao.GetCardsFromTournamentSeries(tournamentSeries);
+
+            Console.WriteLine($"[INFO] Se encontraron {validCardsFromSeries.Count} cartas válidas en las series del torneo.");
+
+
+            var validCards = new List<int>();
+
+            var invalidCards = new List<int>();
+
+            foreach (var card in cardIds)
+            {
+                if (validCardsFromSeries.Contains(card))
+                {
+                    validCards.Add(card);
+                }
+                else
+                {
+                    invalidCards.Add(card);
+                }
+            }
+
+            Console.WriteLine($"[INFO] {validCards.Count} cartas son válidas. {invalidCards.Count} cartas son inválidas.");
+
+
+            if (invalidCards.Any())
+            {
+                var wrongCardIllustrations = await _cardDao.GetCardIllustrationById(invalidCards);
+
+                Console.WriteLine($"[ERROR] Cartas inválidas detectadas: {string.Join(", ", wrongCardIllustrations)}");
+
+                throw new InvalidOperationException($"Las siguientes cartas no pertenecen a las series permitidas:\n{string.Join("\n", wrongCardIllustrations)}");
+            }
+
+
+            return validCards;
         }
 
         public async Task<int> CreateTournamentAsync(TournamentDto tournamentDto)
@@ -79,14 +170,13 @@ namespace CTService.Implementation.Tournament
                 Id_Country = tournamentDto.Id_Country,
                 Id_Organizer = tournamentDto.Id_Organizer,
                 Start_datetime = tournamentDto.Start_datetime,
-                Current_Phase = tournamentDto.Current_Phase,
+                Current_Phase = 1,
                 Judges = judgeIds,
                 Series_name = seriesIds
             };
 
             return await _tournamentDao.CreateTournamentAsync(tournamentModel);
         }
-
 
         public async Task<IEnumerable<TournamentDto>> GetAllTournamentAsync()
         {
@@ -98,10 +188,9 @@ namespace CTService.Implementation.Tournament
                 Id_Organizer = tournament.Id_Country,
                 Start_datetime = tournament.Start_datetime,
                 //End_datetime = tournament.End_datetime,
-                Current_Phase = tournament.Current_Phase,
+                //Current_Phase = tournament.Current_Phase,
             });
         }
-
 
         public async Task<List<int>> GetJudgeIdsByAliasAsync(List<string> judgeAliases)
         {

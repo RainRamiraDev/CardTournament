@@ -7,6 +7,7 @@ using DataAccess;
 using MySql.Data.MySqlClient;
 using Org.BouncyCastle.Asn1;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data.SqlTypes;
 using System.Linq;
@@ -82,7 +83,6 @@ namespace CTDao.Dao.Tournaments
             }
         }
 
-
         public async Task<IEnumerable<TournamentModel>> GetAllTournamentAsync()
         {
             using (var connection = new MySqlConnection(_connectionString))
@@ -94,7 +94,6 @@ namespace CTDao.Dao.Tournaments
                 return tournaments;
             }
         }
-
 
         public async Task<List<int>> GetJudgeIdsByAliasAsync(List<string> judgeAliases)
         {
@@ -298,7 +297,6 @@ namespace CTDao.Dao.Tournaments
             }
         }
 
-
         public async Task<int> SetTournamentEndDate(TournamentUpdateEndDatetimeModel tournamentData)
         {
             using (var connection = new MySqlConnection(_connectionString))
@@ -318,6 +316,33 @@ namespace CTDao.Dao.Tournaments
                 return rowsAffected;
             }
         }
+
+    
+        public async Task<List<int>> GetCardsFromTournamentSeries(List<int> tournamentSeries)
+        {
+            using (var connection = new MySqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+
+                var parameters = new { SeriesIds = tournamentSeries };
+                var validCardIds = (await connection.QueryAsync<int>(QueryLoader.GetQuery("QueryGetCardsFromTournamentSeries"), new { id_series = tournamentSeries })).ToList();
+
+                return validCardIds;
+            }
+        }
+
+        public async Task<List<int>> GetPlayersFromDb()
+        {
+            using (var connection = new MySqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+
+                var players = await connection.QueryAsync<int>(QueryLoader.GetQuery("QueryGetPlayersFromDb"));
+
+                return players.ToList();
+            }
+        }
+
 
     }
 }

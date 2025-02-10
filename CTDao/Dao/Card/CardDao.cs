@@ -50,6 +50,9 @@ namespace CTDao.Dao.Card
 
                 var cardsIds = await connection.QueryAsync<int>(QueryLoader.GetQuery("QueryGetCardsByIllustration"), new { Illustration = cardsIllustrations });
 
+
+                Console.WriteLine("Ids de las cards "+string.Join(cardsIds.ToString()));
+
                 return cardsIds.ToList();
             }
         }
@@ -76,6 +79,23 @@ namespace CTDao.Dao.Card
             return seriesIds.ToList();
         }
 
-      
+        public async Task<List<string>> GetCardIllustrationById(List<int>id_card)
+        {
+            using (var connection = new MySqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+
+                var illustrations = await connection.QueryAsync<string>(
+                  QueryLoader.GetQuery("QueryGetCardIllustrationById"),
+                  new { id_card = id_card }
+                  );
+
+
+                return illustrations.ToList();
+            }
+        }
+
+
+
     }
 }

@@ -23,14 +23,14 @@ namespace CTDao.Interfaces.Tournaments
 
         Task<List<int>> GetSeriesFromTournamentAsync(int tournamentId);
 
-
+        Task<List<int>> GetCardsFromTournamentSeries(List<int> tournamentSeries);
 
         Task<DateTime> GetTournamentStartDateAsync(int id_tournament);
 
         Task<int> SetTournamentEndDate(TournamentUpdateEndDatetimeModel tournamentData);
 
 
-
+        Task<List<int>> GetPlayersFromDb();
 
         //Judge
         Task<List<int>> GetJudgeIdsByAliasAsync(List<string> judgeAliases);

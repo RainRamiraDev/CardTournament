@@ -14,6 +14,15 @@
   "QueryGetTournamentStartDatetime": "SELECT  tt.start_datetime FROM t_tournaments tt WHERE tt.id_tournament = @id_tournament",
   "QuerySetTournamentEndDateTime": "UPDATE t_tournaments SET End_DateTime = @End_DateTime WHERE id_tournament = @id_tournament;",
 
+
+  "QueryGetCardsFromTournamentSeries": "SELECT id_card FROM t_card_series WHERE id_series IN @Id_series;",
+
+  "QueryGetCardsByIllustration": "SELECT illustration FROM t_cards WHERE id_card IN @id_card;",
+
+  "QueryGetPlayersFromDb": "SELECT id_user FROM t_users WHERE id_rol = 4 AND ki IS NOT NULL;",
+
+  "QueryGetCardIllustrationById": "SELECT illustration FROM t_cards WHERE id_card IN @id_card;",
+
   "QueryGetIdCardSeries": "SELECT DISTINCT tcs.id_card_series FROM t_card_series tcs WHERE tcs.id_card IN @IdCard;",
   "QueryGetCards": "SELECT s.series_name, c.illustration, c.attack, c.deffense, s.release_date FROM T_CARDS c JOIN T_CARD_SERIES cs ON c.id_card = cs.id_card JOIN T_SERIES s ON cs.id_series = s.id_series WHERE s.id_series IN @idSeries ORDER BY 1 ASC;",
   "QueryGetCardsByIllustration": "SELECT id_card FROM t_cards WHERE illustration IN @Illustration;",
