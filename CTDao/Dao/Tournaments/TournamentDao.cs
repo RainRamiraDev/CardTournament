@@ -277,6 +277,48 @@ namespace CTDao.Dao.Tournaments
                 return seriesIds.ToList();
             }
         }
+
+        public async Task<DateTime> GetTournamentStartDateAsync(int id_tournament)
+        {
+            using (var connection = new MySqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+
+                DateTime? startDateTime = await connection.QuerySingleOrDefaultAsync<DateTime?>(
+                    QueryLoader.GetQuery("QueryGetTournamentStartDatetime"),
+                    new { id_tournament }
+                );
+
+                if (!startDateTime.HasValue)
+                {
+                    throw new InvalidOperationException("El torneo no existe o no tiene una fecha definida.");
+                }
+
+                return startDateTime.Value;
+            }
+        }
+
+
+        public async Task<int> SetTournamentEndDate(TournamentUpdateEndDatetimeModel tournamentData)
+        {
+            using (var connection = new MySqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+
+                int rowsAffected = await connection.ExecuteAsync(
+                    QueryLoader.GetQuery("QuerySetTournamentEndDateTime"),
+                    new { tournamentData.Id_tournament, tournamentData.End_DateTime }
+                );
+
+                if (rowsAffected == 0)
+                {
+                    throw new InvalidOperationException("No se pudo actualizar la fecha de finalización del torneo.");
+                }
+
+                return rowsAffected;
+            }
+        }
+
     }
 }
  

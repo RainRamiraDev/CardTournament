@@ -24,9 +24,8 @@ namespace CTApp.Controllers
         {
             try
             {
-                Console.WriteLine("id recibido: " + request.Tournament_Id);
 
-                GameResultDto result = await _gameService.ResolveGameAsync(request.Tournament_Id);
+                GameResultDto result = await _gameService.ResolveGameAsync(request);
                 return Ok(result);
             }
             catch (InvalidOperationException ex)
@@ -38,7 +37,5 @@ namespace CTApp.Controllers
                 return StatusCode(500, new { message = "Error interno del servidor.", error = ex.Message });
             }
         }
-
-
     }
 }

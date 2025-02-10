@@ -24,8 +24,6 @@ namespace CTService.Implementation.Tournament
         private readonly ICardDao _cardDao;
 
 
-
-
         public TournamentService(ITournamentDao tournamentDao, ICardDao cardDao)
         {
             _tournamentDao = tournamentDao;
@@ -99,7 +97,7 @@ namespace CTService.Implementation.Tournament
                 Id_Country = tournament.Id_Country,
                 Id_Organizer = tournament.Id_Country,
                 Start_datetime = tournament.Start_datetime,
-                End_datetime = tournament.End_datetime,
+                //End_datetime = tournament.End_datetime,
                 Current_Phase = tournament.Current_Phase,
             });
         }

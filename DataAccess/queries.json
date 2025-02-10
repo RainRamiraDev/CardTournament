@@ -11,18 +11,14 @@
   "QueryGetCurrentPhase": "SELECT current_phase FROM T_TOURNAMENTS WHERE id_tournament = @id_tournament;",
   "QueryTournamentExist": "SELECT COUNT(1) FROM T_TOURNAMENTS WHERE id_tournament = @id_tournament;",
   "QueryGetSeriesFromTournament": "SELECT ts.id_series FROM t_tournaments tt JOIN t_tourn_series ts ON tt.id_tournament = ts.id_tournament WHERE tt.id_tournament = @id_tournament",
-
-
-
-
-
+  "QueryGetTournamentStartDatetime": "SELECT  tt.start_datetime FROM t_tournaments tt WHERE tt.id_tournament = @id_tournament",
+  "QuerySetTournamentEndDateTime": "UPDATE t_tournaments SET End_DateTime = @End_DateTime WHERE id_tournament = @id_tournament;",
 
   "QueryGetIdCardSeries": "SELECT DISTINCT tcs.id_card_series FROM t_card_series tcs WHERE tcs.id_card IN @IdCard;",
   "QueryGetCards": "SELECT s.series_name, c.illustration, c.attack, c.deffense, s.release_date FROM T_CARDS c JOIN T_CARD_SERIES cs ON c.id_card = cs.id_card JOIN T_SERIES s ON cs.id_series = s.id_series WHERE s.id_series IN @idSeries ORDER BY 1 ASC;",
   "QueryGetCardsByIllustration": "SELECT id_card FROM t_cards WHERE illustration IN @Illustration;",
   "QueryGetSeriesByName": "SELECT ts.id_series FROM t_series ts WHERE ts.series_name IN @SeriesNames;",
   "QueryGetCardsBySeriesName": "SELECT s.series_name, c.illustration, c.attack, c.deffense, s.release_date FROM T_CARDS c JOIN T_CARD_SERIES cs ON c.id_card = cs.id_card JOIN T_SERIES s ON cs.id_series = s.id_series WHERE s.series_name IN @SeriesName ORDER BY 1 ASC;",
-
 
   "QueryCreateGame": "INSERT INTO T_GAMES (id_tournament, start_datetime) VALUES (@id_tournament, @start_datetime); SELECT LAST_INSERT_ID();",
   "QueryInsertGamePlayers": "INSERT INTO T_GAME_PLAYERS (id_game, id_player) VALUES (@id_game, @id_player);",
@@ -36,19 +32,15 @@
   "QueryCompleteRound": "UPDATE T_ROUNDS SET is_completed = TRUE WHERE id_tournament = @id_tournament AND round_number = @round_number;",
   "QueryGetLastInsertId": "SELECT LAST_INSERT_ID();",
 
-
   "QueryVerifyToken": "SELECT 1 FROM T_REFRESH_TOKENS WHERE token = @Token AND expiry_date > @Now LIMIT 1;",
   "QueryDeleteToken": "DELETE FROM T_REFRESH_TOKENS WHERE token = @Token;",
   "QuerySaveToken": "INSERT INTO T_REFRESH_TOKENS (token, id_user, expiry_date) VALUES (@Token, @id_user, @ExpiryDate);",
   "QueryGetToken": "SELECT token FROM T_REFRESH_TOKENS WHERE id_user = @id_user LIMIT 1;",
   "QueryGetUser": "SELECT u.id_user, u.fullname, u.email FROM T_USERS u INNER JOIN T_REFRESH_TOKENS rt ON rt.id_user = u.id_user WHERE rt.token = @Token AND rt.expiry_date > @Now;",
 
-
   "QueryGetUserWhitToken": "SELECT * FROM T_Users WHERE Id_User = @Id_user;",
   "QueryFirstLogIn": "INSERT INTO T_Users (Fullname, Passcode, Id_Rol) VALUES (@Fullname, @Passcode, @Id_Rol);",
   "QueryLogin": "SELECT Id_User, Fullname, Passcode, Id_Rol FROM T_Users WHERE Fullname = @Fullname;",
   "QueryGetAllJudges": "SELECT u.Fullname, u.Alias, u.Email, c.country_name as Country, u.avatar_url FROM t_users u JOIN t_countries c ON u.id_country = c.id_country WHERE Id_rol = 3;",
   "QueryGetPlayersRankIds": "SELECT ki FROM t_users WHERE Id_user = @Id;"
-
-
 }

@@ -13,7 +13,9 @@
   "QueryGetSeriesFromTournament": "SELECT ts.id_series FROM t_tournaments tt JOIN t_tourn_series ts ON tt.id_tournament = ts.id_tournament WHERE tt.id_tournament = @id_tournament",
 
 
+  "QueryGetTournamentStartDatetime": "SELECT  tt.start_datetime FROM t_tournaments tt WHERE tt.id_tournament = @id_tournament",
 
+  "QuerySetTournamentEndDateTime": "UPDATE t_tournaments SET End_DateTime = @End_DateTime WHERE id_tournament = @id_tournament;",
 
 
 
