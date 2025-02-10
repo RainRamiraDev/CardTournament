@@ -97,9 +97,7 @@ namespace CTService.Implementation.Game
             // torneo fase 2
             await _tournamentDao.SetTournamentToNextPhase(tournamentModel.Tournament_Id);
 
-
-            int totalMatches = 0; //💡
-
+            int totalMatches = 0; 
 
             while (playersIds.Count > 1)
             {
@@ -138,14 +136,9 @@ namespace CTService.Implementation.Game
 
                     await CreateMatchAsync(match);
 
-
-
-                    totalMatches++; //💡
+                    totalMatches++; 
 
                     Console.WriteLine("Bandera de Match aumentada "+ totalMatches);
-
-
-
                 }
 
                 playersIds = winners;
@@ -187,25 +180,12 @@ namespace CTService.Implementation.Game
 
         public async Task<TimeSpan> UpdateTournamentEndDate(int total_Matches, int id_tournament, int dailyHoursAvailable)
         {
-            //definir la cantidad de horas diarias que se puede jugar por dia (6 horas)
-            //tomar la variable de duracion y dividirla en la cantidad disponible de horas (6 horas diarias)
-            //si la variable de duration excede a la de un dia se pasa a un siguiente dia y se ajusta la fecha
-            //se llama al dao para ingresar la End_datetime del torneo pasandole la fecha final y el id del torneo a ingresar
-            // algo como await _gameDao.SetTournamentEndDate(End_Datetime, id_tournament);
-
-
 
             int totalDurationMinutes = total_Matches * 30;
 
             int dailyMinutesAvailable = dailyHoursAvailable * 60;
 
-
-
-
             DateTime startDatetime = await _tournamentDao.GetTournamentStartDateAsync(id_tournament);
-
-
-
 
             DateTime endDatetime = startDatetime;
 
@@ -235,7 +215,6 @@ namespace CTService.Implementation.Game
             await _tournamentDao.SetTournamentEndDate(setTournamentEndDateTime);
 
             TimeSpan tournamentDuration = endDatetime - startDatetime;
-
 
             return tournamentDuration;
         }
