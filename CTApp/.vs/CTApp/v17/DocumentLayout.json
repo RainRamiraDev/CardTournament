@@ -66,7 +66,7 @@
               "RelativeDocumentMoniker": "Program.cs",
               "ToolTip": "C:\\Repositorios\\CardTournament\\CTApp\\Program.cs",
               "RelativeToolTip": "Program.cs",
-              "ViewState": "AgIAAC0AAAAAAAAAAAAgwEYAAABQAAAAAAAAAA==",
+              "ViewState": "AgIAAC0AAAAAAAAAAAAgwDwAAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-02-10T09:36:48.464Z",
               "EditorCaption": ""
@@ -81,8 +81,7 @@
               "RelativeToolTip": "Controllers\\User\\PlayerController.cs",
               "ViewState": "AgIAABcAAAAAAAAAAAAowCgAAABaAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-10T09:36:13.157Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-02-10T09:36:13.157Z"
             },
             {
               "$type": "Document",
@@ -94,8 +93,7 @@
               "RelativeToolTip": "Controllers\\GameController.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAgwBYAAABaAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-10T09:36:05.795Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-02-10T09:36:05.795Z"
             },
             {
               "$type": "Document",
@@ -107,8 +105,7 @@
               "RelativeToolTip": "..\\CTService\\Interfaces\\Game\\IGameService.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAABHAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-10T09:35:57.546Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-02-10T09:35:57.546Z"
             },
             {
               "$type": "Document",
@@ -120,8 +117,7 @@
               "RelativeToolTip": "..\\CTService\\Interfaces\\Card\\ICardService.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAABTAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-10T09:35:51.023Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-02-10T09:35:51.023Z"
             },
             {
               "$type": "Document",
@@ -133,8 +129,7 @@
               "RelativeToolTip": "..\\CTService\\Implementation\\Game\\GameService.cs",
               "ViewState": "AgIAAC0AAAAAAAAAAAAgwEMAAABmAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-10T09:35:42.153Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-02-10T09:35:42.153Z"
             },
             {
               "$type": "Document",
@@ -146,8 +141,7 @@
               "RelativeToolTip": "..\\CTService\\Implementation\\Card\\CardService.cs",
               "ViewState": "AgIAAA8AAAAAAAAAAAAgwCQAAAANAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-10T09:33:47.876Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-02-10T09:33:47.876Z"
             },
             {
               "$type": "Document",
@@ -159,8 +153,7 @@
               "RelativeToolTip": "..\\CTDto\\Validations\\Tournament\\TournamentRequestToResolveDtoValidation.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-10T09:31:05.476Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-02-10T09:31:05.476Z"
             },
             {
               "$type": "Document",
@@ -172,8 +165,7 @@
               "RelativeToolTip": "..\\CTDto\\Tournaments\\TournamentRequestToResolveDto.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAArAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-10T09:29:37.984Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-02-10T09:29:37.984Z"
             }
           ]
         }
