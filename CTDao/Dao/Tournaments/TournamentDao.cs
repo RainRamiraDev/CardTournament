@@ -29,7 +29,21 @@ namespace CTDao.Dao.Tournaments
         private readonly string _connectionString;
 
 
-       public async Task<List<int>> GetCountriesFromDb()
+        public async Task<List<int>> GetTournamentPlayers(int tournamentId)
+        {
+            using (var connection = new MySqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+
+                var tournamentPlayers = await connection.QueryAsync<int>(QueryLoader.GetQuery("QueryGetTournamentPlayers"),new {id_tournament = tournamentId});
+
+                return tournamentPlayers.ToList();
+            }
+        }
+
+
+
+        public async Task<List<int>> GetCountriesFromDb()
         {
             using (var connection = new MySqlConnection(_connectionString))
             {
@@ -355,7 +369,7 @@ namespace CTDao.Dao.Tournaments
             }
         }
 
-
+       
     }
 }
  

@@ -102,6 +102,20 @@ namespace CTService.Implementation.Tournament
 
 
 
+            var tournamentPlayers = await _tournamentDao.GetTournamentPlayers(tournament.Id_Tournament);
+
+            Console.WriteLine($"[INFO] Se encontraron {tournamentPlayers?.Count ?? 0} jugadores registrados en el torneo.");
+
+            if (tournamentPlayers.Contains(tournament.Id_Owner))
+                throw new ArgumentException("Este jugador ya se encuentra registrado");
+
+            
+
+
+
+
+
+
             var tournamentSeries = await _tournamentDao.GetSeriesFromTournamentAsync(tournament.Id_Tournament);
 
             Console.WriteLine($"[INFO] Se encontraron {tournamentSeries?.Count ?? 0} series para el torneo.");

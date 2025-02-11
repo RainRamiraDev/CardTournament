@@ -22,6 +22,8 @@
 
   "QueryGetAllSeries": "SELECT id_series FROM t_series",
 
+  "QueryGetTournamentPlayers": "SELECT id_player FROM t_tourn_players WHERE id_tournament = @id_tournament",
+
   "QueryGetIdCardSeries": "SELECT DISTINCT tcs.id_card_series FROM t_card_series tcs WHERE tcs.id_card IN @IdCard;",
   "QueryGetCards": "SELECT s.series_name, c.illustration, c.attack, c.deffense, s.release_date FROM T_CARDS c JOIN T_CARD_SERIES cs ON c.id_card = cs.id_card JOIN T_SERIES s ON cs.id_series = s.id_series WHERE s.id_series IN @idSeries ORDER BY 1 ASC;",
   "QueryGetCardsByIllustration": "SELECT id_card FROM t_cards WHERE illustration IN @Illustration;",

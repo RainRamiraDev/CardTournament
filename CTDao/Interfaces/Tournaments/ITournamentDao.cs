@@ -31,6 +31,8 @@ namespace CTDao.Interfaces.Tournaments
 
         Task<List<int>> GetCountriesFromDb();
 
+        Task<List<int>> GetTournamentPlayers(int tournamentId);
+
 
         Task<List<int>> GetUsersFromDb(int id_rol);
 
