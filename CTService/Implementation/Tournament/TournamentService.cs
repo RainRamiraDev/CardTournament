@@ -45,9 +45,6 @@ namespace CTService.Implementation.Tournament
                 throw new InvalidOperationException("El torneo especificado no existe.");
             }
 
-
-            //!
-
             var cardIds = await _cardDao.GetCardIdsByIllustrationAsync(tournamentDecksDto.illustration);
 
             Console.WriteLine($"[INFO] Se encontraron {cardIds.Count} cartas para la ilustración proporcionada.");
@@ -89,7 +86,7 @@ namespace CTService.Implementation.Tournament
             Console.WriteLine($"[INFO] Cantidad de cartas recibidas: {cardIds.Count}");
 
 
-            var registeredPlayers = await _tournamentDao.GetPlayersFromDb();
+            var registeredPlayers = await _tournamentDao.GetUsersFromDb(4);
 
 
             if (registeredPlayers == null || !registeredPlayers.Any())
@@ -156,12 +153,11 @@ namespace CTService.Implementation.Tournament
 
             // Obtener los IDs de los jueces a partir de los alias
             var judgeIds = await _tournamentDao.GetJudgeIdsByAliasAsync(tournamentDto.Judges);
-
             Console.WriteLine($"Judges IDs: {string.Join(", ", judgeIds)}");
+
 
             // Obtener los IDs de las series a partir de los nombres
             var seriesIds = await _cardDao.GetSeriesIdsByNameAsync(tournamentDto.Series_name);
-
             Console.WriteLine($"Series IDs: {string.Join(", ", seriesIds)}");
 
 
@@ -175,7 +171,58 @@ namespace CTService.Implementation.Tournament
                 Series_name = seriesIds
             };
 
+            var validatedTournament = await ValidateTournament(tournamentModel);
+
             return await _tournamentDao.CreateTournamentAsync(tournamentModel);
+        }
+
+        public async Task<bool> ValidateTournament( TournamentModel tournament)
+        {
+            // Validar el país
+            var registeredCountries = await _tournamentDao.GetCountriesFromDb();
+            if (!registeredCountries.Contains(tournament.Id_Country))
+                throw new ArgumentException("El país especificado no está registrado.");
+
+            Console.WriteLine($"[INFO] Se encontraron {registeredCountries.Count} países registrados en la BD.");
+
+
+            // Validar que el organizador sea un organizador
+            var registeredOrganizers = await _tournamentDao.GetUsersFromDb(2);
+            if (!registeredOrganizers.Contains(tournament.Id_Organizer))
+                throw new ArgumentException("El organizador especificado no está registrado.");
+
+            Console.WriteLine($"[INFO] Se encontraron {registeredOrganizers.Count} organizadores registrados en la BD.");
+
+
+            // Validar los jueces
+            var registeredJudges = await _tournamentDao.GetUsersFromDb(3);
+
+            Console.WriteLine($"[INFO] Se encontraron {registeredJudges.Count} jueces registrados en la BD.");
+
+
+            //if (!tournament.Judges.All(idJudge => registeredJudges.Contains(idJudge)))
+            //throw new ArgumentException("Uno o más jueces no están registrados.");
+            var invalidJudges = tournament.Judges.Where(idJudge => !registeredJudges.Contains(idJudge)).ToList();
+
+            if (invalidJudges.Any())
+            {
+                Console.WriteLine($"[ERROR] Jueces no registrados detectados: {string.Join(", ", invalidJudges)}");
+                throw new ArgumentException($"Los siguientes jueces no están registrados: {string.Join(", ", invalidJudges)}");
+            }
+
+            // Validar las series
+            var registeredSeries = await _cardDao.GetAllSeries();
+            //if (!tournament.Series_name.All(seriesId => registeredSeries.Contains(seriesId)))
+            //    throw new ArgumentException("Una o más series no están registradas.");
+            var invalidSeries = tournament.Series_name.Where(seriesId => !registeredSeries.Contains(seriesId)).ToList();
+
+            if (invalidSeries.Any())
+            {
+                Console.WriteLine($"[ERROR] Series no registradas detectadas: {string.Join(", ", invalidSeries)}");
+                throw new ArgumentException($"Las siguientes series no están registradas: {string.Join(", ", invalidSeries)}");
+            }
+
+            return true; // Devuelve true si todas las validaciones fueron exitosas
         }
 
         public async Task<IEnumerable<TournamentDto>> GetAllTournamentAsync()

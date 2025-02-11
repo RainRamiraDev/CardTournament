@@ -21,6 +21,17 @@ namespace CTDao.Dao.Card
         }
 
 
+        public async Task<List<int>> GetAllSeries()
+        {
+            using (var connection = new MySqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+                var seriesIds = await connection.QueryAsync<int>(QueryLoader.GetQuery("QueryGetAllSeries"));
+
+                return seriesIds.ToList();
+            }
+        }
+
         public async Task<List<int>> GetIdCardSeriesByCardIdAsync(List<int> cardsId)
         {
             using var connection = new MySqlConnection(_connectionString);

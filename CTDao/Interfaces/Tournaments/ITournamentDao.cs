@@ -29,8 +29,10 @@ namespace CTDao.Interfaces.Tournaments
 
         Task<int> SetTournamentEndDate(TournamentUpdateEndDatetimeModel tournamentData);
 
+        Task<List<int>> GetCountriesFromDb();
 
-        Task<List<int>> GetPlayersFromDb();
+
+        Task<List<int>> GetUsersFromDb(int id_rol);
 
         //Judge
         Task<List<int>> GetJudgeIdsByAliasAsync(List<string> judgeAliases);
