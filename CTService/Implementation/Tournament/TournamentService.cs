@@ -45,7 +45,22 @@ namespace CTService.Implementation.Tournament
                 throw new InvalidOperationException("El torneo especificado no existe.");
             }
 
+            // Validar si hay ilustraciones duplicadas
+            var duplicateIllustrations = tournamentDecksDto.illustration
+                .GroupBy(i => i)
+                .Where(g => g.Count() > 1)
+                .Select(g => g.Key)
+                .ToList();
+
+            if (duplicateIllustrations.Any())
+            {
+                throw new InvalidOperationException($"Las siguientes ilustraciones están duplicadas: {string.Join(", ", duplicateIllustrations)}");
+            }
+
             var cardIds = await _cardDao.GetCardIdsByIllustrationAsync(tournamentDecksDto.illustration);
+
+            Console.WriteLine($"[INFO] CARDS IDS: {string.Join(", ", cardIds)}");
+
 
             Console.WriteLine($"[INFO] Se encontraron {cardIds.Count} cartas para la ilustración proporcionada.");
 
@@ -85,6 +100,8 @@ namespace CTService.Implementation.Tournament
 
             Console.WriteLine($"[INFO] Cantidad de cartas recibidas: {cardIds.Count}");
 
+           
+
 
             var registeredPlayers = await _tournamentDao.GetUsersFromDb(4);
 
@@ -108,12 +125,6 @@ namespace CTService.Implementation.Tournament
 
             if (tournamentPlayers.Contains(tournament.Id_Owner))
                 throw new ArgumentException("Este jugador ya se encuentra registrado");
-
-            
-
-
-
-
 
 
             var tournamentSeries = await _tournamentDao.GetSeriesFromTournamentAsync(tournament.Id_Tournament);

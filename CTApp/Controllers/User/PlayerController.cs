@@ -82,6 +82,10 @@ namespace CTApp.Controllers.User
             {
                 return BadRequest(ex.Message);
             }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(new { message = ex.Message }); // El mensaje de ilustraciones duplicadas se enviará aquí
+            }
             catch (Exception)
             {
                 return StatusCode(500, "An unexpected error occurred.");

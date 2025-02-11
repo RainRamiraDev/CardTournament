@@ -62,7 +62,7 @@ namespace CTDao.Dao.Card
                 var cardsIds = await connection.QueryAsync<int>(QueryLoader.GetQuery("QueryGetCardsByIllustration"), new { Illustration = cardsIllustrations });
 
 
-                Console.WriteLine("Ids de las cards "+string.Join(cardsIds.ToString()));
+                Console.WriteLine("Ids de las cards: " + string.Join(", ", cardsIds));
 
                 return cardsIds.ToList();
             }
