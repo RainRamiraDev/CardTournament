@@ -100,9 +100,6 @@ namespace CTService.Implementation.Tournament
 
             Console.WriteLine($"[INFO] Cantidad de cartas recibidas: {cardIds.Count}");
 
-           
-
-
             var registeredPlayers = await _tournamentDao.GetUsersFromDb(4);
 
 
@@ -112,12 +109,8 @@ namespace CTService.Implementation.Tournament
 
             Console.WriteLine($"[INFO] Se encontraron {registeredPlayers?.Count ?? 0} jugadores registrados.");
 
-
-
             if (!registeredPlayers.Contains(tournament.Id_Owner))
                 throw new ArgumentException("Este Dueño no es un jugador");
-
-
 
             var tournamentPlayers = await _tournamentDao.GetTournamentPlayers(tournament.Id_Tournament);
 
@@ -130,8 +123,6 @@ namespace CTService.Implementation.Tournament
             var tournamentSeries = await _tournamentDao.GetSeriesFromTournamentAsync(tournament.Id_Tournament);
 
             Console.WriteLine($"[INFO] Se encontraron {tournamentSeries?.Count ?? 0} series para el torneo.");
-
-
 
             if (tournamentSeries == null || !tournamentSeries.Any())
                 throw new InvalidOperationException("El torneo no tiene series pactadas.");
@@ -168,7 +159,6 @@ namespace CTService.Implementation.Tournament
 
                 throw new InvalidOperationException($"Las siguientes cartas no pertenecen a las series permitidas:\n{string.Join("\n", wrongCardIllustrations)}");
             }
-
 
             return validCards;
         }
@@ -224,9 +214,6 @@ namespace CTService.Implementation.Tournament
 
             Console.WriteLine($"[INFO] Se encontraron {registeredJudges.Count} jueces registrados en la BD.");
 
-
-            //if (!tournament.Judges.All(idJudge => registeredJudges.Contains(idJudge)))
-            //throw new ArgumentException("Uno o más jueces no están registrados.");
             var invalidJudges = tournament.Judges.Where(idJudge => !registeredJudges.Contains(idJudge)).ToList();
 
             if (invalidJudges.Any())
@@ -237,8 +224,7 @@ namespace CTService.Implementation.Tournament
 
             // Validar las series
             var registeredSeries = await _cardDao.GetAllSeries();
-            //if (!tournament.Series_name.All(seriesId => registeredSeries.Contains(seriesId)))
-            //    throw new ArgumentException("Una o más series no están registradas.");
+
             var invalidSeries = tournament.Series_name.Where(seriesId => !registeredSeries.Contains(seriesId)).ToList();
 
             if (invalidSeries.Any())
@@ -247,7 +233,7 @@ namespace CTService.Implementation.Tournament
                 throw new ArgumentException($"Las siguientes series no están registradas: {string.Join(", ", invalidSeries)}");
             }
 
-            return true; // Devuelve true si todas las validaciones fueron exitosas
+            return true;
         }
 
         public async Task<IEnumerable<TournamentDto>> GetAllTournamentAsync()
