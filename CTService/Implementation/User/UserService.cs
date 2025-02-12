@@ -1,4 +1,5 @@
 ﻿using CTDao.Dao.Security;
+using CTDao.Interfaces.Tournaments;
 using CTDao.Interfaces.User;
 using CTDataModels.Users;
 using CTDataModels.Users.LogIn;
@@ -21,12 +22,15 @@ namespace CTService.Implementation.User
 
         private readonly IUserDao _userDao;
 
+        private readonly ITournamentDao _turnamentDao;
+
         private readonly PasswordHasher _passwordHasher;
 
-        public UserService(IUserDao userDao, PasswordHasher passwordHasher)
+        public UserService(IUserDao userDao, PasswordHasher passwordHasher, ITournamentDao tournamentDao)
         {
             _userDao = userDao;
             _passwordHasher = passwordHasher;
+            _turnamentDao = tournamentDao;
         }
 
         public async Task<UserDto> GetUserWhitTokenAsync(int id)
@@ -59,7 +63,7 @@ namespace CTService.Implementation.User
             return user;
         }
 
-        public async Task<int> CreateWhitHashedPasswordAsync(LoginRequestDto LoginDto)
+        public async Task<int> CreateWhitHashedPasswordAsync(FirstLogInDto LoginDto)
         {
             string hashedPassword = _passwordHasher.HashPassword(LoginDto.Passcode);
 
@@ -95,6 +99,15 @@ namespace CTService.Implementation.User
                 Id_country = country.Id_country,
                 Country_name = country.Country_name
             }).ToList();
+        }
+
+        public async Task<bool> ValidateIfOrganizer(UserModel user)
+        {
+            bool response = false;
+          var organizers = await _turnamentDao.GetUsersFromDb(1);
+            if(organizers.Contains(user.Id_User) || user.Id_Rol == 1)
+               response = true;
+            return response;
         }
 
     }

@@ -29,17 +29,17 @@ namespace CTApp.Controllers.User
         }
 
 
-        //[Authorize(Roles = "1")]
-        //[HttpGet("GetJudges")]
-        //public async Task<IActionResult> GetJudges()
-        //{
-        //    var judges = await _userService.GetAllJudgesAsync();
+        [Authorize(Roles = "1")]
+        [HttpGet("GetJudges")]
+        public async Task<IActionResult> GetJudges()
+        {
+            var judges = await _userService.GetAllJudgesAsync();
 
-        //    if (judges is null || !judges.Any())
-        //        return NotFound(ApiResponse<IEnumerable<JudgeDto>>.ErrorResponse("Jueces no encontrados."));
+            if (judges is null || !judges.Any())
+                return NotFound(ApiResponse<IEnumerable<JudgeDto>>.ErrorResponse("Jueces no encontrados."));
 
-        //    return Ok(ApiResponse<IEnumerable<JudgeDto>>.SuccessResponse("Jueces obtenidos exitosamente.", judges));
-        //}
+            return Ok(ApiResponse<IEnumerable<JudgeDto>>.SuccessResponse("Jueces obtenidos exitosamente.", judges));
+        }
 
 
         [Authorize(Roles = "1")]

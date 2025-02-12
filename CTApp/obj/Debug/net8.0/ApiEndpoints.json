@@ -25,7 +25,7 @@
     "Parameters": [
       {
         "Name": "loginDto",
-        "Type": "CTDto.Users.LogIn.LoginRequestDto",
+        "Type": "CTDto.Users.LogIn.FirstLogInDto",
         "IsRequired": true
       }
     ],
@@ -87,6 +87,16 @@
     "ContainingType": "CTApp.Controllers.User.OrganizerController",
     "Method": "GetCountries",
     "RelativePath": "api/Organizer/GetCountries",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CTApp.Controllers.User.OrganizerController",
+    "Method": "GetJudges",
+    "RelativePath": "api/Organizer/GetJudges",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,

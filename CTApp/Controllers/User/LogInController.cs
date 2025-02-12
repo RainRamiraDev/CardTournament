@@ -3,6 +3,7 @@ using CTConfigurations;
 using CTDto.Users;
 using CTDto.Users.LogIn;
 using CTService.Interfaces.RefreshToken;
+using CTService.Interfaces.Tournaments;
 using CTService.Interfaces.User;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -20,6 +21,7 @@ namespace CTApp.Controllers.User
         private readonly IRefreshTokenService _refreshTokenService;
 
         private readonly KeysConfiguration _keysConfiguration;
+
 
         public LogInController(IUserService userService, IOptions<KeysConfiguration> keys, IRefreshTokenService refreshToken)
         {
@@ -62,6 +64,12 @@ namespace CTApp.Controllers.User
             await _refreshTokenService.SaveRefreshTokenAsync(refreshToken, user.Id_User, expirationDate);
 
             ManageRefreshTokenCookie(refreshToken.ToString(), expirationDate);
+
+            var isOrganizer = await _userService.ValidateIfOrganizer(user);
+
+            if (isOrganizer)
+                return Ok(new { AccessToken = accessToken , OrganizerId = user.Id_User});
+
             return Ok(new { AccessToken = accessToken });
         }
 
@@ -104,7 +112,7 @@ namespace CTApp.Controllers.User
 
 
         [HttpPost("FirstLogIn")]
-        public async Task<IActionResult> CreateUserWhitHashedPassword([FromBody] LoginRequestDto loginDto)
+        public async Task<IActionResult> CreateUserWhitHashedPassword([FromBody] FirstLogInDto loginDto)
         {
             var userId = await _userService.CreateWhitHashedPasswordAsync(loginDto);
             var user = new UserDto
@@ -113,7 +121,7 @@ namespace CTApp.Controllers.User
                 Passcode = loginDto.Passcode,
                 Id_Rol = loginDto.Id_Rol 
             };
-            var response = ApiResponse<LoginRequestDto>.SuccessResponse("Usuario creado exitosamente", loginDto);
+            var response = ApiResponse<FirstLogInDto>.SuccessResponse("Usuario creado exitosamente", loginDto);
             return Created(string.Empty, response);
         }
 
