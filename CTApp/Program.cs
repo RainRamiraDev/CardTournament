@@ -10,6 +10,7 @@ using CTDao.Interfaces.Game;
 using CTDao.Interfaces.RefreshToken;
 using CTDao.Interfaces.Tournaments;
 using CTDao.Interfaces.User;
+using CTDto.Validations.Tournament;
 using CTDto.Validations.Users.LogIn;
 using CTService.Implementation.Card;
 using CTService.Implementation.Game;
@@ -64,8 +65,11 @@ builder.Services.AddScoped<IGameDao>(provider =>
 
 //validaciones
 
-builder.Services.AddValidatorsFromAssemblyContaining<LogInRequestDtoValidation>();
+builder.Services.AddValidatorsFromAssemblyContaining<FirstLogInRequestDtoValidation>();
 builder.Services.AddValidatorsFromAssemblyContaining<LogOutRequestDtoValidation>();
+builder.Services.AddValidatorsFromAssemblyContaining<TournamentDecksRequestDtoValidation>();
+builder.Services.AddValidatorsFromAssemblyContaining<TournamentDtoValidation>();
+builder.Services.AddValidatorsFromAssemblyContaining<TournamentRequestToResolveDtoValidation>();
 
 builder.Services.AddFluentValidationAutoValidation();
 

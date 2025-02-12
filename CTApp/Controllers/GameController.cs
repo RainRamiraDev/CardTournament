@@ -20,7 +20,7 @@ namespace CTApp.Controllers
 
         [Authorize(Roles = "1")]
         [HttpPost("resolve")]
-        public async Task<IActionResult> ResolveGame([FromBody] TournamentRequestDto request)
+        public async Task<IActionResult> ResolveGame([FromBody] TournamentRequestToResolveDto request)
         {
             try
             {

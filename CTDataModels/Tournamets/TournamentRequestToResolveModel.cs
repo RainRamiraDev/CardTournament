@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace CTDataModels.Tournamets
 {
-    public class TournamentRequestModel
+    public class TournamentRequestToResolveModel
     {
         public int Tournament_Id { get; set; }
         public int dailyHoursAvailable { get; set; }

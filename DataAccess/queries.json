@@ -13,6 +13,16 @@
   "QueryGetSeriesFromTournament": "SELECT ts.id_series FROM t_tournaments tt JOIN t_tourn_series ts ON tt.id_tournament = ts.id_tournament WHERE tt.id_tournament = @id_tournament",
   "QueryGetTournamentStartDatetime": "SELECT  tt.start_datetime FROM t_tournaments tt WHERE tt.id_tournament = @id_tournament",
   "QuerySetTournamentEndDateTime": "UPDATE t_tournaments SET End_DateTime = @End_DateTime WHERE id_tournament = @id_tournament;",
+  "QueryGetCardsFromTournamentSeries": "SELECT id_card FROM t_card_series WHERE id_series IN @Id_series;",
+  "QueryGetCardsByIllustration": "SELECT illustration FROM t_cards WHERE id_card IN @id_card;",
+  "QueryGetUsersFromDb": "SELECT id_user FROM t_users WHERE id_rol = @id_rol AND ki IS NOT NULL;",
+  "QueryGetCardIllustrationById": "SELECT illustration FROM t_cards WHERE id_card IN @id_card;",
+
+  "QueryGetCountriesFromDb": "SELECT id_country FROM t_countries",
+
+  "QueryGetAllSeries": "SELECT id_series FROM t_series",
+
+  "QueryGetTournamentPlayers": "SELECT id_player FROM t_tourn_players WHERE id_tournament = @id_tournament",
 
   "QueryGetIdCardSeries": "SELECT DISTINCT tcs.id_card_series FROM t_card_series tcs WHERE tcs.id_card IN @IdCard;",
   "QueryGetCards": "SELECT s.series_name, c.illustration, c.attack, c.deffense, s.release_date FROM T_CARDS c JOIN T_CARD_SERIES cs ON c.id_card = cs.id_card JOIN T_SERIES s ON cs.id_series = s.id_series WHERE s.id_series IN @idSeries ORDER BY 1 ASC;",

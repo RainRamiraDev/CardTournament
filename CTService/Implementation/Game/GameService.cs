@@ -65,9 +65,9 @@ namespace CTService.Implementation.Game
             return await _gameDao.CreateRoundAsync(roundModel);
         }
 
-        public async Task<GameResultDto> ResolveGameAsync(TournamentRequestDto tournamentDto)
+        public async Task<GameResultDto> ResolveGameAsync(TournamentRequestToResolveDto tournamentDto)
         {
-            var tournamentModel = new TournamentRequestModel
+            var tournamentModel = new TournamentRequestToResolveModel
             {
                Tournament_Id = tournamentDto.Tournament_Id,
                dailyHoursAvailable = tournamentDto.dailyHoursAvailable,

@@ -26,7 +26,7 @@ namespace CTService.Implementation.Card
         }
 
 
-        public async Task<IEnumerable<ShowCardsDto>> GetAllCardsAsync(TournamentRequestDto tournamentRequestDto)
+        public async Task<IEnumerable<ShowCardsDto>> GetAllCardsAsync(TournamentRequestToResolveDto tournamentRequestDto)
         {
 
             var seriesIds = await _tournamentDao.GetSeriesFromTournamentAsync(tournamentRequestDto.Tournament_Id);

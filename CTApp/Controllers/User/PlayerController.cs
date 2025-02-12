@@ -38,7 +38,7 @@ namespace CTApp.Controllers.User
 
         [Authorize(Roles = "4")]
         [HttpGet("ShowCards")]
-        public async Task<IActionResult> GetAllCards([FromBody] TournamentRequestDto tournamentId)
+        public async Task<IActionResult> GetAllCards([FromBody] TournamentRequestToResolveDto tournamentId)
         {
             try
             {
@@ -81,6 +81,10 @@ namespace CTApp.Controllers.User
             catch (ArgumentException ex)
             {
                 return BadRequest(ex.Message);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return BadRequest(new { message = ex.Message }); // El mensaje de ilustraciones duplicadas se enviará aquí
             }
             catch (Exception)
             {
