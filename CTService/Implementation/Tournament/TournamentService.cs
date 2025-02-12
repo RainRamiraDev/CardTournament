@@ -167,7 +167,7 @@ namespace CTService.Implementation.Tournament
         {
 
             // Obtener los IDs de los jueces a partir de los alias
-            var judgeIds = await _tournamentDao.GetJudgeIdsByAliasAsync(tournamentDto.Judges);
+            var judgeIds = await _tournamentDao.GetJudgeIdsByAliasAsync(tournamentDto.Judges_Alias);
             Console.WriteLine($"Judges IDs: {string.Join(", ", judgeIds)}");
 
 

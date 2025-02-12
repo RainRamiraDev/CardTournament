@@ -3,6 +3,7 @@ using CTDao.Interfaces.Tournaments;
 using CTDao.Interfaces.User;
 using CTDataModels.Users;
 using CTDataModels.Users.LogIn;
+using CTDto.Card;
 using CTDto.Users;
 using CTDto.Users.Judge;
 using CTDto.Users.LogIn;
@@ -89,6 +90,8 @@ namespace CTService.Implementation.User
                 Country = judge.Country,
             });
         }
+
+      
 
         public async Task<IEnumerable<CountriesListDto>> GetAllCountriesAsync()
         {

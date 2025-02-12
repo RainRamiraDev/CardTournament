@@ -21,10 +21,7 @@ namespace CTDto.Validations.Tournament
             RuleFor(t => t.Start_datetime)
                 .GreaterThan(DateTime.UtcNow).WithMessage("La fecha de inicio debe ser en el futuro.");
 
-            //RuleFor(t => t.Current_Phase)
-            //    .GreaterThanOrEqualTo(1).WithMessage("La fase actual debe ser al menos 1.");
-
-            RuleFor(t => t.Judges)
+            RuleFor(t => t.Judges_Alias)
                 .NotEmpty().WithMessage("Debe haber al menos un juez asignado.")
                 .Must(judges => judges.Count == 3)
                 .WithMessage("Debe haber exactamente 3 jueces asignados.");

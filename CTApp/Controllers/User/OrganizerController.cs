@@ -1,5 +1,6 @@
 ﻿using CTApp.Response;
 using CTDataModels.Tournamets;
+using CTDto.Card;
 using CTDto.Tournaments;
 using CTDto.Users;
 using CTDto.Users.Judge;
@@ -22,10 +23,13 @@ namespace CTApp.Controllers.User
 
         private readonly ITournamentService _tournamentService;
 
-        public OrganizerController(IUserService userService, ITournamentService tournamentService)
+        private readonly ICardService _cardService;
+
+        public OrganizerController(IUserService userService, ITournamentService tournamentService, ICardService cardService)
         {
             _userService = userService;
             _tournamentService = tournamentService;
+            _cardService = cardService;
         }
 
 
@@ -51,6 +55,17 @@ namespace CTApp.Controllers.User
             return Ok(ApiResponse<IEnumerable<CountriesListDto>>.SuccessResponse("Paises obtenidos exitosamente.", countries));
         }
 
+        [Authorize(Roles = "1")]
+        [HttpGet("GetSeries")]
+        public async Task<IActionResult> GetSeries()
+        {
+            var series = await _cardService.GetAllSeriesAsync();
+
+            return Ok(ApiResponse<IEnumerable<SeriesListDto>>.SuccessResponse("Series obtenidos exitosamente.", series));
+        }
+
+
+
 
         [Authorize(Roles = "1")]
         [HttpPost("CreateTournament")]
@@ -70,6 +85,8 @@ namespace CTApp.Controllers.User
 
             return Created("", new { id });
         }
+
+
 
     }
 }

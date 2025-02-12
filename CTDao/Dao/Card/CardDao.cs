@@ -1,5 +1,6 @@
 ﻿using CTDao.Interfaces.Card;
 using CTDataModels.Card;
+using CTDataModels.Users;
 using Dapper;
 using DataAccess;
 using MySql.Data.MySqlClient;
@@ -106,6 +107,17 @@ namespace CTDao.Dao.Card
             }
         }
 
+
+
+        public async Task<IEnumerable<SeriesListModel>> GetAllSeriesAsync()
+        {
+            using (var connection = new MySqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+                var series = await connection.QueryAsync<SeriesListModel>(QueryLoader.GetQuery("QueryGetAllSeriesNames"));
+                return series;
+            }
+        }
 
 
     }
