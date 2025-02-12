@@ -85,8 +85,8 @@
   },
   {
     "ContainingType": "CTApp.Controllers.User.OrganizerController",
-    "Method": "GetJudges",
-    "RelativePath": "api/Organizer/GetJudges",
+    "Method": "GetCountries",
+    "RelativePath": "api/Organizer/GetCountries",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,

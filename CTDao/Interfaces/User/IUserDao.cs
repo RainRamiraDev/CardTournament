@@ -1,5 +1,7 @@
 ﻿using CTDataModels.Users;
 using CTDataModels.Users.LogIn;
+using CTDataModels.Users.Organizer;
+using CTDto.Users.Organizer;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,6 +22,8 @@ namespace CTDao.Interfaces.User
 
         //Player
         Task<int> GetPlayerKiByIdAsync(int playerIds);
+
+        Task<IEnumerable<CountriesListModel>> GetAllCountriesAsync();
 
 
     }

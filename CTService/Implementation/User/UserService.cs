@@ -5,10 +5,12 @@ using CTDataModels.Users.LogIn;
 using CTDto.Users;
 using CTDto.Users.Judge;
 using CTDto.Users.LogIn;
+using CTDto.Users.Organizer;
 using CTService.Interfaces.User;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -83,5 +85,17 @@ namespace CTService.Implementation.User
                 Country = judge.Country,
             });
         }
+
+        public async Task<IEnumerable<CountriesListDto>> GetAllCountriesAsync()
+        {
+            var countryModels = await _userDao.GetAllCountriesAsync();
+
+            return countryModels.Select(country => new CountriesListDto
+            {
+                Id_country = country.Id_country,
+                Country_name = country.Country_name
+            }).ToList();
+        }
+
     }
 }

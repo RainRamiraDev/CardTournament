@@ -3,6 +3,7 @@ using CTDataModels.Tournamets;
 using CTDto.Tournaments;
 using CTDto.Users;
 using CTDto.Users.Judge;
+using CTDto.Users.Organizer;
 using CTService.Implementation.User;
 using CTService.Interfaces.Card;
 using CTService.Interfaces.Tournaments;
@@ -28,16 +29,26 @@ namespace CTApp.Controllers.User
         }
 
 
+        //[Authorize(Roles = "1")]
+        //[HttpGet("GetJudges")]
+        //public async Task<IActionResult> GetJudges()
+        //{
+        //    var judges = await _userService.GetAllJudgesAsync();
+
+        //    if (judges is null || !judges.Any())
+        //        return NotFound(ApiResponse<IEnumerable<JudgeDto>>.ErrorResponse("Jueces no encontrados."));
+
+        //    return Ok(ApiResponse<IEnumerable<JudgeDto>>.SuccessResponse("Jueces obtenidos exitosamente.", judges));
+        //}
+
+
         [Authorize(Roles = "1")]
-        [HttpGet("GetJudges")]
-        public async Task<IActionResult> GetJudges()
+        [HttpGet("GetCountries")]
+        public async Task<IActionResult> GetCountries()
         {
-            var judges = await _userService.GetAllJudgesAsync();
+            var countries = await _userService.GetAllCountriesAsync();
 
-            if (judges is null || !judges.Any())
-                return NotFound(ApiResponse<IEnumerable<JudgeDto>>.ErrorResponse("Jueces no encontrados."));
-
-            return Ok(ApiResponse<IEnumerable<JudgeDto>>.SuccessResponse("Jueces obtenidos exitosamente.", judges));
+            return Ok(ApiResponse<IEnumerable<CountriesListDto>>.SuccessResponse("Paises obtenidos exitosamente.", countries));
         }
 
 

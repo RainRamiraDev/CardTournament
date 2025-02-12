@@ -20,6 +20,8 @@
 
   "QueryGetCountriesFromDb": "SELECT id_country FROM t_countries",
 
+  "QueryGetAllCountries": "SELECT country_name, id_country FROM t_countries WHERE country_name IS NOT NULL ORDER BY country_name asc;",
+
   "QueryGetAllSeries": "SELECT id_series FROM t_series",
 
   "QueryGetTournamentPlayers": "SELECT id_player FROM t_tourn_players WHERE id_tournament = @id_tournament",
