@@ -115,12 +115,18 @@
   },
   {
     "ContainingType": "CTApp.Controllers.User.PlayerController",
-    "Method": "GetAvailableTournaments",
-    "RelativePath": "api/Player/GetAvailableTournaments",
+    "Method": "GetTournamentsInformation",
+    "RelativePath": "api/Player/GetTournamentsInformation",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
-    "Parameters": [],
+    "Parameters": [
+      {
+        "Name": "getTournamentInformation",
+        "Type": "CTDto.Tournaments.GetTournamentInformationDto",
+        "IsRequired": true
+      }
+    ],
     "ReturnTypes": []
   },
   {

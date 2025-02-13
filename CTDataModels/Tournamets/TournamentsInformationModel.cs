@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CTDto.Tournaments
+namespace CTDataModels.Tournamets
 {
-    public class TournamentsInformationDto
+    public class TournamentsInformationModel
     {
         public int Id_Torneo { get; set; }
         public string Pais { get; set; }
@@ -18,6 +18,7 @@ namespace CTDto.Tournaments
         public int RondasTotales { get; set; }
         public int MatchesTotales { get; set; }
         public string Ganador { get; set; }
+
 
     }
 }

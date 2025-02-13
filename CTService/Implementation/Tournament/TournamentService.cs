@@ -202,7 +202,7 @@ namespace CTService.Implementation.Tournament
 
 
             // Validar que el organizador sea un organizador
-            var registeredOrganizers = await _tournamentDao.GetUsersFromDb(2);
+            var registeredOrganizers = await _tournamentDao.GetUsersFromDb(1);
             if (!registeredOrganizers.Contains(tournament.Id_Organizer))
                 throw new ArgumentException("El organizador especificado no está registrado.");
 
@@ -260,22 +260,29 @@ namespace CTService.Implementation.Tournament
             return await _tournamentDao.GetJudgeIdsByAliasAsync(judgeAliases);
         }
 
-        public async Task<IEnumerable<AvailableTournamentsDto>> GetAllAvailableTournamentsAsync()
+        public async Task<IEnumerable<TournamentsInformationDto>> GetTournamentsInformationAsync(GetTournamentInformationDto getTournamentInformation)
         {
-            var tournaments = await _tournamentDao.GetAllAvailableTournamentsAsync();
-
-            return tournaments.Select(tournament => new AvailableTournamentsDto
+            var getTournamentInformationModel = new GetTournamentInformationModel
             {
-                Start_DateTime = tournament.Start_DateTime,
-                End_DateTime = tournament.End_DateTime,
-                Tournament_Country = tournament.Tournament_Country ?? string.Empty, 
-                Organizer_Alias = tournament.Organizer_Alias ?? string.Empty,  
-                Judges = tournament.Judges ?? string.Empty,  
-                Series_Played = tournament.Series_Played ?? string.Empty,  
-                Players = tournament.Players ?? string.Empty,  
-                Disqualified_Players = tournament.Disqualified_Players ?? string.Empty,
-                Total_Games = tournament.Total_Games,
-                Total_Rounds = tournament.Total_Rounds,
+                Current_phase = getTournamentInformation.Current_phase
+            };
+
+            Console.WriteLine("[date] "+ getTournamentInformationModel.Current_phase);
+
+            var tournaments = await _tournamentDao.GetTournamentsInformationAsync(getTournamentInformationModel);
+
+            return tournaments.Select(tournament => new TournamentsInformationDto
+            {
+                Id_Torneo = tournament.Id_Torneo,
+                Pais = tournament.Pais,
+                FechaDeInicio = tournament.FechaDeInicio,
+                FechaDeFinalizacion = tournament.FechaDeFinalizacion,
+                Jueces = tournament.Jueces,
+                Series = tournament.Series,
+                Jugadores = tournament.Jugadores,
+                RondasTotales = tournament.RondasTotales,
+                MatchesTotales = tournament.MatchesTotales,
+                Ganador = tournament.Ganador,
             });
         }
 
