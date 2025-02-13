@@ -69,7 +69,7 @@ namespace CTApp.Controllers.User
         {
             try
             {
-                var affectedRows = await _tournamentService.InsertTournamentDecksAsync(tournamentDeckDto);
+                var affectedRows = await _tournamentService.InsertTournamentDecksAsync(tournamentDeckDto); //cambiar
 
                 if (affectedRows == 0)
                 {

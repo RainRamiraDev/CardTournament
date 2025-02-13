@@ -212,6 +212,9 @@ namespace CTService.Implementation.Tournament
             // Validar los jueces
             var registeredJudges = await _tournamentDao.GetUsersFromDb(3);
 
+
+
+
             Console.WriteLine($"[INFO] Se encontraron {registeredJudges.Count} jueces registrados en la BD.");
 
             var invalidJudges = tournament.Judges.Where(idJudge => !registeredJudges.Contains(idJudge)).ToList();

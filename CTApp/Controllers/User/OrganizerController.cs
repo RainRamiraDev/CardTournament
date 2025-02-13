@@ -86,7 +86,5 @@ namespace CTApp.Controllers.User
             return Created("", new { id });
         }
 
-
-
     }
 }
