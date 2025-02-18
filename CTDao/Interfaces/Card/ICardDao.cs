@@ -19,6 +19,8 @@ namespace CTDao.Interfaces.Card
         Task<List<int>> GetAllSeries();
         Task<List<string>> GetCardIllustrationById(List<int> cardsIds);
 
+        Task<IEnumerable<SeriesListModel>> GetAllSeriesAsync();
+
 
     }
 }

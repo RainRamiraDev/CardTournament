@@ -16,5 +16,7 @@ namespace CTService.Interfaces.Card
         Task<List<int>> GetSeriesIdsByNameAsync(List<string> names);
         Task<IEnumerable<ShowCardsDto>> GetCardsBySeriesNames(List<string> cardSeries);
 
+        Task<IEnumerable<SeriesListDto>> GetAllSeriesAsync();
+
     }
 }

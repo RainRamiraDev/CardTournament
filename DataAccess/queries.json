@@ -3,8 +3,15 @@
   "QueryCreateTournament": "INSERT INTO T_TOURNAMENTS (id_country, id_organizer, start_datetime, current_phase) VALUES (@IdCountry, @IdOrganizer, @StartDatetime, @CurrentPhase); SELECT LAST_INSERT_ID();",
   "QueryInsertJudges": "INSERT INTO T_TOURN_JUDGES (id_tournament, id_judge) VALUES (@id_tournament, @id_judge);",
   "QueryGetJudgeByAlias": "SELECT id_user FROM T_USERS WHERE alias IN @Aliases AND Id_rol = 3;",
-  "QueryAvailableTournaments": "SELECT t.start_datetime, t.end_datetime, c.country_name AS tournament_country, u.alias AS organizer_alias, GROUP_CONCAT(DISTINCT j.fullname SEPARATOR ', ') AS judges, GROUP_CONCAT(DISTINCT s.series_name SEPARATOR ', ') AS series_played, GROUP_CONCAT(DISTINCT p.fullname SEPARATOR ', ') AS players, GROUP_CONCAT(DISTINCT d.fullname SEPARATOR ', ') AS disqualified_players, COUNT(DISTINCT g.id_game) AS total_games, COUNT(DISTINCT r.id_round) AS total_rounds FROM T_TOURNAMENTS t LEFT JOIN T_COUNTRIES c ON t.id_country = c.id_country LEFT JOIN T_USERS u ON t.id_organizer = u.id_user LEFT JOIN T_TOURN_JUDGES tj ON t.id_tournament = tj.id_tournament LEFT JOIN T_USERS j ON tj.id_judge = j.id_user LEFT JOIN T_TOURN_SERIES ts ON t.id_tournament = ts.id_tournament LEFT JOIN T_SERIES s ON ts.id_series = s.id_series LEFT JOIN T_TOURN_PLAYERS tp ON t.id_tournament = tp.id_tournament LEFT JOIN T_USERS p ON tp.id_player = p.id_user LEFT JOIN T_TOURN_DISQUALIFICATIONS td ON t.id_tournament = td.id_tournament LEFT JOIN T_USERS d ON td.id_player = d.id_user LEFT JOIN T_GAMES g ON t.id_tournament = g.id_tournament LEFT JOIN T_MATCHES m ON g.id_game = m.id_game LEFT JOIN T_ROUNDS r ON m.id_round = r.id_round WHERE t.current_phase = 1 GROUP BY t.start_datetime, t.end_datetime, t.current_phase, c.country_name, u.fullname, u.alias, u.email;",
+
+
+  "QueryGetTournamentsInformation": "SELECT tt.id_tournament AS 'Id_Torneo', tc.country_name AS 'Pais', tt.start_datetime AS 'Fecha de Inicio', tt.end_datetime AS 'Fecha de Finalizacion', GROUP_CONCAT(DISTINCT ju.fullname ORDER BY ju.fullname SEPARATOR ', ') AS 'Jueces', GROUP_CONCAT(DISTINCT ts.series_name ORDER BY ts.series_name SEPARATOR ', ') AS 'Series', GROUP_CONCAT(DISTINCT tu.alias ORDER BY tu.alias SEPARATOR ', ') AS 'Jugadores', (SELECT tu.alias FROM t_matches tm2 JOIN t_users tu ON tu.id_user = tm2.winner WHERE tm2.id_round = (SELECT MAX(id_round) FROM t_rounds WHERE id_tournament = tt.id_tournament) LIMIT 1) AS 'Ganador' FROM t_tournaments tt JOIN t_countries tc ON tt.id_country = tc.id_country LEFT JOIN t_tourn_judges tj ON tt.id_tournament = tj.id_tournament LEFT JOIN t_users ju ON tj.id_judge = ju.id_user LEFT JOIN t_tourn_series tts ON tts.id_tournament = tt.id_tournament LEFT JOIN t_series ts ON ts.id_series = tts.id_series LEFT JOIN t_tourn_players ttp ON ttp.id_tournament = tt.id_tournament LEFT JOIN t_users tu ON tu.id_user = ttp.id_player WHERE tt.current_phase = @current_phase GROUP BY tt.id_tournament, tc.country_name ORDER BY tt.start_datetime DESC;",
+
+
+
   "QueryInsertSeries": "INSERT INTO T_TOURN_SERIES (id_tournament, id_series) VALUES (@id_tournament, @id_series);",
+
+
   "QueryInsertDecks": "INSERT INTO T_TOURN_DECKS (id_tournament, id_card_series, id_owner) VALUES (@id_tournament, @id_card_series, @id_owner);",
   "QueryInsertPlayers": "INSERT INTO T_TOURN_PLAYERS (id_tournament, id_player) VALUES (@Id_tournament,@id_player);",
   "QuerySetTournamentNextPhase": "UPDATE T_TOURNAMENTS SET current_phase = current_phase + 1 WHERE id_tournament = @id_tournament AND current_phase < 3;",
@@ -18,7 +25,11 @@
   "QueryGetUsersFromDb": "SELECT id_user FROM t_users WHERE id_rol = @id_rol AND ki IS NOT NULL;",
   "QueryGetCardIllustrationById": "SELECT illustration FROM t_cards WHERE id_card IN @id_card;",
 
+  "QueryGetAllSeriesNames": "SELECT series_name,id_series FROM t_series WHERE series_name IS NOT NULL AND release_date IS NOT NULL ORDER BY series_name asc",
+
   "QueryGetCountriesFromDb": "SELECT id_country FROM t_countries",
+
+  "QueryGetAllCountries": "SELECT country_name, id_country FROM t_countries WHERE country_name IS NOT NULL ORDER BY country_name asc;",
 
   "QueryGetAllSeries": "SELECT id_series FROM t_series",
 
@@ -51,6 +62,9 @@
   "QueryGetUserWhitToken": "SELECT * FROM T_Users WHERE Id_User = @Id_user;",
   "QueryFirstLogIn": "INSERT INTO T_Users (Fullname, Passcode, Id_Rol) VALUES (@Fullname, @Passcode, @Id_Rol);",
   "QueryLogin": "SELECT Id_User, Fullname, Passcode, Id_Rol FROM T_Users WHERE Fullname = @Fullname;",
-  "QueryGetAllJudges": "SELECT u.Fullname, u.Alias, u.Email, c.country_name as Country, u.avatar_url FROM t_users u JOIN t_countries c ON u.id_country = c.id_country WHERE Id_rol = 3;",
+  "QueryGetAllJudges": "SELECT u.Fullname, u.Alias, u.Email, c.country_name as Country, u.avatar_url FROM t_users u JOIN t_countries c ON u.id_country = c.id_country WHERE Id_rol = 3 AND u.Fullname IS NOT NULL AND u.Alias IS NOT NULL AND u.Email IS NOT NULL AND c.country_name IS NOT NULL AND u.avatar_url IS NOT NULL ORDER BY u.alias asc;",
   "QueryGetPlayersRankIds": "SELECT ki FROM t_users WHERE Id_user = @Id;"
+
+
+
 }

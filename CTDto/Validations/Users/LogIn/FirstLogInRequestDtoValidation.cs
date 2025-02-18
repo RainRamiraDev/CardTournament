@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace CTDto.Validations.Users.LogIn
 {
-    public class FirstLogInRequestDtoValidation : AbstractValidator<LoginRequestDto>
+    public class FirstLogInRequestDtoValidation : AbstractValidator<FirstLogInDto>
     {
         public FirstLogInRequestDtoValidation()
         {
@@ -17,11 +17,11 @@ namespace CTDto.Validations.Users.LogIn
                 .NotEmpty().WithMessage("El nombre completo no puede estar vacío.")
                 .MaximumLength(50).WithMessage("El nombre completo no puede superar los 50 caracteres.");
 
-           
+
             RuleFor(x => x.Id_Rol)
                 .InclusiveBetween(1, 4).WithMessage("El Id_Rol debe estar entre 1 y 4.");
 
-         
+
             RuleFor(x => x.Passcode)
                 .NotEmpty().WithMessage("La contraseña no puede estar vacía.")
                 .Matches(@"^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d@$!%*?&]{8,}$")

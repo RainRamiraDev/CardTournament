@@ -369,7 +369,17 @@ namespace CTDao.Dao.Tournaments
             }
         }
 
-       
+        public async Task<IEnumerable<TournamentsInformationModel>> GetTournamentsInformationAsync(GetTournamentInformationModel tournamentInformationModel)
+        {
+            using (var connection = new MySqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+
+                var tournaments = await connection.QueryAsync<TournamentsInformationModel>(QueryLoader.GetQuery("QueryGetTournamentsInformation"),new {current_phase = tournamentInformationModel.Current_phase });
+
+                return tournaments;
+            }
+        }
     }
 }
  

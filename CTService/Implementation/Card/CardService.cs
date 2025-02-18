@@ -87,5 +87,18 @@ namespace CTService.Implementation.Card
 
             return await _cardDao.GetSeriesIdsByNameAsync(names);
         }
+
+
+        public async Task<IEnumerable<SeriesListDto>> GetAllSeriesAsync()
+        {
+            var seriesModels = await _cardDao.GetAllSeriesAsync();
+            return seriesModels.Select(series => new SeriesListDto
+            {
+                Id_series = series.Id_series,
+                Series_Name = series.Series_Name,
+            });
+        }
+
+
     }
 }

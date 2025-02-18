@@ -1,6 +1,7 @@
 ﻿using CTDao.Interfaces.User;
 using CTDataModels.Users;
 using CTDataModels.Users.LogIn;
+using CTDataModels.Users.Organizer;
 using Dapper;
 using DataAccess;
 using MySql.Data.MySqlClient;
@@ -80,5 +81,14 @@ namespace CTDao.Dao.User
             }
         }
 
+        public async Task<IEnumerable<CountriesListModel>> GetAllCountriesAsync()
+        {
+            using (var connection = new MySqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+                var countries = await connection.QueryAsync<CountriesListModel>(QueryLoader.GetQuery("QueryGetAllCountries"));
+                return countries;
+            }
+        }
     }
 }

@@ -24,15 +24,15 @@ namespace CTApp.Controllers.User
         }
 
         [Authorize(Roles = "4")] 
-        [HttpGet("GetAvailableTournaments")]
-        public async Task<IActionResult> GetAvailableTournaments()
+        [HttpGet("GetTournamentsInformation")]
+        public async Task<IActionResult> GetTournamentsInformation([FromBody] GetTournamentInformationDto getTournamentInformation )
         {
-            var tournaments = await _tournamentService.GetAllAvailableTournamentsAsync();
+            var tournaments = await _tournamentService.GetTournamentsInformationAsync(getTournamentInformation);
 
             if (tournaments is null || !tournaments.Any())
-                return NotFound(ApiResponse<IEnumerable<AvailableTournamentsDto>>.ErrorResponse("Torneos no encontrados."));
+                return NotFound(ApiResponse<IEnumerable<TournamentsInformationDto>>.ErrorResponse("Torneos no encontrados."));
 
-            return Ok(ApiResponse<IEnumerable<AvailableTournamentsDto>>.SuccessResponse("Torneos obtenidos exitosamente.", tournaments));
+            return Ok(ApiResponse<IEnumerable<TournamentsInformationDto>>.SuccessResponse("Torneos obtenidos exitosamente.", tournaments));
         }
 
 
@@ -69,7 +69,7 @@ namespace CTApp.Controllers.User
         {
             try
             {
-                var affectedRows = await _tournamentService.InsertTournamentDecksAsync(tournamentDeckDto);
+                var affectedRows = await _tournamentService.InsertTournamentDecksAsync(tournamentDeckDto); //cambiar
 
                 if (affectedRows == 0)
                 {
