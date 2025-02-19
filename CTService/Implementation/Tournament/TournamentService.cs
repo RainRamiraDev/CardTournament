@@ -46,20 +46,18 @@ namespace CTService.Implementation.Tournament
                 throw new InvalidOperationException("El torneo especificado no existe.");
             }
 
-            var duplicateIllustrations = tournamentDecksDto.illustration
+            var duplicateCards = tournamentDecksDto.Cards
                 .GroupBy(i => i)
                 .Where(g => g.Count() > 1)
                 .Select(g => g.Key)
                 .ToList();
 
-            if (duplicateIllustrations.Any())
+            if (duplicateCards.Any())
             {
-                throw new InvalidOperationException($"Las siguientes ilustraciones están duplicadas: {string.Join(", ", duplicateIllustrations)}");
+                throw new InvalidOperationException($"Las siguientes ilustraciones están duplicadas: {string.Join(", ", duplicateCards)}");
             }
 
-            var cardIds = await _cardDao.GetCardIdsByIllustrationAsync(tournamentDecksDto.illustration);
-
-            var validatedCards = await ValidatePlayersDecks(cardIds, tournamentDecksDto);
+            var validatedCards = await ValidatePlayersDecks(tournamentDecksDto);
 
             var cardSeriesIds = await _cardDao.GetIdCardSeriesByCardIdAsync(validatedCards);
 
@@ -85,9 +83,9 @@ namespace CTService.Implementation.Tournament
             return await _tournamentDao.InsertTournamentDecksAsync(tournamentDecksModel);
         }
 
-        public async Task<List<int>> ValidatePlayersDecks(List<int> cardIds, TournamentDecksDto tournament)
+        public async Task<List<int>> ValidatePlayersDecks(TournamentDecksDto tournament)
         {
-            if (cardIds == null || !cardIds.Any())
+            if (tournament.Cards == null || !tournament.Cards.Any())
                 throw new ArgumentException("No se proporcionaron cartas para validar.");
 
             var registeredPlayers = await _tournamentDao.GetUsersFromDb(4);
@@ -115,7 +113,7 @@ namespace CTService.Implementation.Tournament
 
             var invalidCards = new List<int>();
 
-            foreach (var card in cardIds)
+            foreach (var card in tournament.Cards)
             {
                 if (validCardsFromSeries.Contains(card))
                 {
@@ -139,9 +137,6 @@ namespace CTService.Implementation.Tournament
         public async Task<int> CreateTournamentAsync(TournamentDto tournamentDto)
         {
 
-            var judgeIds = await _tournamentDao.GetJudgeIdsByAliasAsync(tournamentDto.Judges_Alias);
-            var seriesIds = await _cardDao.GetSeriesIdsByNameAsync(tournamentDto.Series_name);
-
             var tournamentModel = new TournamentModel
             {
                 Id_Country = tournamentDto.Id_Country,
@@ -149,8 +144,8 @@ namespace CTService.Implementation.Tournament
                 Start_datetime = tournamentDto.Start_datetime,
                 End_datetime = tournamentDto.End_datetime,
                 Current_Phase = 1,
-                Judges = judgeIds,
-                Series_name = seriesIds,
+                Judges = tournamentDto.Judges_Alias,
+                Series_name = tournamentDto.Series_name,
             };
 
             var validatedTournament = await ValidateTournament(tournamentModel);
@@ -265,8 +260,6 @@ namespace CTService.Implementation.Tournament
                 Jueces = tournament.Jueces,
                 Series = tournament.Series,
                 Jugadores = tournament.Jugadores,
-                RondasTotales = tournament.RondasTotales,
-                MatchesTotales = tournament.MatchesTotales,
                 Ganador = tournament.Ganador,
             });
         }

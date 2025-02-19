@@ -84,36 +84,6 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "CTApp.Controllers.User.OrganizerController",
-    "Method": "GetCountries",
-    "RelativePath": "api/Organizer/GetCountries",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "CTApp.Controllers.User.OrganizerController",
-    "Method": "GetJudges",
-    "RelativePath": "api/Organizer/GetJudges",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "CTApp.Controllers.User.OrganizerController",
-    "Method": "GetSeries",
-    "RelativePath": "api/Organizer/GetSeries",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [],
-    "ReturnTypes": []
-  },
-  {
     "ContainingType": "CTApp.Controllers.User.PlayerController",
     "Method": "GetTournamentsInformation",
     "RelativePath": "api/Player/GetTournamentsInformation",
