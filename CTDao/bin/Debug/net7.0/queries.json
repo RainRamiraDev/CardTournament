@@ -1,13 +1,24 @@
 {
   "QueryGetAll": "SELECT * FROM T_TOURNAMENTS;",
-  "QueryCreateTournament": "INSERT INTO T_TOURNAMENTS (id_country, id_organizer, start_datetime, current_phase) VALUES (@IdCountry, @IdOrganizer, @StartDatetime, @CurrentPhase); SELECT LAST_INSERT_ID();",
+
+
+
+
+
+
+
+  "QueryCreateTournament": "INSERT INTO T_TOURNAMENTS (id_country, id_organizer, start_datetime, end_datetime, current_phase, player_capacity) VALUES (@IdCountry, @IdOrganizer, @StartDatetime, @End_Datetime, @CurrentPhase, @Player_Capacity); SELECT LAST_INSERT_ID();",
+  
+  
+  
+  
   "QueryInsertJudges": "INSERT INTO T_TOURN_JUDGES (id_tournament, id_judge) VALUES (@id_tournament, @id_judge);",
   "QueryGetJudgeByAlias": "SELECT id_user FROM T_USERS WHERE alias IN @Aliases AND Id_rol = 3;",
 
 
   "QueryGetTournamentsInformation": "SELECT tt.id_tournament AS 'Id_Torneo', tc.country_name AS 'Pais', tt.start_datetime AS 'Fecha de Inicio', tt.end_datetime AS 'Fecha de Finalizacion', GROUP_CONCAT(DISTINCT ju.fullname ORDER BY ju.fullname SEPARATOR ', ') AS 'Jueces', GROUP_CONCAT(DISTINCT ts.series_name ORDER BY ts.series_name SEPARATOR ', ') AS 'Series', GROUP_CONCAT(DISTINCT tu.alias ORDER BY tu.alias SEPARATOR ', ') AS 'Jugadores', (SELECT tu.alias FROM t_matches tm2 JOIN t_users tu ON tu.id_user = tm2.winner WHERE tm2.id_round = (SELECT MAX(id_round) FROM t_rounds WHERE id_tournament = tt.id_tournament) LIMIT 1) AS 'Ganador' FROM t_tournaments tt JOIN t_countries tc ON tt.id_country = tc.id_country LEFT JOIN t_tourn_judges tj ON tt.id_tournament = tj.id_tournament LEFT JOIN t_users ju ON tj.id_judge = ju.id_user LEFT JOIN t_tourn_series tts ON tts.id_tournament = tt.id_tournament LEFT JOIN t_series ts ON ts.id_series = tts.id_series LEFT JOIN t_tourn_players ttp ON ttp.id_tournament = tt.id_tournament LEFT JOIN t_users tu ON tu.id_user = ttp.id_player WHERE tt.current_phase = @current_phase GROUP BY tt.id_tournament, tc.country_name ORDER BY tt.start_datetime DESC;",
 
-
+  "QueryGetTournamentJudgesIds": "SELECT id_judge FROM t_tourn_judges WHERE id_tournament = @id_tournament;",
 
   "QueryInsertSeries": "INSERT INTO T_TOURN_SERIES (id_tournament, id_series) VALUES (@id_tournament, @id_series);",
 
@@ -46,7 +57,12 @@
   "QuerySetWinner": "UPDATE T_USERS SET games_won = games_won + 1 WHERE id_user = @id_player;",
   "QuerySetLosers": "UPDATE T_USERS SET games_lost = games_lost + 1 WHERE id_user IN @losers;",
   "QueryGetPlayersIds": "SELECT id_player FROM T_TOURN_PLAYERS WHERE id_tournament = @id_tournament;",
-  "QueryCreateRound": "INSERT INTO T_ROUNDS (id_tournament, round_number) VALUES (@id_tournament, @round_number);",
+ 
+  // controlar
+  "QueryCreateRound": "INSERT INTO T_ROUNDS (id_tournament, round_number, judge) VALUES (@id_tournament, @round_number, @judge);",
+ 
+  
+  
   "QueryCreateMatch": "INSERT INTO T_MATCHES (id_round, id_player1, id_player2, winner) VALUES (@id_round, @id_player1, @id_player2, @winner); SELECT LAST_INSERT_ID();",
   "QuerySetNextRound": "INSERT INTO T_ROUNDS (id_tournament, round_number, is_completed) VALUES (@id_tournament, @round_number, FALSE);",
   "QueryGetLastRound": "SELECT COALESCE(MAX(round_number), 0) FROM T_ROUNDS WHERE id_tournament = @id_tournament;",

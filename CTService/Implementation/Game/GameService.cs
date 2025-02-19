@@ -34,7 +34,6 @@ namespace CTService.Implementation.Game
             _userDao = userDao;
         }
 
-
         public async Task<int> CreateMatchAsync(MatchDto match)
         {
             if (match == null)
@@ -73,14 +72,12 @@ namespace CTService.Implementation.Game
                dailyHoursAvailable = tournamentDto.dailyHoursAvailable,
             };
 
-
             bool tournamentExists = await _tournamentDao.TournamentExistsAsync(tournamentModel.Tournament_Id);
 
             if (!tournamentExists)
             {
                 throw new InvalidOperationException("El torneo especificado no existe.");
             }
-
 
             List<int> playersIds = await _gameDao.GetTournamentPlayers(tournamentModel.Tournament_Id);
 
@@ -89,8 +86,9 @@ namespace CTService.Implementation.Game
                 throw new InvalidOperationException("Se necesitan al menos dos jugadores para iniciar el torneo.");
             }
 
-            int roundNumber = await _gameDao.GetLastRoundAsync(tournamentModel.Tournament_Id);
+            List<int> tournamentJudgesIds = await _tournamentDao.GetTournamentJudges(tournamentDto.Tournament_Id);
 
+            int roundNumber = await _gameDao.GetLastRoundAsync(tournamentModel.Tournament_Id);
 
             HashSet<int> eliminatedPlayers = new HashSet<int>();
 
@@ -101,7 +99,8 @@ namespace CTService.Implementation.Game
 
             while (playersIds.Count > 1)
             {
-                int createdRoundId = await CreateRoundAsync(roundNumber, tournamentModel.Tournament_Id);
+                var judgeId = await GetRandomJudge(tournamentJudgesIds);
+                int createdRoundId = await CreateRoundAsync(roundNumber, tournamentModel.Tournament_Id,judgeId);
 
                 List<int> winners = new List<int>();
 
@@ -146,8 +145,6 @@ namespace CTService.Implementation.Game
                 await _gameDao.SetRoundCompletedAsync(roundNumber, tournamentModel.Tournament_Id);
 
                 roundNumber++;
-
-                //Console.WriteLine("[Round number incrised]");
             }
 
             // torneo fase 3
@@ -176,7 +173,6 @@ namespace CTService.Implementation.Game
                           $"La Duracion Total del Torneo ha sido de {tournamentDuration}",
             };
         }
-
 
         public async Task<TimeSpan> UpdateTournamentEndDate(int total_Matches, int id_tournament, int dailyHoursAvailable)
         {
@@ -219,16 +215,30 @@ namespace CTService.Implementation.Game
             return tournamentDuration;
         }
 
-        public async Task<int> CreateRoundAsync(int roundNumber, int tournament_id)
+        public async Task<int> CreateRoundAsync(int roundNumber, int tournament_id, int id_judge)
         {
             var roundModel = new RoundModel
             {
                 Id_Tournament = tournament_id,
                 Round_Number = roundNumber,
+                Judge = id_judge,
                 Is_Completed = false,
             };
             return await _gameDao.CreateRoundAsync(roundModel);
         }
+
+        public async Task<int> GetRandomJudge(List<int> judges)
+        {
+            if (judges == null || judges.Count == 0)
+            {
+                throw new ArgumentException("La lista de jueces no puede estar vacía.");
+            }
+            Random random = new Random();
+            int randomIndex = random.Next(judges.Count);
+
+            return await Task.FromResult(judges[randomIndex]);
+        }
+
 
     }
 }

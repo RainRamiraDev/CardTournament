@@ -41,8 +41,6 @@ namespace CTDao.Dao.Tournaments
             }
         }
 
-
-
         public async Task<List<int>> GetCountriesFromDb()
         {
             using (var connection = new MySqlConnection(_connectionString))
@@ -68,7 +66,8 @@ namespace CTDao.Dao.Tournaments
                     IdCountry = tournament.Id_Country,
                     IdOrganizer = tournament.Id_Organizer,
                     StartDatetime = tournament.Start_datetime,
-                    CurrentPhase = tournament.Current_Phase
+                    End_Datetime = tournament.End_datetime,
+                    CurrentPhase = tournament.Current_Phase,
                 }, transaction);
 
                 Console.WriteLine($"Tournament ID: {tournamentId}");
@@ -380,6 +379,50 @@ namespace CTDao.Dao.Tournaments
                 return tournaments;
             }
         }
+
+        public async Task<List<int>> GetTournamentJudges(int id_tournament)
+        {
+            using (var connection = new MySqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+
+                var judges = await connection.QueryAsync<int>(
+                QueryLoader.GetQuery("QueryGetTournamentJudgesIds"),
+                new { id_tournament = id_tournament });
+
+                // Convierte el resultado en una lista
+                var judgesList = judges.ToList();
+
+                if (judgesList.Count == 0)
+                {
+                    throw new InvalidOperationException("No se pudieron encontrar los jueces del torneo");
+                }
+
+                return judgesList;
+            }
+        }
+
+        public async Task<TournamentModel> GetTournamentById(int id_tournament)
+        {
+            using (var connection = new MySqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+
+                // Cambia QueryAsync por QuerySingleOrDefaultAsync para obtener un solo torneo
+                var tournament = await connection.QuerySingleOrDefaultAsync<TournamentModel>(
+                    QueryLoader.GetQuery("QueryGetTournamentById"),
+                    new { Id_tournament = id_tournament });
+
+                // Verifica si se encontró el torneo
+                if (tournament == null)
+                {
+                    throw new InvalidOperationException("Torneo no encontrado.");
+                }
+
+                return tournament;
+            }
+        }
+
     }
 }
  

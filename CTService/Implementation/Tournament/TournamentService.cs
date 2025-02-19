@@ -11,6 +11,7 @@ using Mysqlx.Crud;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -59,26 +60,22 @@ namespace CTService.Implementation.Tournament
 
             var cardIds = await _cardDao.GetCardIdsByIllustrationAsync(tournamentDecksDto.illustration);
 
-            Console.WriteLine($"[INFO] CARDS IDS: {string.Join(", ", cardIds)}");
-
-
-            Console.WriteLine($"[INFO] Se encontraron {cardIds.Count} cartas para la ilustración proporcionada.");
-
-
             var validatedCards = await ValidatePlayersDecks(cardIds, tournamentDecksDto);
 
-            Console.WriteLine($"[INFO] Se validaron {validatedCards.Count} cartas.");
-
-
             var cardSeriesIds = await _cardDao.GetIdCardSeriesByCardIdAsync(validatedCards);
-
-            Console.WriteLine($"[INFO] Se encontraron {cardSeriesIds.Count} series de cartas.");
-
 
             if (cardSeriesIds == null || !cardSeriesIds.Any())
             {
                 throw new ArgumentException("Invalid series name provided.");
             }
+
+            //---------------------------------------
+            //CALCULO LA CANTIDAD DE JUGADORES POSIBLES CON LA FECHA DE COMIENZO Y FIN Y LA CANTIDAD DIARIA 
+            var tournamentsPlayers = await _tournamentDao.GetTournamentPlayers(tournamentDecksDto.Id_Tournament);
+            var playersCapacity = await CalculatePlayerCapacity(tournamentDecksDto.Id_Tournament);
+            if (tournamentsPlayers.Count >= playersCapacity)
+                throw new ArgumentException("Asistencia del torneo Completo, no entran mas jugadores");
+            //---------------------------------------
 
             var tournamentDecksModel = new TournamentDecksModel
             {
@@ -166,29 +163,66 @@ namespace CTService.Implementation.Tournament
         public async Task<int> CreateTournamentAsync(TournamentDto tournamentDto)
         {
 
-            // Obtener los IDs de los jueces a partir de los alias
             var judgeIds = await _tournamentDao.GetJudgeIdsByAliasAsync(tournamentDto.Judges_Alias);
             Console.WriteLine($"Judges IDs: {string.Join(", ", judgeIds)}");
 
-
-            // Obtener los IDs de las series a partir de los nombres
             var seriesIds = await _cardDao.GetSeriesIdsByNameAsync(tournamentDto.Series_name);
             Console.WriteLine($"Series IDs: {string.Join(", ", seriesIds)}");
-
 
             var tournamentModel = new TournamentModel
             {
                 Id_Country = tournamentDto.Id_Country,
                 Id_Organizer = tournamentDto.Id_Organizer,
                 Start_datetime = tournamentDto.Start_datetime,
+                End_datetime = tournamentDto.End_datetime,
                 Current_Phase = 1,
                 Judges = judgeIds,
-                Series_name = seriesIds
+                Series_name = seriesIds,
             };
 
             var validatedTournament = await ValidateTournament(tournamentModel);
 
             return await _tournamentDao.CreateTournamentAsync(tournamentModel);
+        }
+
+        public async Task<int> CalculatePlayerCapacity(int id_tournament)
+        {
+            TournamentDto tournament = await GetTournamentById(id_tournament);
+
+            var start_datetime = tournament.Start_datetime;
+            var end_datetime = tournament.End_datetime;
+
+            //// Calcular la duración total entre las fechas de inicio y fin
+            var duration = end_datetime - start_datetime;
+
+            //// Asegurarse de que la duración sea positiva
+            if (duration.TotalMinutes < 0)
+            {
+                throw new InvalidOperationException("La fecha de fin debe ser posterior a la fecha de inicio.");
+            }
+
+            //// Calcular la cantidad de tramos de 30 minutos
+            int numberOfSegments = (int)(duration.TotalMinutes / 30);
+
+            //// Calcular la capacidad máxima de jugadores
+            int maxPlayers = numberOfSegments * 2;
+
+            return await Task.FromResult(maxPlayers);
+        }
+
+        public async Task<TournamentDto> GetTournamentById(int id_tournament)
+        {
+            var tournamentModel = await _tournamentDao.GetTournamentById(id_tournament);
+
+            var tournamentDto = new TournamentDto
+            {
+                Start_datetime = tournamentModel.Start_datetime,
+                End_datetime = tournamentModel.End_datetime,
+                Id_Country = tournamentModel.Id_Country,
+                Id_Organizer = tournamentModel.Id_Organizer,
+            };
+
+            return tournamentDto;
         }
 
         public async Task<bool> ValidateTournament( TournamentModel tournament)
@@ -198,24 +232,11 @@ namespace CTService.Implementation.Tournament
             if (!registeredCountries.Contains(tournament.Id_Country))
                 throw new ArgumentException("El país especificado no está registrado.");
 
-            Console.WriteLine($"[INFO] Se encontraron {registeredCountries.Count} países registrados en la BD.");
-
-
-            // Validar que el organizador sea un organizador
             var registeredOrganizers = await _tournamentDao.GetUsersFromDb(1);
             if (!registeredOrganizers.Contains(tournament.Id_Organizer))
                 throw new ArgumentException("El organizador especificado no está registrado.");
 
-            Console.WriteLine($"[INFO] Se encontraron {registeredOrganizers.Count} organizadores registrados en la BD.");
-
-
-            // Validar los jueces
             var registeredJudges = await _tournamentDao.GetUsersFromDb(3);
-
-
-
-
-            Console.WriteLine($"[INFO] Se encontraron {registeredJudges.Count} jueces registrados en la BD.");
 
             var invalidJudges = tournament.Judges.Where(idJudge => !registeredJudges.Contains(idJudge)).ToList();
 

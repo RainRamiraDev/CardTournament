@@ -114,7 +114,8 @@ namespace CTDao.Dao.Game
                         await connection.ExecuteAsync(QueryLoader.GetQuery("QueryCreateRound"), new
                         {
                             Id_Tournament = round.Id_Tournament,
-                            round_number = round.Round_Number
+                            round_number = round.Round_Number,
+                            judge = round.Judge,
                         }, transaction);
 
                         int roundId = await connection.ExecuteScalarAsync<int>(QueryLoader.GetQuery("QueryGetLastInsertId"), transaction);

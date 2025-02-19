@@ -65,7 +65,7 @@ namespace CTApp.Controllers.User
 
         [Authorize(Roles = "4")]
         [HttpPost("SetTournamentDecks")]
-        public async Task<IActionResult> SetTournamentSeries([FromBody] TournamentDecksDto tournamentDeckDto)
+        public async Task<IActionResult> SetTournamentDecks([FromBody] TournamentDecksDto tournamentDeckDto)
         {
             try
             {
