@@ -114,7 +114,8 @@ namespace CTDao.Dao.Game
                         await connection.ExecuteAsync(QueryLoader.GetQuery("QueryCreateRound"), new
                         {
                             Id_Tournament = round.Id_Tournament,
-                            round_number = round.Round_Number
+                            round_number = round.Round_Number,
+                            judge = round.Judge,
                         }, transaction);
 
                         int roundId = await connection.ExecuteScalarAsync<int>(QueryLoader.GetQuery("QueryGetLastInsertId"), transaction);
@@ -172,8 +173,6 @@ namespace CTDao.Dao.Game
                     try
                     {
                         int lastRoundNumber = await GetLastRoundAsync(tournament_id);
-                        Console.WriteLine("[Next Round number]:" + lastRoundNumber);
-
                         int affectedRows = await connection.ExecuteAsync(
                             QueryLoader.GetQuery("QuerySetNextRound"),
                             new { id_tournament = tournament_id, round_number = lastRoundNumber },
@@ -205,9 +204,6 @@ namespace CTDao.Dao.Game
                             id_tournament = tournament_id,
                             round_number = roundNumber
                         }, transaction: transaction);
-
-
-                        Console.WriteLine("[Completed Round Number]:"+roundNumber);
 
                         await transaction.CommitAsync();
                         return affectedRows;

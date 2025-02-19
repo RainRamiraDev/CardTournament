@@ -131,7 +131,7 @@
   },
   {
     "ContainingType": "CTApp.Controllers.User.PlayerController",
-    "Method": "SetTournamentSeries",
+    "Method": "SetTournamentDecks",
     "RelativePath": "api/Player/SetTournamentDecks",
     "HttpMethod": "POST",
     "IsController": true,

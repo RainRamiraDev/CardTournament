@@ -13,12 +13,9 @@ namespace CTDao.Interfaces.Tournaments
     {
         //Tournament
         Task<int> CreateTournamentAsync(TournamentModel tournament);
-        Task<IEnumerable<TournamentModel>> GetAllTournamentAsync();
         Task<IEnumerable<TournamentsInformationModel>> GetTournamentsInformationAsync(GetTournamentInformationModel tournamentInformationModel);
-
         Task<int> SetTournamentToNextPhase(int tournament_id);
         Task<int> GetTournamentCurrentPhase(int id_tournament);
-
         Task<bool> TournamentExistsAsync(int tournamentId);
 
         Task<List<int>> GetSeriesFromTournamentAsync(int tournamentId);
@@ -33,8 +30,11 @@ namespace CTDao.Interfaces.Tournaments
 
         Task<List<int>> GetTournamentPlayers(int tournamentId);
 
+        Task<List<int>> GetTournamentJudges(int id_tournament);
 
         Task<List<int>> GetUsersFromDb(int id_rol);
+
+        Task<TournamentModel> GetTournamentById(int id_tournament);
 
         //Judge
         Task<List<int>> GetJudgeIdsByAliasAsync(List<string> judgeAliases);

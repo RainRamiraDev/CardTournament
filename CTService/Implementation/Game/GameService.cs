@@ -34,7 +34,6 @@ namespace CTService.Implementation.Game
             _userDao = userDao;
         }
 
-
         public async Task<int> CreateMatchAsync(MatchDto match)
         {
             if (match == null)
@@ -70,16 +69,12 @@ namespace CTService.Implementation.Game
             var tournamentModel = new TournamentRequestToResolveModel
             {
                Tournament_Id = tournamentDto.Tournament_Id,
-               dailyHoursAvailable = tournamentDto.dailyHoursAvailable,
             };
-
 
             bool tournamentExists = await _tournamentDao.TournamentExistsAsync(tournamentModel.Tournament_Id);
 
             if (!tournamentExists)
-            {
                 throw new InvalidOperationException("El torneo especificado no existe.");
-            }
 
 
             List<int> playersIds = await _gameDao.GetTournamentPlayers(tournamentModel.Tournament_Id);
@@ -89,8 +84,9 @@ namespace CTService.Implementation.Game
                 throw new InvalidOperationException("Se necesitan al menos dos jugadores para iniciar el torneo.");
             }
 
-            int roundNumber = await _gameDao.GetLastRoundAsync(tournamentModel.Tournament_Id);
+            List<int> tournamentJudgesIds = await _tournamentDao.GetTournamentJudges(tournamentDto.Tournament_Id);
 
+            int roundNumber = await _gameDao.GetLastRoundAsync(tournamentModel.Tournament_Id);
 
             HashSet<int> eliminatedPlayers = new HashSet<int>();
 
@@ -101,7 +97,8 @@ namespace CTService.Implementation.Game
 
             while (playersIds.Count > 1)
             {
-                int createdRoundId = await CreateRoundAsync(roundNumber, tournamentModel.Tournament_Id);
+                var judgeId = await GetRandomJudge(tournamentJudgesIds);
+                int createdRoundId = await CreateRoundAsync(roundNumber, tournamentModel.Tournament_Id,judgeId);
 
                 List<int> winners = new List<int>();
 
@@ -135,10 +132,6 @@ namespace CTService.Implementation.Game
                     };
 
                     await CreateMatchAsync(match);
-
-                    totalMatches++; 
-
-                    Console.WriteLine("Bandera de Match aumentada "+ totalMatches);
                 }
 
                 playersIds = winners;
@@ -146,8 +139,6 @@ namespace CTService.Implementation.Game
                 await _gameDao.SetRoundCompletedAsync(roundNumber, tournamentModel.Tournament_Id);
 
                 roundNumber++;
-
-                //Console.WriteLine("[Round number incrised]");
             }
 
             // torneo fase 3
@@ -162,73 +153,39 @@ namespace CTService.Implementation.Game
                 await _gameDao.SetGameLoserAsync(eliminatedPlayers.ToList());
             }
 
-            Console.WriteLine("Bandera pre definicion " + totalMatches);
 
-            var tournamentDuration =  await UpdateTournamentEndDate(totalMatches, tournamentModel.Tournament_Id, tournamentModel.dailyHoursAvailable); //💡
-
-            Console.WriteLine("Duracion del torneo "+ tournamentDuration);
-           
             return new GameResultDto
             {
                 WinnerId = playersIds[0],
-                Message = $"El ganador del torneo es el jugador {playersIds[0]}." +
-                          $"La cantidad de rondas ha sido {totalMatches}" +
-                          $"La Duracion Total del Torneo ha sido de {tournamentDuration}",
+                Message = $"El ganador del torneo es el jugador {playersIds[0]}."
             };
         }
 
 
-        public async Task<TimeSpan> UpdateTournamentEndDate(int total_Matches, int id_tournament, int dailyHoursAvailable)
-        {
-
-            int totalDurationMinutes = total_Matches * 30;
-
-            int dailyMinutesAvailable = dailyHoursAvailable * 60;
-
-            DateTime startDatetime = await _tournamentDao.GetTournamentStartDateAsync(id_tournament);
-
-            DateTime endDatetime = startDatetime;
-
-            while (totalDurationMinutes > 0)
-            {
-                if (totalDurationMinutes > dailyMinutesAvailable)
-                {
-                    // Si excede el tiempo disponible en un día, sumamos un día y restamos el tiempo jugado
-                    endDatetime = endDatetime.AddDays(1).Date.AddHours(9);
-                    totalDurationMinutes -= dailyMinutesAvailable;
-                }
-                else
-                {
-                    // Si cabe en el mismo día, simplemente sumamos la duración restante
-                    endDatetime = endDatetime.AddMinutes(totalDurationMinutes);
-                    totalDurationMinutes = 0;
-                }
-            }
-
-            var setTournamentEndDateTime = new TournamentUpdateEndDatetimeModel
-            {
-                Id_tournament = id_tournament,
-                End_DateTime = endDatetime,
-            };
-
-
-            await _tournamentDao.SetTournamentEndDate(setTournamentEndDateTime);
-
-            TimeSpan tournamentDuration = endDatetime - startDatetime;
-
-            return tournamentDuration;
-        }
-
-        public async Task<int> CreateRoundAsync(int roundNumber, int tournament_id)
+        public async Task<int> CreateRoundAsync(int roundNumber, int tournament_id, int id_judge)
         {
             var roundModel = new RoundModel
             {
                 Id_Tournament = tournament_id,
                 Round_Number = roundNumber,
+                Judge = id_judge,
                 Is_Completed = false,
             };
             return await _gameDao.CreateRoundAsync(roundModel);
         }
+
+        public async Task<int> GetRandomJudge(List<int> judges)
+        {
+            if (judges == null || judges.Count == 0)
+            {
+                throw new ArgumentException("La lista de jueces no puede estar vacía.");
+            }
+            Random random = new Random();
+            int randomIndex = random.Next(judges.Count);
+
+            return await Task.FromResult(judges[randomIndex]);
+        }
+
 
     }
 }

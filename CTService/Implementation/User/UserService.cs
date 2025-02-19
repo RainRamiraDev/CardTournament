@@ -92,7 +92,6 @@ namespace CTService.Implementation.User
         }
 
       
-
         public async Task<IEnumerable<CountriesListDto>> GetAllCountriesAsync()
         {
             var countryModels = await _userDao.GetAllCountriesAsync();
