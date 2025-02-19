@@ -69,15 +69,13 @@ namespace CTService.Implementation.Game
             var tournamentModel = new TournamentRequestToResolveModel
             {
                Tournament_Id = tournamentDto.Tournament_Id,
-               dailyHoursAvailable = tournamentDto.dailyHoursAvailable,
             };
 
             bool tournamentExists = await _tournamentDao.TournamentExistsAsync(tournamentModel.Tournament_Id);
 
             if (!tournamentExists)
-            {
                 throw new InvalidOperationException("El torneo especificado no existe.");
-            }
+
 
             List<int> playersIds = await _gameDao.GetTournamentPlayers(tournamentModel.Tournament_Id);
 
@@ -134,10 +132,6 @@ namespace CTService.Implementation.Game
                     };
 
                     await CreateMatchAsync(match);
-
-                    totalMatches++; 
-
-                    Console.WriteLine("Bandera de Match aumentada "+ totalMatches);
                 }
 
                 playersIds = winners;
@@ -159,61 +153,14 @@ namespace CTService.Implementation.Game
                 await _gameDao.SetGameLoserAsync(eliminatedPlayers.ToList());
             }
 
-            Console.WriteLine("Bandera pre definicion " + totalMatches);
 
-            var tournamentDuration =  await UpdateTournamentEndDate(totalMatches, tournamentModel.Tournament_Id, tournamentModel.dailyHoursAvailable); //💡
-
-            Console.WriteLine("Duracion del torneo "+ tournamentDuration);
-           
             return new GameResultDto
             {
                 WinnerId = playersIds[0],
-                Message = $"El ganador del torneo es el jugador {playersIds[0]}." +
-                          $"La cantidad de rondas ha sido {totalMatches}" +
-                          $"La Duracion Total del Torneo ha sido de {tournamentDuration}",
+                Message = $"El ganador del torneo es el jugador {playersIds[0]}."
             };
         }
 
-        public async Task<TimeSpan> UpdateTournamentEndDate(int total_Matches, int id_tournament, int dailyHoursAvailable)
-        {
-
-            int totalDurationMinutes = total_Matches * 30;
-
-            int dailyMinutesAvailable = dailyHoursAvailable * 60;
-
-            DateTime startDatetime = await _tournamentDao.GetTournamentStartDateAsync(id_tournament);
-
-            DateTime endDatetime = startDatetime;
-
-            while (totalDurationMinutes > 0)
-            {
-                if (totalDurationMinutes > dailyMinutesAvailable)
-                {
-                    // Si excede el tiempo disponible en un día, sumamos un día y restamos el tiempo jugado
-                    endDatetime = endDatetime.AddDays(1).Date.AddHours(9);
-                    totalDurationMinutes -= dailyMinutesAvailable;
-                }
-                else
-                {
-                    // Si cabe en el mismo día, simplemente sumamos la duración restante
-                    endDatetime = endDatetime.AddMinutes(totalDurationMinutes);
-                    totalDurationMinutes = 0;
-                }
-            }
-
-            var setTournamentEndDateTime = new TournamentUpdateEndDatetimeModel
-            {
-                Id_tournament = id_tournament,
-                End_DateTime = endDatetime,
-            };
-
-
-            await _tournamentDao.SetTournamentEndDate(setTournamentEndDateTime);
-
-            TimeSpan tournamentDuration = endDatetime - startDatetime;
-
-            return tournamentDuration;
-        }
 
         public async Task<int> CreateRoundAsync(int roundNumber, int tournament_id, int id_judge)
         {

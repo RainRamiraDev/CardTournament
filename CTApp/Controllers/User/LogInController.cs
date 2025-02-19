@@ -31,7 +31,6 @@ namespace CTApp.Controllers.User
         }
 
 
-        // Método auxiliar para gestionar cookies
         private void ManageRefreshTokenCookie(string refreshTokenValue, DateTime? expirationDate = null)
         {
             Response.Cookies.Append("RefreshToken", refreshTokenValue,

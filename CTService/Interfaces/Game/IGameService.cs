@@ -19,7 +19,7 @@ namespace CTService.Interfaces.Game
 
         Task<GameResultDto> ResolveGameAsync(TournamentRequestToResolveDto tournamentDto);
 
-        Task<TimeSpan> UpdateTournamentEndDate(int total_Matches, int id_tournament, int dailyHoursAvailable);
+        //Task<TimeSpan> UpdateTournamentEndDate(int total_Matches, int id_tournament, int dailyHoursAvailable);
 
 
     }

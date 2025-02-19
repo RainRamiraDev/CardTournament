@@ -10,7 +10,5 @@ namespace CTDto.Tournaments
     {
         public int Tournament_Id { get; set; }
 
-        public int dailyHoursAvailable { get; set; }
-
     }
 }

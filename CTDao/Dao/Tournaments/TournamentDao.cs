@@ -70,12 +70,8 @@ namespace CTDao.Dao.Tournaments
                     CurrentPhase = tournament.Current_Phase,
                 }, transaction);
 
-                Console.WriteLine($"Tournament ID: {tournamentId}");
-
                 foreach (var judgeId in tournament.Judges)
                 {
-                    Console.WriteLine($"Inserting Judge {judgeId} into tournament {tournamentId}");
-
                     await connection.ExecuteAsync(QueryLoader.GetQuery("QueryInsertJudges"), new
                     {
                         Id_tournament = tournamentId,
@@ -85,9 +81,6 @@ namespace CTDao.Dao.Tournaments
 
                 foreach (var cardId in tournament.Series_name)
                 {
-
-                    Console.WriteLine($"Inserting Series {cardId} into tournament {tournamentId}");
-
                     await connection.ExecuteAsync(QueryLoader.GetQuery("QueryInsertSeries"), new
                     {
                         Id_tournament = tournamentId,
@@ -96,28 +89,12 @@ namespace CTDao.Dao.Tournaments
                 }
 
                 await transaction.CommitAsync();
-                Console.WriteLine("Transaction committed successfully.");
-
-
-
                 return tournamentId;
             }
             catch (Exception)
             {
                 await transaction.RollbackAsync();
                 throw;
-            }
-        }
-
-        public async Task<IEnumerable<TournamentModel>> GetAllTournamentAsync()
-        {
-            using (var connection = new MySqlConnection(_connectionString))
-            {
-                await connection.OpenAsync();
-
-                var tournaments = await connection.QueryAsync<TournamentModel>(QueryLoader.GetQuery("QueryGetAll"));
-
-                return tournaments;
             }
         }
 
@@ -211,7 +188,6 @@ namespace CTDao.Dao.Tournaments
                     catch (Exception ex)
                     {
                         await transaction.RollbackAsync();
-                        Console.WriteLine($"Error al insertar players en el torneo: {ex.Message}");
                         throw;
                     }
                 }
@@ -268,8 +244,6 @@ namespace CTDao.Dao.Tournaments
                 var current_phase = await connection.QuerySingleOrDefaultAsync<int>(QueryLoader.GetQuery("QueryGetCurrentPhase"),
                                                                                     new { id_tournament = id_tournament });
 
-                Console.WriteLine("[Creation Current Phase]:"+current_phase);
-
                 if (current_phase == 0)
                 {
                     throw new InvalidOperationException("El torneo no existe o no tiene una fase definida.");
@@ -284,9 +258,6 @@ namespace CTDao.Dao.Tournaments
             using (var connection = new MySqlConnection(_connectionString))
             {
                 int count = await connection.ExecuteScalarAsync<int>(QueryLoader.GetQuery("QueryTournamentExist"), new { id_tournament = tournamentId });
-
-                Console.WriteLine("es 1 si existe el torneo" + count);
-
                 return count > 0;
             }
         }
@@ -390,7 +361,6 @@ namespace CTDao.Dao.Tournaments
                 QueryLoader.GetQuery("QueryGetTournamentJudgesIds"),
                 new { id_tournament = id_tournament });
 
-                // Convierte el resultado en una lista
                 var judgesList = judges.ToList();
 
                 if (judgesList.Count == 0)
@@ -408,12 +378,10 @@ namespace CTDao.Dao.Tournaments
             {
                 await connection.OpenAsync();
 
-                // Cambia QueryAsync por QuerySingleOrDefaultAsync para obtener un solo torneo
                 var tournament = await connection.QuerySingleOrDefaultAsync<TournamentModel>(
                     QueryLoader.GetQuery("QueryGetTournamentById"),
                     new { Id_tournament = id_tournament });
 
-                // Verifica si se encontró el torneo
                 if (tournament == null)
                 {
                     throw new InvalidOperationException("Torneo no encontrado.");
