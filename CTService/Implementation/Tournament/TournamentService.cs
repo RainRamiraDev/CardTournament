@@ -38,34 +38,12 @@ namespace CTService.Implementation.Tournament
 
         public async Task<int> InsertTournamentDecksAsync(TournamentDecksDto tournamentDecksDto)
         {
-
             if (tournamentDecksDto == null)
-            {
                 throw new ArgumentException("Invalid tournament data.");
-            }
-
-            bool tournamentExists = await _tournamentDao.TournamentExistsAsync(tournamentDecksDto.Id_Tournament);
-
-            if (!tournamentExists)
-            {
-                throw new InvalidOperationException("El torneo especificado no existe.");
-            }
-
-            var duplicateCards = tournamentDecksDto.Cards
-                .GroupBy(i => i)
-                .Where(g => g.Count() > 1)
-                .Select(g => g.Key)
-                .ToList();
-
-            if (duplicateCards.Any())
-            {
-                throw new InvalidOperationException($"Las siguientes ilustraciones están duplicadas: {string.Join(", ", duplicateCards)}");
-            }
 
             var idOwner = GetUserIdFromToken();
 
             Console.WriteLine("[INFO]: Expected Value: 39, Obtained value: " + idOwner);
-
 
             var validatedCards = await ValidatePlayersDecks(tournamentDecksDto,idOwner);
 
@@ -95,11 +73,32 @@ namespace CTService.Implementation.Tournament
 
         public async Task<List<int>> ValidatePlayersDecks(TournamentDecksDto tournament, int idOwner)
         {
+            bool tournamentExists = await _tournamentDao.TournamentExistsAsync(tournament.Id_Tournament);
+
+            if (!tournamentExists)
+                throw new InvalidOperationException("El torneo especificado no existe.");
+
+
+            var availableTournaments  = await _tournamentDao.GetAvailableTournaments();
+
+            Console.WriteLine($"[{string.Join(", ", availableTournaments)}]");
+
+            if (!availableTournaments.Contains(tournament.Id_Tournament))
+                    throw new ArgumentException("Este torneo ya se encuentra finalizado");
+
+            var duplicateCards = tournament.Cards
+                .GroupBy(i => i)
+                .Where(g => g.Count() > 1)
+                .Select(g => g.Key)
+                .ToList();
+
+            if (duplicateCards.Any())
+                throw new InvalidOperationException($"Las siguientes ilustraciones están duplicadas: {string.Join(", ", duplicateCards)}");
+
             if (tournament.Cards == null || !tournament.Cards.Any())
                 throw new ArgumentException("No se proporcionaron cartas para validar.");
 
             var registeredPlayers = await _tournamentDao.GetUsersFromDb(4);
-
 
             if (registeredPlayers == null || !registeredPlayers.Any())
                 throw new ArgumentException("No se encontraron Jugadores en la Base de datos");
@@ -109,8 +108,8 @@ namespace CTService.Implementation.Tournament
 
             var tournamentPlayers = await _tournamentDao.GetTournamentPlayers(tournament.Id_Tournament);
 
-            if (tournamentPlayers.Contains(idOwner))
-                throw new ArgumentException("Este jugador ya se encuentra registrado");
+            //if (tournamentPlayers.Contains(idOwner))
+            //    throw new ArgumentException("Este jugador ya se encuentra registrado");
 
             var tournamentSeries = await _tournamentDao.GetSeriesFromTournamentAsync(tournament.Id_Tournament);
 

@@ -36,6 +36,8 @@ namespace CTDao.Interfaces.Tournaments
 
         Task<TournamentModel> GetTournamentById(int id_tournament);
 
+        Task<List<int>> GetAvailableTournaments();
+
         //Judge
         Task<List<int>> GetJudgeIdsByAliasAsync(List<string> judgeAliases);
 

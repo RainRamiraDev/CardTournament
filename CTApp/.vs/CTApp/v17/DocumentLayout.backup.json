@@ -6,11 +6,14 @@
       "AbsoluteMoniker": "D:0:0:{A8904742-057E-4415-B867-60EE8A95FC92}|..\\CTService\\CTService.csproj|c:\\repositorios\\cardtournament\\ctservice\\implementation\\tournament\\tournamentservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
+      "AbsoluteMoniker": "D:0:0:{B7618BD3-70F2-4885-97AD-F372B59C2CF7}|..\\CTDao\\CTDao.csproj|c:\\repositorios\\cardtournament\\ctdao\\dao\\tournaments\\tournamentdao.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{044F8FA9-5241-4DFD-9606-88BD2C275654}|CTApp.csproj|c:\\repositorios\\cardtournament\\ctapp\\controllers\\user\\playercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{044F8FA9-5241-4DFD-9606-88BD2C275654}|CTApp.csproj|solutionrelative:controllers\\user\\playercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{75A57AC1-08F0-4329-A586-BB717D5AF03E}|..\\CTDto\\CTDto.csproj|c:\\repositorios\\cardtournament\\ctdto\\tournaments\\tournamentdecksdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{B7618BD3-70F2-4885-97AD-F372B59C2CF7}|..\\CTDao\\CTDao.csproj|c:\\repositorios\\cardtournament\\ctdao\\interfaces\\tournaments\\itournamentdao.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{75A57AC1-08F0-4329-A586-BB717D5AF03E}|..\\CTDto\\CTDto.csproj|c:\\repositorios\\cardtournament\\ctdto\\validations\\tournament\\tournamentdecksrequestdtovalidation.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
@@ -23,25 +26,11 @@
       "DocumentGroups": [
         {
           "DockedWidth": 194,
-          "SelectedChildIndex": 6,
+          "SelectedChildIndex": 7,
           "Children": [
             {
               "$type": "Document",
               "DocumentIndex": 2,
-              "Title": "TournamentDecksDto.cs",
-              "DocumentMoniker": "C:\\Repositorios\\CardTournament\\CTDto\\Tournaments\\TournamentDecksDto.cs",
-              "RelativeDocumentMoniker": "..\\CTDto\\Tournaments\\TournamentDecksDto.cs",
-              "ToolTip": "C:\\Repositorios\\CardTournament\\CTDto\\Tournaments\\TournamentDecksDto.cs",
-              "RelativeToolTip": "..\\CTDto\\Tournaments\\TournamentDecksDto.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAYAAAAKAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-20T01:07:45.944Z",
-              "IsPinned": true,
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
               "Title": "PlayerController.cs",
               "DocumentMoniker": "C:\\Repositorios\\CardTournament\\CTApp\\Controllers\\User\\PlayerController.cs",
               "RelativeDocumentMoniker": "Controllers\\User\\PlayerController.cs",
@@ -67,7 +56,33 @@
             },
             {
               "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "TournamentDao.cs",
+              "DocumentMoniker": "C:\\Repositorios\\CardTournament\\CTDao\\Dao\\Tournaments\\TournamentDao.cs",
+              "RelativeDocumentMoniker": "..\\CTDao\\Dao\\Tournaments\\TournamentDao.cs",
+              "ToolTip": "C:\\Repositorios\\CardTournament\\CTDao\\Dao\\Tournaments\\TournamentDao.cs",
+              "RelativeToolTip": "..\\CTDao\\Dao\\Tournaments\\TournamentDao.cs",
+              "ViewState": "AgIAAPEAAAAAAAAAAAAqwAYBAAAIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-20T02:22:03.171Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 3,
+              "Title": "ITournamentDao.cs",
+              "DocumentMoniker": "C:\\Repositorios\\CardTournament\\CTDao\\Interfaces\\Tournaments\\ITournamentDao.cs",
+              "RelativeDocumentMoniker": "..\\CTDao\\Interfaces\\Tournaments\\ITournamentDao.cs",
+              "ToolTip": "C:\\Repositorios\\CardTournament\\CTDao\\Interfaces\\Tournaments\\ITournamentDao.cs",
+              "RelativeToolTip": "..\\CTDao\\Interfaces\\Tournaments\\ITournamentDao.cs",
+              "ViewState": "AgIAABYAAAAAAAAAAAAnwCIAAAAYAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-20T02:20:46.848Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
               "Title": "TournamentDecksRequestDtoValidation.cs",
               "DocumentMoniker": "C:\\Repositorios\\CardTournament\\CTDto\\Validations\\Tournament\\TournamentDecksRequestDtoValidation.cs",
               "RelativeDocumentMoniker": "..\\CTDto\\Validations\\Tournament\\TournamentDecksRequestDtoValidation.cs",
@@ -86,7 +101,7 @@
               "RelativeDocumentMoniker": "..\\CTService\\Implementation\\Tournament\\TournamentService.cs",
               "ToolTip": "C:\\Repositorios\\CardTournament\\CTService\\Implementation\\Tournament\\TournamentService.cs",
               "RelativeToolTip": "..\\CTService\\Implementation\\Tournament\\TournamentService.cs",
-              "ViewState": "AgIAAEQAAAAAAAAAAAAtwFYAAABBAAAAAAAAAA==",
+              "ViewState": "AgIAAEgAAAAAAAAAAAAAAEUAAAAMAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-02-20T01:07:57.289Z",
               "EditorCaption": ""

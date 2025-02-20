@@ -12,6 +12,12 @@
 
 
 
+  "QueryGetAvailableTournaments": "SELECT id_tournament FROM t_tournaments WHERE id_country IS NOT NULL AND id_organizer IS NOT NULL AND start_datetime IS NOT NULL AND end_datetime IS NOT NULL AND current_phase = 1;",
+
+
+
+
+
   "QueryInsertJudges": "INSERT INTO T_TOURN_JUDGES (id_tournament, id_judge) VALUES (@id_tournament, @id_judge);",
   "QueryGetJudgeByAlias": "SELECT id_user FROM T_USERS WHERE alias IN @Aliases AND Id_rol = 3;",
 

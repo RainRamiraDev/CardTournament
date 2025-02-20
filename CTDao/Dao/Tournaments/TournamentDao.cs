@@ -391,6 +391,17 @@ namespace CTDao.Dao.Tournaments
             }
         }
 
+        public async Task<List<int>> GetAvailableTournaments()
+        {
+            using (var connection = new MySqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+
+                var tournaments = await connection.QueryAsync<int>(QueryLoader.GetQuery("QueryGetAvailableTournaments"));
+
+                return tournaments.ToList();
+            }
+        }
     }
 }
  
