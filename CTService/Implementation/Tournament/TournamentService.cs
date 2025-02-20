@@ -6,12 +6,14 @@ using CTDto.Card;
 using CTDto.Tournaments;
 using CTService.Interfaces.Card;
 using CTService.Interfaces.Tournaments;
+using Microsoft.AspNetCore.Http;
 using MySql.Data.MySqlClient;
 using Mysqlx.Crud;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -24,11 +26,14 @@ namespace CTService.Implementation.Tournament
 
         private readonly ICardDao _cardDao;
 
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public TournamentService(ITournamentDao tournamentDao, ICardDao cardDao)
+
+        public TournamentService(ITournamentDao tournamentDao, ICardDao cardDao, IHttpContextAccessor httpContextAccessor)
         {
             _tournamentDao = tournamentDao;
             _cardDao = cardDao;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<int> InsertTournamentDecksAsync(TournamentDecksDto tournamentDecksDto)
@@ -57,7 +62,12 @@ namespace CTService.Implementation.Tournament
                 throw new InvalidOperationException($"Las siguientes ilustraciones están duplicadas: {string.Join(", ", duplicateCards)}");
             }
 
-            var validatedCards = await ValidatePlayersDecks(tournamentDecksDto);
+            var idOwner = GetUserIdFromToken();
+
+            Console.WriteLine("[INFO]: Expected Value: 39, Obtained value: " + idOwner);
+
+
+            var validatedCards = await ValidatePlayersDecks(tournamentDecksDto,idOwner);
 
             var cardSeriesIds = await _cardDao.GetIdCardSeriesByCardIdAsync(validatedCards);
 
@@ -76,14 +86,14 @@ namespace CTService.Implementation.Tournament
             {
                 Id_Tournament = tournamentDecksDto.Id_Tournament,
                 Id_card_series = cardSeriesIds,
-                Id_Owner = tournamentDecksDto.Id_Owner,
+                Id_Owner = idOwner
             };
 
             var userCreationResponse = await _tournamentDao.InsertTournamentPlayersAsync(tournamentDecksModel);
             return await _tournamentDao.InsertTournamentDecksAsync(tournamentDecksModel);
         }
 
-        public async Task<List<int>> ValidatePlayersDecks(TournamentDecksDto tournament)
+        public async Task<List<int>> ValidatePlayersDecks(TournamentDecksDto tournament, int idOwner)
         {
             if (tournament.Cards == null || !tournament.Cards.Any())
                 throw new ArgumentException("No se proporcionaron cartas para validar.");
@@ -94,12 +104,12 @@ namespace CTService.Implementation.Tournament
             if (registeredPlayers == null || !registeredPlayers.Any())
                 throw new ArgumentException("No se encontraron Jugadores en la Base de datos");
 
-            if (!registeredPlayers.Contains(tournament.Id_Owner))
+            if (!registeredPlayers.Contains(idOwner))
                 throw new ArgumentException("Este Dueño no es un jugador");
 
             var tournamentPlayers = await _tournamentDao.GetTournamentPlayers(tournament.Id_Tournament);
 
-            if (tournamentPlayers.Contains(tournament.Id_Owner))
+            if (tournamentPlayers.Contains(idOwner))
                 throw new ArgumentException("Este jugador ya se encuentra registrado");
 
             var tournamentSeries = await _tournamentDao.GetSeriesFromTournamentAsync(tournament.Id_Tournament);
@@ -136,11 +146,14 @@ namespace CTService.Implementation.Tournament
 
         public async Task<int> CreateTournamentAsync(TournamentDto tournamentDto)
         {
+            var idOrganizer = GetUserIdFromToken();
+
+            Console.WriteLine("[INFO]: expected: 40, owtained: "+idOrganizer);
 
             var tournamentModel = new TournamentModel
             {
                 Id_Country = tournamentDto.Id_Country,
-                Id_Organizer = tournamentDto.Id_Organizer,
+                Id_Organizer = idOrganizer,
                 Start_datetime = tournamentDto.Start_datetime,
                 End_datetime = tournamentDto.End_datetime,
                 Current_Phase = 1,
@@ -151,6 +164,22 @@ namespace CTService.Implementation.Tournament
             var validatedTournament = await ValidateTournament(tournamentModel);
             return await _tournamentDao.CreateTournamentAsync(tournamentModel);
         }
+
+        private int GetUserIdFromToken()
+        {
+            var userClaims = _httpContextAccessor.HttpContext?.User.Identity as ClaimsIdentity;
+            var userIdClaim = userClaims?.FindFirst(ClaimTypes.NameIdentifier);
+
+            if (userIdClaim == null)
+                throw new InvalidOperationException("Error al recuperar el owner");
+
+            if (!int.TryParse(userIdClaim.Value, out int userId))
+                throw new InvalidOperationException("El ID del usuario en el token no es válido.");
+
+            return userId;
+        }
+
+
 
         public async Task<int> CalculatePlayerCapacity(int id_tournament)
         {
@@ -195,7 +224,7 @@ namespace CTService.Implementation.Tournament
                 Start_datetime = tournamentModel.Start_datetime,
                 End_datetime = tournamentModel.End_datetime,
                 Id_Country = tournamentModel.Id_Country,
-                Id_Organizer = tournamentModel.Id_Organizer,
+                //Id_Organizer = tournamentModel.Id_Organizer,
             };
 
             return tournamentDto;

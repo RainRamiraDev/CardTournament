@@ -118,6 +118,9 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
+builder.Services.AddHttpContextAccessor();
+
+
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddControllers();

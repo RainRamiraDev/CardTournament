@@ -18,9 +18,6 @@ namespace CTDto.Validations.Tournament
             RuleFor(x => x.Cards)
                 .NotNull().WithMessage("La lista de ilustraciones no puede ser nula.")
                 .Must(x => x.Count == 15).WithMessage("Debe haber exactamente 15 ilustraciones por Id_Owner.");
-
-            RuleFor(x => x.Id_Owner)
-                .GreaterThan(0).WithMessage("El Id_Owner debe ser mayor que 0.");
         }
     }
 }
