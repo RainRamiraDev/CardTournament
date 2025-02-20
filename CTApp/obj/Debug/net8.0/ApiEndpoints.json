@@ -1,5 +1,21 @@
 [
   {
+    "ContainingType": "CTApp.Controllers.User.AdminController",
+    "Method": "CreateUser",
+    "RelativePath": "api/Admin/CreateUser",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "userDto",
+        "Type": "CTDto.Users.UserCreationDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "CTApp.Controllers.GameController",
     "Method": "ResolveGame",
     "RelativePath": "api/Game/resolve",

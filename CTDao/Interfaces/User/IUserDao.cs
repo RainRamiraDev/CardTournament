@@ -25,6 +25,12 @@ namespace CTDao.Interfaces.User
 
         Task<IEnumerable<CountriesListModel>> GetAllCountriesAsync();
 
+        Task<int> CreateUserAsync(UserCreationModel user);
+
+        Task<List<string>> GetAllUsersEmails();
+
+        Task<List<string>> GetAllUsersAlias();
+
 
     }
 }

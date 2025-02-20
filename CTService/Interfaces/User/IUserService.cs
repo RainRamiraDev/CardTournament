@@ -26,5 +26,7 @@ namespace CTService.Interfaces.User
 
 
         Task<bool> ValidateIfOrganizer(UserModel user);
+
+        Task CreateUserAsync(UserCreationDto userDto);
     }
 }

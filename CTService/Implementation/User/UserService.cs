@@ -1,4 +1,5 @@
 ﻿using CTDao.Dao.Security;
+using CTDao.Dao.User;
 using CTDao.Interfaces.Tournaments;
 using CTDao.Interfaces.User;
 using CTDataModels.Users;
@@ -23,7 +24,7 @@ namespace CTService.Implementation.User
 
         private readonly IUserDao _userDao;
 
-        private readonly ITournamentDao _turnamentDao;
+        private readonly ITournamentDao _tournamentDao;
 
         private readonly PasswordHasher _passwordHasher;
 
@@ -31,7 +32,7 @@ namespace CTService.Implementation.User
         {
             _userDao = userDao;
             _passwordHasher = passwordHasher;
-            _turnamentDao = tournamentDao;
+            _tournamentDao = tournamentDao;
         }
 
         public async Task<UserDto> GetUserWhitTokenAsync(int id)
@@ -106,11 +107,62 @@ namespace CTService.Implementation.User
         public async Task<bool> ValidateIfOrganizer(UserModel user)
         {
             bool response = false;
-          var organizers = await _turnamentDao.GetUsersFromDb(1);
+          var organizers = await _tournamentDao.GetUsersFromDb(1);
             if(organizers.Contains(user.Id_User) || user.Id_Rol == 1)
                response = true;
             return response;
         }
+
+
+        public async Task CreateUserAsync(UserCreationDto userDto)
+        {
+            var calculateUserKi = await CalculateUserKi(userDto);
+
+            var userModel = new UserCreationModel
+            {
+                Id_Country = userDto.Id_Country,
+                Id_Rol = userDto.Id_Rol,
+                Fullname = userDto.Fullname,
+                Alias = userDto.Alias,
+                Email = userDto.Email,
+                Avatar_Url = userDto.Avatar_Url,
+                Games_Won = 0,
+                Games_Lost = 0,
+                Disqualifications = 0,
+                Ki = calculateUserKi,
+            };
+
+            var isValidUser = await ValidateUserCreation(userModel);
+
+            if (isValidUser)
+                await _userDao.CreateUserAsync(userModel);
+        }
+
+        public async Task<int> CalculateUserKi(UserCreationDto userDto)
+        {
+            return userDto.Id_Rol != 4 ? 0 : new Random().Next(1000, 1000001);
+        }
+
+
+        public async Task<bool> ValidateUserCreation(UserCreationModel user)
+        {
+            var response = true;
+
+            var registeredCountries = await _tournamentDao.GetCountriesFromDb();
+            if (!registeredCountries.Contains(user.Id_Country))
+                throw new ArgumentException("El país especificado no está registrado.");
+
+            var registeredAlias = await _userDao.GetAllUsersAlias();
+            if (registeredAlias.Contains(user.Alias))
+                throw new ArgumentException("El Alias especificado ya está registrado.");
+
+            var registeredEmails = await _userDao.GetAllUsersEmails();
+            if (registeredEmails.Contains(user.Email))
+                throw new ArgumentException("El Email especificado ya está registrado.");
+
+            return response;
+        }
+
 
     }
 }
