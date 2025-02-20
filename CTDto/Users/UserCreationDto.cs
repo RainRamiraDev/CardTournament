@@ -12,7 +12,7 @@ namespace CTDto.Users
         public int Id_Rol { get; set; }
 
 
-        //public string Passcode { get; set; }
+        public string Passcode { get; set; }
 
         public string Fullname { get; set; }
         public string Alias { get; set; }

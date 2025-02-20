@@ -1,5 +1,7 @@
-﻿using CTDto.Tournaments;
+﻿using CTApp.Response;
+using CTDto.Tournaments;
 using CTDto.Users;
+using CTDto.Users.LogIn;
 using CTService.Interfaces.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -30,7 +32,18 @@ namespace CTApp.Controllers.User
             try
             {
                 await _userService.CreateUserAsync(userDto);
-                return Created(string.Empty, new { message = "Usuario creado exitosamente" });
+
+                var user = new FirstLogInDto
+                {
+                    Fullname = userDto.Fullname,
+                    Id_Rol = userDto.Id_Rol,
+                    Passcode = userDto.Passcode,
+                };
+
+                // Estructura la respuesta usando ApiResponse
+                var response = ApiResponse<FirstLogInDto>.SuccessResponse("Usuario creado exitosamente", user);
+
+                return Created(string.Empty, response);
             }
             catch (ArgumentException ex)
             {

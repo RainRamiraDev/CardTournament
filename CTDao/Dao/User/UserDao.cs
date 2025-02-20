@@ -93,33 +93,26 @@ namespace CTDao.Dao.User
 
         public async Task<int> CreateUserAsync(UserCreationModel user)
         {
-            try
+            using (var connection = new MySqlConnection(_connectionString))
             {
-                using (var connection = new MySqlConnection(_connectionString))
+                await connection.OpenAsync();
+
+                var affectedRows = await connection.ExecuteAsync(QueryLoader.GetQuery("QueryCreateUser"), new
                 {
-                    await connection.OpenAsync();
+                    user.Id_Country,
+                    user.Id_Rol,
+                    user.Fullname,
+                    user.Passcode,
+                    user.Alias,
+                    user.Email,
+                    user.Avatar_Url,
+                    user.Games_Won,
+                    user.Games_Lost,
+                    user.Disqualifications,
+                    user.Ki,
+                });
 
-                    var affectedRows = await connection.ExecuteAsync(QueryLoader.GetQuery("QueryCreateUser"), new
-                    {
-                        user.Id_Country,
-                        user.Id_Rol,
-                        user.Fullname,
-                        user.Alias,
-                        user.Email,
-                        user.Avatar_Url,
-                        user.Games_Won,
-                        user.Games_Lost,
-                        user.Disqualifications,
-                        user.Ki,
-                    });
-
-                    return affectedRows;
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error en CreateUserAsync: {ex.Message}");
-                throw;
+                return affectedRows;
             }
         }
 
@@ -142,7 +135,5 @@ namespace CTDao.Dao.User
                 return alias.ToList();
             }
         }
-
-
     }
 }

@@ -116,6 +116,9 @@ namespace CTService.Implementation.User
 
         public async Task CreateUserAsync(UserCreationDto userDto)
         {
+
+            string hashedPassword = _passwordHasher.HashPassword(userDto.Passcode);
+
             var calculateUserKi = await CalculateUserKi(userDto);
 
             var userModel = new UserCreationModel
@@ -123,6 +126,7 @@ namespace CTService.Implementation.User
                 Id_Country = userDto.Id_Country,
                 Id_Rol = userDto.Id_Rol,
                 Fullname = userDto.Fullname,
+                Passcode = hashedPassword,
                 Alias = userDto.Alias,
                 Email = userDto.Email,
                 Avatar_Url = userDto.Avatar_Url,
