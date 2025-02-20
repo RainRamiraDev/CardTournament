@@ -10,6 +10,5 @@ namespace CTDto.Card
     {
         public int Id_Tournament { get; set; }
         public List<int> Cards { get; set; }
-        //public int Id_Owner { get; set; }
     }
 }

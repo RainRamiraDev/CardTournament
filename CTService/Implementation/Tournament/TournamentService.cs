@@ -43,8 +43,6 @@ namespace CTService.Implementation.Tournament
 
             var idOwner = GetUserIdFromToken();
 
-            Console.WriteLine("[INFO]: Expected Value: 39, Obtained value: " + idOwner);
-
             var validatedCards = await ValidatePlayersDecks(tournamentDecksDto,idOwner);
 
             var cardSeriesIds = await _cardDao.GetIdCardSeriesByCardIdAsync(validatedCards);
@@ -81,7 +79,6 @@ namespace CTService.Implementation.Tournament
 
             var availableTournaments  = await _tournamentDao.GetAvailableTournamentsAsync();
 
-            Console.WriteLine($"[{string.Join(", ", availableTournaments)}]");
 
             if (!availableTournaments.Contains(tournament.Id_Tournament))
                     throw new ArgumentException("Este torneo ya se encuentra finalizado");
@@ -107,9 +104,6 @@ namespace CTService.Implementation.Tournament
                 throw new ArgumentException("Este Dueño no es un jugador");
 
             var tournamentPlayers = await _tournamentDao.GetTournamentPlayersAsync(tournament.Id_Tournament);
-
-            //if (tournamentPlayers.Contains(idOwner))
-            //    throw new ArgumentException("Este jugador ya se encuentra registrado");
 
             var tournamentSeries = await _tournamentDao.GetSeriesFromTournamentAsync(tournament.Id_Tournament);
 
@@ -146,8 +140,6 @@ namespace CTService.Implementation.Tournament
         public async Task<int> CreateTournamentAsync(TournamentDto tournamentDto)
         {
             var idOrganizer = GetUserIdFromToken();
-
-            Console.WriteLine("[INFO]: expected: 40, owtained: "+idOrganizer);
 
             var tournamentModel = new TournamentModel
             {
@@ -223,7 +215,6 @@ namespace CTService.Implementation.Tournament
                 Start_datetime = tournamentModel.Start_datetime,
                 End_datetime = tournamentModel.End_datetime,
                 Id_Country = tournamentModel.Id_Country,
-                //Id_Organizer = tournamentModel.Id_Organizer,
             };
 
             return tournamentDto;

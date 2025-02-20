@@ -21,7 +21,6 @@ namespace CTDto.Validations.Tournament
             RuleFor(t => t.End_datetime)
                 .GreaterThan(DateTime.UtcNow).WithMessage("La fecha de fin debe ser en el futuro.");
 
-            // Nueva regla para validar que End_datetime sea posterior a Start_datetime
             RuleFor(t => t.End_datetime)
                 .GreaterThan(t => t.Start_datetime)
                 .WithMessage("La fecha de fin debe ser posterior a la fecha de inicio.");

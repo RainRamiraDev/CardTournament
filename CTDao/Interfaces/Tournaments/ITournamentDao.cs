@@ -24,7 +24,6 @@ namespace CTDao.Interfaces.Tournaments
 
         Task<DateTime> GetTournamentStartDateAsync(int id_tournament);
 
-        //Task<int> SetTournamentEndDate(TournamentUpdateEndDatetimeModel tournamentData);
 
         Task<List<int>> GetCountriesFromDbAsync();
 

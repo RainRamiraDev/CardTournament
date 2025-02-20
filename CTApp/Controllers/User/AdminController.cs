@@ -40,7 +40,6 @@ namespace CTApp.Controllers.User
                     Passcode = userDto.Passcode,
                 };
 
-                // Estructura la respuesta usando ApiResponse
                 var response = ApiResponse<FirstLogInDto>.SuccessResponse("Usuario creado exitosamente", user);
 
                 return Created(string.Empty, response);
