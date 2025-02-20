@@ -14,29 +14,29 @@ namespace CTDao.Interfaces.Tournaments
         //Tournament
         Task<int> CreateTournamentAsync(TournamentModel tournament);
         Task<IEnumerable<TournamentsInformationModel>> GetTournamentsInformationAsync(GetTournamentInformationModel tournamentInformationModel);
-        Task<int> SetTournamentToNextPhase(int tournament_id);
-        Task<int> GetTournamentCurrentPhase(int id_tournament);
+        Task<int> SetTournamentToNextPhaseAsync(int tournament_id);
+        Task<int> GetTournamentCurrentPhaseAsync(int id_tournament);
         Task<bool> TournamentExistsAsync(int tournamentId);
 
         Task<List<int>> GetSeriesFromTournamentAsync(int tournamentId);
 
-        Task<List<int>> GetCardsFromTournamentSeries(List<int> tournamentSeries);
+        Task<List<int>> GetCardsFromTournamentSeriesAsync(List<int> tournamentSeries);
 
         Task<DateTime> GetTournamentStartDateAsync(int id_tournament);
 
-        Task<int> SetTournamentEndDate(TournamentUpdateEndDatetimeModel tournamentData);
+        //Task<int> SetTournamentEndDate(TournamentUpdateEndDatetimeModel tournamentData);
 
-        Task<List<int>> GetCountriesFromDb();
+        Task<List<int>> GetCountriesFromDbAsync();
 
-        Task<List<int>> GetTournamentPlayers(int tournamentId);
+        Task<List<int>> GetTournamentPlayersAsync(int tournamentId);
 
-        Task<List<int>> GetTournamentJudges(int id_tournament);
+        Task<List<int>> GetTournamentJudgesAsync(int id_tournament);
 
-        Task<List<int>> GetUsersFromDb(int id_rol);
+        Task<List<int>> GetUsersFromDbAsync(int id_rol);
 
-        Task<TournamentModel> GetTournamentById(int id_tournament);
+        Task<TournamentModel> GetTournamentByIdAsync(int id_tournament);
 
-        Task<List<int>> GetAvailableTournaments();
+        Task<List<int>> GetAvailableTournamentsAsync();
 
         //Judge
         Task<List<int>> GetJudgeIdsByAliasAsync(List<string> judgeAliases);

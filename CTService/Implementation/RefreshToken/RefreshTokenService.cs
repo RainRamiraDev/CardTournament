@@ -51,7 +51,7 @@ namespace CTService.Implementation.RefreshToken
             await _refreshTokenDao.DeleteRefreshTokenAsync(oldRefreshToken);
 
 
-            string newAccessToken = await GenerateAccessToken(user.Id_Rol, user.Fullname,user.Id_Rol);
+            string newAccessToken = await GenerateAccessTokenAsync(user.Id_Rol, user.Fullname,user.Id_Rol);
 
             var (newRefreshToken, expirationDate) = GenerateRefreshToken();
 
@@ -66,7 +66,7 @@ namespace CTService.Implementation.RefreshToken
             return rowsAffected > 0;
         }
 
-        public async Task<string> GenerateAccessToken(int userId, string userName, int userRole)
+        public async Task<string> GenerateAccessTokenAsync(int userId, string userName, int userRole)
         {
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_keysConfiguration.Key));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);

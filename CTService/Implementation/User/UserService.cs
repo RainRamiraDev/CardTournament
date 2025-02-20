@@ -104,10 +104,10 @@ namespace CTService.Implementation.User
             }).ToList();
         }
 
-        public async Task<bool> ValidateIfOrganizer(UserModel user)
+        public async Task<bool> ValidateIfOrganizerAsync(UserModel user)
         {
             bool response = false;
-          var organizers = await _tournamentDao.GetUsersFromDb(1);
+          var organizers = await _tournamentDao.GetUsersFromDbAsync(1);
             if(organizers.Contains(user.Id_User) || user.Id_Rol == 1)
                response = true;
             return response;
@@ -152,7 +152,7 @@ namespace CTService.Implementation.User
         {
             var response = true;
 
-            var registeredCountries = await _tournamentDao.GetCountriesFromDb();
+            var registeredCountries = await _tournamentDao.GetCountriesFromDbAsync();
             if (!registeredCountries.Contains(user.Id_Country))
                 throw new ArgumentException("El país especificado no está registrado.");
 

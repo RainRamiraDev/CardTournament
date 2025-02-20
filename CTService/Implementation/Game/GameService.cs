@@ -77,21 +77,21 @@ namespace CTService.Implementation.Game
                 throw new InvalidOperationException("El torneo especificado no existe.");
 
 
-            List<int> playersIds = await _gameDao.GetTournamentPlayers(tournamentModel.Tournament_Id);
+            List<int> playersIds = await _gameDao.GetTournamentPlayersAsync(tournamentModel.Tournament_Id);
 
             if (playersIds.Count < 2)
             {
                 throw new InvalidOperationException("Se necesitan al menos dos jugadores para iniciar el torneo.");
             }
 
-            List<int> tournamentJudgesIds = await _tournamentDao.GetTournamentJudges(tournamentDto.Tournament_Id);
+            List<int> tournamentJudgesIds = await _tournamentDao.GetTournamentJudgesAsync(tournamentDto.Tournament_Id);
 
             int roundNumber = await _gameDao.GetLastRoundAsync(tournamentModel.Tournament_Id);
 
             HashSet<int> eliminatedPlayers = new HashSet<int>();
 
             // torneo fase 2
-            await _tournamentDao.SetTournamentToNextPhase(tournamentModel.Tournament_Id);
+            await _tournamentDao.SetTournamentToNextPhaseAsync(tournamentModel.Tournament_Id);
 
             int totalMatches = 0; 
 
@@ -142,7 +142,7 @@ namespace CTService.Implementation.Game
             }
 
             // torneo fase 3
-            await _tournamentDao.SetTournamentToNextPhase(tournamentModel.Tournament_Id);
+            await _tournamentDao.SetTournamentToNextPhaseAsync(tournamentModel.Tournament_Id);
 
             await _gameDao.SetRoundCompletedAsync(roundNumber - 1, tournamentModel.Tournament_Id);
             await _gameDao.SetGameWinnerAsync(playersIds[0]);

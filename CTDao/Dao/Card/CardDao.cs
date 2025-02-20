@@ -22,7 +22,7 @@ namespace CTDao.Dao.Card
         }
 
 
-        public async Task<List<int>> GetAllSeries()
+        public async Task<List<int>> GetAllSeriesAsync()
         {
             using (var connection = new MySqlConnection(_connectionString))
             {
@@ -66,7 +66,7 @@ namespace CTDao.Dao.Card
             }
         }
 
-        public async Task<IEnumerable<ShowCardsModel>> GetCardsBySeriesNames(List<string> cardSeries)
+        public async Task<IEnumerable<ShowCardsModel>> GetCardsBySeriesNamesAsync(List<string> cardSeries)
         {
             using (var connection = new MySqlConnection(_connectionString))
             {
@@ -88,7 +88,7 @@ namespace CTDao.Dao.Card
             return seriesIds.ToList();
         }
 
-        public async Task<List<string>> GetCardIllustrationById(List<int>id_card)
+        public async Task<List<string>> GetCardIllustrationByIdAsync(List<int>id_card)
         {
             using (var connection = new MySqlConnection(_connectionString))
             {
@@ -104,7 +104,7 @@ namespace CTDao.Dao.Card
             }
         }
 
-        public async Task<IEnumerable<SeriesListModel>> GetAllSeriesAsync()
+        public async Task<IEnumerable<SeriesListModel>> GetAllSeriesNamesAsync()
         {
             using (var connection = new MySqlConnection(_connectionString))
             {

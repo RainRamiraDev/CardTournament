@@ -55,7 +55,7 @@ namespace CTApp.Controllers.User
                 ));
             }
 
-            var accessToken = _refreshTokenService.GenerateAccessToken(user.Id_User, user.Fullname,user.Id_Rol);
+            var accessToken = _refreshTokenService.GenerateAccessTokenAsync(user.Id_User, user.Fullname,user.Id_Rol);
 
             Guid refreshToken = Guid.NewGuid();
             DateTime expirationDate = DateTime.UtcNow.AddDays(_keysConfiguration.ExpirationDays);
@@ -64,7 +64,7 @@ namespace CTApp.Controllers.User
 
             ManageRefreshTokenCookie(refreshToken.ToString(), expirationDate);
 
-            var isOrganizer = await _userService.ValidateIfOrganizer(user);
+            var isOrganizer = await _userService.ValidateIfOrganizerAsync(user);
 
             if (isOrganizer)
                 return Ok(new { AccessToken = accessToken , OrganizerId = user.Id_User});

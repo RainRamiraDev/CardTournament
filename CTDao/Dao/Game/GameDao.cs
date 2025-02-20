@@ -49,7 +49,7 @@ namespace CTDao.Dao.Game
             }
         }
 
-        public async Task<List<int>> GetTournamentPlayers(int tournamentId)
+        public async Task<List<int>> GetTournamentPlayersAsync(int tournamentId)
         {
             using (var connection = new MySqlConnection(_connectionString))
             {

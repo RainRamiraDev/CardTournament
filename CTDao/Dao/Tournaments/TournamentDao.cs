@@ -29,7 +29,7 @@ namespace CTDao.Dao.Tournaments
         private readonly string _connectionString;
 
 
-        public async Task<List<int>> GetTournamentPlayers(int tournamentId)
+        public async Task<List<int>> GetTournamentPlayersAsync(int tournamentId)
         {
             using (var connection = new MySqlConnection(_connectionString))
             {
@@ -41,7 +41,7 @@ namespace CTDao.Dao.Tournaments
             }
         }
 
-        public async Task<List<int>> GetCountriesFromDb()
+        public async Task<List<int>> GetCountriesFromDbAsync()
         {
             using (var connection = new MySqlConnection(_connectionString))
             {
@@ -194,14 +194,14 @@ namespace CTDao.Dao.Tournaments
             }
         }
 
-        public async Task<int> SetTournamentToNextPhase(int tournament_id)
+        public async Task<int> SetTournamentToNextPhaseAsync(int tournament_id)
         {
             using (var connection = new MySqlConnection(_connectionString))
             {
                 var id_tournament = tournament_id;
 
              
-                int current_phase = await GetTournamentCurrentPhase(id_tournament);
+                int current_phase = await GetTournamentCurrentPhaseAsync(id_tournament);
 
                 if (current_phase >= 3)
                 {
@@ -234,7 +234,7 @@ namespace CTDao.Dao.Tournaments
             }
         }
 
-        public async Task<int> GetTournamentCurrentPhase(int id_tournament)
+        public async Task<int> GetTournamentCurrentPhaseAsync(int id_tournament)
         {
             using (var connection = new MySqlConnection(_connectionString))
             {
@@ -294,27 +294,27 @@ namespace CTDao.Dao.Tournaments
             }
         }
 
-        public async Task<int> SetTournamentEndDate(TournamentUpdateEndDatetimeModel tournamentData)
-        {
-            using (var connection = new MySqlConnection(_connectionString))
-            {
-                await connection.OpenAsync();
+        //public async Task<int> SetTournamentEndDate(TournamentUpdateEndDatetimeModel tournamentData)
+        //{
+        //    using (var connection = new MySqlConnection(_connectionString))
+        //    {
+        //        await connection.OpenAsync();
 
-                int rowsAffected = await connection.ExecuteAsync(
-                    QueryLoader.GetQuery("QuerySetTournamentEndDateTime"),
-                    new { tournamentData.Id_tournament, tournamentData.End_DateTime }
-                );
+        //        int rowsAffected = await connection.ExecuteAsync(
+        //            QueryLoader.GetQuery("QuerySetTournamentEndDateTime"),
+        //            new { tournamentData.Id_tournament, tournamentData.End_DateTime }
+        //        );
 
-                if (rowsAffected == 0)
-                {
-                    throw new InvalidOperationException("No se pudo actualizar la fecha de finalización del torneo.");
-                }
+        //        if (rowsAffected == 0)
+        //        {
+        //            throw new InvalidOperationException("No se pudo actualizar la fecha de finalización del torneo.");
+        //        }
 
-                return rowsAffected;
-            }
-        }
+        //        return rowsAffected;
+        //    }
+        //}
 
-        public async Task<List<int>> GetCardsFromTournamentSeries(List<int> tournamentSeries)
+        public async Task<List<int>> GetCardsFromTournamentSeriesAsync(List<int> tournamentSeries)
         {
             using (var connection = new MySqlConnection(_connectionString))
             {
@@ -327,7 +327,7 @@ namespace CTDao.Dao.Tournaments
             }
         }
 
-        public async Task<List<int>> GetUsersFromDb(int id_rol)
+        public async Task<List<int>> GetUsersFromDbAsync(int id_rol)
         {
             using (var connection = new MySqlConnection(_connectionString))
             {
@@ -351,7 +351,7 @@ namespace CTDao.Dao.Tournaments
             }
         }
 
-        public async Task<List<int>> GetTournamentJudges(int id_tournament)
+        public async Task<List<int>> GetTournamentJudgesAsync(int id_tournament)
         {
             using (var connection = new MySqlConnection(_connectionString))
             {
@@ -372,7 +372,7 @@ namespace CTDao.Dao.Tournaments
             }
         }
 
-        public async Task<TournamentModel> GetTournamentById(int id_tournament)
+        public async Task<TournamentModel> GetTournamentByIdAsync(int id_tournament)
         {
             using (var connection = new MySqlConnection(_connectionString))
             {
@@ -391,7 +391,7 @@ namespace CTDao.Dao.Tournaments
             }
         }
 
-        public async Task<List<int>> GetAvailableTournaments()
+        public async Task<List<int>> GetAvailableTournamentsAsync()
         {
             using (var connection = new MySqlConnection(_connectionString))
             {

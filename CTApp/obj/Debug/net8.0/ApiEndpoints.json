@@ -33,22 +33,6 @@
   },
   {
     "ContainingType": "CTApp.Controllers.User.LogInController",
-    "Method": "CreateUserWhitHashedPassword",
-    "RelativePath": "api/LogIn/FirstLogIn",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "loginDto",
-        "Type": "CTDto.Users.LogIn.FirstLogInDto",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "CTApp.Controllers.User.LogInController",
     "Method": "LogIn",
     "RelativePath": "api/LogIn/LogIn",
     "HttpMethod": "POST",

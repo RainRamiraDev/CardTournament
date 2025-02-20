@@ -54,7 +54,7 @@ namespace CTService.Implementation.Tournament
                 throw new ArgumentException("Invalid series name provided.");
             }
 
-            var tournamentsPlayers = await _tournamentDao.GetTournamentPlayers(tournamentDecksDto.Id_Tournament);
+            var tournamentsPlayers = await _tournamentDao.GetTournamentPlayersAsync(tournamentDecksDto.Id_Tournament);
             var playersCapacity = await CalculatePlayerCapacity(tournamentDecksDto.Id_Tournament);
 
             if (tournamentsPlayers.Count >= playersCapacity)
@@ -79,7 +79,7 @@ namespace CTService.Implementation.Tournament
                 throw new InvalidOperationException("El torneo especificado no existe.");
 
 
-            var availableTournaments  = await _tournamentDao.GetAvailableTournaments();
+            var availableTournaments  = await _tournamentDao.GetAvailableTournamentsAsync();
 
             Console.WriteLine($"[{string.Join(", ", availableTournaments)}]");
 
@@ -98,7 +98,7 @@ namespace CTService.Implementation.Tournament
             if (tournament.Cards == null || !tournament.Cards.Any())
                 throw new ArgumentException("No se proporcionaron cartas para validar.");
 
-            var registeredPlayers = await _tournamentDao.GetUsersFromDb(4);
+            var registeredPlayers = await _tournamentDao.GetUsersFromDbAsync(4);
 
             if (registeredPlayers == null || !registeredPlayers.Any())
                 throw new ArgumentException("No se encontraron Jugadores en la Base de datos");
@@ -106,7 +106,7 @@ namespace CTService.Implementation.Tournament
             if (!registeredPlayers.Contains(idOwner))
                 throw new ArgumentException("Este Dueño no es un jugador");
 
-            var tournamentPlayers = await _tournamentDao.GetTournamentPlayers(tournament.Id_Tournament);
+            var tournamentPlayers = await _tournamentDao.GetTournamentPlayersAsync(tournament.Id_Tournament);
 
             //if (tournamentPlayers.Contains(idOwner))
             //    throw new ArgumentException("Este jugador ya se encuentra registrado");
@@ -116,7 +116,7 @@ namespace CTService.Implementation.Tournament
             if (tournamentSeries == null || !tournamentSeries.Any())
                 throw new InvalidOperationException("El torneo no tiene series pactadas.");
 
-            var validCardsFromSeries = await _tournamentDao.GetCardsFromTournamentSeries(tournamentSeries);
+            var validCardsFromSeries = await _tournamentDao.GetCardsFromTournamentSeriesAsync(tournamentSeries);
 
             var validCards = new List<int>();
 
@@ -136,7 +136,7 @@ namespace CTService.Implementation.Tournament
 
             if (invalidCards.Any())
             {
-                var wrongCardIllustrations = await _cardDao.GetCardIllustrationById(invalidCards);
+                var wrongCardIllustrations = await _cardDao.GetCardIllustrationByIdAsync(invalidCards);
                 throw new InvalidOperationException($"Las siguientes cartas no pertenecen a las series permitidas:\n{string.Join("\n", wrongCardIllustrations)}");
             }
 
@@ -216,7 +216,7 @@ namespace CTService.Implementation.Tournament
 
         public async Task<TournamentDto> GetTournamentById(int id_tournament)
         {
-            var tournamentModel = await _tournamentDao.GetTournamentById(id_tournament);
+            var tournamentModel = await _tournamentDao.GetTournamentByIdAsync(id_tournament);
 
             var tournamentDto = new TournamentDto
             {
@@ -232,15 +232,15 @@ namespace CTService.Implementation.Tournament
         public async Task<bool> ValidateTournament( TournamentModel tournament)
         {
 
-            var registeredCountries = await _tournamentDao.GetCountriesFromDb();
+            var registeredCountries = await _tournamentDao.GetCountriesFromDbAsync();
             if (!registeredCountries.Contains(tournament.Id_Country))
                 throw new ArgumentException("El país especificado no está registrado.");
 
-            var registeredOrganizers = await _tournamentDao.GetUsersFromDb(1);
+            var registeredOrganizers = await _tournamentDao.GetUsersFromDbAsync(1);
             if (!registeredOrganizers.Contains(tournament.Id_Organizer))
                 throw new ArgumentException("El organizador especificado no está registrado.");
 
-            var registeredJudges = await _tournamentDao.GetUsersFromDb(3);
+            var registeredJudges = await _tournamentDao.GetUsersFromDbAsync(3);
 
             var invalidJudges = tournament.Judges.Where(idJudge => !registeredJudges.Contains(idJudge)).ToList();
 
@@ -249,7 +249,7 @@ namespace CTService.Implementation.Tournament
                 throw new ArgumentException($"Los siguientes jueces no están registrados: {string.Join(", ", invalidJudges)}");
             }
 
-            var registeredSeries = await _cardDao.GetAllSeries();
+            var registeredSeries = await _cardDao.GetAllSeriesAsync();
 
             var invalidSeries = tournament.Series_name.Where(seriesId => !registeredSeries.Contains(seriesId)).ToList();
 
@@ -295,7 +295,7 @@ namespace CTService.Implementation.Tournament
         public async Task<int> SetTournamentToNextPhase(int tournament_id)
         {
             var id_tournament = tournament_id;
-            return await _tournamentDao.GetTournamentCurrentPhase(id_tournament);
+            return await _tournamentDao.GetTournamentCurrentPhaseAsync(id_tournament);
         }
     }
 }
