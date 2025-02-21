@@ -95,15 +95,15 @@ namespace CTService.Implementation.Tournament
             if (tournament.Cards == null || !tournament.Cards.Any())
                 throw new ArgumentException("No se proporcionaron cartas para validar.");
 
-            var registeredPlayers = await _tournamentDao.GetUsersFromDbAsync(4);
+            //var registeredPlayers = await _tournamentDao.GetUsersFromDbAsync(4);
 
-            if (registeredPlayers == null || !registeredPlayers.Any())
-                throw new ArgumentException("No se encontraron Jugadores en la Base de datos");
+            //if (registeredPlayers == null || !registeredPlayers.Any())
+            //    throw new ArgumentException("No se encontraron Jugadores en la Base de datos");
 
-            if (!registeredPlayers.Contains(idOwner))
-                throw new ArgumentException("Este Dueño no es un jugador");
+            //if (!registeredPlayers.Contains(idOwner))
+            //    throw new ArgumentException("Este Dueño no es un jugador");
 
-            var tournamentPlayers = await _tournamentDao.GetTournamentPlayersAsync(tournament.Id_Tournament);
+            //var tournamentPlayers = await _tournamentDao.GetTournamentPlayersAsync(tournament.Id_Tournament);
 
             var tournamentSeries = await _tournamentDao.GetSeriesFromTournamentAsync(tournament.Id_Tournament);
 
@@ -159,7 +159,7 @@ namespace CTService.Implementation.Tournament
         private int GetUserIdFromToken()
         {
             var userClaims = _httpContextAccessor.HttpContext?.User.Identity as ClaimsIdentity;
-            var userIdClaim = userClaims?.FindFirst(ClaimTypes.NameIdentifier);
+            var userIdClaim = userClaims?.FindFirst(ClaimTypes.NameIdentifier); //CAMBIAR POR ID
 
             if (userIdClaim == null)
                 throw new InvalidOperationException("Error al recuperar el owner");

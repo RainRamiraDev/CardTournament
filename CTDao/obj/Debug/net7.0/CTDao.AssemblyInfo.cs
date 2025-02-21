@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("CTDao")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+dadb669212744ca987591505aadf5b1451f75c6c")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+f28346dc70772086e64b74a316919f43b01e1e44")]
 [assembly: System.Reflection.AssemblyProductAttribute("CTDao")]
 [assembly: System.Reflection.AssemblyTitleAttribute("CTDao")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
