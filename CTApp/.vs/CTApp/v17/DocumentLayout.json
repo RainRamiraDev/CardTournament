@@ -29,8 +29,20 @@
       "DocumentGroups": [
         {
           "DockedWidth": 147,
-          "SelectedChildIndex": 4,
+          "SelectedChildIndex": 7,
           "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{eefa5220-e298-11d0-8f78-00a0c9110057}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
+            },
             {
               "$type": "Document",
               "DocumentIndex": 2,
@@ -41,8 +53,7 @@
               "RelativeToolTip": "Controllers\\GameController.cs",
               "ViewState": "AgIAAAYAAAAAAAAAAAAAABsAAABBAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-20T20:42:10.081Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-02-20T20:42:10.081Z"
             },
             {
               "$type": "Document",
@@ -54,8 +65,7 @@
               "RelativeToolTip": "Controllers\\User\\AdminController.cs",
               "ViewState": "AgIAABEAAAAAAAAAAAAQwCEAAAAsAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-20T20:38:02.891Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-02-20T20:38:02.891Z"
             },
             {
               "$type": "Document",
@@ -67,8 +77,7 @@
               "RelativeToolTip": "Program.cs",
               "ViewState": "AgIAAGUAAAAAAAAAAAAqwHsAAAAqAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-20T20:27:46.931Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-02-20T20:27:46.931Z"
             },
             {
               "$type": "Document",
@@ -80,8 +89,7 @@
               "RelativeToolTip": "Controllers\\User\\PlayerController.cs",
               "ViewState": "AgIAADUAAAAAAAAAAAAwwEcAAAA2AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-20T20:25:42.399Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-02-20T20:25:42.399Z"
             },
             {
               "$type": "Document",
@@ -95,18 +103,6 @@
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-02-20T20:24:05.474Z",
               "EditorCaption": ""
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{eefa5220-e298-11d0-8f78-00a0c9110057}"
-            },
-            {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
             }
           ]
         }
