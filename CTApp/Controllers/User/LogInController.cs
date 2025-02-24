@@ -55,7 +55,7 @@ namespace CTApp.Controllers.User
                 ));
             }
 
-            var accessToken = _refreshTokenService.GenerateAccessToken(user.Id_User, user.Fullname,user.Id_Rol);
+            var accessToken = _refreshTokenService.GenerateAccessTokenAsync(user.Id_User, user.Fullname,user.Id_Rol);
 
             Guid refreshToken = Guid.NewGuid();
             DateTime expirationDate = DateTime.UtcNow.AddDays(_keysConfiguration.ExpirationDays);
@@ -64,7 +64,7 @@ namespace CTApp.Controllers.User
 
             ManageRefreshTokenCookie(refreshToken.ToString(), expirationDate);
 
-            var isOrganizer = await _userService.ValidateIfOrganizer(user);
+            var isOrganizer = await _userService.ValidateIfOrganizerAsync(user);
 
             if (isOrganizer)
                 return Ok(new { AccessToken = accessToken , OrganizerId = user.Id_User});
@@ -110,19 +110,19 @@ namespace CTApp.Controllers.User
         }
 
 
-        [HttpPost("FirstLogIn")]
-        public async Task<IActionResult> CreateUserWhitHashedPassword([FromBody] FirstLogInDto loginDto)
-        {
-            var userId = await _userService.CreateWhitHashedPasswordAsync(loginDto);
-            var user = new UserDto
-            {
-                Fullname = loginDto.Fullname,
-                Passcode = loginDto.Passcode,
-                Id_Rol = loginDto.Id_Rol 
-            };
-            var response = ApiResponse<FirstLogInDto>.SuccessResponse("Usuario creado exitosamente", loginDto);
-            return Created(string.Empty, response);
-        }
+        //[HttpPost("FirstLogIn")]
+        //public async Task<IActionResult> CreateUserWhitHashedPassword([FromBody] FirstLogInDto loginDto)
+        //{
+        //    var userId = await _userService.CreateWhitHashedPasswordAsync(loginDto);
+        //    var user = new UserDto
+        //    {
+        //        Fullname = loginDto.Fullname,
+        //        Passcode = loginDto.Passcode,
+        //        Id_Rol = loginDto.Id_Rol 
+        //    };
+        //    var response = ApiResponse<FirstLogInDto>.SuccessResponse("Usuario creado exitosamente", loginDto);
+        //    return Created(string.Empty, response);
+        //}
 
     }
 }

@@ -8,6 +8,6 @@ namespace CTDto.Tournaments
 {
     public class TournamentJudgeDto
     {
-        public List<string> Judges { get; set; } // Lista de alias de los jueces
+        public List<string> Judges { get; set; }
     }
 }

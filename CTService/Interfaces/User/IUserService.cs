@@ -25,6 +25,8 @@ namespace CTService.Interfaces.User
         Task<IEnumerable<CountriesListDto>> GetAllCountriesAsync();
 
 
-        Task<bool> ValidateIfOrganizer(UserModel user);
+        Task<bool> ValidateIfOrganizerAsync(UserModel user);
+
+        Task CreateUserAsync(UserCreationDto userDto);
     }
 }

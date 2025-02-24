@@ -90,5 +90,50 @@ namespace CTDao.Dao.User
                 return countries;
             }
         }
+
+        public async Task<int> CreateUserAsync(UserCreationModel user)
+        {
+            using (var connection = new MySqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+
+                var affectedRows = await connection.ExecuteAsync(QueryLoader.GetQuery("QueryCreateUser"), new
+                {
+                    user.Id_Country,
+                    user.Id_Rol,
+                    user.Fullname,
+                    user.Passcode,
+                    user.Alias,
+                    user.Email,
+                    user.Avatar_Url,
+                    user.Games_Won,
+                    user.Games_Lost,
+                    user.Disqualifications,
+                    user.Ki,
+                });
+
+                return affectedRows;
+            }
+        }
+
+        public async Task<List<string>> GetAllUsersEmails()
+        {
+            using (var connection = new MySqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+                var emails = await connection.QueryAsync<string>(QueryLoader.GetQuery("QueryGetAllEmails"));
+                return emails.ToList();
+            }
+        }
+
+        public async Task<List<string>> GetAllUsersAlias()
+        {
+            using (var connection = new MySqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+                var alias = await connection.QueryAsync<string>(QueryLoader.GetQuery("QueryGetAllAlias"));
+                return alias.ToList();
+            }
+        }
     }
 }

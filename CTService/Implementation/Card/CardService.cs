@@ -49,14 +49,14 @@ namespace CTService.Implementation.Card
             return cardDtos;
         }
 
-        public async Task<IEnumerable<ShowCardsDto>> GetCardsBySeriesNames(List<string> cardSeries)
+        public async Task<IEnumerable<ShowCardsDto>> GetCardsBySeriesNamesAsync(List<string> cardSeries)
         {
             if (cardSeries == null || !cardSeries.Any())
             {
                 return Enumerable.Empty<ShowCardsDto>();
             }
 
-            var cards = await _cardDao.GetCardsBySeriesNames(cardSeries);
+            var cards = await _cardDao.GetCardsBySeriesNamesAsync(cardSeries);
 
             return cards.Select(card => new ShowCardsDto
             {
@@ -91,7 +91,7 @@ namespace CTService.Implementation.Card
 
         public async Task<IEnumerable<SeriesListDto>> GetAllSeriesAsync()
         {
-            var seriesModels = await _cardDao.GetAllSeriesAsync();
+            var seriesModels = await _cardDao.GetAllSeriesNamesAsync();
             return seriesModels.Select(series => new SeriesListDto
             {
                 Id_series = series.Id_series,

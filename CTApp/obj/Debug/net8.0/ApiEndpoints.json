@@ -1,5 +1,21 @@
 [
   {
+    "ContainingType": "CTApp.Controllers.User.AdminController",
+    "Method": "CreateUser",
+    "RelativePath": "api/Admin/CreateUser",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "userDto",
+        "Type": "CTDto.Users.UserCreationDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "CTApp.Controllers.GameController",
     "Method": "ResolveGame",
     "RelativePath": "api/Game/resolve",
@@ -10,22 +26,6 @@
       {
         "Name": "request",
         "Type": "CTDto.Tournaments.TournamentRequestToResolveDto",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "CTApp.Controllers.User.LogInController",
-    "Method": "CreateUserWhitHashedPassword",
-    "RelativePath": "api/LogIn/FirstLogIn",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "loginDto",
-        "Type": "CTDto.Users.LogIn.FirstLogInDto",
         "IsRequired": true
       }
     ],
@@ -81,36 +81,6 @@
         "IsRequired": true
       }
     ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "CTApp.Controllers.User.OrganizerController",
-    "Method": "GetCountries",
-    "RelativePath": "api/Organizer/GetCountries",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "CTApp.Controllers.User.OrganizerController",
-    "Method": "GetJudges",
-    "RelativePath": "api/Organizer/GetJudges",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "CTApp.Controllers.User.OrganizerController",
-    "Method": "GetSeries",
-    "RelativePath": "api/Organizer/GetSeries",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [],
     "ReturnTypes": []
   },
   {

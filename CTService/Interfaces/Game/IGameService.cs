@@ -11,16 +11,9 @@ namespace CTService.Interfaces.Game
 {
     public interface IGameService
     {
-
         Task<int> CreateRoundAsync(int roundNumber, int tournament_id, int id_judge);
-
-
         Task<int> CreateMatchAsync(MatchDto match);
-
         Task<GameResultDto> ResolveGameAsync(TournamentRequestToResolveDto tournamentDto);
-
-        //Task<TimeSpan> UpdateTournamentEndDate(int total_Matches, int id_tournament, int dailyHoursAvailable);
-
 
     }
 }

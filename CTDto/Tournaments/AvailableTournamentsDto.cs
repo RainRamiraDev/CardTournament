@@ -15,8 +15,6 @@ namespace CTDto.Tournaments
         public string Jueces { get; set; }
         public string Series { get; set; }
         public string Jugadores { get; set; }
-        public int RondasTotales { get; set; }
-        public int MatchesTotales { get; set; }
         public string Ganador { get; set; }
 
     }

@@ -85,7 +85,6 @@ CREATE TABLE IF NOT EXISTS `t_tournaments` (
   `start_datetime` datetime DEFAULT NULL,
   `end_datetime` datetime DEFAULT NULL,
   `current_phase` int DEFAULT NULL,
-  `player_capacity` int DEFAULT NULL,
   PRIMARY KEY (`id_tournament`),
   KEY `fk_tourn_country` (`id_country`),
   KEY `fk_tourn_organizer` (`id_organizer`),

@@ -36,31 +36,31 @@ namespace CTApp.Controllers.User
         }
 
 
-        //[Authorize(Roles = "4")]
-        //[HttpGet("ShowCards")]
-        //public async Task<IActionResult> GetAllCards([FromBody] TournamentRequestToResolveDto tournamentId)
-        //{
-        //    try
-        //    {
+        [Authorize(Roles = "4")]
+        [HttpGet("ShowCards")]
+        public async Task<IActionResult> GetAllCards([FromBody] TournamentRequestToResolveDto tournamentId)
+        {
+            try
+            {
 
-        //        var cards = await _cardService.GetAllCardsAsync(tournamentId);
+                var cards = await _cardService.GetAllCardsAsync(tournamentId);
 
-        //        if (cards == null || !cards.Any())
-        //        {
-        //            return NotFound(ApiResponse<IEnumerable<ShowCardsDto>>.ErrorResponse("Cartas no encontradas."));
-        //        }
+                if (cards == null || !cards.Any())
+                {
+                    return NotFound(ApiResponse<IEnumerable<ShowCardsDto>>.ErrorResponse("Cartas no encontradas."));
+                }
 
-        //        var response = ApiResponse<IEnumerable<ShowCardsDto>>.SuccessResponse("Cartas obtenidas exitosamente.", cards);
-        //        return Ok(response);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        var errors = new List<string> { "Ocurrió un error al obtener las cartas." };
-        //        var stackTrace = ex.StackTrace;
-        //        var response = ApiResponse<ShowCardsDto>.ErrorResponse(errors, stackTrace);
-        //        return BadRequest(response);
-        //    }
-        //}
+                var response = ApiResponse<IEnumerable<ShowCardsDto>>.SuccessResponse("Cartas obtenidas exitosamente.", cards);
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                var errors = new List<string> { "Ocurrió un error al obtener las cartas." };
+                var stackTrace = ex.StackTrace;
+                var response = ApiResponse<ShowCardsDto>.ErrorResponse(errors, stackTrace);
+                return BadRequest(response);
+            }
+        }
 
 
         [Authorize(Roles = "4")]
@@ -69,14 +69,8 @@ namespace CTApp.Controllers.User
         {
             try
             {
-                var affectedRows = await _tournamentService.InsertTournamentDecksAsync(tournamentDeckDto); //cambiar
-
-                if (affectedRows == 0)
-                {
-                    return StatusCode(500, "Error assigning Decks to tournament.");
-                }
-
-                return Created("", new { affectedRows });
+                await _tournamentService.InsertTournamentDecksAsync(tournamentDeckDto); //cambiar
+                return Created("", new { message = "Deck agregado Exitosamente" });
             }
             catch (ArgumentException ex)
             {
@@ -84,7 +78,7 @@ namespace CTApp.Controllers.User
             }
             catch (InvalidOperationException ex)
             {
-                return BadRequest(new { message = ex.Message }); // El mensaje de ilustraciones duplicadas se enviará aquí
+                return BadRequest(new { message = ex.Message });
             }
             catch (Exception)
             {
