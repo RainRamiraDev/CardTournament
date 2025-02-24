@@ -20,22 +20,22 @@ namespace CTDao.Interfaces.Tournaments
 
         Task<List<int>> GetSeriesFromTournamentAsync(int tournamentId);
 
-        Task<List<int>> GetCardsFromTournamentSeriesAsync(List<int> tournamentSeries);
+        Task<List<int>> GetCardsFromTournamentSeriesAsync(List<int> tournamentSeries, List<int> tournamentCards);
 
         Task<DateTime> GetTournamentStartDateAsync(int id_tournament);
 
 
         Task<List<int>> GetCountriesFromDbAsync();
 
-        Task<List<int>> GetTournamentPlayersAsync(int tournamentId);
+        Task<List<int>> ValidateTournamentPlayersAsync(int tournamentId, int id_player);
 
         Task<List<int>> GetTournamentJudgesAsync(int id_tournament);
 
-        Task<List<int>> GetUsersFromDbAsync(int id_rol);
+        Task<List<int>> ValidateUsersFromDbAsync(int id_rol, List<int>id_user);
 
         Task<TournamentModel> GetTournamentByIdAsync(int id_tournament);
 
-        Task<List<int>> GetAvailableTournamentsAsync();
+        Task<List<int>> ValidateAvailableTournamentsAsync(int id_tournament);
 
         //Judge
         Task<List<int>> GetJudgeIdsByAliasAsync(List<string> judgeAliases);

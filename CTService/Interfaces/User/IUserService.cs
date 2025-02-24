@@ -21,12 +21,7 @@ namespace CTService.Interfaces.User
 
         //Judges
         Task<IEnumerable<JudgeDto>> GetAllJudgesAsync();
-
         Task<IEnumerable<CountriesListDto>> GetAllCountriesAsync();
-
-
-        Task<bool> ValidateIfOrganizerAsync(UserModel user);
-
         Task CreateUserAsync(UserCreationDto userDto);
     }
 }

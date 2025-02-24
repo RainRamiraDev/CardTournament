@@ -16,7 +16,7 @@ namespace CTDao.Interfaces.Card
         Task<List<int>> GetSeriesIdsByNameAsync(List<string> seriesNames);
         Task<List<int>> GetIdCardSeriesByCardIdAsync(List<int> cardsId);
 
-        Task<List<int>> GetAllSeriesAsync();
+        Task<List<int>> ValidateSeriesAsync(List<int>id_series);
         Task<List<string>> GetCardIllustrationByIdAsync(List<int> cardsIds);
         Task<IEnumerable<SeriesListModel>> GetAllSeriesNamesAsync();
 

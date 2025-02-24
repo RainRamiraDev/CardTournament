@@ -36,7 +36,7 @@ namespace CTApp.Controllers.User
         }
 
 
-        [Authorize(Roles = "4")]
+        [Authorize(Roles = "4|1|2|3")] 
         [HttpGet("ShowCards")]
         public async Task<IActionResult> GetAllCards([FromBody] TournamentRequestToResolveDto tournamentId)
         {

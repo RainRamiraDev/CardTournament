@@ -11,7 +11,7 @@ namespace CTDto.Tournaments
         public int Id_Country { get; set; }
         public DateTime Start_datetime { get; set; }
         public DateTime End_datetime { get; set; }
-        public List<int> Judges_Alias { get; set; }
-        public List<int> Series_name { get; set; }
+        public List<int> Judges_Id { get; set; }
+        public List<int> Series_Id { get; set; }
     }
 }

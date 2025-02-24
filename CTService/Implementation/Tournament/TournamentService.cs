@@ -7,6 +7,7 @@ using CTDto.Tournaments;
 using CTService.Interfaces.Card;
 using CTService.Interfaces.Tournaments;
 using Microsoft.AspNetCore.Http;
+using Microsoft.IdentityModel.Tokens;
 using MySql.Data.MySqlClient;
 using Mysqlx.Crud;
 using System;
@@ -43,20 +44,21 @@ namespace CTService.Implementation.Tournament
 
             var idOwner = GetUserIdFromToken();
 
-            var validatedCards = await ValidatePlayersDecks(tournamentDecksDto,idOwner);
+            var validatedCards = await ValidatePlayersDecks(tournamentDecksDto, idOwner);
 
             var cardSeriesIds = await _cardDao.GetIdCardSeriesByCardIdAsync(validatedCards);
 
             if (cardSeriesIds == null || !cardSeriesIds.Any())
-            {
                 throw new ArgumentException("Invalid series name provided.");
-            }
 
-            var tournamentsPlayers = await _tournamentDao.GetTournamentPlayersAsync(tournamentDecksDto.Id_Tournament);
-            var playersCapacity = await CalculatePlayerCapacity(tournamentDecksDto.Id_Tournament);
+            //TODO: Refactorizar lo referido al player capacity
 
-            if (tournamentsPlayers.Count >= playersCapacity)
-                throw new ArgumentException("Asistencia del torneo Completo, no entran mas jugadores");
+            //var tournamentsPlayers = await _tournamentDao.GetTournamentPlayersAsync(tournamentDecksDto.Id_Tournament);
+
+            //var playersCapacity = await CalculatePlayerCapacity(tournamentDecksDto.Id_Tournament);
+
+            //if (tournamentsPlayers.Count >= playersCapacity)
+            //    throw new ArgumentException("Asistencia del torneo Completo, no entran mas jugadores");
 
             var tournamentDecksModel = new TournamentDecksModel
             {
@@ -72,16 +74,12 @@ namespace CTService.Implementation.Tournament
         public async Task<List<int>> ValidatePlayersDecks(TournamentDecksDto tournament, int idOwner)
         {
             bool tournamentExists = await _tournamentDao.TournamentExistsAsync(tournament.Id_Tournament);
-
             if (!tournamentExists)
                 throw new InvalidOperationException("El torneo especificado no existe.");
 
-
-            var availableTournaments  = await _tournamentDao.GetAvailableTournamentsAsync();
-
-
-            if (!availableTournaments.Contains(tournament.Id_Tournament))
-                    throw new ArgumentException("Este torneo ya se encuentra finalizado");
+            var isAvailableTournaments = await _tournamentDao.ValidateAvailableTournamentsAsync(tournament.Id_Tournament);
+            if (!isAvailableTournaments.Any())
+                throw new ArgumentException("Este torneo ya se encuentra finalizado");
 
             var duplicateCards = tournament.Cards
                 .GroupBy(i => i)
@@ -95,46 +93,22 @@ namespace CTService.Implementation.Tournament
             if (tournament.Cards == null || !tournament.Cards.Any())
                 throw new ArgumentException("No se proporcionaron cartas para validar.");
 
-            //var registeredPlayers = await _tournamentDao.GetUsersFromDbAsync(4);
-
-            //if (registeredPlayers == null || !registeredPlayers.Any())
-            //    throw new ArgumentException("No se encontraron Jugadores en la Base de datos");
-
-            //if (!registeredPlayers.Contains(idOwner))
-            //    throw new ArgumentException("Este Dueño no es un jugador");
-
-            //var tournamentPlayers = await _tournamentDao.GetTournamentPlayersAsync(tournament.Id_Tournament);
+            var playerAlreadyRecorded = await _tournamentDao.ValidateTournamentPlayersAsync(tournament.Id_Tournament, idOwner);
+            if (playerAlreadyRecorded.Any())
+                throw new InvalidOperationException($"El Jugador {idOwner} ya se encuentra inscripto en el torneo");
 
             var tournamentSeries = await _tournamentDao.GetSeriesFromTournamentAsync(tournament.Id_Tournament);
-
             if (tournamentSeries == null || !tournamentSeries.Any())
                 throw new InvalidOperationException("El torneo no tiene series pactadas.");
 
-            var validCardsFromSeries = await _tournamentDao.GetCardsFromTournamentSeriesAsync(tournamentSeries);
+            var validCardsFromSeries = await _tournamentDao.GetCardsFromTournamentSeriesAsync(tournamentSeries,tournament.Cards);
+            var invalidCardFromSeries = tournament.Cards.Except(validCardsFromSeries).ToList();
+    
+            if (invalidCardFromSeries.Any())
+                throw new ArgumentException($"Las siguientes series no están registradas: {string.Join(", ", invalidCardFromSeries)}");
 
-            var validCards = new List<int>();
 
-            var invalidCards = new List<int>();
-
-            foreach (var card in tournament.Cards)
-            {
-                if (validCardsFromSeries.Contains(card))
-                {
-                    validCards.Add(card);
-                }
-                else
-                {
-                    invalidCards.Add(card);
-                }
-            }
-
-            if (invalidCards.Any())
-            {
-                var wrongCardIllustrations = await _cardDao.GetCardIllustrationByIdAsync(invalidCards);
-                throw new InvalidOperationException($"Las siguientes cartas no pertenecen a las series permitidas:\n{string.Join("\n", wrongCardIllustrations)}");
-            }
-
-            return validCards;
+            return validCardsFromSeries;
         }
 
         public async Task<int> CreateTournamentAsync(TournamentDto tournamentDto)
@@ -148,8 +122,8 @@ namespace CTService.Implementation.Tournament
                 Start_datetime = tournamentDto.Start_datetime,
                 End_datetime = tournamentDto.End_datetime,
                 Current_Phase = 1,
-                Judges = tournamentDto.Judges_Alias,
-                Series_name = tournamentDto.Series_name,
+                Judges_Id = tournamentDto.Judges_Id,
+                Series_Id = tournamentDto.Series_Id,
             };
 
             var validatedTournament = await ValidateTournament(tournamentModel);
@@ -220,34 +194,29 @@ namespace CTService.Implementation.Tournament
             return tournamentDto;
         }
 
-        public async Task<bool> ValidateTournament( TournamentModel tournament)
+        public async Task<bool> ValidateTournament(TournamentModel tournament)
         {
 
             var registeredCountries = await _tournamentDao.GetCountriesFromDbAsync();
             if (!registeredCountries.Contains(tournament.Id_Country))
                 throw new ArgumentException("El país especificado no está registrado.");
 
-            var registeredOrganizers = await _tournamentDao.GetUsersFromDbAsync(1);
-            if (!registeredOrganizers.Contains(tournament.Id_Organizer))
+
+            var isValidOrganizer = await _tournamentDao.ValidateUsersFromDbAsync(1, new List<int> { tournament.Id_Organizer });
+            if (!isValidOrganizer.Any())
                 throw new ArgumentException("El organizador especificado no está registrado.");
 
-            var registeredJudges = await _tournamentDao.GetUsersFromDbAsync(3);
 
-            var invalidJudges = tournament.Judges.Where(idJudge => !registeredJudges.Contains(idJudge)).ToList();
-
-            if (invalidJudges.Any())
-            {
+            var areValidJudges = await _tournamentDao.ValidateUsersFromDbAsync(3, tournament.Judges_Id);
+            var invalidJudges = (tournament.Judges_Id ?? new List<int>()).Except(areValidJudges).ToList();
+             if (invalidJudges.Any())
                 throw new ArgumentException($"Los siguientes jueces no están registrados: {string.Join(", ", invalidJudges)}");
-            }
 
-            var registeredSeries = await _cardDao.GetAllSeriesAsync();
 
-            var invalidSeries = tournament.Series_name.Where(seriesId => !registeredSeries.Contains(seriesId)).ToList();
-
+            var areValidSeries = await _cardDao.ValidateSeriesAsync(tournament.Series_Id);
+            var invalidSeries = tournament.Series_Id.Except(areValidSeries).ToList();
             if (invalidSeries.Any())
-            {
                 throw new ArgumentException($"Las siguientes series no están registradas: {string.Join(", ", invalidSeries)}");
-            }
 
             return true;
         }

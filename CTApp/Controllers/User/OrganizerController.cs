@@ -33,36 +33,36 @@ namespace CTApp.Controllers.User
         }
 
 
-        //[Authorize(Roles = "1")]
-        //[HttpGet("GetJudges")]
-        //public async Task<IActionResult> GetJudges()
-        //{
-        //    var judges = await _userService.GetAllJudgesAsync();
+        [Authorize(Roles = "1")]
+        [HttpGet("GetJudges")]
+        public async Task<IActionResult> GetJudges()
+        {
+            var judges = await _userService.GetAllJudgesAsync();
 
-        //    if (judges is null || !judges.Any())
-        //        return NotFound(ApiResponse<IEnumerable<JudgeDto>>.ErrorResponse("Jueces no encontrados."));
+            if (judges is null || !judges.Any())
+                return NotFound(ApiResponse<IEnumerable<JudgeDto>>.ErrorResponse("Jueces no encontrados."));
 
-        //    return Ok(ApiResponse<IEnumerable<JudgeDto>>.SuccessResponse("Jueces obtenidos exitosamente.", judges));
-        //}
+            return Ok(ApiResponse<IEnumerable<JudgeDto>>.SuccessResponse("Jueces obtenidos exitosamente.", judges));
+        }
 
 
-        //[Authorize(Roles = "1")]
-        //[HttpGet("GetCountries")]
-        //public async Task<IActionResult> GetCountries()
-        //{
-        //    var countries = await _userService.GetAllCountriesAsync();
+        [Authorize(Roles = "1")]
+        [HttpGet("GetCountries")]
+        public async Task<IActionResult> GetCountries()
+        {
+            var countries = await _userService.GetAllCountriesAsync();
 
-        //    return Ok(ApiResponse<IEnumerable<CountriesListDto>>.SuccessResponse("Paises obtenidos exitosamente.", countries));
-        //}
+            return Ok(ApiResponse<IEnumerable<CountriesListDto>>.SuccessResponse("Paises obtenidos exitosamente.", countries));
+        }
 
-        //[Authorize(Roles = "1")]
-        //[HttpGet("GetSeries")]
-        //public async Task<IActionResult> GetSeries()
-        //{
-        //    var series = await _cardService.GetAllSeriesAsync();
+        [Authorize(Roles = "1")]
+        [HttpGet("GetSeries")]
+        public async Task<IActionResult> GetSeries()
+        {
+            var series = await _cardService.GetAllSeriesAsync();
 
-        //    return Ok(ApiResponse<IEnumerable<SeriesListDto>>.SuccessResponse("Series obtenidos exitosamente.", series));
-        //}
+            return Ok(ApiResponse<IEnumerable<SeriesListDto>>.SuccessResponse("Series obtenidos exitosamente.", series));
+        }
 
 
 
@@ -71,19 +71,31 @@ namespace CTApp.Controllers.User
         [HttpPost("CreateTournament")]
         public async Task<IActionResult> CreateTournament([FromBody] TournamentDto tournamentDto)
         {
-            if (tournamentDto == null)
+            try
             {
-                return BadRequest("Invalid tournament data.");
+                if (tournamentDto == null)
+                {
+                    return BadRequest("Invalid tournament data.");
+                }
+
+                var id = await _tournamentService.CreateTournamentAsync(tournamentDto);
+
+                if (id == 0)
+                {
+                    return StatusCode(500, "Error creating tournament.");
+                }
+
+
+
+                return Created("", new { id });
+            }
+            catch (Exception ex)
+            {
+                // Manejo general de excepciones
+                return StatusCode(500, new { success = false, message = "Ocurrió un error inesperado.", details = ex.Message });
             }
 
-            var id = await _tournamentService.CreateTournamentAsync(tournamentDto);
 
-            if (id == 0)
-            {
-                return StatusCode(500, "Error creating tournament.");
-            }
-
-            return Created("", new { id });
         }
 
     }

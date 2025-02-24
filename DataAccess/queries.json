@@ -3,6 +3,11 @@
   "QueryGetTournamentById": "SELECT id_country, id_organizer, start_datetime, end_datetime, current_phase FROM t_tournaments WHERE id_tournament = @id_tournament",
   "QueryCreateTournament": "INSERT INTO T_TOURNAMENTS (id_country, id_organizer, start_datetime, end_datetime, current_phase) VALUES (@IdCountry, @IdOrganizer, @StartDatetime, @End_Datetime, @CurrentPhase); SELECT LAST_INSERT_ID();",
   "QueryGetAvailableTournaments": "SELECT id_tournament FROM t_tournaments WHERE id_country IS NOT NULL AND id_organizer IS NOT NULL AND start_datetime IS NOT NULL AND end_datetime IS NOT NULL AND current_phase = 1;",
+
+
+  "QueryVerifyTournament": "SELECT id_tournament FROM t_tournaments WHERE id_tournament = @id_tournament;",
+
+
   "QueryInsertJudges": "INSERT INTO T_TOURN_JUDGES (id_tournament, id_judge) VALUES (@id_tournament, @id_judge);",
   "QueryGetJudgeByAlias": "SELECT id_user FROM T_USERS WHERE alias IN @Aliases AND Id_rol = 3;",
   "QueryGetTournamentsInformation": "SELECT tt.id_tournament AS 'Id_Torneo', tc.country_name AS 'Pais', tt.start_datetime AS 'FechaDeInicio', tt.end_datetime AS 'FechaDeFinalizacion', GROUP_CONCAT(DISTINCT ju.fullname ORDER BY ju.fullname SEPARATOR ', ') AS 'Jueces', GROUP_CONCAT(DISTINCT ts.series_name ORDER BY ts.series_name SEPARATOR ', ') AS 'Series', GROUP_CONCAT(DISTINCT tu.alias ORDER BY tu.alias SEPARATOR ', ') AS 'Jugadores', (SELECT tu.alias FROM t_matches tm2 JOIN t_users tu ON tu.id_user = tm2.winner WHERE tm2.id_round = (SELECT MAX(id_round) FROM t_rounds WHERE id_tournament = tt.id_tournament) LIMIT 1) AS 'Ganador' FROM t_tournaments tt JOIN t_countries tc ON tt.id_country = tc.id_country LEFT JOIN t_tourn_judges tj ON tt.id_tournament = tj.id_tournament LEFT JOIN t_users ju ON tj.id_judge = ju.id_user LEFT JOIN t_tourn_series tts ON tts.id_tournament = tt.id_tournament LEFT JOIN t_series ts ON ts.id_series = tts.id_series LEFT JOIN t_tourn_players ttp ON ttp.id_tournament = tt.id_tournament LEFT JOIN t_users tu ON tu.id_user = ttp.id_player WHERE tt.current_phase = @current_phase GROUP BY tt.id_tournament, tc.country_name ORDER BY tt.start_datetime DESC;",
@@ -17,19 +22,29 @@
   "QueryGetSeriesFromTournament": "SELECT ts.id_series FROM t_tournaments tt JOIN t_tourn_series ts ON tt.id_tournament = ts.id_tournament WHERE tt.id_tournament = @id_tournament",
   "QueryGetTournamentStartDatetime": "SELECT  tt.start_datetime FROM t_tournaments tt WHERE tt.id_tournament = @id_tournament",
   "QuerySetTournamentEndDateTime": "UPDATE t_tournaments SET End_DateTime = @End_DateTime WHERE id_tournament = @id_tournament;",
-  "QueryGetCardsFromTournamentSeries": "SELECT id_card FROM t_card_series WHERE id_series IN @Id_series;",
+
+
+  "QueryGetCardsFromTournamentSeries": "SELECT id_card FROM t_card_series WHERE id_series IN @Id_series AND id_card IN @id_card;",
+
+
+
+
   "QueryGetCardsByIllustration": "SELECT illustration FROM t_cards WHERE id_card IN @id_card;",
 
-  "QueryGetUsersFromDb": "SELECT id_user FROM t_users WHERE id_rol = @id_rol AND ki IS NOT NULL;",
+  "QueryValidateUsersFromDb": "SELECT id_user FROM t_users WHERE id_rol = @id_rol AND id_user IN @id_user;",
+
+
   "QueryGetCardIllustrationById": "SELECT illustration FROM t_cards WHERE id_card IN @id_card;",
   "QueryGetAllSeriesNames": "SELECT series_name,id_series FROM t_series WHERE series_name IS NOT NULL AND release_date IS NOT NULL ORDER BY series_name asc",
   "QueryGetCountriesFromDb": "SELECT id_country FROM t_countries",
   "QueryGetAllCountries": "SELECT country_name, id_country FROM t_countries WHERE country_name IS NOT NULL ORDER BY country_name asc;",
-  "QueryGetAllSeries": "SELECT id_series FROM t_series",
-  "QueryGetTournamentPlayers": "SELECT id_player FROM t_tourn_players WHERE id_tournament = @id_tournament",
+  "QueryValidateSeries": "SELECT id_series FROM t_series WHERE id_series IN @id_series;",
+  "QueryValidateTournamentPlayers": "SELECT id_player FROM t_tourn_players WHERE id_tournament = @id_tournament AND id_player = @id_player;",
 
   "QueryGetIdCardSeries": "SELECT DISTINCT tcs.id_card_series FROM t_card_series tcs WHERE tcs.id_card IN @IdCard;",
-  "QueryGetCards": "SELECT s.series_name, c.illustration, c.attack, c.deffense, s.release_date FROM T_CARDS c JOIN T_CARD_SERIES cs ON c.id_card = cs.id_card JOIN T_SERIES s ON cs.id_series = s.id_series WHERE s.id_series IN @idSeries ORDER BY 1 ASC;",
+
+  "QueryGetIdCardSeriesByCardId": "SELECT s.series_name, c.illustration, c.attack, c.deffense, s.release_date FROM T_CARDS c JOIN T_CARD_SERIES cs ON c.id_card = cs.id_card JOIN T_SERIES s ON cs.id_series = s.id_series WHERE s.id_series IN @idSeries ORDER BY 1 ASC;",
+
   //"QueryGetCardsByIllustration": "SELECT id_card FROM t_cards WHERE illustration IN @Illustration;",
   "QueryGetSeriesByName": "SELECT ts.id_series FROM t_series ts WHERE ts.series_name IN @SeriesNames;",
   "QueryGetCardsBySeriesName": "SELECT s.series_name, c.illustration, c.attack, c.deffense, s.release_date FROM T_CARDS c JOIN T_CARD_SERIES cs ON c.id_card = cs.id_card JOIN T_SERIES s ON cs.id_series = s.id_series WHERE s.series_name IN @SeriesName ORDER BY 1 ASC;",

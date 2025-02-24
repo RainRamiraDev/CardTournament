@@ -64,11 +64,6 @@ namespace CTApp.Controllers.User
 
             ManageRefreshTokenCookie(refreshToken.ToString(), expirationDate);
 
-            var isOrganizer = await _userService.ValidateIfOrganizerAsync(user);
-
-            if (isOrganizer)
-                return Ok(new { AccessToken = accessToken , OrganizerId = user.Id_User});
-
             return Ok(new { AccessToken = accessToken });
         }
 

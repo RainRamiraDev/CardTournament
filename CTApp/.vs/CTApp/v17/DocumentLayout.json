@@ -6,20 +6,10 @@
       "AbsoluteMoniker": "D:0:0:{A8904742-057E-4415-B867-60EE8A95FC92}|..\\CTService\\CTService.csproj|c:\\repositorios\\cardtournament\\ctservice\\implementation\\tournament\\tournamentservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{044F8FA9-5241-4DFD-9606-88BD2C275654}|CTApp.csproj|c:\\repositorios\\cardtournament\\ctapp\\controllers\\user\\playercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{044F8FA9-5241-4DFD-9606-88BD2C275654}|CTApp.csproj|solutionrelative:controllers\\user\\playercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{B7618BD3-70F2-4885-97AD-F372B59C2CF7}|..\\CTDao\\CTDao.csproj|c:\\repositorios\\cardtournament\\ctdao\\dao\\tournaments\\tournamentdao.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{044F8FA9-5241-4DFD-9606-88BD2C275654}|CTApp.csproj|c:\\repositorios\\cardtournament\\ctapp\\controllers\\gamecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{044F8FA9-5241-4DFD-9606-88BD2C275654}|CTApp.csproj|solutionrelative:controllers\\gamecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{044F8FA9-5241-4DFD-9606-88BD2C275654}|CTApp.csproj|c:\\repositorios\\cardtournament\\ctapp\\controllers\\user\\admincontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{044F8FA9-5241-4DFD-9606-88BD2C275654}|CTApp.csproj|solutionrelative:controllers\\user\\admincontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{044F8FA9-5241-4DFD-9606-88BD2C275654}|CTApp.csproj|c:\\repositorios\\cardtournament\\ctapp\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{044F8FA9-5241-4DFD-9606-88BD2C275654}|CTApp.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{B7618BD3-70F2-4885-97AD-F372B59C2CF7}|..\\CTDao\\CTDao.csproj|c:\\repositorios\\cardtournament\\ctdao\\interfaces\\tournaments\\itournamentdao.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -29,7 +19,51 @@
       "DocumentGroups": [
         {
           "DockedWidth": 147,
-          "SelectedChildIndex": 7,
+          "SelectedChildIndex": 1,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "TournamentDao.cs",
+              "DocumentMoniker": "C:\\Repositorios\\CardTournament\\CTDao\\Dao\\Tournaments\\TournamentDao.cs",
+              "RelativeDocumentMoniker": "..\\CTDao\\Dao\\Tournaments\\TournamentDao.cs",
+              "ToolTip": "C:\\Repositorios\\CardTournament\\CTDao\\Dao\\Tournaments\\TournamentDao.cs",
+              "RelativeToolTip": "..\\CTDao\\Dao\\Tournaments\\TournamentDao.cs",
+              "ViewState": "AgIAAAsAAAAAAAAAAAAqwCEAAABLAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-24T17:55:17.119Z",
+              "IsPinned": true
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "TournamentService.cs",
+              "DocumentMoniker": "C:\\Repositorios\\CardTournament\\CTService\\Implementation\\Tournament\\TournamentService.cs",
+              "RelativeDocumentMoniker": "..\\CTService\\Implementation\\Tournament\\TournamentService.cs",
+              "ToolTip": "C:\\Repositorios\\CardTournament\\CTService\\Implementation\\Tournament\\TournamentService.cs",
+              "RelativeToolTip": "..\\CTService\\Implementation\\Tournament\\TournamentService.cs",
+              "ViewState": "AgIAACoAAAAAAAAAAAAowGAAAAAnAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-24T18:45:48.68Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "ITournamentDao.cs",
+              "DocumentMoniker": "C:\\Repositorios\\CardTournament\\CTDao\\Interfaces\\Tournaments\\ITournamentDao.cs",
+              "RelativeDocumentMoniker": "..\\CTDao\\Interfaces\\Tournaments\\ITournamentDao.cs",
+              "ToolTip": "C:\\Repositorios\\CardTournament\\CTDao\\Interfaces\\Tournaments\\ITournamentDao.cs",
+              "RelativeToolTip": "..\\CTDao\\Interfaces\\Tournaments\\ITournamentDao.cs",
+              "ViewState": "AgIAAAMAAAAAAAAAAAApwB0AAAAYAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-02-24T18:45:43.729Z"
+            }
+          ]
+        },
+        {
+          "DockedWidth": 147,
+          "SelectedChildIndex": -1,
           "Children": [
             {
               "$type": "Bookmark",
@@ -42,67 +76,6 @@
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "GameController.cs",
-              "DocumentMoniker": "C:\\Repositorios\\CardTournament\\CTApp\\Controllers\\GameController.cs",
-              "RelativeDocumentMoniker": "Controllers\\GameController.cs",
-              "ToolTip": "C:\\Repositorios\\CardTournament\\CTApp\\Controllers\\GameController.cs",
-              "RelativeToolTip": "Controllers\\GameController.cs",
-              "ViewState": "AgIAAAYAAAAAAAAAAAAAABsAAABBAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-20T20:42:10.081Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "AdminController.cs",
-              "DocumentMoniker": "C:\\Repositorios\\CardTournament\\CTApp\\Controllers\\User\\AdminController.cs",
-              "RelativeDocumentMoniker": "Controllers\\User\\AdminController.cs",
-              "ToolTip": "C:\\Repositorios\\CardTournament\\CTApp\\Controllers\\User\\AdminController.cs",
-              "RelativeToolTip": "Controllers\\User\\AdminController.cs",
-              "ViewState": "AgIAABEAAAAAAAAAAAAQwCEAAAAsAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-20T20:38:02.891Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "Program.cs",
-              "DocumentMoniker": "C:\\Repositorios\\CardTournament\\CTApp\\Program.cs",
-              "RelativeDocumentMoniker": "Program.cs",
-              "ToolTip": "C:\\Repositorios\\CardTournament\\CTApp\\Program.cs",
-              "RelativeToolTip": "Program.cs",
-              "ViewState": "AgIAAGUAAAAAAAAAAAAqwHsAAAAqAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-20T20:27:46.931Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "PlayerController.cs",
-              "DocumentMoniker": "C:\\Repositorios\\CardTournament\\CTApp\\Controllers\\User\\PlayerController.cs",
-              "RelativeDocumentMoniker": "Controllers\\User\\PlayerController.cs",
-              "ToolTip": "C:\\Repositorios\\CardTournament\\CTApp\\Controllers\\User\\PlayerController.cs",
-              "RelativeToolTip": "Controllers\\User\\PlayerController.cs",
-              "ViewState": "AgIAADUAAAAAAAAAAAAwwEcAAAA2AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-20T20:25:42.399Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "TournamentService.cs",
-              "DocumentMoniker": "C:\\Repositorios\\CardTournament\\CTService\\Implementation\\Tournament\\TournamentService.cs",
-              "RelativeDocumentMoniker": "..\\CTService\\Implementation\\Tournament\\TournamentService.cs",
-              "ToolTip": "C:\\Repositorios\\CardTournament\\CTService\\Implementation\\Tournament\\TournamentService.cs",
-              "RelativeToolTip": "..\\CTService\\Implementation\\Tournament\\TournamentService.cs",
-              "ViewState": "AgIAAKgAAAAAAAAAAAAuwM0AAAA1AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-02-20T20:24:05.474Z",
-              "EditorCaption": ""
             }
           ]
         }

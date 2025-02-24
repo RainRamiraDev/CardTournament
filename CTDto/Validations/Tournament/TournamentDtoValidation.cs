@@ -25,12 +25,12 @@ namespace CTDto.Validations.Tournament
                 .GreaterThan(t => t.Start_datetime)
                 .WithMessage("La fecha de fin debe ser posterior a la fecha de inicio.");
 
-            RuleFor(t => t.Judges_Alias)
+            RuleFor(t => t.Judges_Id)
                 .NotEmpty().WithMessage("Debe haber al menos un juez asignado.")
                 .Must(judges => judges.Count == 3)
                 .WithMessage("Debe haber exactamente 3 jueces asignados.");
 
-            RuleFor(t => t.Series_name)
+            RuleFor(t => t.Series_Id)
                 .NotEmpty().WithMessage("Debe haber al menos una serie asignada.")
                 .Must(series => series.Count >= 1)
                 .WithMessage("Debe haber al menos una serie definida.");

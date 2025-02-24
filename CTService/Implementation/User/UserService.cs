@@ -104,16 +104,6 @@ namespace CTService.Implementation.User
             }).ToList();
         }
 
-        public async Task<bool> ValidateIfOrganizerAsync(UserModel user)
-        {
-            bool response = false;
-          var organizers = await _tournamentDao.GetUsersFromDbAsync(1);
-            if(organizers.Contains(user.Id_User) || user.Id_Rol == 1)
-               response = true;
-            return response;
-        }
-
-
         public async Task CreateUserAsync(UserCreationDto userDto)
         {
 
