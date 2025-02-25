@@ -1,5 +1,6 @@
 ﻿using CTDao.Dao.Card;
 using CTDao.Interfaces.Tournaments;
+using CTDataModels.Game;
 using CTDataModels.Tournamets;
 using CTDto.Card;
 using Dapper;
@@ -382,6 +383,27 @@ namespace CTDao.Dao.Tournaments
                 return tournaments.ToList();
             }
         }
+
+        public async Task<bool> CheckTournamentCapacity(PlayerCapacityModel capacity, int id_tournament)
+        {
+            using (var connection = new MySqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+
+                // Obtener el número actual de jugadores en el torneo desde la base de datos
+                int currentPlayerCount = await connection.ExecuteScalarAsync<int>(
+                    QueryLoader.GetQuery("QueryCheckTournamentCapacity"),
+                    new { id_tournament }
+                );
+
+                // Guard clauses: si el número de jugadores está fuera del rango, retornamos false
+                if (currentPlayerCount < capacity.MinPlayers) return false;
+                if (currentPlayerCount > capacity.MaxPlayers) return false;
+            }
+
+            return true;
+        }
+
     }
 }
  

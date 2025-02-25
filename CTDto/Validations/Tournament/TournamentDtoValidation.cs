@@ -18,12 +18,22 @@ namespace CTDto.Validations.Tournament
             RuleFor(t => t.Start_datetime)
                 .GreaterThan(DateTime.UtcNow).WithMessage("La fecha de inicio debe ser en el futuro.");
 
+            // Regla para limitar el margen de fechas
+            RuleFor(t => t.Start_datetime)
+                .Must(start => start < DateTime.UtcNow.AddDays(365)) // No debe ser más de un año en el futuro
+                .WithMessage("La fecha de inicio no puede ser más de un año en el futuro.");
+
             RuleFor(t => t.End_datetime)
                 .GreaterThan(DateTime.UtcNow).WithMessage("La fecha de fin debe ser en el futuro.");
 
             RuleFor(t => t.End_datetime)
                 .GreaterThan(t => t.Start_datetime)
                 .WithMessage("La fecha de fin debe ser posterior a la fecha de inicio.");
+
+            // Regla para la duración mínima del torneo
+            RuleFor(t => t)
+                .Must(t => t.Start_datetime.AddDays(2) < t.End_datetime) // La duración mínima debe ser de 2 días
+                .WithMessage("La duración del torneo debe ser de al menos 2 días.");
 
             RuleFor(t => t.Judges_Id)
                 .NotEmpty().WithMessage("Debe haber al menos un juez asignado.")

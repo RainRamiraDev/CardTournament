@@ -1,4 +1,5 @@
 ﻿using CTDataModels.Card;
+using CTDataModels.Game;
 using CTDataModels.Tournamets;
 using CTDto.Card;
 using System;
@@ -43,5 +44,7 @@ namespace CTDao.Interfaces.Tournaments
         //cards
         Task<int> InsertTournamentDecksAsync(TournamentDecksModel tournamentDecks);
         Task<int> InsertTournamentPlayersAsync(TournamentDecksModel tournamentDecks);
+
+        Task<bool> CheckTournamentCapacity(PlayerCapacityModel capacity, int id_tournament);
     }
 }

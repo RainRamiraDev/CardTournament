@@ -1,6 +1,7 @@
 ﻿using CTDao.Dao.Tournaments;
 using CTDao.Interfaces.Card;
 using CTDao.Interfaces.Tournaments;
+using CTDataModels.Game;
 using CTDataModels.Tournamets;
 using CTDto.Card;
 using CTDto.Tournaments;
@@ -10,13 +11,18 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.IdentityModel.Tokens;
 using MySql.Data.MySqlClient;
 using Mysqlx.Crud;
+using Org.BouncyCastle.Asn1.X509;
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace CTService.Implementation.Tournament
 {
@@ -49,16 +55,12 @@ namespace CTService.Implementation.Tournament
             var cardSeriesIds = await _cardDao.GetIdCardSeriesByCardIdAsync(validatedCards);
 
             if (cardSeriesIds == null || !cardSeriesIds.Any())
-                throw new ArgumentException("Invalid series name provided.");
+                throw new ArgumentException("Nombre de las serie invalido.");
 
-            //TODO: Refactorizar lo referido al player capacity
-
-            //var tournamentsPlayers = await _tournamentDao.GetTournamentPlayersAsync(tournamentDecksDto.Id_Tournament);
-
-            //var playersCapacity = await CalculatePlayerCapacity(tournamentDecksDto.Id_Tournament);
-
-            //if (tournamentsPlayers.Count >= playersCapacity)
-            //    throw new ArgumentException("Asistencia del torneo Completo, no entran mas jugadores");
+            var playerCapacity = await CalculatePlayerCapacity(tournamentDecksDto.Id_Tournament);
+            var capacityCompleted = await _tournamentDao.CheckTournamentCapacity(playerCapacity, tournamentDecksDto.Id_Tournament);
+            if (capacityCompleted)
+                throw new ArgumentException("Torneo completo.");
 
             var tournamentDecksModel = new TournamentDecksModel
             {
@@ -77,9 +79,11 @@ namespace CTService.Implementation.Tournament
             if (!tournamentExists)
                 throw new InvalidOperationException("El torneo especificado no existe.");
 
+
             var isAvailableTournaments = await _tournamentDao.ValidateAvailableTournamentsAsync(tournament.Id_Tournament);
             if (!isAvailableTournaments.Any())
                 throw new ArgumentException("Este torneo ya se encuentra finalizado");
+
 
             var duplicateCards = tournament.Cards
                 .GroupBy(i => i)
@@ -93,17 +97,19 @@ namespace CTService.Implementation.Tournament
             if (tournament.Cards == null || !tournament.Cards.Any())
                 throw new ArgumentException("No se proporcionaron cartas para validar.");
 
-            var playerAlreadyRecorded = await _tournamentDao.ValidateTournamentPlayersAsync(tournament.Id_Tournament, idOwner);
-            if (playerAlreadyRecorded.Any())
-                throw new InvalidOperationException($"El Jugador {idOwner} ya se encuentra inscripto en el torneo");
+
+            //var playerAlreadyRecorded = await _tournamentDao.ValidateTournamentPlayersAsync(tournament.Id_Tournament, idOwner);
+            //if (playerAlreadyRecorded.Any())
+            //    throw new InvalidOperationException($"El Jugador {idOwner} ya se encuentra inscripto en el torneo");
+
 
             var tournamentSeries = await _tournamentDao.GetSeriesFromTournamentAsync(tournament.Id_Tournament);
             if (tournamentSeries == null || !tournamentSeries.Any())
                 throw new InvalidOperationException("El torneo no tiene series pactadas.");
 
+
             var validCardsFromSeries = await _tournamentDao.GetCardsFromTournamentSeriesAsync(tournamentSeries,tournament.Cards);
             var invalidCardFromSeries = tournament.Cards.Except(validCardsFromSeries).ToList();
-    
             if (invalidCardFromSeries.Any())
                 throw new ArgumentException($"Las siguientes series no están registradas: {string.Join(", ", invalidCardFromSeries)}");
 
@@ -119,8 +125,8 @@ namespace CTService.Implementation.Tournament
             {
                 Id_Country = tournamentDto.Id_Country,
                 Id_Organizer = idOrganizer,
-                Start_datetime = tournamentDto.Start_datetime,
-                End_datetime = tournamentDto.End_datetime,
+                Start_datetime = DateTime.SpecifyKind(tournamentDto.Start_datetime, DateTimeKind.Utc),
+                End_datetime = DateTime.SpecifyKind(tournamentDto.End_datetime, DateTimeKind.Utc),
                 Current_Phase = 1,
                 Judges_Id = tournamentDto.Judges_Id,
                 Series_Id = tournamentDto.Series_Id,
@@ -144,40 +150,44 @@ namespace CTService.Implementation.Tournament
             return userId;
         }
 
+        
 
-
-        public async Task<int> CalculatePlayerCapacity(int id_tournament)
+        public async Task<PlayerCapacityModel> CalculatePlayerCapacity(int id_tournament)
         {
+
             TournamentDto tournament = await GetTournamentById(id_tournament);
 
-            var start_datetime = tournament.Start_datetime;
-            var end_datetime = tournament.End_datetime;
+            var startDatetime = tournament.Start_datetime.ToUniversalTime();
+            var endDatetime = tournament.End_datetime.ToUniversalTime();
+  
+            var matchStartTime = new TimeSpan(9, 0, 0); 
+            var matchEndTime = new TimeSpan(21, 0, 0); 
 
-            if (end_datetime <= start_datetime)
+            var totalMinutes = (endDatetime - startDatetime).TotalMinutes;
+
+            int totalDays = (int)(endDatetime.Date - startDatetime.Date).TotalDays + 1; // +1 para incluir el día de inicio
+
+            int availableMatchMinutesPerDay = (int)(matchEndTime - matchStartTime).TotalMinutes;
+
+            int totalAvailableMatchMinutes = totalDays * availableMatchMinutesPerDay;
+
+            var maxMatches = totalAvailableMatchMinutes / 30; // 30 minutos por partido
+
+            maxMatches = (int)Math.Pow(2, Math.Floor(Math.Log(maxMatches) / Math.Log(2)));
+
+            var maxPlayers = maxMatches * 2;
+
+            int minPlayers = Math.Max(16, (int)Math.Pow(2, Math.Ceiling(Math.Log2(maxPlayers))));
+
+            minPlayers = Math.Min(minPlayers, maxPlayers);
+
+            var playerCapacity = new PlayerCapacityModel
             {
-                throw new InvalidOperationException("La fecha de fin debe ser posterior a la fecha de inicio.");
-            }
+                MaxPlayers = maxPlayers,
+                MinPlayers = minPlayers
+            };
 
-            TimeSpan startTimeLimit = TimeSpan.FromHours(7);  // 07:00 AM
-            TimeSpan endTimeLimit = TimeSpan.FromHours(19);   // 07:00 PM
-
-            int numberOfSegments = 0;
-
-            DateTime current = start_datetime;
-            while (current < end_datetime)
-            {
-                TimeSpan currentTime = current.TimeOfDay;
-
-                if (currentTime >= startTimeLimit && currentTime < endTimeLimit)
-                {
-                    numberOfSegments++;
-                }
-
-                current = current.AddMinutes(30);
-            }
-
-            int maxPlayers = numberOfSegments * 2;
-            return await Task.FromResult(maxPlayers);
+            return playerCapacity;
         }
 
         public async Task<TournamentDto> GetTournamentById(int id_tournament)

@@ -1,4 +1,5 @@
-﻿using CTDto.Card;
+﻿using CTDataModels.Game;
+using CTDto.Card;
 using CTDto.Tournaments;
 using System;
 using System.Collections.Generic;
@@ -19,6 +20,8 @@ namespace CTService.Interfaces.Tournaments
 
         //Cards
         Task<int> InsertTournamentDecksAsync(TournamentDecksDto tournamentDecksDto);
+
+        Task<PlayerCapacityModel> CalculatePlayerCapacity(int id_tournament);
 
 
     }

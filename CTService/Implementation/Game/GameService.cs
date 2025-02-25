@@ -9,6 +9,8 @@ using CTDto.Card;
 using CTDto.Game;
 using CTDto.Tournaments;
 using CTService.Interfaces.Game;
+using CTService.Interfaces.Tournaments;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
 using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
@@ -26,12 +28,15 @@ namespace CTService.Implementation.Game
 
         private readonly IUserDao _userDao;
 
+        private readonly ITournamentService _tournamentService;
 
-        public GameService(IGameDao gameDao, ITournamentDao touurnamentDao,IUserDao userDao)
+
+        public GameService(IGameDao gameDao, ITournamentDao touurnamentDao,IUserDao userDao, ITournamentService tournamentService)
         {
             _gameDao = gameDao;
             _tournamentDao = touurnamentDao;
             _userDao = userDao;
+            _tournamentService = tournamentService;
         }
 
         public async Task<int> CreateMatchAsync(MatchDto match)
@@ -76,13 +81,18 @@ namespace CTService.Implementation.Game
             if (!tournamentExists)
                 throw new InvalidOperationException("El torneo especificado no existe.");
 
+            var playerCapacity = await _tournamentService.CalculatePlayerCapacity(tournamentDto.Tournament_Id);
+            var capacityCompleted = await _tournamentDao.CheckTournamentCapacity(playerCapacity, tournamentDto.Tournament_Id);
+            if (!capacityCompleted)
+                throw new InvalidOperationException("El torneo aun debe completar su capacidad.");
+
 
             List<int> playersIds = await _gameDao.GetTournamentPlayersAsync(tournamentModel.Tournament_Id);
 
+
             if (playersIds.Count < 2)
-            {
                 throw new InvalidOperationException("Se necesitan al menos dos jugadores para iniciar el torneo.");
-            }
+
 
             List<int> tournamentJudgesIds = await _tournamentDao.GetTournamentJudgesAsync(tournamentDto.Tournament_Id);
 

@@ -33,7 +33,7 @@ namespace CTApp.Controllers.User
         }
 
 
-        [Authorize(Roles = "1")]
+        [Authorize(Roles = "1|2")]
         [HttpGet("GetJudges")]
         public async Task<IActionResult> GetJudges()
         {
@@ -46,7 +46,7 @@ namespace CTApp.Controllers.User
         }
 
 
-        [Authorize(Roles = "1")]
+        [Authorize(Roles = "1|2")]
         [HttpGet("GetCountries")]
         public async Task<IActionResult> GetCountries()
         {
@@ -55,7 +55,7 @@ namespace CTApp.Controllers.User
             return Ok(ApiResponse<IEnumerable<CountriesListDto>>.SuccessResponse("Paises obtenidos exitosamente.", countries));
         }
 
-        [Authorize(Roles = "1")]
+        [Authorize(Roles = "1|2")]
         [HttpGet("GetSeries")]
         public async Task<IActionResult> GetSeries()
         {
