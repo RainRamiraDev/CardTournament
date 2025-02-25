@@ -81,10 +81,10 @@ namespace CTApp.Response
         return new ApiResponse<T>(true, message, (T)(object)organizers);
     }
 
-    internal static object SuccessResponse(string message, IEnumerable<AdminDto> admins)
-    {
-        return new ApiResponse<T>(true, message, (T)(object)admins);
-    }
+    //internal static object SuccessResponse(string message, IEnumerable<AdminDto> admins)
+    //{
+    //    return new ApiResponse<T>(true, message, (T)(object)admins);
+    //}
 
     }
 }

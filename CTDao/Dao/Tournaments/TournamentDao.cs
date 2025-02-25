@@ -41,13 +41,13 @@ namespace CTDao.Dao.Tournaments
             }
         }
 
-        public async Task<List<int>> GetCountriesFromDbAsync()
+        public async Task<List<int>> ValidateCountriesFromDbAsync(int id_country)
         {
             using (var connection = new MySqlConnection(_connectionString))
             {
                 await connection.OpenAsync();
 
-                var countriesIds = await connection.QueryAsync<int>(QueryLoader.GetQuery("QueryGetCountriesFromDb"));
+                var countriesIds = await connection.QueryAsync<int>(QueryLoader.GetQuery("QueryVerifyCountriesFromDb") ,new{id_country = id_country});
 
                 return countriesIds.ToList();
             }

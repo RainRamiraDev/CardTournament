@@ -3,9 +3,11 @@ using CTDao.Dao.User;
 using CTDao.Interfaces.Tournaments;
 using CTDao.Interfaces.User;
 using CTDataModels.Users;
+using CTDataModels.Users.Admin;
 using CTDataModels.Users.LogIn;
 using CTDto.Card;
 using CTDto.Users;
+using CTDto.Users.Admin;
 using CTDto.Users.Judge;
 using CTDto.Users.LogIn;
 using CTDto.Users.Organizer;
@@ -92,7 +94,6 @@ namespace CTService.Implementation.User
             });
         }
 
-      
         public async Task<IEnumerable<CountriesListDto>> GetAllCountriesAsync()
         {
             var countryModels = await _userDao.GetAllCountriesAsync();
@@ -137,26 +138,73 @@ namespace CTService.Implementation.User
             return userDto.Id_Rol != 4 ? 0 : new Random().Next(1000, 1000001);
         }
 
-
         public async Task<bool> ValidateUserCreation(UserCreationModel user)
         {
             var response = true;
 
-            var registeredCountries = await _tournamentDao.GetCountriesFromDbAsync();
-            if (!registeredCountries.Contains(user.Id_Country))
+            var registeredCountries = await _tournamentDao.ValidateCountriesFromDbAsync(user.Id_Country);
+            if (!registeredCountries.Any())
                 throw new ArgumentException("El país especificado no está registrado.");
 
-            var registeredAlias = await _userDao.GetAllUsersAlias();
-            if (registeredAlias.Contains(user.Alias))
-                throw new ArgumentException("El Alias especificado ya está registrado.");
 
-            var registeredEmails = await _userDao.GetAllUsersEmails();
-            if (registeredEmails.Contains(user.Email))
+            bool aliasExists = await _userDao.ValidateUsersAlias(user.Alias);
+            if (aliasExists)
+                throw new ArgumentException("El Alias especificado ya está registrado y no puede repetirse.");
+
+
+            var emailsExist = await _userDao.ValidateUserEmail(user.Email);
+            if (emailsExist)
                 throw new ArgumentException("El Email especificado ya está registrado.");
 
             return response;
         }
 
+        public async Task AlterUserAsync(AlterUserDto userDto)
+        {
+            var alterUserModel = new AlterUserModel
+            {
+              Id_User = userDto.Id_User,
+              New_IdCountry = userDto.New_IdCountry,
+              New_Alias = userDto.New_Alias,
+              New_Avatar_Url = userDto.New_Avatar_Url,
+              New_Email = userDto.New_Email,
+              New_Fullname = userDto.New_Fullname,
+              New_Id_Rol  = userDto.New_Id_Rol,
+           };
 
+            var isValidUser = await ValidateUserModificationAsync(alterUserModel);
+            if (isValidUser)
+                await _userDao.AlterUserAsync(alterUserModel);
+        }
+
+        public async Task<bool> ValidateUserModificationAsync(AlterUserModel user)
+        {
+            var response = true;
+
+            //traer el usuario por id de la base de datos
+
+            UserModel oldUser = await _userDao.GetUserById(user.Id_User);
+            if (oldUser == null)
+                throw new ArgumentException("El Usuario especificado no está registrado.");
+
+            Console.WriteLine($" Viejo Usuario ID: {oldUser.Id_User},\n Nombre: {oldUser.Fullname},\n Email: {oldUser.Email},\n País: {oldUser.Country},\n Rol: {oldUser.Id_Rol},\n Avatar: {oldUser.Avatar_Url}");
+
+            Console.WriteLine($" Nuevo usuario ID: {user.Id_User},\n Nombre: {user.New_Fullname},\n Email: {user.New_Email},\n País: {user.New_IdCountry},\n Rol: {user.New_Id_Rol},\n Avatar: {user.New_Avatar_Url}");
+
+
+            var registeredCountries = await _tournamentDao.ValidateCountriesFromDbAsync(user.New_IdCountry);
+            if (!registeredCountries.Any())
+                throw new ArgumentException("El país especificado no está registrado.");
+
+            bool aliasExists = await _userDao.ValidateUsersAlias(user.New_Alias);
+            if (aliasExists)
+                throw new ArgumentException("El Alias especificado ya está registrado y no puede repetirse.");
+
+            var emailsExists = await _userDao.ValidateUserEmail(user.New_Email);
+            if (emailsExists)
+                throw new ArgumentException("El Email especificado ya está registrado y no puede repetirse.");
+   
+            return response;
+        }
     }
 }

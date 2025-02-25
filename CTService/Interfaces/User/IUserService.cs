@@ -1,6 +1,7 @@
 ﻿
 using CTDataModels.Users;
 using CTDto.Users;
+using CTDto.Users.Admin;
 using CTDto.Users.Judge;
 using CTDto.Users.LogIn;
 using CTDto.Users.Organizer;
@@ -22,6 +23,10 @@ namespace CTService.Interfaces.User
         //Judges
         Task<IEnumerable<JudgeDto>> GetAllJudgesAsync();
         Task<IEnumerable<CountriesListDto>> GetAllCountriesAsync();
+
+
+        //Admin
         Task CreateUserAsync(UserCreationDto userDto);
+        Task AlterUserAsync(AlterUserDto userDto);
     }
 }

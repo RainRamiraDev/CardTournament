@@ -1,6 +1,22 @@
 [
   {
     "ContainingType": "CTApp.Controllers.User.AdminController",
+    "Method": "AlterUser",
+    "RelativePath": "api/Admin/AlterUser",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "userDto",
+        "Type": "CTDto.Users.Admin.AlterUserDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CTApp.Controllers.User.AdminController",
     "Method": "CreateUser",
     "RelativePath": "api/Admin/CreateUser",
     "HttpMethod": "POST",

@@ -1,4 +1,5 @@
 ﻿using CTDataModels.Users;
+using CTDataModels.Users.Admin;
 using CTDataModels.Users.LogIn;
 using CTDataModels.Users.Organizer;
 using CTDto.Users.Organizer;
@@ -27,9 +28,13 @@ namespace CTDao.Interfaces.User
 
         Task<int> CreateUserAsync(UserCreationModel user);
 
-        Task<List<string>> GetAllUsersEmails();
+        Task<bool> ValidateUserEmail(string userEmail);
 
-        Task<List<string>> GetAllUsersAlias();
+        Task<bool> ValidateUsersAlias(string userAlias);
+
+        Task<UserModel> GetUserById(int id_user);
+
+        Task AlterUserAsync(AlterUserModel user);
 
 
     }

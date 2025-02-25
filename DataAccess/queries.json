@@ -24,6 +24,9 @@
   "QuerySetTournamentEndDateTime": "UPDATE t_tournaments SET End_DateTime = @End_DateTime WHERE id_tournament = @id_tournament;",
 
 
+
+
+
   "QueryGetCardsFromTournamentSeries": "SELECT id_card FROM t_card_series WHERE id_series IN @Id_series AND id_card IN @id_card;",
 
 
@@ -35,8 +38,15 @@
 
 
   "QueryGetCardIllustrationById": "SELECT illustration FROM t_cards WHERE id_card IN @id_card;",
+
   "QueryGetAllSeriesNames": "SELECT series_name,id_series FROM t_series WHERE series_name IS NOT NULL AND release_date IS NOT NULL ORDER BY series_name asc",
-  "QueryGetCountriesFromDb": "SELECT id_country FROM t_countries",
+
+
+
+  "QueryVerifyCountriesFromDb": "SELECT id_country FROM t_countries WHERE id_country = @id_country",
+
+
+
   "QueryGetAllCountries": "SELECT country_name, id_country FROM t_countries WHERE country_name IS NOT NULL ORDER BY country_name asc;",
   "QueryValidateSeries": "SELECT id_series FROM t_series WHERE id_series IN @id_series;",
   "QueryValidateTournamentPlayers": "SELECT id_player FROM t_tourn_players WHERE id_tournament = @id_tournament AND id_player = @id_player;",
@@ -76,7 +86,14 @@
 
   "QueryCreateUser": "INSERT INTO t_Users (Id_Country, Id_Rol, Fullname, Passcode, Alias, Email, Avatar_Url, Games_Won, Games_Lost, Disqualifications,ki) VALUES (@Id_Country, @Id_Rol, @Fullname, @Passcode,@Alias, @Email, @Avatar_Url, @Games_Won, @Games_Lost, @Disqualifications, @Ki);",
 
-  "QueryGetAllEmails": "SELECT email FROM t_users WHERE email IS NOT null;",
-  "QueryGetAllAlias": "SELECT alias FROM t_users WHERE alias IS NOT null;"
+  "QueryGetUserById": "SELECT id_user, id_country, id_rol, fullname, alias, email, games_won, games_lost, disqualifications, avatar_url, ki FROM t_users WHERE id_user = @id_user",
+
+  "QueryAlterUser": "UPDATE t_users SET id_country = @id_country, id_rol = @id_rol, fullname = @fullname, alias = @alias, email = @email, avatar_url = @avatar_url WHERE id_user = @id_user;",
+
+
+  "QueryVerifyEmail": "SELECT COUNT(*) FROM t_users WHERE email = @email;",
+
+
+  "QueryVerifyAlias": "SELECT COUNT(*) FROM t_users WHERE alias = @alias;"
 
 }

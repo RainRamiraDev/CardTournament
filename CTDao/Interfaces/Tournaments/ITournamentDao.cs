@@ -25,7 +25,7 @@ namespace CTDao.Interfaces.Tournaments
         Task<DateTime> GetTournamentStartDateAsync(int id_tournament);
 
 
-        Task<List<int>> GetCountriesFromDbAsync();
+        Task<List<int>> ValidateCountriesFromDbAsync(int id_country);
 
         Task<List<int>> ValidateTournamentPlayersAsync(int tournamentId, int id_player);
 

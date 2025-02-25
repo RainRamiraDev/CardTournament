@@ -197,8 +197,8 @@ namespace CTService.Implementation.Tournament
         public async Task<bool> ValidateTournament(TournamentModel tournament)
         {
 
-            var registeredCountries = await _tournamentDao.GetCountriesFromDbAsync();
-            if (!registeredCountries.Contains(tournament.Id_Country))
+            var registeredCountries = await _tournamentDao.ValidateCountriesFromDbAsync(tournament.Id_Country);
+            if (!registeredCountries.Any())
                 throw new ArgumentException("El país especificado no está registrado.");
 
 
