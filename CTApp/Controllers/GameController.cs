@@ -32,5 +32,5 @@ namespace CTApp.Controllers
             return Ok(response);
         }
     }
-    }
+    
 }
