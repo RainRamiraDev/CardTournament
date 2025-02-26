@@ -17,9 +17,7 @@ namespace CTApp.Controllers.User
     {
 
         private readonly IUserService _userService;
-
         private readonly IRefreshTokenService _refreshTokenService;
-
         private readonly KeysConfiguration _keysConfiguration;
 
 
@@ -49,11 +47,7 @@ namespace CTApp.Controllers.User
             var user = await _userService.LogInAsync(loginRequest.Fullname, loginRequest.Passcode);
 
             if (user == null)
-            {
-                return NotFound(ApiResponse<UserDto>.ErrorResponse(
-                    new List<string> { "Usuario o contraseña incorrectos." }
-                ));
-            }
+                return NotFound(ApiResponse<UserDto>.ErrorResponse(new List<string> { "Usuario o contraseña incorrectos." } ));
 
             var accessToken = _refreshTokenService.GenerateAccessTokenAsync(user.Id_User, user.Fullname,user.Id_Rol);
 
@@ -84,8 +78,6 @@ namespace CTApp.Controllers.User
             return Ok(new { AccessToken = newAccessToken });
         }
 
-
-
         [HttpPost("Logout")]
         public async Task<IActionResult> Logout()
         {
@@ -96,28 +88,10 @@ namespace CTApp.Controllers.User
             bool result = await _refreshTokenService.LogoutAsync(refreshToken);
 
             if (!result)
-            {
                 return NotFound(new { Message = "El token no fue encontrado o ya se eliminó." });
-            }
 
             ManageRefreshTokenCookie("", DateTime.Now);
             return Ok(new { Message = "Sesión cerrada exitosamente." });
         }
-
-
-        //[HttpPost("FirstLogIn")]
-        //public async Task<IActionResult> CreateUserWhitHashedPassword([FromBody] FirstLogInDto loginDto)
-        //{
-        //    var userId = await _userService.CreateWhitHashedPasswordAsync(loginDto);
-        //    var user = new UserDto
-        //    {
-        //        Fullname = loginDto.Fullname,
-        //        Passcode = loginDto.Passcode,
-        //        Id_Rol = loginDto.Id_Rol 
-        //    };
-        //    var response = ApiResponse<FirstLogInDto>.SuccessResponse("Usuario creado exitosamente", loginDto);
-        //    return Created(string.Empty, response);
-        //}
-
     }
 }

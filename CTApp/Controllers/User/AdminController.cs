@@ -26,31 +26,20 @@ namespace CTApp.Controllers.User
         public async Task<IActionResult> CreateUser([FromBody] UserCreationDto userDto)
         {
             if (userDto == null)
-            {
                 return BadRequest("Invalid user data.");
-            }
-
-            try
-            {
+            
                 await _userService.CreateUserAsync(userDto);
 
-                var user = new FirstLogInDto
-                {
-                    
-                    Fullname = userDto.Fullname,
-                    Id_Rol = userDto.Id_Rol,
-                    Passcode = userDto.Passcode,
-                };
-
-                var response = ApiResponse<FirstLogInDto>.SuccessResponse("Usuario creado exitosamente", user);
-
-                return Created(string.Empty, response);
-            }
-            catch (ArgumentException ex)
+            var user = new FirstLogInDto
             {
-                return BadRequest(new { message = ex.Message });
-            }
-          
+                    
+                Fullname = userDto.Fullname,
+                Id_Rol = userDto.Id_Rol,
+                Passcode = userDto.Passcode,
+            };
+
+            var response = ApiResponse<FirstLogInDto>.SuccessResponse("Usuario creado exitosamente", user);
+            return Created(string.Empty, response);
         }
 
         [Authorize(Roles = "2")]
@@ -58,38 +47,22 @@ namespace CTApp.Controllers.User
         public async Task<IActionResult> AlterUser([FromBody] AlterUserDto userDto)
         {
             if (userDto == null)
-            {
                 return BadRequest("Invalid user data.");
-            }
 
-            try
+            await _userService.AlterUserAsync(userDto);
+
+            var newUser = new AlterUserDto
             {
-                await _userService.AlterUserAsync(userDto);
+                New_Fullname = userDto.New_Fullname,
+                New_Id_Rol = userDto.New_Id_Rol,
+                New_IdCountry = userDto.New_IdCountry,
+                New_Alias = userDto.New_Alias,
+                New_Email = userDto.New_Email,     
+                New_Avatar_Url = userDto.New_Avatar_Url,
+            };
 
-                var newUser = new AlterUserDto
-                {
-                    New_Fullname = userDto.New_Fullname,
-                    New_Id_Rol = userDto.New_Id_Rol,
-                    New_IdCountry = userDto.New_IdCountry,
-                    New_Alias = userDto.New_Alias,
-                    New_Email = userDto.New_Email,     
-                    New_Avatar_Url = userDto.New_Avatar_Url,
-                };
-
-                var response = ApiResponse<AlterUserDto>.SuccessResponse("Usuario creado exitosamente", newUser);
-                return Created(string.Empty, response);
-            }
-            catch (ArgumentException ex)
-            {
-                return BadRequest(new { message = ex.Message });
-            }
-
-
+            var response = ApiResponse<AlterUserDto>.SuccessResponse("Usuario creado exitosamente", newUser);
+            return Created(string.Empty, response);
         }
-
-
-
-
-
     }
 }

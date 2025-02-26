@@ -20,9 +20,7 @@ namespace CTApp.Controllers.User
     public class OrganizerController : ControllerBase
     {
         private readonly IUserService _userService;
-
         private readonly ITournamentService _tournamentService;
-
         private readonly ICardService _cardService;
 
         public OrganizerController(IUserService userService, ITournamentService tournamentService, ICardService cardService)
@@ -51,16 +49,15 @@ namespace CTApp.Controllers.User
         public async Task<IActionResult> GetCountries()
         {
             var countries = await _userService.GetAllCountriesAsync();
-
             return Ok(ApiResponse<IEnumerable<CountriesListDto>>.SuccessResponse("Paises obtenidos exitosamente.", countries));
         }
+
 
         [Authorize(Roles = "1|2")]
         [HttpGet("GetSeries")]
         public async Task<IActionResult> GetSeries()
         {
             var series = await _cardService.GetAllSeriesAsync();
-
             return Ok(ApiResponse<IEnumerable<SeriesListDto>>.SuccessResponse("Series obtenidos exitosamente.", series));
         }
 
@@ -80,10 +77,5 @@ namespace CTApp.Controllers.User
 
             return Created("", ApiResponse<object>.SuccessResponse("Torneo creado exitosamente.", new { id }));
         }
-
-
-
     }
-
-
 }

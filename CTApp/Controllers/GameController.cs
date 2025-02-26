@@ -1,4 +1,5 @@
-﻿using CTDto.Game;
+﻿using CTApp.Response;
+using CTDto.Game;
 using CTDto.Tournaments;
 using CTService.Interfaces.Game;
 using Microsoft.AspNetCore.Authorization;
@@ -22,20 +23,14 @@ namespace CTApp.Controllers
         [HttpPost("resolve")]
         public async Task<IActionResult> ResolveGame([FromBody] TournamentRequestToResolveDto request)
         {
-            try
-            {
+            if (request == null)
+                return BadRequest("Invalid request data.");
 
-                GameResultDto result = await _gameService.ResolveGameAsync(request);
-                return Ok(result);
-            }
-            catch (InvalidOperationException ex)
-            {
-                return BadRequest(new { message = ex.Message });
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, new { message = "Error interno del servidor.", error = ex.Message });
-            }
+            GameResultDto result = await _gameService.ResolveGameAsync(request);
+
+            var response = ApiResponse<GameResultDto>.SuccessResponse("Juego resuelto exitosamente.", result);
+            return Ok(response);
         }
+    }
     }
 }
