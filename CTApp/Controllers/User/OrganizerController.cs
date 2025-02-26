@@ -66,37 +66,24 @@ namespace CTApp.Controllers.User
 
 
 
-
         [Authorize(Roles = "1")]
         [HttpPost("CreateTournament")]
         public async Task<IActionResult> CreateTournament([FromBody] TournamentDto tournamentDto)
         {
-            try
-            {
-                if (tournamentDto == null)
-                {
-                    return BadRequest("Invalid tournament data.");
-                }
+            if (tournamentDto == null)
+                return BadRequest(ApiResponse<object>.ErrorResponse("Los datos del torneo son inválidos."));
 
-                var id = await _tournamentService.CreateTournamentAsync(tournamentDto);
+            var id = await _tournamentService.CreateTournamentAsync(tournamentDto);
 
-                if (id == 0)
-                {
-                    return StatusCode(500, "Error creating tournament.");
-                }
+            if (id == 0)
+                throw new InvalidOperationException("Error al crear el torneo.");
 
-
-
-                return Created("", new { id });
-            }
-            catch (Exception ex)
-            {
-                // Manejo general de excepciones
-                return StatusCode(500, new { success = false, message = "Ocurrió un error inesperado.", details = ex.Message });
-            }
-
-
+            return Created("", ApiResponse<object>.SuccessResponse("Torneo creado exitosamente.", new { id }));
         }
 
+
+
     }
+
+
 }
