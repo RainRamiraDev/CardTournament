@@ -390,13 +390,12 @@ namespace CTDao.Dao.Tournaments
             {
                 await connection.OpenAsync();
 
-                // Obtener el número actual de jugadores en el torneo desde la base de datos
+
                 int currentPlayerCount = await connection.ExecuteScalarAsync<int>(
                     QueryLoader.GetQuery("QueryCheckTournamentCapacity"),
                     new { id_tournament }
                 );
 
-                // Guard clauses: si el número de jugadores está fuera del rango, retornamos false
                 if (currentPlayerCount < capacity.MinPlayers) return false;
                 if (currentPlayerCount > capacity.MaxPlayers) return false;
             }

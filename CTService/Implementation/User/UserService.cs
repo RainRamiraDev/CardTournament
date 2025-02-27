@@ -198,8 +198,10 @@ namespace CTService.Implementation.User
 
         public async Task SoftDeleteUserAsync(SoftDeleteUserDto userDto)
         {
-              await _userDao.SoftDeleteUserAsync(userDto.Id_User);
 
+
+
+              await _userDao.SoftDeleteUserAsync(userDto.Id_User);
         }
     }
 }
