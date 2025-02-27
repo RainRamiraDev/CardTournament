@@ -32,6 +32,22 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "CTApp.Controllers.User.AdminController",
+    "Method": "DeactivateUser",
+    "RelativePath": "api/Admin/DeactivateUser",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "userDto",
+        "Type": "CTDto.Users.Admin.SoftDeleteUserDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "CTApp.Controllers.GameController",
     "Method": "ResolveGame",
     "RelativePath": "api/Game/resolve",

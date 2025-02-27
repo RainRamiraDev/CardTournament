@@ -250,11 +250,10 @@ INSERT INTO T_Countries (country_name) VALUES
 ('Nicaragua'),
 ('Anguilla');
 
-INSERT INTO T_CARDS (illustration, attack, deffense) VALUES
+INSERT INTO T_CARDS (illustration, attack, defense) VALUES
 ('Ancestor\'s Chosen', 1000, 1000),
 ('Angel of Mercy', 1000, 1000),
 ('Angelic Blessing', 2728, 1370),
-('Angelic Blessing', 3361, 3581),
 ('Angelic Chorus', 1775, 1005),
 ('Angelic Wall', 1000, 1000),
 ('Aura of Silence', 2588, 3819),
@@ -271,11 +270,9 @@ INSERT INTO T_CARDS (illustration, attack, deffense) VALUES
 ('Glorious Anthem', 1520, 2783),
 ('Hail of Arrows', 1717, 1453),
 ('Heart of Light', 2169, 3669),
-('Heart of Light', 2130, 2509),
 ('High Ground', 2786, 1320),
 ('Holy Day', 3490, 1180),
 ('Holy Strength', 3548, 3140),
-('Holy Strength', 2356, 3266),
 ('Honor Guard', 1000, 1000),
 ('Icatian Priest', 1000, 1000),
 ('Kjeldoran Royal Guard', 1000, 1000),
@@ -283,13 +280,10 @@ INSERT INTO T_CARDS (illustration, attack, deffense) VALUES
 ('Loyal Sentry', 1000, 1000),
 ('Luminesce', 1919, 1513),
 ('Mobilization', 1420, 3601),
-('Mobilization', 2655, 3633),
 ('Nomad Mythmaker', 1000, 1000),
 ('Pacifism', 3212, 1474),
-('Pacifism', 3666, 3407),
 ('Paladin en-Vec', 1000, 1000),
 ('Pariah', 1841, 1127),
-('Pariah', 1522, 1610),
 ('Reviving Dose', 1121, 2894),
 ('Reya Dawnbringer', 1000, 1000),
 ('Righteousness', 2015, 1003),
@@ -297,13 +291,11 @@ INSERT INTO T_CARDS (illustration, attack, deffense) VALUES
 ('Samite Healer', 1000, 1000),
 ('Serra Angel', 1000, 1000),
 ('Serra\'s Embrace', 1868, 1292),
-('Serra\'s Embrace', 3512, 1683),
 ('Skyhunter Patrol', 1000, 1000),
 ('Skyhunter Prowler', 1000, 1000),
 ('Skyhunter Skirmisher', 1000, 1000),
 ('Soul Warden', 1000, 1000),
 ('Spirit Link', 3024, 3373),
-('Spirit Link', 2444, 3633),
 ('Spirit Weaver', 1000, 1000),
 ('Starlight Invoker', 1000, 1000),
 ('Steadfast Guard', 1000, 1000),
@@ -326,7 +318,40 @@ INSERT INTO T_CARDS (illustration, attack, deffense) VALUES
 ('Ambassador Laquatus', 1000, 1000),
 ('Arcanis the Omnipotent', 1000, 1000),
 ('Aura Graft', 3881, 2689),
-('Aven Fisher', 1000, 1000);
+('Aven Fisher', 1000, 1000),
+('Azure Drake', 2100, 1800),
+('Benthic Behemoth', 3000, 2500),
+('Cephalid Scout', 1500, 1200),
+('Coral Eel', 1800, 1000),
+('Deluge', 2750, 3200),
+('Denizen of the Deep', 4000, 3500),
+('Dream Cache', 2600, 2100),
+('Envelop', 1700, 2900),
+('Flood', 2300, 1400),
+('Giant Tortoise', 1000, 2500),
+('Horseshoe Crab', 1900, 2300),
+('Illusionary Forces', 3400, 2200),
+('Index', 2000, 1500),
+('Lat-Nam’s Legacy', 1950, 2850),
+('Looming Shade', 2500, 1000),
+('Merfolk Looter', 1300, 1600),
+('Mind Spring', 3100, 2700),
+('Mystic Remora', 1500, 3400),
+('Phantom Monster', 2800, 2400),
+('Ponder', 1750, 3000),
+('Prodigal Sorcerer', 2000, 1300),
+('Ray of Command', 1900, 2500),
+('Remove Soul', 2200, 1800),
+('Sage Owl', 2400, 1500),
+('Sea Monster', 4000, 2800),
+('Sleight of Hand', 1700, 2100),
+('Sphinx of Foresight', 3500, 3300),
+('Tolarian Winds', 2600, 1900),
+('Vedalken Shackles', 1200, 2500),
+('Wind Drake', 2200, 1800),
+('Fallen Angel', 3200, 1500),
+('Flamekin Harbinger', 2800, 2300);
+
 
 INSERT INTO T_SERIES (series_name, release_date) VALUES
 ('Alpha', '1993-10-01'),
@@ -341,83 +366,109 @@ INSERT INTO T_SERIES (series_name, release_date) VALUES
 ('Urzas Saga', '1998-10-12');
 
 INSERT INTO T_CARD_SERIES (id_card, id_series) VALUES
-(1, 1),  -- Ancestor's Chosen, Alpha
-(2, 1),  -- Angel of Mercy, Alpha
-(3, 1),  -- Angelic Blessing, Alpha
-(4, 2),  -- Angelic Blessing, Beta
-(5, 2),  -- Angelic Chorus, Beta
-(6, 2),  -- Angelic Wall, Beta
-(7, 3),  -- Aura of Silence, Unlimited
-(8, 3),  -- Aven Cloudchaser, Unlimited
-(9, 3),  -- Ballista Squad, Unlimited
-(10, 4), -- Bandage, Arabian Nights
-(11, 4), -- Beacon of Immortality, Arabian Nights
-(12, 4), -- Benalish Knight, Arabian Nights
-(13, 5), -- Cho-Manno, Revolutionary, Antiquities
-(14, 5), -- Condemn, Antiquities
-(15, 6), -- Demystify, Legends
-(16, 6), -- Field Marshal, Legends
-(17, 6), -- Ghost Warden, Legends
-(18, 7), -- Glorious Anthem, The Dark
-(19, 7), -- Hail of Arrows, The Dark
-(20, 8), -- Heart of Light, Mirage
-(21, 8), -- Heart of Light, Mirage
-(22, 8), -- High Ground, Mirage
-(23, 9), -- Holy Day, Tempest
-(24, 9), -- Holy Strength, Tempest
-(25, 9), -- Holy Strength, Tempest
-(26, 9), -- Honor Guard, Tempest
-(27, 10), -- Icatian Priest, Urzas Saga
-(28, 10), -- Kjeldoran Royal Guard, Urzas Saga
-(29, 10), -- Loxodon Mystic, Urzas Saga
-(30, 10), -- Loyal Sentry, Urzas Saga
-(31, 10), -- Luminesce, Urzas Saga
-(32, 1),  -- Mobilization, Alpha
-(33, 1),  -- Mobilization, Alpha
-(34, 2),  -- Nomad Mythmaker, Beta
-(35, 3),  -- Pacifism, Unlimited
-(36, 3),  -- Pacifism, Unlimited
-(37, 4),  -- Paladin en-Vec, Arabian Nights
-(38, 4),  -- Pariah, Arabian Nights
-(39, 4),  -- Pariah, Arabian Nights
-(40, 5),  -- Reviving Dose, Antiquities
-(41, 6),  -- Reya Dawnbringer, Legends
-(42, 7),  -- Righteousness, The Dark
-(43, 8),  -- Rule of Law, Mirage
-(44, 9),  -- Samite Healer, Tempest
-(45, 10), -- Serra Angel, Urzas Saga
-(46, 10), -- Serra's Embrace, Urzas Saga
-(47, 1),  -- Skyhunter Patrol, Alpha
-(48, 1),  -- Skyhunter Prowler, Alpha
-(49, 2),  -- Skyhunter Skirmisher, Beta
-(50, 3),  -- Soul Warden, Unlimited
-(51, 3),  -- Spirit Link, Unlimited
-(52, 4),  -- Spirit Link, Arabian Nights
-(53, 5),  -- Spirit Weaver, Antiquities
-(54, 6),  -- Starlight Invoker, Legends
-(55, 6),  -- Steadfast Guard, Legends
-(56, 7),  -- Story Circle, The Dark
-(57, 8),  -- Suntail Hawk, Mirage
-(58, 8),  -- Tempest of Light, Mirage
-(59, 9),  -- Treasure Hunter, Tempest
-(60, 9),  -- True Believer, Tempest
-(61, 10), -- Tundra Wolves, Urzas Saga
-(62, 10), -- Venerable Monk, Urzas Saga
-(63, 10), -- Voice of All, Urzas Saga
-(64, 1),  -- Wall of Swords, Alpha
-(65, 1),  -- Wall of Swords, Alpha
-(66, 2),  -- Warrior's Honor, Beta
-(67, 3),  -- Wild Griffin, Unlimited
-(68, 3),  -- Windborn Muse, Unlimited
-(69, 4),  -- Wrath of God, Arabian Nights
-(70, 5),  -- Youthful Knight, Antiquities
-(71, 5),  -- Youthful Knight, Antiquities
-(72, 6),  -- Academy Researchers, Legends
-(73, 7),  -- Air Elemental, The Dark
-(74, 7),  -- Ambassador Laquatus, The Dark
-(75, 8),  -- Arcanis the Omnipotent, Mirage
-(76, 8)  -- Aura Graft, Mirage
-
+(1, 1),
+(1, 2),
+(2, 1),
+(2, 2),
+(3, 1),
+(3, 2),
+(4, 2),
+(5, 2),
+(6, 2),
+(7, 3),
+(8, 3),
+(9, 3),
+(10, 4),
+(11, 4),
+(12, 4),
+(13, 5),
+(14, 5),
+(15, 6),
+(16, 6),
+(17, 6),
+(18, 7),
+(19, 7),
+(20, 8),
+(21, 8),
+(22, 8),
+(23, 9),
+(24, 9),
+(25, 9),
+(26, 9),
+(27, 10),
+(28, 10),
+(29, 10),
+(30, 10),
+(31, 10),
+(32, 1),
+(33, 1),
+(34, 2),
+(35, 3),
+(36, 3),
+(37, 4),
+(38, 4),
+(39, 4),
+(40, 5),
+(41, 6),
+(42, 7),
+(43, 8),
+(44, 9),
+(45, 10),
+(46, 10),
+(47, 1),
+(48, 1),
+(49, 2),
+(50, 3),
+(51, 3),
+(52, 4),
+(53, 5),
+(54, 6),
+(55, 6),
+(56, 7),
+(57, 8),
+(58, 8),
+(59, 9),
+(60, 9),
+(61, 10),
+(62, 10),
+(63, 10),
+(64, 1),
+(65, 1),
+(66, 2),
+(67, 3),
+(68, 3),
+(69, 4),
+(70, 5),
+(71, 5),
+(72, 6),
+(73, 7),
+(74, 7),
+(75, 8),
+(76, 8),
+(77, 9),
+(78, 9),
+(79, 10),
+(80, 1),
+(81, 1),
+(82, 2),
+(83, 3),
+(84, 3),
+(85, 4),
+(86, 5),
+(87, 6),
+(88, 7),
+(89, 8),
+(90, 9),
+(91, 10),
+(92, 10),
+(93, 1),
+(94, 1),
+(95, 2),
+(96, 3),
+(97, 4),
+(98, 5),
+(99, 6),
+(100, 7);
 
 
 INSERT INTO T_ROLES (rol) VALUES

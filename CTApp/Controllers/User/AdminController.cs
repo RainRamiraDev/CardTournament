@@ -27,18 +27,18 @@ namespace CTApp.Controllers.User
         {
             if (userDto == null)
                 return BadRequest("Invalid user data.");
-            
-                await _userService.CreateUserAsync(userDto);
 
-            var user = new FirstLogInDto
+
+            var createdUserId = await _userService.CreateUserAsync(userDto);
+            var user = new UserRequestDto
             {
-                    
+                Id = createdUserId,
                 Fullname = userDto.Fullname,
                 Id_Rol = userDto.Id_Rol,
                 Passcode = userDto.Passcode,
             };
 
-            var response = ApiResponse<FirstLogInDto>.SuccessResponse("Usuario creado exitosamente", user);
+            var response = ApiResponse<UserRequestDto>.SuccessResponse("Usuario creado exitosamente", user);
             return Created(string.Empty, response);
         }
 
@@ -62,6 +62,20 @@ namespace CTApp.Controllers.User
             };
 
             var response = ApiResponse<AlterUserDto>.SuccessResponse("Usuario creado exitosamente", newUser);
+            return Created(string.Empty, response);
+        }
+
+
+        [Authorize(Roles = "2")]
+        [HttpDelete("DeactivateUser")]
+        public async Task<IActionResult> DeactivateUser([FromBody] SoftDeleteUserDto userDto)
+        {
+            if (userDto == null)
+                return BadRequest("Invalid user data.");
+
+            await _userService.SoftDeleteUserAsync(userDto);
+
+            var response = ApiResponse<SoftDeleteUserDto>.SuccessResponse("Usuario dado de baja exitosamente");
             return Created(string.Empty, response);
         }
     }

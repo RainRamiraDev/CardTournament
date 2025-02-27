@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace CTDto.Validations.Users.LogIn
 {
-    public class FirstLogInRequestDtoValidation : AbstractValidator<FirstLogInDto>
+    public class FirstLogInRequestDtoValidation : AbstractValidator<UserRequestDto>
     {
         public FirstLogInRequestDtoValidation()
         {

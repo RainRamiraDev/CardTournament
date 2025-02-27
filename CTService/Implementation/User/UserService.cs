@@ -12,6 +12,7 @@ using CTDto.Users.Judge;
 using CTDto.Users.LogIn;
 using CTDto.Users.Organizer;
 using CTService.Interfaces.User;
+using Org.BouncyCastle.Bcpg;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -67,7 +68,7 @@ namespace CTService.Implementation.User
             return user;
         }
 
-        public async Task<int> CreateWhitHashedPasswordAsync(FirstLogInDto LoginDto)
+        public async Task<int> CreateWhitHashedPasswordAsync(UserRequestDto LoginDto)
         {
             string hashedPassword = _passwordHasher.HashPassword(LoginDto.Passcode);
 
@@ -105,7 +106,7 @@ namespace CTService.Implementation.User
             }).ToList();
         }
 
-        public async Task CreateUserAsync(UserCreationDto userDto)
+        public async Task<int>CreateUserAsync(UserCreationDto userDto)
         {
 
             string hashedPassword = _passwordHasher.HashPassword(userDto.Passcode);
@@ -127,10 +128,8 @@ namespace CTService.Implementation.User
                 Ki = calculateUserKi,
             };
 
-            var isValidUser = await ValidateUserCreation(userModel);
-
-            if (isValidUser)
-                await _userDao.CreateUserAsync(userModel);
+            await ValidateUserCreation(userModel);
+            return await _userDao.CreateUserAsync(userModel);
         }
 
         public async Task<int> CalculateUserKi(UserCreationDto userDto)
@@ -138,9 +137,8 @@ namespace CTService.Implementation.User
             return userDto.Id_Rol != 4 ? 0 : new Random().Next(1000, 1000001);
         }
 
-        public async Task<bool> ValidateUserCreation(UserCreationModel user)
+        public async Task ValidateUserCreation(UserCreationModel user)
         {
-            var response = true;
 
             var registeredCountries = await _tournamentDao.ValidateCountriesFromDbAsync(user.Id_Country);
             if (!registeredCountries.Any())
@@ -155,8 +153,6 @@ namespace CTService.Implementation.User
             var emailsExist = await _userDao.ValidateUserEmail(user.Email);
             if (emailsExist)
                 throw new ArgumentException("El Email especificado ya está registrado.");
-
-            return response;
         }
 
         public async Task AlterUserAsync(AlterUserDto userDto)
@@ -181,16 +177,9 @@ namespace CTService.Implementation.User
         {
             var response = true;
 
-            //traer el usuario por id de la base de datos
-
             UserModel oldUser = await _userDao.GetUserById(user.Id_User);
             if (oldUser == null)
                 throw new ArgumentException("El Usuario especificado no está registrado.");
-
-            Console.WriteLine($" Viejo Usuario ID: {oldUser.Id_User},\n Nombre: {oldUser.Fullname},\n Email: {oldUser.Email},\n País: {oldUser.Country},\n Rol: {oldUser.Id_Rol},\n Avatar: {oldUser.Avatar_Url}");
-
-            Console.WriteLine($" Nuevo usuario ID: {user.Id_User},\n Nombre: {user.New_Fullname},\n Email: {user.New_Email},\n País: {user.New_IdCountry},\n Rol: {user.New_Id_Rol},\n Avatar: {user.New_Avatar_Url}");
-
 
             var registeredCountries = await _tournamentDao.ValidateCountriesFromDbAsync(user.New_IdCountry);
             if (!registeredCountries.Any())
@@ -206,5 +195,12 @@ namespace CTService.Implementation.User
    
             return response;
         }
+
+        public async Task SoftDeleteUserAsync(SoftDeleteUserDto userDto)
+        {
+              await _userDao.SoftDeleteUserAsync(userDto.Id_User);
+
+        }
     }
 }
+

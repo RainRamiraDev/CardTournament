@@ -1,12 +1,12 @@
 
-CREATE DATABASE IF NOT EXISTS `card_tournamentdb`;
-USE `card_tournamentdb`;
+CREATE DATABASE IF NOT EXISTS `ctdatabase`;
+USE `ctdatabase`;
 
 CREATE TABLE IF NOT EXISTS `t_cards` (
   `id_card` int NOT NULL AUTO_INCREMENT,
   `illustration` varchar(30) NOT NULL,
-  `attack` int DEFAULT NULL,
-  `deffense` int DEFAULT NULL,
+  `attack` int DEFAULT 0,
+  `defense` int DEFAULT 0,
   PRIMARY KEY (`id_card`)
 ) ENGINE=InnoDB AUTO_INCREMENT=77 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
@@ -37,6 +37,7 @@ CREATE TABLE IF NOT EXISTS `t_countries` (
   PRIMARY KEY (`id_country`)
 ) ENGINE=InnoDB AUTO_INCREMENT=251 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+
 CREATE TABLE IF NOT EXISTS `t_roles` (
   `id_rol` int NOT NULL AUTO_INCREMENT,
   `rol` varchar(20) DEFAULT NULL,
@@ -52,11 +53,12 @@ CREATE TABLE IF NOT EXISTS `t_users` (
   `alias` varchar(20) DEFAULT NULL,
   `email` varchar(100) DEFAULT NULL,
   `passcode` varchar(255) DEFAULT NULL,
-  `games_won` int DEFAULT NULL,
-  `games_lost` int DEFAULT NULL,
-  `disqualifications` int DEFAULT NULL,
+  `games_won` int DEFAULT 0,
+  `games_lost` int DEFAULT 0,
+  `disqualifications` int DEFAULT 0,
   `avatar_url` varchar(255) DEFAULT NULL,
   `ki` int DEFAULT NULL,
+  `active` TINYINT(1) DEFAULT 1,
   PRIMARY KEY (`id_user`),
   KEY `fk_country_user` (`id_country`),
   KEY `fk_rol_user` (`id_rol`),

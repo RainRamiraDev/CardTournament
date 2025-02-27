@@ -98,7 +98,7 @@ namespace CTDao.Dao.User
             {
                 await connection.OpenAsync();
 
-                var affectedRows = await connection.ExecuteAsync(QueryLoader.GetQuery("QueryCreateUser"), new
+                var newUserId = await connection.ExecuteScalarAsync<int>(QueryLoader.GetQuery("QueryCreateUser"), new
                 {
                     user.Id_Country,
                     user.Id_Rol,
@@ -113,7 +113,7 @@ namespace CTDao.Dao.User
                     user.Ki,
                 });
 
-                return affectedRows;
+                return newUserId;
             }
         }
 
@@ -171,6 +171,19 @@ namespace CTDao.Dao.User
                    email =  user.New_Email,
                    avatar_url = user.New_Avatar_Url,
                    id_user = user.Id_User,
+                });
+            }
+        }
+
+        public async Task SoftDeleteUserAsync(int id_user)
+        {
+            using (var connection = new MySqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+
+                var affectedRows = await connection.ExecuteAsync(QueryLoader.GetQuery("QuerySoftDeleteUser"), new
+                {
+                    id_user = id_user
                 });
             }
         }

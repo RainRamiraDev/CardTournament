@@ -36,6 +36,6 @@ namespace CTDao.Interfaces.User
 
         Task AlterUserAsync(AlterUserModel user);
 
-
+        Task SoftDeleteUserAsync(int id_user);
     }
 }

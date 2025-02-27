@@ -79,19 +79,19 @@ namespace CTService.Implementation.Game
             bool tournamentExists = await _tournamentDao.TournamentExistsAsync(tournamentModel.Tournament_Id);
 
             if (!tournamentExists)
-                throw new InvalidOperationException("El torneo especificado no existe.");
+                throw new ArgumentException("El torneo especificado no existe.");
 
             var playerCapacity = await _tournamentService.CalculatePlayerCapacity(tournamentDto.Tournament_Id);
             var capacityCompleted = await _tournamentDao.CheckTournamentCapacity(playerCapacity, tournamentDto.Tournament_Id);
             if (!capacityCompleted)
-                throw new InvalidOperationException("El torneo aun debe completar su capacidad.");
+                throw new ArgumentException("El torneo aun debe completar su capacidad.");
 
 
             List<int> playersIds = await _gameDao.GetTournamentPlayersAsync(tournamentModel.Tournament_Id);
 
 
             if (playersIds.Count < 2)
-                throw new InvalidOperationException("Se necesitan al menos dos jugadores para iniciar el torneo.");
+                throw new ArgumentException("Se necesitan al menos dos jugadores para iniciar el torneo.");
 
 
             List<int> tournamentJudgesIds = await _tournamentDao.GetTournamentJudgesAsync(tournamentDto.Tournament_Id);
