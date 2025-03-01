@@ -16,7 +16,7 @@ namespace CTDao.Interfaces.User
         //log In
         Task<int> CreateWhitHashedPasswordAsync(LoginRequestModel user);
         Task<UserModel> GetUserWhitTokenAsync(int id);
-        Task<UserModel> LogInAsync(string fullname);
+        Task<UserModel> GetUserDataByNameAsync(string fullname);
 
         //Judge
         Task<IEnumerable<UserModel>> GetAllJudgeAsync();

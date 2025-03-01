@@ -33,23 +33,20 @@ namespace CTApp.Response
             Message = message;
             Data = data;
             Errors = errors ?? new List<string>();
-            Token = token; // Solo se asigna si viene como parámetro
+            Token = token;
         }
 
 
-        // ✅ Respuesta exitosa estándar
+
         public static ApiResponse<T> SuccessResponse(string message, T data = default)
             => new ApiResponse<T>(true, message, data);
-
-        // ✅ Respuesta exitosa para listas
+    
         public static ApiResponse<List<T>> SuccessResponse(string message, IEnumerable<T> data)
             => new ApiResponse<List<T>>(true, message, new List<T>(data));
 
-        // ✅ Respuesta específica para login con Token
         public static ApiResponse<T> LoginResponse(string message, T data, string token)
             => new ApiResponse<T>(true, message, data, token: token);
 
-        // ✅ Respuestas de error
         public static ApiResponse<T> ErrorResponse(string message)
             => new ApiResponse<T>(false, message, errors: new List<string> { message });
 

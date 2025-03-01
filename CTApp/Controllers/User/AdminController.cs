@@ -21,7 +21,7 @@ namespace CTApp.Controllers.User
             _userService = userService;
         }
 
-        [Authorize(Roles = "2")]
+        //[Authorize(Roles = "2")]
         [HttpPost("CreateUser")]
         public async Task<IActionResult> CreateUser([FromBody] UserCreationDto userDto)
         {

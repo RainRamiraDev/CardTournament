@@ -1,4 +1,5 @@
-﻿using CTDao.Dao.Security;
+﻿using CTConfigurations;
+using CTDao.Dao.Security;
 using CTDao.Dao.User;
 using CTDao.Interfaces.Tournaments;
 using CTDao.Interfaces.User;
@@ -11,7 +12,11 @@ using CTDto.Users.Admin;
 using CTDto.Users.Judge;
 using CTDto.Users.LogIn;
 using CTDto.Users.Organizer;
+using CTService.Implementation.RefreshToken;
+using CTService.Interfaces.RefreshToken;
 using CTService.Interfaces.User;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
 using Org.BouncyCastle.Bcpg;
 using System;
 using System.Collections.Generic;
@@ -31,11 +36,17 @@ namespace CTService.Implementation.User
 
         private readonly PasswordHasher _passwordHasher;
 
-        public UserService(IUserDao userDao, PasswordHasher passwordHasher, ITournamentDao tournamentDao)
+        private readonly IRefreshTokenService _refreshTokenService;
+
+        private readonly KeysConfiguration _keysConfiguration;
+
+        public UserService(IUserDao userDao, PasswordHasher passwordHasher, ITournamentDao tournamentDao, IRefreshTokenService refreshTokenService, IOptions<KeysConfiguration> keysConfiguration)
         {
             _userDao = userDao;
             _passwordHasher = passwordHasher;
             _tournamentDao = tournamentDao;
+            _refreshTokenService = refreshTokenService; 
+            _keysConfiguration = keysConfiguration.Value;
         }
 
         public async Task<UserDto> GetUserWhitTokenAsync(int id)
@@ -51,22 +62,58 @@ namespace CTService.Implementation.User
             };
         }
 
-        public async Task<UserModel> LogInAsync(string fullname, string passcode)
-        {
-            var user = await _userDao.LogInAsync(fullname);
-            if (user == null)
-            {
-                return null;
-            }
 
-            bool isPasswordValid = _passwordHasher.VerifyPassword(passcode, user.Passcode);
-            if (!isPasswordValid)
-            {
-                return null;
-            }
+
+        public async Task<UserModel> GetUserDataByNameAsync(string fullname)
+        {
+            var user = await _userDao.GetUserDataByNameAsync(fullname);
+
+            //mejorar esto con el control de errores middlewate if is null or empty
+            if (user == null)
+                throw new ArgumentException("El usuario especificado con ese nombre no se encuentra registrado");
 
             return user;
         }
+
+        public async Task<LogInResponseModel> NewLogInAsync(string fullname, string passcode)
+        {
+
+            var user = await GetUserDataByNameAsync(fullname);
+
+
+            //hacer la validacion de usuario activo
+            //var isUserDisable = await _userDao.ValidateIfUserAvailable(int userId);
+            //if (isUserDisable)
+            //throw new ArgumentException("El usuario especificado no se encuentra disponible");
+
+
+            bool isPasswordValid = _passwordHasher.VerifyPassword(passcode, user.Passcode);
+            if (!isPasswordValid)
+                throw new ArgumentException("Contraseña incorrecta");
+
+            var accessToken = await _refreshTokenService.GenerateAccessTokenAsync(user.Id_User, user.Fullname, user.Id_Rol);
+
+            Guid refreshToken = Guid.NewGuid();
+            DateTime expirationDate = DateTime.UtcNow.AddDays(_keysConfiguration.ExpirationDays);
+
+            await _refreshTokenService.SaveRefreshTokenAsync(refreshToken, user.Id_User, expirationDate);
+
+
+            var loginresponse = new LogInResponseModel
+            {
+                RefreshToken = refreshToken,
+                ExpirationDate = expirationDate,
+                AccessToken = accessToken
+            };
+
+            return loginresponse;
+
+        }
+
+
+
+
+
 
         public async Task<int> CreateWhitHashedPasswordAsync(UserRequestDto LoginDto)
         {
@@ -199,8 +246,7 @@ namespace CTService.Implementation.User
         public async Task SoftDeleteUserAsync(SoftDeleteUserDto userDto)
         {
 
-
-
+            //agregar validaciones
               await _userDao.SoftDeleteUserAsync(userDto.Id_User);
         }
     }

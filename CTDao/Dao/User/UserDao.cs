@@ -23,12 +23,12 @@ namespace CTDao.Dao.User
             _connectionString = connectionString;
         }
 
-        public async Task<UserModel> LogInAsync(string fullname)
+        public async Task<UserModel> GetUserDataByNameAsync(string fullname)
         {
             using (var connection = new MySqlConnection(_connectionString))
             {
                 await connection.OpenAsync();
-                var user = await connection.QueryFirstOrDefaultAsync<UserModel>(QueryLoader.GetQuery("QueryLogin"), new { fullname });
+                var user = await connection.QueryFirstOrDefaultAsync<UserModel>(QueryLoader.GetQuery("QueryGetUserDataByName"), new { fullname });
                 return user;
             }
         }

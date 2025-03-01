@@ -84,7 +84,6 @@ namespace CTService.Implementation.Tournament
             if (!isAvailableTournaments.Any())
                 throw new ArgumentException("Este torneo ya se encuentra finalizado");
 
-
             var duplicateCards = tournament.Cards
                 .GroupBy(i => i)
                 .Where(g => g.Count() > 1)
@@ -96,11 +95,6 @@ namespace CTService.Implementation.Tournament
 
             if (tournament.Cards == null || !tournament.Cards.Any())
                 throw new ArgumentException("No se proporcionaron cartas para validar.");
-
-
-            //var playerAlreadyRecorded = await _tournamentDao.ValidateTournamentPlayersAsync(tournament.Id_Tournament, idOwner);
-            //if (playerAlreadyRecorded.Any())
-            //    throw new InvalidOperationException($"El Jugador {idOwner} ya se encuentra inscripto en el torneo");
 
 
             var tournamentSeries = await _tournamentDao.GetSeriesFromTournamentAsync(tournament.Id_Tournament);
@@ -150,37 +144,52 @@ namespace CTService.Implementation.Tournament
             return userId;
         }
 
-        
-
         public async Task<PlayerCapacityModel> CalculatePlayerCapacity(int id_tournament)
         {
 
+            //traigo las fechas establecidas del torneo 
             TournamentDto tournament = await GetTournamentById(id_tournament);
 
+            //corroboro que las fechas esten como UTC 
             var startDatetime = tournament.Start_datetime.ToUniversalTime();
             var endDatetime = tournament.End_datetime.ToUniversalTime();
   
+
+            //establezco el horario diario que se le dara para resolver el torneo
             var matchStartTime = new TimeSpan(9, 0, 0); 
             var matchEndTime = new TimeSpan(21, 0, 0); 
 
+           
+            //calculo los minutos totales disponibles en el plazo de tiempo
             var totalMinutes = (endDatetime - startDatetime).TotalMinutes;
 
-            int totalDays = (int)(endDatetime.Date - startDatetime.Date).TotalDays + 1; // +1 para incluir el día de inicio
+
+            //calculo los dias totales sabiendo cual es el plazo de tiempo diario
+            int totalDays = (int)(endDatetime.Date - startDatetime.Date).TotalDays + 1; // +1 porque incluye  el día de inicio
 
             int availableMatchMinutesPerDay = (int)(matchEndTime - matchStartTime).TotalMinutes;
 
+            //se calculan la cantidad de matches que se podran hacer en los dias disponibles en base al rango horario establecido
             int totalAvailableMatchMinutes = totalDays * availableMatchMinutesPerDay;
 
             var maxMatches = totalAvailableMatchMinutes / 30; // 30 minutos por partido
 
-            maxMatches = (int)Math.Pow(2, Math.Floor(Math.Log(maxMatches) / Math.Log(2)));
 
+            //el valor maximo calculado lo rendea a la potencia mas cercana de 2
+            maxMatches = (int)Math.Pow(2, Math.Floor(Math.Log(maxMatches) / Math.Log(2)));
+            
+            //sabiendo que por cada match hay dos calcula ca cantidad maxima de jugadores
             var maxPlayers = maxMatches * 2;
+
+
+            //me establece que el minimo son 16 jugadores es decir que minimo voy a tener octavos en mi torneo
+            //si es mas de 16 pone el cap en la potencia de 2 mas cercana
 
             int minPlayers = Math.Max(16, (int)Math.Pow(2, Math.Ceiling(Math.Log2(maxPlayers))));
 
             minPlayers = Math.Min(minPlayers, maxPlayers);
 
+           
             var playerCapacity = new PlayerCapacityModel
             {
                 MaxPlayers = maxPlayers,

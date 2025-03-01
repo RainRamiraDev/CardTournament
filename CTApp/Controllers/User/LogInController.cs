@@ -44,21 +44,14 @@ namespace CTApp.Controllers.User
         [HttpPost("LogIn")]
         public async Task<IActionResult> LogIn([FromBody] LoginRequestDto loginRequest)
         {
-            var user = await _userService.LogInAsync(loginRequest.Fullname, loginRequest.Passcode);
 
-            if (user == null)
-                return NotFound(ApiResponse<UserDto>.ErrorResponse(new List<string> { "Usuario o contraseña incorrectos." } ));
+            var userResponse = await _userService.NewLogInAsync(loginRequest.Fullname, loginRequest.Passcode);
 
-            var accessToken = _refreshTokenService.GenerateAccessTokenAsync(user.Id_User, user.Fullname,user.Id_Rol);
+            ManageRefreshTokenCookie(userResponse.RefreshToken.ToString(), userResponse.ExpirationDate);
 
-            Guid refreshToken = Guid.NewGuid();
-            DateTime expirationDate = DateTime.UtcNow.AddDays(_keysConfiguration.ExpirationDays);
+            var response = ApiResponse<string>.SuccessResponse("Inicio de sesión exitoso.", userResponse.AccessToken);
 
-            await _refreshTokenService.SaveRefreshTokenAsync(refreshToken, user.Id_User, expirationDate);
-
-            ManageRefreshTokenCookie(refreshToken.ToString(), expirationDate);
-
-            return Ok(new { AccessToken = accessToken });
+            return Ok(response);
         }
 
 
@@ -75,6 +68,8 @@ namespace CTApp.Controllers.User
             var (newAccessToken, newRefreshToken) = await _refreshTokenService.RefreshAccessTokenAsync(refreshToken);
 
             ManageRefreshTokenCookie(newRefreshToken.ToString(), DateTime.UtcNow.AddDays(7));
+
+          
             return Ok(new { AccessToken = newAccessToken });
         }
 
@@ -91,6 +86,8 @@ namespace CTApp.Controllers.User
                 return NotFound(new { Message = "El token no fue encontrado o ya se eliminó." });
 
             ManageRefreshTokenCookie("", DateTime.Now);
+
+            //TODO: MEJORAR LA RESPUESTA DE ESTE CODIGO
             return Ok(new { Message = "Sesión cerrada exitosamente." });
         }
     }
