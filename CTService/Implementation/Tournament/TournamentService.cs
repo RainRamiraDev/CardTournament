@@ -133,10 +133,10 @@ namespace CTService.Implementation.Tournament
         private int GetUserIdFromToken()
         {
             var userClaims = _httpContextAccessor.HttpContext?.User.Identity as ClaimsIdentity;
-            var userIdClaim = userClaims?.FindFirst(ClaimTypes.NameIdentifier); //CAMBIAR POR ID
+            var userIdClaim = userClaims?.FindFirst("UserId");
 
             if (userIdClaim == null)
-                throw new InvalidOperationException("Error al recuperar el owner");
+                throw new InvalidOperationException("Error al recuperar el dueño");
 
             if (!int.TryParse(userIdClaim.Value, out int userId))
                 throw new InvalidOperationException("El ID del usuario en el token no es válido.");

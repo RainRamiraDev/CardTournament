@@ -67,7 +67,7 @@ namespace CTApp.Controllers.User
 
             ManageRefreshTokenCookie(newRefreshToken.ToString(), DateTime.UtcNow.AddDays(7));
 
-            var response = ApiResponse<string>.SuccessResponse("Inicio de sesión exitoso.", newAccessToken);
+            var response = ApiResponse<string>.SuccessResponse("Token renovado exitosamente.", newAccessToken);
 
             return Ok(response);
         }

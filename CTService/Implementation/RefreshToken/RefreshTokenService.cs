@@ -74,9 +74,9 @@ namespace CTService.Implementation.RefreshToken
             //TODO:CAMBIAR EL NOMBRE DE LOS CLAIMS PARA QUE SEA CON EL NOMBRE INGRESANDOLO ESCRITO, CAMBIAR EL NameIdentifier POR ID O ALGO ASI MAS REPRESENTATIVO
             var claims = new List<Claim>
             {
-                new Claim(ClaimTypes.Name, userName),
-                new Claim(ClaimTypes.NameIdentifier, userId.ToString()),
-                new Claim(ClaimTypes.Role, userRole.ToString())
+                new Claim("UserName", userName),
+                new Claim("UserId", userId.ToString()), // Antes: ClaimTypes.NameIdentifier
+                new Claim("UserRole", userRole.ToString()) // Antes: ClaimTypes.Role
             };
 
             var token = new JwtSecurityToken(
