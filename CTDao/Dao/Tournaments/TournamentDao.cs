@@ -403,6 +403,86 @@ namespace CTDao.Dao.Tournaments
             return true;
         }
 
+
+
+
+
+
+
+
+
+
+
+
+
+        public async Task AlterTournamentAsync(AlterTournamentModel tournament)
+        {
+            using var connection = new MySqlConnection(_connectionString);
+            await connection.OpenAsync();
+
+            using var transaction = await connection.BeginTransactionAsync();
+            try
+            {
+                var rowsAffected = await connection.ExecuteAsync(QueryLoader.GetQuery("QueryUpdateTournament"), new
+                {
+                    Id_Country = tournament.Id_Country,
+                    Id_Organizer = tournament.Id_Organizer,
+                    Start_Datetime = tournament.Start_datetime,
+                    End_Datetime = tournament.End_datetime,
+                    Id_tournament = tournament.Id_tournament
+                }, transaction);
+
+                if (rowsAffected == 0)
+                {
+                    await transaction.RollbackAsync();
+                }
+
+                await connection.ExecuteAsync(QueryLoader.GetQuery("QueryDeleteJudges"), new { Id_tournament = tournament.Id_tournament }, transaction);
+                foreach (var judgeId in tournament.Judges_Id)
+                {
+                    await connection.ExecuteAsync(QueryLoader.GetQuery("QueryInsertJudges"), new
+                    {
+                        Id_tournament = tournament.Id_tournament,
+                        Id_Judge = judgeId
+                    }, transaction);
+                }
+
+                await connection.ExecuteAsync(QueryLoader.GetQuery("QueryDeleteSeries"), new { Id_tournament = tournament.Id_tournament }, transaction);
+                foreach (var cardId in tournament.Series_Id)
+                {
+                    await connection.ExecuteAsync(QueryLoader.GetQuery("QueryInsertSeries"), new
+                    {
+                        Id_tournament = tournament.Id_tournament,
+                        Id_Series = cardId
+                    }, transaction);
+                }
+                await transaction.CommitAsync();
+            }
+            catch (Exception)
+            {
+                await transaction.RollbackAsync();
+                throw;
+            }
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
     }
 }
  

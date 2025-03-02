@@ -71,12 +71,11 @@ namespace CTService.Implementation.RefreshToken
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
 
-            //TODO:CAMBIAR EL NOMBRE DE LOS CLAIMS PARA QUE SEA CON EL NOMBRE INGRESANDOLO ESCRITO, CAMBIAR EL NameIdentifier POR ID O ALGO ASI MAS REPRESENTATIVO
             var claims = new List<Claim>
             {
                 new Claim("UserName", userName),
-                new Claim("UserId", userId.ToString()), // Antes: ClaimTypes.NameIdentifier
-                new Claim("UserRole", userRole.ToString()) // Antes: ClaimTypes.Role
+                new Claim("UserId", userId.ToString()), 
+                new Claim("UserRole", userRole.ToString()) 
             };
 
             var token = new JwtSecurityToken(

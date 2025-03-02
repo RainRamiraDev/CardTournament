@@ -14,6 +14,12 @@ namespace CTDao.Interfaces.Tournaments
     {
         //Tournament
         Task<int> CreateTournamentAsync(TournamentModel tournament);
+
+        Task AlterTournamentAsync(AlterTournamentModel tournament);
+
+
+
+
         Task<IEnumerable<TournamentsInformationModel>> GetTournamentsInformationAsync(GetTournamentInformationModel tournamentInformationModel);
         Task<int> SetTournamentToNextPhaseAsync(int tournament_id);
         Task<int> GetTournamentCurrentPhaseAsync(int id_tournament);

@@ -101,6 +101,22 @@
   },
   {
     "ContainingType": "CTApp.Controllers.User.OrganizerController",
+    "Method": "AlterTournament",
+    "RelativePath": "api/Organizer/AlterTournament",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "tournamentDto",
+        "Type": "CTDto.Tournaments.AlterTournamentDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CTApp.Controllers.User.OrganizerController",
     "Method": "CreateTournament",
     "RelativePath": "api/Organizer/CreateTournament",
     "HttpMethod": "POST",

@@ -126,7 +126,7 @@ namespace CTService.Implementation.Tournament
                 Series_Id = tournamentDto.Series_Id,
             };
 
-            var validatedTournament = await ValidateTournament(tournamentModel);
+            await ValidateTournament(tournamentModel);
             return await _tournamentDao.CreateTournamentAsync(tournamentModel);
         }
 
@@ -215,7 +215,7 @@ namespace CTService.Implementation.Tournament
             return tournamentDto;
         }
 
-        public async Task<bool> ValidateTournament(TournamentModel tournament)
+        public async Task ValidateTournament(TournamentModel tournament)
         {
 
             var registeredCountries = await _tournamentDao.ValidateCountriesFromDbAsync(tournament.Id_Country);
@@ -238,8 +238,6 @@ namespace CTService.Implementation.Tournament
             var invalidSeries = tournament.Series_Id.Except(areValidSeries).ToList();
             if (invalidSeries.Any())
                 throw new ArgumentException($"Las siguientes series no están registradas: {string.Join(", ", invalidSeries)}");
-
-            return true;
         }
 
         public async Task<List<int>> GetJudgeIdsByAliasAsync(List<string> judgeAliases)
@@ -278,5 +276,43 @@ namespace CTService.Implementation.Tournament
             var id_tournament = tournament_id;
             return await _tournamentDao.GetTournamentCurrentPhaseAsync(id_tournament);
         }
+
+        public async Task AlterTournamentAsync(AlterTournamentDto tournamentDto)
+        {
+            var oldTournament = await _tournamentDao.GetTournamentByIdAsync(tournamentDto.Id_tournament)
+                ?? throw new KeyNotFoundException("El torneo no existe");
+
+            var organizerFromToken = GetUserIdFromToken();
+
+            var isAdmin = await _tournamentDao.ValidateUsersFromDbAsync(2, new List<int> { organizerFromToken });
+
+            if (oldTournament.Id_Organizer != organizerFromToken && !isAdmin.Contains(organizerFromToken))
+                throw new UnauthorizedAccessException("No tiene permiso para alterar este torneo.");
+
+            var alterTournamentModel = new AlterTournamentModel
+            {
+                Id_tournament = tournamentDto.Id_tournament,
+                Id_Country = tournamentDto.Id_Country,
+                Id_Organizer = organizerFromToken,
+                Start_datetime = DateTime.SpecifyKind(tournamentDto.Start_datetime, DateTimeKind.Utc),
+                End_datetime = DateTime.SpecifyKind(tournamentDto.End_datetime, DateTimeKind.Utc),       
+                Judges_Id = tournamentDto.Judges_Id,
+                Series_Id = tournamentDto.Series_Id
+            };
+
+            // Validación sin crear una variable extra
+            await ValidateTournament(new TournamentModel
+            {
+                Id_Country = alterTournamentModel.Id_Country,
+                Id_Organizer = alterTournamentModel.Id_Organizer,
+                Start_datetime = alterTournamentModel.Start_datetime,
+                End_datetime = alterTournamentModel.End_datetime,
+                Judges_Id = alterTournamentModel.Judges_Id,
+                Series_Id = alterTournamentModel.Series_Id
+            });
+
+            await _tournamentDao.AlterTournamentAsync(alterTournamentModel);
+        }
+
     }
 }

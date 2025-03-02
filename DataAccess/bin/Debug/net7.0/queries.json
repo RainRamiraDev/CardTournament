@@ -14,6 +14,16 @@
   "QueryGetTournamentJudgesIds": "SELECT id_judge FROM t_tourn_judges WHERE id_tournament = @id_tournament;",
   "QueryInsertSeries": "INSERT INTO T_TOURN_SERIES (id_tournament, id_series) VALUES (@id_tournament, @id_series);",
 
+
+  "QueryUpdateTournament": "UPDATE T_TOURNAMENTS SET id_country = @id_country, id_organizer = @id_organizer, start_datetime = @start_datetime, end_datetime = @end_datetime WHERE id_tournament = @id_tournament;",
+  "QueryDeleteJudges": "DELETE FROM T_tourn_judges WHERE id_tournament = @id_tournament;",
+
+  "QueryDeleteSeries": "DELETE FROM T_tourn_series WHERE id_tournament = @id_tournament;",
+
+
+
+
+
   "QueryInsertDecks": "INSERT INTO T_TOURN_DECKS (id_tournament, id_card_series, id_owner) VALUES (@id_tournament, @id_card_series, @id_owner);",
   "QueryInsertPlayers": "INSERT INTO T_TOURN_PLAYERS (id_tournament, id_player) VALUES (@Id_tournament,@id_player);",
   "QuerySetTournamentNextPhase": "UPDATE T_TOURNAMENTS SET current_phase = current_phase + 1 WHERE id_tournament = @id_tournament AND current_phase < 3;",
