@@ -1,15 +1,23 @@
-﻿using CTDao.Dao.Security;
+﻿using CTConfigurations;
+using CTDao.Dao.Security;
 using CTDao.Dao.User;
 using CTDao.Interfaces.Tournaments;
 using CTDao.Interfaces.User;
 using CTDataModels.Users;
+using CTDataModels.Users.Admin;
 using CTDataModels.Users.LogIn;
 using CTDto.Card;
 using CTDto.Users;
+using CTDto.Users.Admin;
 using CTDto.Users.Judge;
 using CTDto.Users.LogIn;
 using CTDto.Users.Organizer;
+using CTService.Implementation.RefreshToken;
+using CTService.Interfaces.RefreshToken;
 using CTService.Interfaces.User;
+using Microsoft.Extensions.Options;
+using Microsoft.IdentityModel.Tokens;
+using Org.BouncyCastle.Bcpg;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,11 +36,17 @@ namespace CTService.Implementation.User
 
         private readonly PasswordHasher _passwordHasher;
 
-        public UserService(IUserDao userDao, PasswordHasher passwordHasher, ITournamentDao tournamentDao)
+        private readonly IRefreshTokenService _refreshTokenService;
+
+        private readonly KeysConfiguration _keysConfiguration;
+
+        public UserService(IUserDao userDao, PasswordHasher passwordHasher, ITournamentDao tournamentDao, IRefreshTokenService refreshTokenService, IOptions<KeysConfiguration> keysConfiguration)
         {
             _userDao = userDao;
             _passwordHasher = passwordHasher;
             _tournamentDao = tournamentDao;
+            _refreshTokenService = refreshTokenService; 
+            _keysConfiguration = keysConfiguration.Value;
         }
 
         public async Task<UserDto> GetUserWhitTokenAsync(int id)
@@ -48,24 +62,60 @@ namespace CTService.Implementation.User
             };
         }
 
-        public async Task<UserModel> LogInAsync(string fullname, string passcode)
-        {
-            var user = await _userDao.LogInAsync(fullname);
-            if (user == null)
-            {
-                return null;
-            }
 
-            bool isPasswordValid = _passwordHasher.VerifyPassword(passcode, user.Passcode);
-            if (!isPasswordValid)
-            {
-                return null;
-            }
+
+        public async Task<UserModel> GetUserDataByNameAsync(string fullname)
+        {
+            var user = await _userDao.GetUserDataByNameAsync(fullname);
+
+            //mejorar esto con el control de errores middlewate if is null or empty
+            if (user == null)
+                throw new ArgumentException("El usuario especificado con ese nombre no se encuentra registrado");
 
             return user;
         }
 
-        public async Task<int> CreateWhitHashedPasswordAsync(FirstLogInDto LoginDto)
+        public async Task<LogInResponseModel> NewLogInAsync(string fullname, string passcode)
+        {
+
+            var user = await GetUserDataByNameAsync(fullname);
+
+
+            //hacer la validacion de usuario activo
+            //var isUserDisable = await _userDao.ValidateIfUserAvailable(int userId);
+            //if (isUserDisable)
+            //throw new ArgumentException("El usuario especificado no se encuentra disponible");
+
+
+            bool isPasswordValid = _passwordHasher.VerifyPassword(passcode, user.Passcode);
+            if (!isPasswordValid)
+                throw new ArgumentException("Contraseña incorrecta");
+
+            var accessToken = await _refreshTokenService.GenerateAccessTokenAsync(user.Id_User, user.Fullname, user.Id_Rol);
+
+            Guid refreshToken = Guid.NewGuid();
+            DateTime expirationDate = DateTime.UtcNow.AddDays(_keysConfiguration.ExpirationDays);
+
+            await _refreshTokenService.SaveRefreshTokenAsync(refreshToken, user.Id_User, expirationDate);
+
+
+            var loginresponse = new LogInResponseModel
+            {
+                RefreshToken = refreshToken,
+                ExpirationDate = expirationDate,
+                AccessToken = accessToken
+            };
+
+            return loginresponse;
+
+        }
+
+
+
+
+
+
+        public async Task<int> CreateWhitHashedPasswordAsync(UserRequestDto LoginDto)
         {
             string hashedPassword = _passwordHasher.HashPassword(LoginDto.Passcode);
 
@@ -92,7 +142,6 @@ namespace CTService.Implementation.User
             });
         }
 
-      
         public async Task<IEnumerable<CountriesListDto>> GetAllCountriesAsync()
         {
             var countryModels = await _userDao.GetAllCountriesAsync();
@@ -104,17 +153,7 @@ namespace CTService.Implementation.User
             }).ToList();
         }
 
-        public async Task<bool> ValidateIfOrganizerAsync(UserModel user)
-        {
-            bool response = false;
-          var organizers = await _tournamentDao.GetUsersFromDbAsync(1);
-            if(organizers.Contains(user.Id_User) || user.Id_Rol == 1)
-               response = true;
-            return response;
-        }
-
-
-        public async Task CreateUserAsync(UserCreationDto userDto)
+        public async Task<int>CreateUserAsync(UserCreationDto userDto)
         {
 
             string hashedPassword = _passwordHasher.HashPassword(userDto.Passcode);
@@ -136,10 +175,8 @@ namespace CTService.Implementation.User
                 Ki = calculateUserKi,
             };
 
-            var isValidUser = await ValidateUserCreation(userModel);
-
-            if (isValidUser)
-                await _userDao.CreateUserAsync(userModel);
+            await ValidateUserCreation(userModel);
+            return await _userDao.CreateUserAsync(userModel);
         }
 
         public async Task<int> CalculateUserKi(UserCreationDto userDto)
@@ -147,26 +184,71 @@ namespace CTService.Implementation.User
             return userDto.Id_Rol != 4 ? 0 : new Random().Next(1000, 1000001);
         }
 
+        public async Task ValidateUserCreation(UserCreationModel user)
+        {
 
-        public async Task<bool> ValidateUserCreation(UserCreationModel user)
+            var registeredCountries = await _tournamentDao.ValidateCountriesFromDbAsync(user.Id_Country);
+            if (!registeredCountries.Any())
+                throw new ArgumentException("El país especificado no está registrado.");
+
+
+            bool aliasExists = await _userDao.ValidateUsersAlias(user.Alias);
+            if (aliasExists)
+                throw new ArgumentException("El Alias especificado ya está registrado y no puede repetirse.");
+
+
+            var emailsExist = await _userDao.ValidateUserEmail(user.Email);
+            if (emailsExist)
+                throw new ArgumentException("El Email especificado ya está registrado.");
+        }
+
+        public async Task AlterUserAsync(AlterUserDto userDto)
+        {
+            var alterUserModel = new AlterUserModel
+            {
+              Id_User = userDto.Id_User,
+              New_IdCountry = userDto.New_IdCountry,
+              New_Alias = userDto.New_Alias,
+              New_Avatar_Url = userDto.New_Avatar_Url,
+              New_Email = userDto.New_Email,
+              New_Fullname = userDto.New_Fullname,
+              New_Id_Rol  = userDto.New_Id_Rol,
+           };
+
+            var isValidUser = await ValidateUserModificationAsync(alterUserModel);
+            if (isValidUser)
+                await _userDao.AlterUserAsync(alterUserModel);
+        }
+
+        public async Task<bool> ValidateUserModificationAsync(AlterUserModel user)
         {
             var response = true;
 
-            var registeredCountries = await _tournamentDao.GetCountriesFromDbAsync();
-            if (!registeredCountries.Contains(user.Id_Country))
+            UserModel oldUser = await _userDao.GetUserById(user.Id_User);
+            if (oldUser == null)
+                throw new ArgumentException("El Usuario especificado no está registrado.");
+
+            var registeredCountries = await _tournamentDao.ValidateCountriesFromDbAsync(user.New_IdCountry);
+            if (!registeredCountries.Any())
                 throw new ArgumentException("El país especificado no está registrado.");
 
-            var registeredAlias = await _userDao.GetAllUsersAlias();
-            if (registeredAlias.Contains(user.Alias))
-                throw new ArgumentException("El Alias especificado ya está registrado.");
+            bool aliasExists = await _userDao.ValidateUsersAlias(user.New_Alias);
+            if (aliasExists)
+                throw new ArgumentException("El Alias especificado ya está registrado y no puede repetirse.");
 
-            var registeredEmails = await _userDao.GetAllUsersEmails();
-            if (registeredEmails.Contains(user.Email))
-                throw new ArgumentException("El Email especificado ya está registrado.");
-
+            var emailsExists = await _userDao.ValidateUserEmail(user.New_Email);
+            if (emailsExists)
+                throw new ArgumentException("El Email especificado ya está registrado y no puede repetirse.");
+   
             return response;
         }
 
+        public async Task SoftDeleteUserAsync(SoftDeleteUserDto userDto)
+        {
 
+            //agregar validaciones
+              await _userDao.SoftDeleteUserAsync(userDto.Id_User);
+        }
     }
 }
+

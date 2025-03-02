@@ -1,6 +1,8 @@
 ﻿
 using CTDataModels.Users;
+using CTDataModels.Users.LogIn;
 using CTDto.Users;
+using CTDto.Users.Admin;
 using CTDto.Users.Judge;
 using CTDto.Users.LogIn;
 using CTDto.Users.Organizer;
@@ -15,18 +17,21 @@ namespace CTService.Interfaces.User
     public interface IUserService
     {
         //LogIn
-        Task<int> CreateWhitHashedPasswordAsync(FirstLogInDto LoginDto);
+        Task<int> CreateWhitHashedPasswordAsync(UserRequestDto LoginDto);
         Task<UserDto> GetUserWhitTokenAsync(int id);
-        Task<UserModel> LogInAsync(string fullname, string passcode);
+        Task<UserModel> GetUserDataByNameAsync(string fullname);
+
+        Task<LogInResponseModel> NewLogInAsync(string fullname, string passcode);
 
         //Judges
         Task<IEnumerable<JudgeDto>> GetAllJudgesAsync();
-
         Task<IEnumerable<CountriesListDto>> GetAllCountriesAsync();
 
 
-        Task<bool> ValidateIfOrganizerAsync(UserModel user);
+        //Admin
+        Task<int> CreateUserAsync(UserCreationDto userDto);
+        Task AlterUserAsync(AlterUserDto userDto);
 
-        Task CreateUserAsync(UserCreationDto userDto);
+        Task SoftDeleteUserAsync(SoftDeleteUserDto userDto);
     }
 }

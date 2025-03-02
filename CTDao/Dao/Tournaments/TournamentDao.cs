@@ -1,5 +1,6 @@
 ﻿using CTDao.Dao.Card;
 using CTDao.Interfaces.Tournaments;
+using CTDataModels.Game;
 using CTDataModels.Tournamets;
 using CTDto.Card;
 using Dapper;
@@ -29,25 +30,25 @@ namespace CTDao.Dao.Tournaments
         private readonly string _connectionString;
 
 
-        public async Task<List<int>> GetTournamentPlayersAsync(int tournamentId)
+        public async Task<List<int>> ValidateTournamentPlayersAsync(int tournamentId, int id_player)
         {
             using (var connection = new MySqlConnection(_connectionString))
             {
                 await connection.OpenAsync();
 
-                var tournamentPlayers = await connection.QueryAsync<int>(QueryLoader.GetQuery("QueryGetTournamentPlayers"),new {id_tournament = tournamentId});
+                var tournamentPlayers = await connection.QueryAsync<int>(QueryLoader.GetQuery("QueryValidateTournamentPlayers"),new {id_tournament = tournamentId, id_player = id_player});
 
                 return tournamentPlayers.ToList();
             }
         }
 
-        public async Task<List<int>> GetCountriesFromDbAsync()
+        public async Task<List<int>> ValidateCountriesFromDbAsync(int id_country)
         {
             using (var connection = new MySqlConnection(_connectionString))
             {
                 await connection.OpenAsync();
 
-                var countriesIds = await connection.QueryAsync<int>(QueryLoader.GetQuery("QueryGetCountriesFromDb"));
+                var countriesIds = await connection.QueryAsync<int>(QueryLoader.GetQuery("QueryVerifyCountriesFromDb") ,new{id_country = id_country});
 
                 return countriesIds.ToList();
             }
@@ -70,7 +71,7 @@ namespace CTDao.Dao.Tournaments
                     CurrentPhase = tournament.Current_Phase,
                 }, transaction);
 
-                foreach (var judgeId in tournament.Judges)
+                foreach (var judgeId in tournament.Judges_Id)
                 {
                     await connection.ExecuteAsync(QueryLoader.GetQuery("QueryInsertJudges"), new
                     {
@@ -79,7 +80,7 @@ namespace CTDao.Dao.Tournaments
                     }, transaction);
                 }
 
-                foreach (var cardId in tournament.Series_name)
+                foreach (var cardId in tournament.Series_Id)
                 {
                     await connection.ExecuteAsync(QueryLoader.GetQuery("QueryInsertSeries"), new
                     {
@@ -294,48 +295,28 @@ namespace CTDao.Dao.Tournaments
             }
         }
 
-        //public async Task<int> SetTournamentEndDate(TournamentUpdateEndDatetimeModel tournamentData)
-        //{
-        //    using (var connection = new MySqlConnection(_connectionString))
-        //    {
-        //        await connection.OpenAsync();
-
-        //        int rowsAffected = await connection.ExecuteAsync(
-        //            QueryLoader.GetQuery("QuerySetTournamentEndDateTime"),
-        //            new { tournamentData.Id_tournament, tournamentData.End_DateTime }
-        //        );
-
-        //        if (rowsAffected == 0)
-        //        {
-        //            throw new InvalidOperationException("No se pudo actualizar la fecha de finalización del torneo.");
-        //        }
-
-        //        return rowsAffected;
-        //    }
-        //}
-
-        public async Task<List<int>> GetCardsFromTournamentSeriesAsync(List<int> tournamentSeries)
+        public async Task<List<int>> GetCardsFromTournamentSeriesAsync(List<int> tournamentSeries, List<int> tournamentCards)
         {
             using (var connection = new MySqlConnection(_connectionString))
             {
                 await connection.OpenAsync();
 
                 var parameters = new { SeriesIds = tournamentSeries };
-                var validCardIds = (await connection.QueryAsync<int>(QueryLoader.GetQuery("QueryGetCardsFromTournamentSeries"), new { id_series = tournamentSeries })).ToList();
+                var validCardIds = (await connection.QueryAsync<int>(QueryLoader.GetQuery("QueryGetCardsFromTournamentSeries"), new { id_series = tournamentSeries, id_card = tournamentCards })).ToList();
 
                 return validCardIds;
             }
         }
 
-        public async Task<List<int>> GetUsersFromDbAsync(int id_rol)
+        public async Task<List<int>> ValidateUsersFromDbAsync(int id_rol, List<int> id_user)
         {
             using (var connection = new MySqlConnection(_connectionString))
             {
                 await connection.OpenAsync();
 
-                var seriesIds = await connection.QueryAsync<int>(QueryLoader.GetQuery("QueryGetUsersFromDb"), new { id_rol = id_rol });
+                var userIds = await connection.QueryAsync<int>(QueryLoader.GetQuery("QueryValidateUsersFromDb"), new { id_rol = id_rol, id_user = id_user.ToArray() });
 
-                return seriesIds.ToList();
+                return userIds.ToList();
             }
         }
 
@@ -391,17 +372,37 @@ namespace CTDao.Dao.Tournaments
             }
         }
 
-        public async Task<List<int>> GetAvailableTournamentsAsync()
+        public async Task<List<int>> ValidateAvailableTournamentsAsync(int id_tournament)
         {
             using (var connection = new MySqlConnection(_connectionString))
             {
                 await connection.OpenAsync();
 
-                var tournaments = await connection.QueryAsync<int>(QueryLoader.GetQuery("QueryGetAvailableTournaments"));
+                var tournaments = await connection.QueryAsync<int>(QueryLoader.GetQuery("QueryVerifyTournament"), new { id_tournament = id_tournament });
 
                 return tournaments.ToList();
             }
         }
+
+        public async Task<bool> CheckTournamentCapacity(PlayerCapacityModel capacity, int id_tournament)
+        {
+            using (var connection = new MySqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+
+
+                int currentPlayerCount = await connection.ExecuteScalarAsync<int>(
+                    QueryLoader.GetQuery("QueryCheckTournamentCapacity"),
+                    new { id_tournament }
+                );
+
+                if (currentPlayerCount < capacity.MinPlayers) return false;
+                if (currentPlayerCount > capacity.MaxPlayers) return false;
+            }
+
+            return true;
+        }
+
     }
 }
  

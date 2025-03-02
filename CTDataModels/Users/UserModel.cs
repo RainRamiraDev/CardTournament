@@ -19,5 +19,7 @@ namespace CTDataModels.Users
         public int GamesLost { get; set; }
         public int Disqualifications { get; set; }
         public string Avatar_Url { get; set; }
+
+        public int Available { get; set; }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using CTDao.Interfaces.User;
 using CTDataModels.Users;
+using CTDataModels.Users.Admin;
 using CTDataModels.Users.LogIn;
 using CTDataModels.Users.Organizer;
 using Dapper;
@@ -22,12 +23,12 @@ namespace CTDao.Dao.User
             _connectionString = connectionString;
         }
 
-        public async Task<UserModel> LogInAsync(string fullname)
+        public async Task<UserModel> GetUserDataByNameAsync(string fullname)
         {
             using (var connection = new MySqlConnection(_connectionString))
             {
                 await connection.OpenAsync();
-                var user = await connection.QueryFirstOrDefaultAsync<UserModel>(QueryLoader.GetQuery("QueryLogin"), new { fullname });
+                var user = await connection.QueryFirstOrDefaultAsync<UserModel>(QueryLoader.GetQuery("QueryGetUserDataByName"), new { fullname });
                 return user;
             }
         }
@@ -97,7 +98,7 @@ namespace CTDao.Dao.User
             {
                 await connection.OpenAsync();
 
-                var affectedRows = await connection.ExecuteAsync(QueryLoader.GetQuery("QueryCreateUser"), new
+                var newUserId = await connection.ExecuteScalarAsync<int>(QueryLoader.GetQuery("QueryCreateUser"), new
                 {
                     user.Id_Country,
                     user.Id_Rol,
@@ -112,27 +113,78 @@ namespace CTDao.Dao.User
                     user.Ki,
                 });
 
-                return affectedRows;
+                return newUserId;
             }
         }
 
-        public async Task<List<string>> GetAllUsersEmails()
+        public async Task<bool> ValidateUserEmail(string userEmail)
         {
             using (var connection = new MySqlConnection(_connectionString))
             {
                 await connection.OpenAsync();
-                var emails = await connection.QueryAsync<string>(QueryLoader.GetQuery("QueryGetAllEmails"));
-                return emails.ToList();
+                int emailCount = await connection.ExecuteScalarAsync<int>(
+                    QueryLoader.GetQuery("QueryVerifyEmail"),
+                    new { email = userEmail }
+                );
+                return emailCount > 0;
             }
         }
 
-        public async Task<List<string>> GetAllUsersAlias()
+        public async Task<bool> ValidateUsersAlias(string userAlias)
         {
             using (var connection = new MySqlConnection(_connectionString))
             {
                 await connection.OpenAsync();
-                var alias = await connection.QueryAsync<string>(QueryLoader.GetQuery("QueryGetAllAlias"));
-                return alias.ToList();
+                int aliasCount = await connection.ExecuteScalarAsync<int>(
+                    QueryLoader.GetQuery("QueryVerifyAlias"),
+                    new { alias = userAlias }
+                );
+                return aliasCount > 0;
+            }
+        }
+
+        public async Task<UserModel> GetUserById(int id_user)
+        {
+            using (var connection = new MySqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+                var user = await connection.QueryFirstOrDefaultAsync<UserModel>(
+                    QueryLoader.GetQuery("QueryGetUserById"),
+                    new { Id_user = id_user }
+                );
+                return user;
+            }
+        }
+
+        public async Task AlterUserAsync(AlterUserModel user)
+        {
+            using (var connection = new MySqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+
+                var affectedRows = await connection.ExecuteAsync(QueryLoader.GetQuery("QueryAlterUser"), new
+                {
+                   id_country =  user.New_IdCountry,
+                   id_rol = user.New_Id_Rol,
+                   fullname = user.New_Fullname,
+                   alias =  user.New_Alias,
+                   email =  user.New_Email,
+                   avatar_url = user.New_Avatar_Url,
+                   id_user = user.Id_User,
+                });
+            }
+        }
+
+        public async Task SoftDeleteUserAsync(int id_user)
+        {
+            using (var connection = new MySqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+
+                var affectedRows = await connection.ExecuteAsync(QueryLoader.GetQuery("QuerySoftDeleteUser"), new
+                {
+                    id_user = id_user
+                });
             }
         }
     }

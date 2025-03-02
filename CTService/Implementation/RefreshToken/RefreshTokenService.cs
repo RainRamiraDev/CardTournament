@@ -36,20 +36,19 @@ namespace CTService.Implementation.RefreshToken
 
         public async Task<(string AccessToken, Guid RefreshToken)> RefreshAccessTokenAsync(Guid oldRefreshToken)
         {
+
             bool isValidToken = await _refreshTokenDao.VerifyTokenAsync(oldRefreshToken);
             if (!isValidToken)
-            {
                 throw new UnauthorizedAccessException("Invalid or expired refresh token.");
-            }
 
             var user = await _refreshTokenDao.GetUserByTokenAsync(oldRefreshToken);
+
+
             if (user == null)
-            {
                 throw new UnauthorizedAccessException("Invalid refresh token.");
-            }
+ 
 
             await _refreshTokenDao.DeleteRefreshTokenAsync(oldRefreshToken);
-
 
             string newAccessToken = await GenerateAccessTokenAsync(user.Id_Rol, user.Fullname,user.Id_Rol);
 
@@ -71,12 +70,14 @@ namespace CTService.Implementation.RefreshToken
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_keysConfiguration.Key));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
+
+            //TODO:CAMBIAR EL NOMBRE DE LOS CLAIMS PARA QUE SEA CON EL NOMBRE INGRESANDOLO ESCRITO, CAMBIAR EL NameIdentifier POR ID O ALGO ASI MAS REPRESENTATIVO
             var claims = new List<Claim>
-    {
-        new Claim(ClaimTypes.Name, userName),
-        new Claim(ClaimTypes.NameIdentifier, userId.ToString()),
-        new Claim(ClaimTypes.Role, userRole.ToString())
-    };
+            {
+                new Claim("UserName", userName),
+                new Claim("UserId", userId.ToString()), // Antes: ClaimTypes.NameIdentifier
+                new Claim("UserRole", userRole.ToString()) // Antes: ClaimTypes.Role
+            };
 
             var token = new JwtSecurityToken(
                 issuer: _keysConfiguration.Issuer,

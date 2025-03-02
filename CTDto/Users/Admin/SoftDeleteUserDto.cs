@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace CTDto.Users.Admin
 {
-    public class AdminDto
+    public class SoftDeleteUserDto
     {
-        public string Username { get; set; }
+        public int Id_User { get; set; }
     }
 }
