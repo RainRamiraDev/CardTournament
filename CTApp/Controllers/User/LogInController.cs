@@ -61,16 +61,15 @@ namespace CTApp.Controllers.User
             var refreshTokenFromCookie = Request.Cookies["RefreshToken"];
 
             if (string.IsNullOrEmpty(refreshTokenFromCookie) || !Guid.TryParse(refreshTokenFromCookie, out Guid refreshToken))
-            {
                 return Unauthorized(new { Message = "No se encontró un refresh token válido." });
-            }
 
             var (newAccessToken, newRefreshToken) = await _refreshTokenService.RefreshAccessTokenAsync(refreshToken);
 
             ManageRefreshTokenCookie(newRefreshToken.ToString(), DateTime.UtcNow.AddDays(7));
 
-          
-            return Ok(new { AccessToken = newAccessToken });
+            var response = ApiResponse<string>.SuccessResponse("Inicio de sesión exitoso.", newAccessToken);
+
+            return Ok(response);
         }
 
         [HttpPost("Logout")]
@@ -87,8 +86,9 @@ namespace CTApp.Controllers.User
 
             ManageRefreshTokenCookie("", DateTime.Now);
 
-            //TODO: MEJORAR LA RESPUESTA DE ESTE CODIGO
-            return Ok(new { Message = "Sesión cerrada exitosamente." });
+            var response = ApiResponse<string>.SuccessResponse("Sesión cerrada exitosamente.");
+
+            return Ok(response);
         }
     }
 }

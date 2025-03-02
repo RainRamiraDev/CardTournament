@@ -155,6 +155,8 @@ namespace CTService.Implementation.Tournament
             var endDatetime = tournament.End_datetime.ToUniversalTime();
   
 
+            //cambiar 9 10 12 
+
             //establezco el horario diario que se le dara para resolver el torneo
             var matchStartTime = new TimeSpan(9, 0, 0); 
             var matchEndTime = new TimeSpan(21, 0, 0); 

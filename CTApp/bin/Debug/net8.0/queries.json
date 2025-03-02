@@ -80,7 +80,7 @@
 
   "QueryGetUserWhitToken": "SELECT * FROM T_Users WHERE Id_User = @Id_user;",
   "QueryFirstLogIn": "INSERT INTO T_Users (Fullname, Passcode, Id_Rol) VALUES (@Fullname, @Passcode, @Id_Rol);",
-  "QueryLogin": "SELECT Id_User, Fullname, Passcode, Id_Rol FROM T_Users WHERE Fullname = @Fullname;",
+  "QueryGetUserDataByName": "SELECT Id_User, Fullname, Passcode, Id_Rol, Available FROM T_Users WHERE Fullname = @Fullname;",
   "QueryGetAllJudges": "SELECT u.Fullname, u.Alias, u.Email, c.country_name as Country, u.avatar_url FROM t_users u JOIN t_countries c ON u.id_country = c.id_country WHERE Id_rol = 3 AND u.Fullname IS NOT NULL AND u.Alias IS NOT NULL AND u.Email IS NOT NULL AND c.country_name IS NOT NULL AND u.avatar_url IS NOT NULL ORDER BY u.alias asc;",
   "QueryGetPlayersRankIds": "SELECT ki FROM t_users WHERE Id_user = @Id;",
 

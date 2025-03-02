@@ -37,21 +37,18 @@ namespace CTService.Implementation.RefreshToken
         public async Task<(string AccessToken, Guid RefreshToken)> RefreshAccessTokenAsync(Guid oldRefreshToken)
         {
 
-            //TODO: MEJORAR ESTA LOGICA
             bool isValidToken = await _refreshTokenDao.VerifyTokenAsync(oldRefreshToken);
             if (!isValidToken)
-            {
                 throw new UnauthorizedAccessException("Invalid or expired refresh token.");
-            }
 
             var user = await _refreshTokenDao.GetUserByTokenAsync(oldRefreshToken);
+
+
             if (user == null)
-            {
                 throw new UnauthorizedAccessException("Invalid refresh token.");
-            }
+ 
 
             await _refreshTokenDao.DeleteRefreshTokenAsync(oldRefreshToken);
-
 
             string newAccessToken = await GenerateAccessTokenAsync(user.Id_Rol, user.Fullname,user.Id_Rol);
 
