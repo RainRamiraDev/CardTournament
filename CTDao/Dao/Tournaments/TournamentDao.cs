@@ -403,18 +403,6 @@ namespace CTDao.Dao.Tournaments
             return true;
         }
 
-
-
-
-
-
-
-
-
-
-
-
-
         public async Task AlterTournamentAsync(AlterTournamentModel tournament)
         {
             using var connection = new MySqlConnection(_connectionString);
@@ -465,24 +453,18 @@ namespace CTDao.Dao.Tournaments
             }
         }
 
+        public async Task SoftDeleteTournamentAsync(int id_tournament)
+        {
+            using (var connection = new MySqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
 
-
-
-
-
-
-
-
-
-
-
-
-
-        
-
-
-
-
+                var affectedRows = await connection.ExecuteAsync(QueryLoader.GetQuery("QuerySoftDeleteTournament"), new
+                {
+                    id_tournament = id_tournament
+                });
+            }
+        }
     }
 }
  

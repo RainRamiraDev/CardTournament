@@ -79,10 +79,6 @@ namespace CTApp.Controllers.User
         }
 
 
-
-
-
-        //TODO: COMPLETAR EL ALTER TOURNAMENT
         [Authorize(Roles = "1")]
         [HttpPost("AlterTournament")]
         public async Task<IActionResult> AlterTournament([FromBody] AlterTournamentDto tournamentDto)
@@ -95,21 +91,18 @@ namespace CTApp.Controllers.User
             return Created("", ApiResponse<object>.SuccessResponse("Torneo modificado exitosamente."));
         }
 
-        //TODO: COMPLETAR EL CalcelTournament
-        //[Authorize(Roles = "1")]
-        //[HttpPost("CalcelTournament")]
-        //public async Task<IActionResult> CalcelTournament([FromBody] CalcelTournamentDto tournamentDto)
-        //{
-        //    if (tournamentDto == null)
-        //        return BadRequest(ApiResponse<object>.ErrorResponse("Los datos del torneo son inválidos."));
 
-        //    var id = await _tournamentService.SoftDeletelTournamentAsync(tournamentDto);
+        [Authorize(Roles = "1")]
+        [HttpPost("CalcelTournament")]
+        public async Task<IActionResult> CalcelTournament([FromBody] TournamentRequestToResolveDto tournamentDto)
+        {
+            if (tournamentDto == null)
+                return BadRequest(ApiResponse<object>.ErrorResponse("Los datos del torneo son inválidos."));
 
-        //    if (id == 0)
-        //        throw new InvalidOperationException("Error al dar de baja  el torneo.");
+            await _tournamentService.SoftDeleteTournamentAsync(tournamentDto);
 
-        //    return Created("", ApiResponse<object>.SuccessResponse("Torneo dado de baja exitosamente.", new { id }));
-        //}
+            return Created("", ApiResponse<object>.SuccessResponse("Torneo dado de baja exitosamente."));
+        }
 
 
 

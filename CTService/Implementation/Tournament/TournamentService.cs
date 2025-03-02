@@ -314,5 +314,13 @@ namespace CTService.Implementation.Tournament
             await _tournamentDao.AlterTournamentAsync(alterTournamentModel);
         }
 
+        public async Task SoftDeleteTournamentAsync(TournamentRequestToResolveDto tournamentDto)
+        {
+            var isValidTournament = await _tournamentDao.TournamentExistsAsync(tournamentDto.Tournament_Id);
+            if (!isValidTournament)
+                throw new ArgumentException("El torneo especificado no ha sido encontrado");
+
+            await _tournamentDao.SoftDeleteTournamentAsync(tournamentDto.Tournament_Id);
+        }
     }
 }

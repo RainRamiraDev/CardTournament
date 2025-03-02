@@ -17,7 +17,7 @@ namespace CTDao.Interfaces.Tournaments
 
         Task AlterTournamentAsync(AlterTournamentModel tournament);
 
-
+        Task SoftDeleteTournamentAsync(int id_tournament);
 
 
         Task<IEnumerable<TournamentsInformationModel>> GetTournamentsInformationAsync(GetTournamentInformationModel tournamentInformationModel);

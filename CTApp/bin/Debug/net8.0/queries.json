@@ -21,7 +21,7 @@
   "QueryDeleteSeries": "DELETE FROM T_tourn_series WHERE id_tournament = @id_tournament;",
 
 
-
+  "QuerySoftDeleteTournament": "UPDATE t_tournaments SET current_phase = 0 WHERE id_tournament = @id_tournament;",
 
 
   "QueryInsertDecks": "INSERT INTO T_TOURN_DECKS (id_tournament, id_card_series, id_owner) VALUES (@id_tournament, @id_card_series, @id_owner);",

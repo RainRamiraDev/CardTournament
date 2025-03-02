@@ -16,6 +16,8 @@ namespace CTService.Interfaces.Tournaments
 
         Task AlterTournamentAsync(AlterTournamentDto tournamentDto);
 
+        Task SoftDeleteTournamentAsync(TournamentRequestToResolveDto tournamentDto);
+
         Task<IEnumerable<TournamentsInformationDto>> GetTournamentsInformationAsync(GetTournamentInformationDto getTournamentInformation);
 
         //Judges
