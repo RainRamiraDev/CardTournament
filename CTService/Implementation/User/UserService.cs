@@ -67,6 +67,7 @@ namespace CTService.Implementation.User
             };
         }
 
+
         public async Task<UserModel> GetUserDataByNameAsync(string fullname)
         {
             var user = await _userDao.GetUserDataByNameAsync(fullname);

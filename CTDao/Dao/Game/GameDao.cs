@@ -6,6 +6,7 @@ using DataAccess;
 using MySql.Data.MySqlClient;
 using Mysqlx.Crud;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -213,6 +214,60 @@ namespace CTDao.Dao.Game
                         await transaction.RollbackAsync();
                         throw;
                     }
+                }
+            }
+        }
+
+        public async Task InsertDisqualificationAsync(int playerId, int tournamentId, int judgeId)
+        {
+            using (var connection = new MySqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+
+                using (var transaction = await connection.BeginTransactionAsync())
+                {
+                    try
+                    {
+                        await connection.ExecuteAsync(QueryLoader.GetQuery("QueryInsertDisqualification"), new
+                        {
+                            Id_Tournament = tournamentId,
+                            Id_Player = playerId,
+                            Id_Judge = judgeId,
+                        }, transaction);
+                    }
+                    catch (Exception ex)
+                    {
+                        await transaction.RollbackAsync();
+                        throw new InvalidOperationException("Error al registrar la descalificación", ex);
+                    }
+                }
+            }
+        }
+
+
+        public async Task<bool> IsPlayerDisqualifiedAsync(int playerId, int tournamentId)
+        {
+            using (var connection = new MySqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+
+                try
+                {
+                    // Ejecuta la consulta para verificar si el jugador está descalificado en el torneo
+                    string query = QueryLoader.GetQuery("QueryCheckPlayerDisqualification");
+                    var disqualified = await connection.ExecuteScalarAsync<bool>(query, new
+                    {
+                        Id_Player = playerId,
+                        Id_Tournament = tournamentId
+                    });
+
+                    // Retorna true si el jugador está descalificado, false si no lo está
+                    return disqualified;
+                }
+                catch (Exception ex)
+                {
+                    // Maneja cualquier error que pueda ocurrir durante la consulta
+                    throw new InvalidOperationException("Error al verificar la descalificación del jugador", ex);
                 }
             }
         }

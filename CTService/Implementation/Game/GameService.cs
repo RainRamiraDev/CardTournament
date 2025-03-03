@@ -172,6 +172,43 @@ namespace CTService.Implementation.Game
         }
 
 
+
+
+
+
+        public async Task DisqualifyPlayerAsync(int playerId, int tournamentId, int judgeId)
+        {
+            await ValidatePlayerDisqualification(playerId, tournamentId, judgeId);
+
+            // Registrar la descalificación en la base de datos
+            await _gameDao.InsertDisqualificationAsync(playerId, tournamentId, judgeId);
+
+            // Marcar al jugador como descalificado (puedes agregarlo a una lista de eliminados)
+            Console.WriteLine($"El jugador {playerId} ha sido descalificado del torneo {tournamentId} por el juez {judgeId}.");
+        }
+
+        public async Task ValidatePlayerDisqualification(int playerId, int tournamentId, int judgeId)
+        {
+            //validar el torneo
+            var isValidTournament = await _tournamentDao.TournamentExistsAsync(tournamentId);
+            if (!isValidTournament)
+                throw new ArgumentException("El torneo especificado no es valido");
+
+            //validar el jugador
+            var isValidPlayer = await _tournamentDao.ValidateTournamentPlayersAsync(tournamentId,playerId);
+            if(!isValidPlayer.Contains(playerId))
+                throw new ArgumentException("El jugador especificado no esta registrado en este torneo");
+
+            //validar el juez
+            //TODO: MEJORAR ESTO PARA RECIBIR POR TOKEN    //validar que la persona que elimina (desde el token) es juez
+            var isValidJudge = await _tournamentDao.ValidateUsersFromDbAsync(tournamentId, new List<int>{judgeId});
+
+            // Verificar si el jugador ya está descalificado
+            bool alreadyDisqualified = await _gameDao.IsPlayerDisqualifiedAsync(playerId, tournamentId);
+            if (alreadyDisqualified)
+                throw new InvalidOperationException("El jugador ya ha sido descalificado en este torneo.");
+        }
+
         public async Task<int> CreateRoundAsync(int roundNumber, int tournament_id, int id_judge)
         {
             var roundModel = new RoundModel

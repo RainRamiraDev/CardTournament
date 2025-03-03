@@ -104,6 +104,14 @@
   "QueryVerifyEmail": "SELECT COUNT(*) FROM t_users WHERE email = @email;",
 
 
+  "QueryInsertDisqualification": "INSERT INTO t_tourn_disqualifications (id_tournament, id_player, id_judge) VALUES(@id_tournament, @id_player, @id_judge);",
+  "QueryCheckPlayerDisqualification": "SELECT COUNT(1) FROM t_tourn_disqualifications WHERE id_player = @playerId AND id_tournament = @tournamentId;",
+
+
+
+
+
+
   "QueryVerifyAlias": "SELECT COUNT(*) FROM t_users WHERE alias = @alias;",
 
   "QuerySoftDeleteUser": "UPDATE t_Users SET available = FALSE WHERE id_user = @id_user;"
