@@ -15,6 +15,7 @@ using CTDto.Users.Organizer;
 using CTService.Implementation.RefreshToken;
 using CTService.Interfaces.RefreshToken;
 using CTService.Interfaces.User;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Org.BouncyCastle.Bcpg;
@@ -22,6 +23,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -40,13 +42,16 @@ namespace CTService.Implementation.User
 
         private readonly KeysConfiguration _keysConfiguration;
 
-        public UserService(IUserDao userDao, PasswordHasher passwordHasher, ITournamentDao tournamentDao, IRefreshTokenService refreshTokenService, IOptions<KeysConfiguration> keysConfiguration)
+        private readonly IHttpContextAccessor _httpContextAccessor;
+
+        public UserService(IUserDao userDao, PasswordHasher passwordHasher, ITournamentDao tournamentDao, IRefreshTokenService refreshTokenService, IOptions<KeysConfiguration> keysConfiguration, IHttpContextAccessor httpContextAccessor)
         {
             _userDao = userDao;
             _passwordHasher = passwordHasher;
             _tournamentDao = tournamentDao;
             _refreshTokenService = refreshTokenService; 
             _keysConfiguration = keysConfiguration.Value;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<UserDto> GetUserWhitTokenAsync(int id)
@@ -61,8 +66,6 @@ namespace CTService.Implementation.User
                 Email = userModel.Email
             };
         }
-
-
 
         public async Task<UserModel> GetUserDataByNameAsync(string fullname)
         {
@@ -109,11 +112,6 @@ namespace CTService.Implementation.User
             return loginresponse;
 
         }
-
-
-
-
-
 
         public async Task<int> CreateWhitHashedPasswordAsync(UserRequestDto LoginDto)
         {
@@ -176,7 +174,34 @@ namespace CTService.Implementation.User
             };
 
             await ValidateUserCreation(userModel);
+            await ValidateUserRol(userModel.Id_Rol);
             return await _userDao.CreateUserAsync(userModel);
+        }
+
+        public async Task ValidateUserRol(int rolToCreat)
+        {
+            //traer los datos del rol del token
+            var userClaims = _httpContextAccessor.HttpContext?.User.Identity as ClaimsIdentity;
+            var userRolClaim = userClaims?.FindFirst("UserRole");
+
+            if (userRolClaim == null)
+                throw new InvalidOperationException("Error al recuperar el rol");
+
+            if (!int.TryParse(userRolClaim.Value, out int userRol))
+                throw new InvalidOperationException("El Rol del usuario en el token no es válido.");
+
+            //comparar con el rol a crear
+            // Validamos qué roles puede asignar cada usuario
+            if (userRol == 2) // Organizador solo puede crear jueces (3) o jugadores (4)
+                if (rolToCreat != 3 && rolToCreat != 4)
+                    throw new UnauthorizedAccessException("Un organizador solo puede crear jueces o jugadores.");
+
+            else if (userRol == 4) // Jugador solo puede crear jugadores (4)
+                if (rolToCreat != 4)
+                    throw new UnauthorizedAccessException("Un jugador solo puede crear otros jugadores.");
+
+            else if (userRol != 1) // Si no es administrador (1), lanzamos un error
+                throw new UnauthorizedAccessException("No tienes permisos para crear usuarios.");
         }
 
         public async Task<int> CalculateUserKi(UserCreationDto userDto)
@@ -200,6 +225,20 @@ namespace CTService.Implementation.User
             var emailsExist = await _userDao.ValidateUserEmail(user.Email);
             if (emailsExist)
                 throw new ArgumentException("El Email especificado ya está registrado.");
+
+
+            //var userRol = GetUserRolFromToken();
+            //// Validamos qué roles puede asignar cada usuario
+            //if (userRol == 2) // Organizador solo puede crear jueces (3) o jugadores (4)
+            //    if (user.Id_Rol != 3 && user.Id_Rol != 4)
+            //        throw new UnauthorizedAccessException("Un organizador solo puede crear jueces o jugadores.");
+
+            //else if (userRol == 4) // Jugador solo puede crear jugadores (4)
+            //    if (user.Id_Rol != 4)
+            //        throw new UnauthorizedAccessException("Un jugador solo puede crear otros jugadores.");
+
+            //else if (userRol != 1) // Si no es administrador (1), lanzamos un error
+            //        throw new UnauthorizedAccessException("No tienes permisos para crear usuarios.");
         }
 
         public async Task AlterUserAsync(AlterUserDto userDto)
@@ -239,15 +278,20 @@ namespace CTService.Implementation.User
             var emailsExists = await _userDao.ValidateUserEmail(user.New_Email);
             if (emailsExists)
                 throw new ArgumentException("El Email especificado ya está registrado y no puede repetirse.");
-   
+
+            await ValidateUserRol(oldUser.Id_Rol);
+
             return response;
         }
 
         public async Task SoftDeleteUserAsync(SoftDeleteUserDto userDto)
         {
-
-            //agregar validaciones
-              await _userDao.SoftDeleteUserAsync(userDto.Id_User);
+            var user = await _userDao.GetUserById(userDto.Id_User);
+            if (user.Available == 0)
+                throw new ArgumentException("El usuario especificado ya ha sido eliminado");
+           
+            await ValidateUserRol(user.Id_Rol);
+            await _userDao.SoftDeleteUserAsync(userDto.Id_User);
         }
     }
 }

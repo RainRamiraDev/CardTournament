@@ -130,6 +130,8 @@ namespace CTService.Implementation.Tournament
             return await _tournamentDao.CreateTournamentAsync(tournamentModel);
         }
 
+        
+
         private int GetUserIdFromToken()
         {
             var userClaims = _httpContextAccessor.HttpContext?.User.Identity as ClaimsIdentity;

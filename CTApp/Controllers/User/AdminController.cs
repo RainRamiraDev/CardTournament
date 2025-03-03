@@ -21,7 +21,7 @@ namespace CTApp.Controllers.User
             _userService = userService;
         }
 
-        //[Authorize(Roles = "2")]
+        [Authorize(Roles = "2")]
         [HttpPost("CreateUser")]
         public async Task<IActionResult> CreateUser([FromBody] UserCreationDto userDto)
         {
@@ -51,17 +51,17 @@ namespace CTApp.Controllers.User
 
             await _userService.AlterUserAsync(userDto);
 
-            var newUser = new AlterUserDto
+            var newUser = new ShowUserDto
             {
-                New_Fullname = userDto.New_Fullname,
-                New_Id_Rol = userDto.New_Id_Rol,
-                New_IdCountry = userDto.New_IdCountry,
-                New_Alias = userDto.New_Alias,
-                New_Email = userDto.New_Email,     
-                New_Avatar_Url = userDto.New_Avatar_Url,
+                Fullname = userDto.New_Fullname,
+                Id_Rol = userDto.New_Id_Rol,
+                IdCountry = userDto.New_IdCountry,
+                Alias = userDto.New_Alias,
+                Email = userDto.New_Email,     
+                Avatar_Url = userDto.New_Avatar_Url,
             };
 
-            var response = ApiResponse<AlterUserDto>.SuccessResponse("Usuario creado exitosamente", newUser);
+            var response = ApiResponse<ShowUserDto>.SuccessResponse("Usuario creado exitosamente", newUser);
             return Created(string.Empty, response);
         }
 
