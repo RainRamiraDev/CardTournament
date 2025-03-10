@@ -148,8 +148,8 @@ namespace CTDao.Dao.Game
                             id_round = match.Id_Round,
                             id_player1 = match.Id_Player1,
                             id_player2 = match.Id_Player2,
-                            winner = match.Winner
-
+                            winner = match.Winner,
+                            Match_Date = match.Match_Date,
                         }, transaction);
 
                         await transaction.CommitAsync();

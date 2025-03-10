@@ -1,4 +1,5 @@
 ﻿using CTApp.Response;
+using CTDataModels.Game;
 using CTDto.Game;
 using CTDto.Tournaments;
 using CTService.Interfaces.Game;
@@ -31,6 +32,24 @@ namespace CTApp.Controllers
             var response = ApiResponse<GameResultDto>.SuccessResponse("Juego resuelto exitosamente.", result);
             return Ok(response);
         }
+
+
+        [Authorize(Roles = "1")]
+        [HttpGet("TournamentSchedule")]
+        public async Task<IActionResult> TournamentSchedule([FromBody] TournamentRequestToResolveDto request)
+        {
+            if (request == null)
+                return BadRequest("Invalid request data.");
+
+            List<MatchScheduleDto> result = await _gameService.CalculateMatchScheduleAsync(request);
+
+            var response = ApiResponse<List<MatchScheduleDto>>.SuccessResponse("Fechas calculadas exitosamente.", result);
+            return Ok(response);
+        }
+
+
+
+
     }
 
 }

@@ -60,10 +60,10 @@ namespace CTService.Implementation.Tournament
             if (cardSeriesIds == null || !cardSeriesIds.Any())
                 throw new ArgumentException("Nombre de las serie invalido.");
 
-            var playerCapacity = await CalculatePlayerCapacity(tournamentDecksDto.Id_Tournament);
-            var capacityCompleted = await _tournamentDao.CheckTournamentCapacity(playerCapacity, tournamentDecksDto.Id_Tournament);
-            if (capacityCompleted)
-                throw new ArgumentException("Torneo completo.");
+            //var playerCapacity = await CalculatePlayerCapacity(tournamentDecksDto.Id_Tournament);
+            //var capacityCompleted = await _tournamentDao.CheckTournamentCapacity(playerCapacity, tournamentDecksDto.Id_Tournament);
+            //if (capacityCompleted)
+            //    throw new ArgumentException("Torneo completo.");
 
             var tournamentDecksModel = new TournamentDecksModel
             {
@@ -147,54 +147,41 @@ namespace CTService.Implementation.Tournament
             return userId;
         }
 
-        public async Task<PlayerCapacityModel> CalculatePlayerCapacity(int id_tournament)
+        public async Task<PlayerCapacityModel> CalculatePlayerCapacity(int id_tournament, int AvailableDailyHours)
         {
-
-            //traigo las fechas establecidas del torneo 
+            // Traigo las fechas establecidas del torneo 
             TournamentDto tournament = await GetTournamentById(id_tournament);
 
-            //corroboro que las fechas esten como UTC 
+            // Corroboro que las fechas estén como UTC 
             var startDatetime = tournament.Start_datetime.ToUniversalTime();
             var endDatetime = tournament.End_datetime.ToUniversalTime();
-  
 
-            //cambiar 9 10 12 
+            // Calculo el total de minutos disponibles por día, basándome en las horas disponibles
+            int availableMatchMinutesPerDay = AvailableDailyHours * 60; // Convierte las horas disponibles en minutos
 
-            //establezco el horario diario que se le dara para resolver el torneo
-            var matchStartTime = new TimeSpan(9, 0, 0); 
-            var matchEndTime = new TimeSpan(21, 0, 0); 
-
-           
-            //calculo los minutos totales disponibles en el plazo de tiempo
+            // Calculo los minutos totales disponibles en el plazo de tiempo
             var totalMinutes = (endDatetime - startDatetime).TotalMinutes;
 
+            // Calculo los días totales sabiendo cuál es el plazo de tiempo diario
+            int totalDays = (int)(endDatetime.Date - startDatetime.Date).TotalDays + 1; // +1 porque incluye el día de inicio
 
-            //calculo los dias totales sabiendo cual es el plazo de tiempo diario
-            int totalDays = (int)(endDatetime.Date - startDatetime.Date).TotalDays + 1; // +1 porque incluye  el día de inicio
-
-            int availableMatchMinutesPerDay = (int)(matchEndTime - matchStartTime).TotalMinutes;
-
-            //se calculan la cantidad de matches que se podran hacer en los dias disponibles en base al rango horario establecido
+            // Se calculan la cantidad de partidos que se podrán hacer en los días disponibles en base al tiempo disponible por día
             int totalAvailableMatchMinutes = totalDays * availableMatchMinutesPerDay;
 
             var maxMatches = totalAvailableMatchMinutes / 30; // 30 minutos por partido
 
-
-            //el valor maximo calculado lo rendea a la potencia mas cercana de 2
+            // El valor máximo calculado lo redondea a la potencia más cercana de 2
             maxMatches = (int)Math.Pow(2, Math.Floor(Math.Log(maxMatches) / Math.Log(2)));
-            
-            //sabiendo que por cada match hay dos calcula ca cantidad maxima de jugadores
+
+            // Sabiendo que por cada match hay dos jugadores, calcula la cantidad máxima de jugadores
             var maxPlayers = maxMatches * 2;
 
-
-            //me establece que el minimo son 16 jugadores es decir que minimo voy a tener octavos en mi torneo
-            //si es mas de 16 pone el cap en la potencia de 2 mas cercana
-
+            // Me establece que el mínimo son 16 jugadores, es decir, que mínimo voy a tener octavos en mi torneo
+            // Si es más de 16, pone el cap en la potencia de 2 más cercana
             int minPlayers = Math.Max(16, (int)Math.Pow(2, Math.Ceiling(Math.Log2(maxPlayers))));
 
             minPlayers = Math.Min(minPlayers, maxPlayers);
 
-           
             var playerCapacity = new PlayerCapacityModel
             {
                 MaxPlayers = maxPlayers,
@@ -203,6 +190,7 @@ namespace CTService.Implementation.Tournament
 
             return playerCapacity;
         }
+
 
         public async Task<TournamentDto> GetTournamentById(int id_tournament)
         {

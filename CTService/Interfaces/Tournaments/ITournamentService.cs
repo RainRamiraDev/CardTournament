@@ -30,8 +30,10 @@ namespace CTService.Interfaces.Tournaments
         //Cards
         Task<int> InsertTournamentDecksAsync(TournamentDecksDto tournamentDecksDto);
 
-        Task<PlayerCapacityModel> CalculatePlayerCapacity(int id_tournament);
+        Task<PlayerCapacityModel> CalculatePlayerCapacity(int id_tournament, int AvailableDailyHours);
 
         Task<List<ShowTournamentPlayersDto>> ShowPlayersFromTournamentAsync(TournamentRequestToResolveDto showPlayersFromTournamentDto);
+
+        Task<TournamentDto> GetTournamentById(int id_tournament);
     }
 }

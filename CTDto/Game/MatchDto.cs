@@ -12,5 +12,6 @@ namespace CTDto.Game
         public int Id_Player1 { get; set; }
         public int Id_Player2 { get; set; }
         public int Winner { get; set; }
+        public DateTime Match_Date { get; set; }
     }
 }

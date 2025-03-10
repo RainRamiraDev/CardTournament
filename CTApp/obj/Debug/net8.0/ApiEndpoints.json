@@ -80,6 +80,22 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "CTApp.Controllers.GameController",
+    "Method": "TournamentSchedule",
+    "RelativePath": "api/Game/TournamentSchedule",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "CTDto.Tournaments.TournamentRequestToResolveDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "CTApp.Controllers.User.JudgeController",
     "Method": "DisqualifyPlayerFromTournament",
     "RelativePath": "api/Judge/DisqualifyPlayerFromTournament",

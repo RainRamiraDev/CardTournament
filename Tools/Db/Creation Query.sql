@@ -174,9 +174,10 @@ CREATE TABLE IF NOT EXISTS `t_rounds` (
 
 CREATE TABLE IF NOT EXISTS `t_matches` (
   `id_match` int NOT NULL AUTO_INCREMENT,
-  `id_round` int DEFAULT NULL,
-  `id_player1` int DEFAULT NULL,
-  `id_player2` int DEFAULT NULL,
+  `match_date` Datetime NOT NULL,
+  `id_round` int NOT NULL,
+  `id_player1` int NOT NULL,
+  `id_player2` int NOT NULL,
   `winner` int DEFAULT NULL,
   PRIMARY KEY (`id_match`),
   KEY `fk_match_round` (`id_round`),
