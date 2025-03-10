@@ -14,6 +14,6 @@ namespace CTService.Interfaces.Game
         Task<int> CreateRoundAsync(int roundNumber, int tournament_id, int id_judge);
         Task<int> CreateMatchAsync(MatchDto match);
         Task<GameResultDto> ResolveGameAsync(TournamentRequestToResolveDto tournamentDto);
-
+        Task<List<MatchScheduleDto>> CalculateMatchScheduleAsync(TournamentRequestToResolveDto request);
     }
 }

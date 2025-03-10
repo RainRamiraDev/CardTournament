@@ -87,7 +87,11 @@
   "QueryGetPlayersIds": "SELECT tp.id_player FROM T_TOURN_PLAYERS tp LEFT JOIN t_tourn_disqualifications td ON tp.id_player = td.id_player AND td.id_tournament = @id_tournament WHERE tp.id_tournament = @id_tournament GROUP BY tp.id_player HAVING COUNT(td.id_tourn_disqualification) < 3;",
 
   "QueryCreateRound": "INSERT INTO T_ROUNDS (id_tournament, round_number, judge) VALUES (@id_tournament, @round_number, @judge);",
-  "QueryCreateMatch": "INSERT INTO T_MATCHES (id_round, id_player1, id_player2, winner) VALUES (@id_round, @id_player1, @id_player2, @winner); SELECT LAST_INSERT_ID();",
+
+
+  "QueryCreateMatch": "INSERT INTO T_MATCHES (id_round, id_player1, id_player2, winner, Match_Date) VALUES (@id_round, @id_player1, @id_player2, @winner, @Match_Date); SELECT LAST_INSERT_ID();",
+  
+  
   "QuerySetNextRound": "INSERT INTO T_ROUNDS (id_tournament, round_number, is_completed) VALUES (@id_tournament, @round_number, FALSE);",
   "QueryGetLastRound": "SELECT COALESCE(MAX(round_number), 0) FROM T_ROUNDS WHERE id_tournament = @id_tournament;",
   "QueryCompleteRound": "UPDATE T_ROUNDS SET is_completed = TRUE WHERE id_tournament = @id_tournament AND round_number = @round_number;",

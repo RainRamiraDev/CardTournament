@@ -9,6 +9,6 @@ namespace CTDataModels.Tournamets
     public class TournamentRequestToResolveModel
     {
         public int Tournament_Id { get; set; }
-        public int dailyHoursAvailable { get; set; }
+        public int availableHoursPerDay { get; set; }
     }
 }

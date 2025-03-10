@@ -51,7 +51,8 @@ namespace CTService.Implementation.Game
                 Id_Round = match.Id_Round,
                 Id_Player1 = match.Id_Player1,
                 Id_Player2 = match.Id_Player2,
-                Winner = match.Winner
+                Winner = match.Winner,
+                Match_Date = match.Match_Date,
             };
 
             return await _gameDao.CreateMatchAsync(matchModel);
@@ -81,7 +82,7 @@ namespace CTService.Implementation.Game
             if (!tournamentExists)
                 throw new ArgumentException("El torneo especificado no existe.");
 
-            var playerCapacity = await _tournamentService.CalculatePlayerCapacity(tournamentDto.Tournament_Id);
+            var playerCapacity = await _tournamentService.CalculatePlayerCapacity(tournamentDto.Tournament_Id, tournamentDto.availableHoursPerDay);
             var capacityCompleted = await _tournamentDao.CheckTournamentCapacity(playerCapacity, tournamentDto.Tournament_Id);
             if (!capacityCompleted)
                 throw new ArgumentException("El torneo aun debe completar su capacidad.");
@@ -98,6 +99,28 @@ namespace CTService.Implementation.Game
             int roundNumber = await _gameDao.GetLastRoundAsync(tournamentModel.Tournament_Id);
 
             HashSet<int> eliminatedPlayers = new HashSet<int>();
+
+
+
+            // Obtener la programación de los partidos
+            var matchSchedule = await CalculateTournamentScheduleAsync(tournamentDto.Tournament_Id, tournamentDto.availableHoursPerDay);
+            int scheduleIndex = 0; // Índice para recorrer la programación de los partidos
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
             // torneo fase 2
             await _tournamentDao.SetTournamentToNextPhaseAsync(tournamentModel.Tournament_Id);
@@ -132,15 +155,20 @@ namespace CTService.Implementation.Game
                     winners.Add(winner);
                     eliminatedPlayers.Add(loser);
 
+
                     var match = new MatchDto
                     {
                         Id_Round = createdRoundId,
                         Id_Player1 = player1,
                         Id_Player2 = player2,
-                        Winner = winner
+                        Winner = winner,
+                        Match_Date = matchSchedule[scheduleIndex].Match_Date // Asignar la fecha y hora
                     };
 
+
                     await CreateMatchAsync(match);
+
+                    scheduleIndex++; // Incrementar el índice de programación
                 }
 
                 playersIds = winners;
@@ -171,16 +199,16 @@ namespace CTService.Implementation.Game
         }
 
 
-        public async Task DisqualifyPlayerAsync(int playerId, int tournamentId, int judgeId)
-        {
-            await ValidatePlayerDisqualification(playerId, tournamentId, judgeId);
+        //public async Task DisqualifyPlayerAsync(int playerId, int tournamentId, int judgeId)
+        //{
+        //    await ValidatePlayerDisqualification(playerId, tournamentId, judgeId);
 
-            // Registrar la descalificación en la base de datos
-            await _gameDao.InsertDisqualificationAsync(playerId, tournamentId, judgeId);
+        //    // Registrar la descalificación en la base de datos
+        //    await _gameDao.InsertDisqualificationAsync(playerId, tournamentId, judgeId);
 
-            // Marcar al jugador como descalificado (puedes agregarlo a una lista de eliminados)
-            Console.WriteLine($"El jugador {playerId} ha sido descalificado del torneo {tournamentId} por el juez {judgeId}.");
-        }
+        //    // Marcar al jugador como descalificado (puedes agregarlo a una lista de eliminados)
+        //    Console.WriteLine($"El jugador {playerId} ha sido descalificado del torneo {tournamentId} por el juez {judgeId}.");
+        //}
 
         public async Task ValidatePlayerDisqualification(int playerId, int tournamentId, int judgeId)
         {
@@ -228,6 +256,92 @@ namespace CTService.Implementation.Game
             return await Task.FromResult(judges[randomIndex]);
         }
 
+        public async Task<List<MatchScheduleModel>> CalculateTournamentScheduleAsync(int tournamentId, int availableHoursPerDay)
+        {
+            // Obtenemos la capacidad de jugadores
+            PlayerCapacityModel playerCapacity = await _tournamentService.CalculatePlayerCapacity(tournamentId, availableHoursPerDay);
 
+            // Obtenemos las fechas del torneo
+            TournamentDto tournament = await _tournamentService.GetTournamentById(tournamentId);
+            var startDatetime = tournament.Start_datetime.ToUniversalTime();
+            var endDatetime = tournament.End_datetime.ToUniversalTime();
+
+            // Calculamos los días disponibles para el torneo
+            int totalDays = (int)(endDatetime.Date - startDatetime.Date).TotalDays + 1; // Incluye el día de inicio
+
+            // Establecemos el horario de inicio y fin de cada día basado en las AvailableHours
+            var matchStartTime = new TimeSpan(9, 0, 0); // Hora de inicio
+            var matchEndTime = matchStartTime.Add(TimeSpan.FromHours(availableHoursPerDay)); // Hora de fin basada en las horas disponibles
+
+            int availableMatchMinutesPerDay = (int)(matchEndTime - matchStartTime).TotalMinutes;
+
+            // Calculamos el total de partidos que se pueden hacer
+            int totalMatches = playerCapacity.MaxPlayers / 2; // Cada partido involucra 2 jugadores
+
+            List<MatchScheduleModel> matchSchedule = new List<MatchScheduleModel>();
+
+
+            // Inicializamos el ID de los partidos fuera del bucle de los días
+            int matchId = 1;  // Comienza el ID de partidos desde 1
+
+            // Dividimos los partidos por días
+            for (int day = 0; day < totalDays; day++)
+            {
+                DateTime currentDate = startDatetime.AddDays(day);
+                TimeSpan currentMatchTime = matchStartTime;
+
+                // Programamos los partidos para el día actual
+                for (int match = 0; match < totalMatches; match++)
+                {
+                    if (currentMatchTime >= matchEndTime)
+                    {
+                        break; // No hay más tiempo para programar partidos en este día
+                    }
+
+                    // Creamos un nuevo horario de partido
+                    var matchDto = new MatchScheduleModel
+                    {
+                        Match_Date = currentDate.Add(currentMatchTime),
+                        Id_Match = matchId  // Usamos el ID de partido global
+                    };
+
+                    matchSchedule.Add(matchDto);
+
+                    // Aumentamos el tiempo de inicio para el siguiente partido
+                    currentMatchTime = currentMatchTime.Add(TimeSpan.FromMinutes(30)); // Cada partido dura 30 minutos
+
+                    // Incrementamos el ID de partido global para el siguiente partido
+                    matchId++;
+                }
+            }
+
+
+            return matchSchedule;
+        }
+
+
+
+
+        public async Task<List<MatchScheduleDto>> CalculateMatchScheduleAsync(TournamentRequestToResolveDto request)
+        {
+            var isValidTournament = await _tournamentDao.TournamentExistsAsync(request.Tournament_Id);
+            if (!isValidTournament)
+                throw new ArgumentException("El torneo especificado no existe");
+
+            var matchShoudelModel = await CalculateTournamentScheduleAsync(request.Tournament_Id,request.availableHoursPerDay);
+
+            List<MatchScheduleDto> matchResponse = new List<MatchScheduleDto>();
+
+            foreach (MatchScheduleModel m in matchShoudelModel)
+            {
+                MatchScheduleDto dto = new MatchScheduleDto
+                {
+                    Id_Match = m.Id_Match,
+                    Match_Date = m.Match_Date,
+                };
+                matchResponse.Add(dto);
+            };
+            return matchResponse;
+        }
     }
 }
