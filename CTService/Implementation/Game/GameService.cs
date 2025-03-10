@@ -89,7 +89,6 @@ namespace CTService.Implementation.Game
 
             List<int> playersIds = await _gameDao.GetTournamentPlayersAsync(tournamentModel.Tournament_Id);
 
-
             if (playersIds.Count < 2)
                 throw new ArgumentException("Se necesitan al menos dos jugadores para iniciar el torneo.");
 
@@ -170,10 +169,6 @@ namespace CTService.Implementation.Game
                 Message = $"El ganador del torneo es el jugador {playersIds[0]}."
             };
         }
-
-
-
-
 
 
         public async Task DisqualifyPlayerAsync(int playerId, int tournamentId, int judgeId)
