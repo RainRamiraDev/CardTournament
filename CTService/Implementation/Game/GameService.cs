@@ -156,14 +156,6 @@ namespace CTService.Implementation.Game
                     eliminatedPlayers.Add(loser);
 
 
-
-
-
-
-
-
-
-
                     var match = new MatchDto
                     {
                         Id_Round = createdRoundId,
@@ -174,18 +166,7 @@ namespace CTService.Implementation.Game
                     };
 
 
-
-
-
-
-
-
-
-
-
-
                     await CreateMatchAsync(match);
-
 
                     scheduleIndex++; // Incrementar el índice de programación
                 }
@@ -298,10 +279,6 @@ namespace CTService.Implementation.Game
             int totalMatches = playerCapacity.MaxPlayers / 2; // Cada partido involucra 2 jugadores
 
             List<MatchScheduleModel> matchSchedule = new List<MatchScheduleModel>();
-
-
-
-
 
 
             // Inicializamos el ID de los partidos fuera del bucle de los días
