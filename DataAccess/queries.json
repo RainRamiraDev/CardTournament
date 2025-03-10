@@ -84,7 +84,7 @@
   "QueryInsertGamePlayers": "INSERT INTO T_GAME_PLAYERS (id_game, id_player) VALUES (@id_game, @id_player);",
   "QuerySetWinner": "UPDATE T_USERS SET games_won = games_won + 1 WHERE id_user = @id_player;",
   "QuerySetLosers": "UPDATE T_USERS SET games_lost = games_lost + 1 WHERE id_user IN @losers;",
-  "QueryGetPlayersIds": "SELECT id_player FROM T_TOURN_PLAYERS WHERE id_tournament = @id_tournament;",
+  "QueryGetPlayersIds": "SELECT tp.id_player FROM T_TOURN_PLAYERS tp LEFT JOIN t_tourn_disqualifications td ON tp.id_player = td.id_player AND td.id_tournament = @id_tournament WHERE tp.id_tournament = @id_tournament GROUP BY tp.id_player HAVING COUNT(td.id_tourn_disqualification) < 3;",
 
   "QueryCreateRound": "INSERT INTO T_ROUNDS (id_tournament, round_number, judge) VALUES (@id_tournament, @round_number, @judge);",
   "QueryCreateMatch": "INSERT INTO T_MATCHES (id_round, id_player1, id_player2, winner) VALUES (@id_round, @id_player1, @id_player2, @winner); SELECT LAST_INSERT_ID();",
