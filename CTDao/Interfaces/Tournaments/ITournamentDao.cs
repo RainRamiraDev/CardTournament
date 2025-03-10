@@ -1,7 +1,10 @@
 ﻿using CTDataModels.Card;
 using CTDataModels.Game;
 using CTDataModels.Tournamets;
+using CTDataModels.Users;
+using CTDataModels.Users.Judge;
 using CTDto.Card;
+using CTDto.Users;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +17,12 @@ namespace CTDao.Interfaces.Tournaments
     {
         //Tournament
         Task<int> CreateTournamentAsync(TournamentModel tournament);
+
+        Task AlterTournamentAsync(AlterTournamentModel tournament);
+
+        Task SoftDeleteTournamentAsync(int id_tournament);
+
+
         Task<IEnumerable<TournamentsInformationModel>> GetTournamentsInformationAsync(GetTournamentInformationModel tournamentInformationModel);
         Task<int> SetTournamentToNextPhaseAsync(int tournament_id);
         Task<int> GetTournamentCurrentPhaseAsync(int id_tournament);
@@ -46,5 +55,9 @@ namespace CTDao.Interfaces.Tournaments
         Task<int> InsertTournamentPlayersAsync(TournamentDecksModel tournamentDecks);
 
         Task<bool> CheckTournamentCapacity(PlayerCapacityModel capacity, int id_tournament);
+        Task DisqualifyPlayerFromTournamentAsync(DisqualificationModel disqualificationRequest);
+
+        Task<bool> ValidateJudgesFromTournament(int id_Judge, int id_Tournament);
+        Task<List<ShowTournamentPlayersModel>> ShowPlayersFromTournamentAsync(int tournament_Id);
     }
 }

@@ -2,6 +2,8 @@
 using CTDao.Interfaces.Tournaments;
 using CTDataModels.Game;
 using CTDataModels.Tournamets;
+using CTDataModels.Users;
+using CTDataModels.Users.Judge;
 using CTDto.Card;
 using Dapper;
 using DataAccess;
@@ -403,6 +405,120 @@ namespace CTDao.Dao.Tournaments
             return true;
         }
 
+        public async Task AlterTournamentAsync(AlterTournamentModel tournament)
+        {
+            using var connection = new MySqlConnection(_connectionString);
+            await connection.OpenAsync();
+
+            using var transaction = await connection.BeginTransactionAsync();
+            try
+            {
+                var rowsAffected = await connection.ExecuteAsync(QueryLoader.GetQuery("QueryUpdateTournament"), new
+                {
+                    Id_Country = tournament.Id_Country,
+                    Id_Organizer = tournament.Id_Organizer,
+                    Start_Datetime = tournament.Start_datetime,
+                    End_Datetime = tournament.End_datetime,
+                    Id_tournament = tournament.Id_tournament
+                }, transaction);
+
+                if (rowsAffected == 0)
+                {
+                    await transaction.RollbackAsync();
+                }
+
+                await connection.ExecuteAsync(QueryLoader.GetQuery("QueryDeleteJudges"), new { Id_tournament = tournament.Id_tournament }, transaction);
+                foreach (var judgeId in tournament.Judges_Id)
+                {
+                    await connection.ExecuteAsync(QueryLoader.GetQuery("QueryInsertJudges"), new
+                    {
+                        Id_tournament = tournament.Id_tournament,
+                        Id_Judge = judgeId
+                    }, transaction);
+                }
+
+                await connection.ExecuteAsync(QueryLoader.GetQuery("QueryDeleteSeries"), new { Id_tournament = tournament.Id_tournament }, transaction);
+                foreach (var cardId in tournament.Series_Id)
+                {
+                    await connection.ExecuteAsync(QueryLoader.GetQuery("QueryInsertSeries"), new
+                    {
+                        Id_tournament = tournament.Id_tournament,
+                        Id_Series = cardId
+                    }, transaction);
+                }
+                await transaction.CommitAsync();
+            }
+            catch (Exception)
+            {
+                await transaction.RollbackAsync();
+                throw;
+            }
+        }
+
+        public async Task SoftDeleteTournamentAsync(int id_tournament)
+        {
+            using (var connection = new MySqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+
+                var affectedRows = await connection.ExecuteAsync(QueryLoader.GetQuery("QuerySoftDeleteTournament"), new
+                {
+                    id_tournament = id_tournament
+                });
+            }
+        }
+
+        public async Task DisqualifyPlayerFromTournamentAsync(DisqualificationModel disqualificationRequest)
+        {
+            using (var connection = new MySqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+
+                var affectedRows = await connection.ExecuteAsync(QueryLoader.GetQuery("QueryDisqualifyPlayer"), new
+                {
+                    id_tournament = disqualificationRequest.Id_Tournament,
+                    id_player = disqualificationRequest.Id_Player,
+                    id_judge = disqualificationRequest.Id_Judge,
+                });
+            }
+        }
+
+
+        public async Task<bool> ValidateJudgesFromTournament(int id_Judge, int id_Tournament)
+        {
+            using (var connection = new MySqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+
+                var result = await connection.QueryFirstOrDefaultAsync<int?>(
+                    QueryLoader.GetQuery("QueryValidateJudgesFromTournament"),
+                    new { id_Judge, id_Tournament }
+                );
+
+                return result.HasValue;
+            }
+        }
+
+        public async Task<List<ShowTournamentPlayersModel>> ShowPlayersFromTournamentAsync(int tournament_Id)
+        {
+            using (var connection = new MySqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+
+                var judges = await connection.QueryAsync<ShowTournamentPlayersModel>(
+                QueryLoader.GetQuery("QueryGetPlayersFromTournament"),
+                new { id_tournament = tournament_Id });
+
+                var playerList = judges.ToList();
+
+                if (playerList.Count == 0)
+                {
+                    throw new InvalidOperationException("No se pudieron encontrar los jugadores del torneo");
+                }
+
+                return playerList;
+            }
+        }
     }
 }
  

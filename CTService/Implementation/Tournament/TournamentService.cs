@@ -23,6 +23,9 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using static System.Runtime.InteropServices.JavaScript.JSType;
+using CTDto.Users.Judge;
+using CTDataModels.Users.Judge;
+using CTDto.Users;
 
 namespace CTService.Implementation.Tournament
 {
@@ -126,7 +129,7 @@ namespace CTService.Implementation.Tournament
                 Series_Id = tournamentDto.Series_Id,
             };
 
-            var validatedTournament = await ValidateTournament(tournamentModel);
+            await ValidateTournament(tournamentModel);
             return await _tournamentDao.CreateTournamentAsync(tournamentModel);
         }
 
@@ -215,7 +218,7 @@ namespace CTService.Implementation.Tournament
             return tournamentDto;
         }
 
-        public async Task<bool> ValidateTournament(TournamentModel tournament)
+        public async Task ValidateTournament(TournamentModel tournament)
         {
 
             var registeredCountries = await _tournamentDao.ValidateCountriesFromDbAsync(tournament.Id_Country);
@@ -238,8 +241,6 @@ namespace CTService.Implementation.Tournament
             var invalidSeries = tournament.Series_Id.Except(areValidSeries).ToList();
             if (invalidSeries.Any())
                 throw new ArgumentException($"Las siguientes series no están registradas: {string.Join(", ", invalidSeries)}");
-
-            return true;
         }
 
         public async Task<List<int>> GetJudgeIdsByAliasAsync(List<string> judgeAliases)
@@ -278,5 +279,110 @@ namespace CTService.Implementation.Tournament
             var id_tournament = tournament_id;
             return await _tournamentDao.GetTournamentCurrentPhaseAsync(id_tournament);
         }
+
+        public async Task AlterTournamentAsync(AlterTournamentDto tournamentDto)
+        {
+            var oldTournament = await _tournamentDao.GetTournamentByIdAsync(tournamentDto.Id_tournament)
+                ?? throw new KeyNotFoundException("El torneo no existe");
+
+            var organizerFromToken = GetUserIdFromToken();
+
+            var isAdmin = await _tournamentDao.ValidateUsersFromDbAsync(2, new List<int> { organizerFromToken });
+
+            if (oldTournament.Id_Organizer != organizerFromToken && !isAdmin.Contains(organizerFromToken))
+                throw new UnauthorizedAccessException("No tiene permiso para alterar este torneo.");
+
+            var alterTournamentModel = new AlterTournamentModel
+            {
+                Id_tournament = tournamentDto.Id_tournament,
+                Id_Country = tournamentDto.Id_Country,
+                Id_Organizer = organizerFromToken,
+                Start_datetime = DateTime.SpecifyKind(tournamentDto.Start_datetime, DateTimeKind.Utc),
+                End_datetime = DateTime.SpecifyKind(tournamentDto.End_datetime, DateTimeKind.Utc),       
+                Judges_Id = tournamentDto.Judges_Id,
+                Series_Id = tournamentDto.Series_Id
+            };
+
+            // Validación sin crear una variable extra
+            await ValidateTournament(new TournamentModel
+            {
+                Id_Country = alterTournamentModel.Id_Country,
+                Id_Organizer = alterTournamentModel.Id_Organizer,
+                Start_datetime = alterTournamentModel.Start_datetime,
+                End_datetime = alterTournamentModel.End_datetime,
+                Judges_Id = alterTournamentModel.Judges_Id,
+                Series_Id = alterTournamentModel.Series_Id
+            });
+
+            await _tournamentDao.AlterTournamentAsync(alterTournamentModel);
+        }
+
+        public async Task SoftDeleteTournamentAsync(TournamentRequestToResolveDto tournamentDto)
+        {
+            var isValidTournament = await _tournamentDao.TournamentExistsAsync(tournamentDto.Tournament_Id);
+            if (!isValidTournament)
+                throw new ArgumentException("El torneo especificado no ha sido encontrado");
+
+            await _tournamentDao.SoftDeleteTournamentAsync(tournamentDto.Tournament_Id);
+        }
+
+        public async Task DisqualifyPlayerFromTournamentAsync(DisqualificationDto disqualificationDto)
+        {
+
+            var idJudgeFromToken = GetUserIdFromToken();
+            var disqualificationRequest = new DisqualificationModel
+            {
+                Id_Tournament = disqualificationDto.Id_Tournament,
+                Id_Player = disqualificationDto.Id_Player,
+                Id_Judge = idJudgeFromToken,
+            };
+
+            await ValidatePlayerDisqualification(disqualificationRequest);
+
+            await _tournamentDao.DisqualifyPlayerFromTournamentAsync(disqualificationRequest);
+
+
+        }
+
+        private async Task ValidatePlayerDisqualification(DisqualificationModel disqualificationRequest)
+        {
+            //validar que el torneo exista
+            var tournamentExist = await _tournamentDao.TournamentExistsAsync(disqualificationRequest.Id_Tournament);
+            if (!tournamentExist)
+                throw new ArgumentException("El torneo especificado no se encuentra registrado");
+
+            //validar que el juez pertenezca a ese torneo
+
+            var isValidJudge = await _tournamentDao.ValidateJudgesFromTournament(disqualificationRequest.Id_Judge, disqualificationRequest.Id_Tournament);
+            if (!isValidJudge)
+                throw new ArgumentException("El juez especificado no se encuentra registrado en este torneo");
+
+
+            //validar que el jugador este jugado a ese torneo y no haya sido previamente descalificado
+            var isValidPlayer = await _tournamentDao.ValidateTournamentPlayersAsync(disqualificationRequest.Id_Tournament,disqualificationRequest.Id_Player);
+            if(!isValidPlayer.Any())
+                throw new ArgumentException("El jugador especificado no se encuentra registrado en el torneo");
+        }
+
+        public async Task<List<ShowTournamentPlayersDto>> ShowPlayersFromTournamentAsync(TournamentRequestToResolveDto showPlayersFromTournamentDto)
+        {
+            // Verificar si el torneo existe
+            var tournamentExist = await _tournamentDao.TournamentExistsAsync(showPlayersFromTournamentDto.Tournament_Id);
+            if (!tournamentExist)
+                throw new ArgumentException("El torneo especificado no se encuentra registrado");
+
+            var tournamentPlayers = await _tournamentDao.ShowPlayersFromTournamentAsync(showPlayersFromTournamentDto.Tournament_Id);
+
+            var playerDtos = tournamentPlayers.Select(player => new ShowTournamentPlayersDto
+            {
+                Id_Player = player.Id_Player,
+                Alias = player.Alias, 
+                Disqualifications = player.Disqualifications,
+                Avatar_Url = player.Avatar_Url,
+            }).ToList();
+
+            return playerDtos;
+        }
+
     }
 }

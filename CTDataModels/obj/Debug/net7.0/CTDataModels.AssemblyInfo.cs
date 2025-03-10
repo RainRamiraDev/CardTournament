@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("CTDataModels")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+641e21b169d7ff6c991f2b92d0770ca98f6070bc")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+564578d90d9ebafa0f95d24ba834875c052ba18e")]
 [assembly: System.Reflection.AssemblyProductAttribute("CTDataModels")]
 [assembly: System.Reflection.AssemblyTitleAttribute("CTDataModels")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

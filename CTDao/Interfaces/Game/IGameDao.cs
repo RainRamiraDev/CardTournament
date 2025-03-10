@@ -11,6 +11,12 @@ namespace CTDao.Interfaces.Game
 {
     public interface IGameDao
     {
+
+        Task InsertDisqualificationAsync(int playerId, int tournamentId, int judgeId);
+
+        Task<bool> IsPlayerDisqualifiedAsync(int playerId, int tournamentId);
+
+
         Task<int> SetGameWinnerAsync(int winner);
         Task<int> SetGameLoserAsync(List<int> losers);
         Task<List<int>> GetTournamentPlayersAsync(int tournamentId);

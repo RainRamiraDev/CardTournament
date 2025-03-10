@@ -77,5 +77,32 @@ namespace CTApp.Controllers.User
 
             return Created("", ApiResponse<object>.SuccessResponse("Torneo creado exitosamente.", new { id }));
         }
+
+
+        [Authorize(Roles = "1")]
+        [HttpPost("AlterTournament")]
+        public async Task<IActionResult> AlterTournament([FromBody] AlterTournamentDto tournamentDto)
+        {
+            if (tournamentDto == null)
+                return BadRequest(ApiResponse<object>.ErrorResponse("Los datos del torneo son inválidos."));
+
+            await _tournamentService.AlterTournamentAsync(tournamentDto);
+
+            return Created("", ApiResponse<object>.SuccessResponse("Torneo modificado exitosamente."));
+        }
+
+
+        [Authorize(Roles = "1")]
+        [HttpPost("CalcelTournament")]
+        public async Task<IActionResult> CalcelTournament([FromBody] TournamentRequestToResolveDto tournamentDto)
+        {
+            if (tournamentDto == null)
+                return BadRequest(ApiResponse<object>.ErrorResponse("Los datos del torneo son inválidos."));
+
+            await _tournamentService.SoftDeleteTournamentAsync(tournamentDto);
+
+            return Created("", ApiResponse<object>.SuccessResponse("Torneo dado de baja exitosamente."));
+        }
+
     }
 }

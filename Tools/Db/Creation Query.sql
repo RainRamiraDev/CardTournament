@@ -55,7 +55,6 @@ CREATE TABLE IF NOT EXISTS `t_users` (
   `passcode` varchar(255) DEFAULT NULL,
   `games_won` int DEFAULT 0,
   `games_lost` int DEFAULT 0,
-  `disqualifications` int DEFAULT 0,
   `avatar_url` varchar(255) DEFAULT NULL,
   `ki` int DEFAULT NULL,
   `active` TINYINT(1) DEFAULT 1,
@@ -114,11 +113,14 @@ CREATE TABLE IF NOT EXISTS `t_tourn_disqualifications` (
   `id_tourn_disqualification` int NOT NULL AUTO_INCREMENT,
   `id_tournament` int DEFAULT NULL,
   `id_player` int DEFAULT NULL,
+  `id_judge` int DEFAULT NULL,
   PRIMARY KEY (`id_tourn_disqualification`),
   KEY `fk_tourn_disq_tourn` (`id_tournament`),
   KEY `fk_tourn_disq_player` (`id_player`),
+  KEY `fk_tourn_disq_judge` (`id_judge`),
+  CONSTRAINT `fk_tourn_disq_tourn` FOREIGN KEY (`id_tournament`) REFERENCES `t_tournaments` (`id_tournament`),
   CONSTRAINT `fk_tourn_disq_player` FOREIGN KEY (`id_player`) REFERENCES `t_users` (`id_user`),
-  CONSTRAINT `fk_tourn_disq_tourn` FOREIGN KEY (`id_tournament`) REFERENCES `t_tournaments` (`id_tournament`)
+  CONSTRAINT `fk_tourn_disq_judge` FOREIGN KEY (`id_judge`) REFERENCES `t_users` (`id_user`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 

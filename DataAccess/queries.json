@@ -14,6 +14,27 @@
   "QueryGetTournamentJudgesIds": "SELECT id_judge FROM t_tourn_judges WHERE id_tournament = @id_tournament;",
   "QueryInsertSeries": "INSERT INTO T_TOURN_SERIES (id_tournament, id_series) VALUES (@id_tournament, @id_series);",
 
+
+  "QueryUpdateTournament": "UPDATE T_TOURNAMENTS SET id_country = @id_country, id_organizer = @id_organizer, start_datetime = @start_datetime, end_datetime = @end_datetime WHERE id_tournament = @id_tournament;",
+  "QueryDeleteJudges": "DELETE FROM T_tourn_judges WHERE id_tournament = @id_tournament;",
+
+  "QueryDeleteSeries": "DELETE FROM T_tourn_series WHERE id_tournament = @id_tournament;",
+
+
+  "QuerySoftDeleteTournament": "UPDATE t_tournaments SET current_phase = 0 WHERE id_tournament = @id_tournament;",
+
+
+  "QueryDisqualifyPlayer": "INSERT INTO t_tourn_disqualifications (id_tournament, id_player, id_judge) VALUES (@id_tournament, @id_player, @id_judge);",
+
+
+  "QueryValidateJudgesFromTournament": "SELECT id_judge FROM t_tourn_judges WHERE id_tournament = @id_Tournament AND id_judge = @id_Judge;",
+
+
+  "QueryGetPlayersFromTournament": "SELECT tp.id_player, tu.alias, COUNT(td.id_tourn_disqualification) AS disqualifications,  tu.avatar_url FROM t_tourn_players tp JOIN t_users tu ON tp.id_player = tu.id_user LEFT JOIN t_tourn_disqualifications td ON tp.id_player = td.id_player AND td.id_tournament = @id_tournament WHERE tp.id_tournament = @id_tournament GROUP BY tp.id_player, tu.alias, tu.avatar_url;",
+
+
+
+
   "QueryInsertDecks": "INSERT INTO T_TOURN_DECKS (id_tournament, id_card_series, id_owner) VALUES (@id_tournament, @id_card_series, @id_owner);",
   "QueryInsertPlayers": "INSERT INTO T_TOURN_PLAYERS (id_tournament, id_player) VALUES (@Id_tournament,@id_player);",
   "QuerySetTournamentNextPhase": "UPDATE T_TOURNAMENTS SET current_phase = current_phase + 1 WHERE id_tournament = @id_tournament AND current_phase < 3;",
@@ -86,12 +107,20 @@
 
   "QueryCreateUser": "INSERT INTO t_Users (Id_Country, Id_Rol, Fullname, Passcode, Alias, Email, Avatar_Url, Games_Won, Games_Lost, Disqualifications,ki) VALUES (@Id_Country, @Id_Rol, @Fullname, @Passcode,@Alias, @Email, @Avatar_Url, @Games_Won, @Games_Lost, @Disqualifications, @Ki); SELECT LAST_INSERT_ID();",
 
-  "QueryGetUserById": "SELECT id_user, id_country, id_rol, fullname, alias, email, games_won, games_lost, disqualifications, avatar_url, ki FROM t_users WHERE id_user = @id_user",
+  "QueryGetUserById": "SELECT id_user, id_country, id_rol, fullname, alias, email, games_won, games_lost, disqualifications, avatar_url, ki, available FROM t_users WHERE id_user = @id_user",
 
   "QueryAlterUser": "UPDATE t_users SET id_country = @id_country, id_rol = @id_rol, fullname = @fullname, alias = @alias, email = @email, avatar_url = @avatar_url WHERE id_user = @id_user;",
 
 
   "QueryVerifyEmail": "SELECT COUNT(*) FROM t_users WHERE email = @email;",
+
+
+  "QueryInsertDisqualification": "INSERT INTO t_tourn_disqualifications (id_tournament, id_player, id_judge) VALUES(@id_tournament, @id_player, @id_judge);",
+  "QueryCheckPlayerDisqualification": "SELECT COUNT(1) FROM t_tourn_disqualifications WHERE id_player = @playerId AND id_tournament = @tournamentId;",
+
+
+
+
 
 
   "QueryVerifyAlias": "SELECT COUNT(*) FROM t_users WHERE alias = @alias;",
