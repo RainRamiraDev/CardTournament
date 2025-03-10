@@ -23,6 +23,9 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 using static System.Runtime.InteropServices.JavaScript.JSType;
+using CTDto.Users.Judge;
+using CTDataModels.Users.Judge;
+using CTDto.Users;
 
 namespace CTService.Implementation.Tournament
 {
@@ -129,8 +132,6 @@ namespace CTService.Implementation.Tournament
             await ValidateTournament(tournamentModel);
             return await _tournamentDao.CreateTournamentAsync(tournamentModel);
         }
-
-        
 
         private int GetUserIdFromToken()
         {
@@ -324,5 +325,64 @@ namespace CTService.Implementation.Tournament
 
             await _tournamentDao.SoftDeleteTournamentAsync(tournamentDto.Tournament_Id);
         }
+
+        public async Task DisqualifyPlayerFromTournamentAsync(DisqualificationDto disqualificationDto)
+        {
+
+            var idJudgeFromToken = GetUserIdFromToken();
+            var disqualificationRequest = new DisqualificationModel
+            {
+                Id_Tournament = disqualificationDto.Id_Tournament,
+                Id_Player = disqualificationDto.Id_Player,
+                Id_Judge = idJudgeFromToken,
+            };
+
+            await ValidatePlayerDisqualification(disqualificationRequest);
+
+            await _tournamentDao.DisqualifyPlayerFromTournamentAsync(disqualificationRequest);
+
+
+        }
+
+        private async Task ValidatePlayerDisqualification(DisqualificationModel disqualificationRequest)
+        {
+            //validar que el torneo exista
+            var tournamentExist = await _tournamentDao.TournamentExistsAsync(disqualificationRequest.Id_Tournament);
+            if (!tournamentExist)
+                throw new ArgumentException("El torneo especificado no se encuentra registrado");
+
+            //validar que el juez pertenezca a ese torneo
+
+            var isValidJudge = await _tournamentDao.ValidateJudgesFromTournament(disqualificationRequest.Id_Judge, disqualificationRequest.Id_Tournament);
+            if (!isValidJudge)
+                throw new ArgumentException("El juez especificado no se encuentra registrado en este torneo");
+
+
+            //validar que el jugador este jugado a ese torneo y no haya sido previamente descalificado
+            var isValidPlayer = await _tournamentDao.ValidateTournamentPlayersAsync(disqualificationRequest.Id_Tournament,disqualificationRequest.Id_Player);
+            if(!isValidPlayer.Any())
+                throw new ArgumentException("El jugador especificado no se encuentra registrado en el torneo");
+        }
+
+        public async Task<List<ShowTournamentPlayersDto>> ShowPlayersFromTournamentAsync(TournamentRequestToResolveDto showPlayersFromTournamentDto)
+        {
+            // Verificar si el torneo existe
+            var tournamentExist = await _tournamentDao.TournamentExistsAsync(showPlayersFromTournamentDto.Tournament_Id);
+            if (!tournamentExist)
+                throw new ArgumentException("El torneo especificado no se encuentra registrado");
+
+            var tournamentPlayers = await _tournamentDao.ShowPlayersFromTournamentAsync(showPlayersFromTournamentDto.Tournament_Id);
+
+            var playerDtos = tournamentPlayers.Select(player => new ShowTournamentPlayersDto
+            {
+                Id_Player = player.Id_Player,
+                Alias = player.Alias, 
+                Disqualifications = player.Disqualifications,
+                Avatar_Url = player.Avatar_Url,
+            }).ToList();
+
+            return playerDtos;
+        }
+
     }
 }

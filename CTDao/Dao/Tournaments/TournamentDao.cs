@@ -2,6 +2,8 @@
 using CTDao.Interfaces.Tournaments;
 using CTDataModels.Game;
 using CTDataModels.Tournamets;
+using CTDataModels.Users;
+using CTDataModels.Users.Judge;
 using CTDto.Card;
 using Dapper;
 using DataAccess;
@@ -463,6 +465,58 @@ namespace CTDao.Dao.Tournaments
                 {
                     id_tournament = id_tournament
                 });
+            }
+        }
+
+        public async Task DisqualifyPlayerFromTournamentAsync(DisqualificationModel disqualificationRequest)
+        {
+            using (var connection = new MySqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+
+                var affectedRows = await connection.ExecuteAsync(QueryLoader.GetQuery("QueryDisqualifyPlayer"), new
+                {
+                    id_tournament = disqualificationRequest.Id_Tournament,
+                    id_player = disqualificationRequest.Id_Player,
+                    id_judge = disqualificationRequest.Id_Judge,
+                });
+            }
+        }
+
+
+        public async Task<bool> ValidateJudgesFromTournament(int id_Judge, int id_Tournament)
+        {
+            using (var connection = new MySqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+
+                var result = await connection.QueryFirstOrDefaultAsync<int?>(
+                    QueryLoader.GetQuery("QueryValidateJudgesFromTournament"),
+                    new { id_Judge, id_Tournament }
+                );
+
+                return result.HasValue;
+            }
+        }
+
+        public async Task<List<ShowTournamentPlayersModel>> ShowPlayersFromTournamentAsync(int tournament_Id)
+        {
+            using (var connection = new MySqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+
+                var judges = await connection.QueryAsync<ShowTournamentPlayersModel>(
+                QueryLoader.GetQuery("QueryGetPlayersFromTournament"),
+                new { id_tournament = tournament_Id });
+
+                var playerList = judges.ToList();
+
+                if (playerList.Count == 0)
+                {
+                    throw new InvalidOperationException("No se pudieron encontrar los jugadores del torneo");
+                }
+
+                return playerList;
             }
         }
     }

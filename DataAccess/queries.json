@@ -24,6 +24,17 @@
   "QuerySoftDeleteTournament": "UPDATE t_tournaments SET current_phase = 0 WHERE id_tournament = @id_tournament;",
 
 
+  "QueryDisqualifyPlayer": "INSERT INTO t_tourn_disqualifications (id_tournament, id_player, id_judge) VALUES (@id_tournament, @id_player, @id_judge);",
+
+
+  "QueryValidateJudgesFromTournament": "SELECT id_judge FROM t_tourn_judges WHERE id_tournament = @id_Tournament AND id_judge = @id_Judge;",
+
+
+  "QueryGetPlayersFromTournament": "SELECT tp.id_player,tu.alias, tu.disqualifications, tu.avatar_url FROM t_tourn_players tp JOIN t_users tu ON tp.id_player = tu.id_user WHERE tp.id_tournament = @id_tournament;",
+
+
+
+
   "QueryInsertDecks": "INSERT INTO T_TOURN_DECKS (id_tournament, id_card_series, id_owner) VALUES (@id_tournament, @id_card_series, @id_owner);",
   "QueryInsertPlayers": "INSERT INTO T_TOURN_PLAYERS (id_tournament, id_player) VALUES (@Id_tournament,@id_player);",
   "QuerySetTournamentNextPhase": "UPDATE T_TOURNAMENTS SET current_phase = current_phase + 1 WHERE id_tournament = @id_tournament AND current_phase < 3;",

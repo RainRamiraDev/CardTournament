@@ -64,6 +64,38 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "CTApp.Controllers.User.JudgeController",
+    "Method": "DisqualifyPlayerFromTournament",
+    "RelativePath": "api/Judge/DisqualifyPlayerFromTournament",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "disqualificationDto",
+        "Type": "CTDto.Users.Judge.DisqualificationDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CTApp.Controllers.User.JudgeController",
+    "Method": "ShowPlayersFromTournament",
+    "RelativePath": "api/Judge/ShowPlayersFromTournament",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "showPlayersFromTournamentDto",
+        "Type": "CTDto.Tournaments.TournamentRequestToResolveDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "CTApp.Controllers.User.LogInController",
     "Method": "LogIn",
     "RelativePath": "api/LogIn/LogIn",

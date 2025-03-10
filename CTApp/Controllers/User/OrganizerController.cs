@@ -104,10 +104,5 @@ namespace CTApp.Controllers.User
             return Created("", ApiResponse<object>.SuccessResponse("Torneo dado de baja exitosamente."));
         }
 
-
-
-
-
-
     }
 }
