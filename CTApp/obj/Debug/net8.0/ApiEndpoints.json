@@ -17,6 +17,22 @@
   },
   {
     "ContainingType": "CTApp.Controllers.User.AdminController",
+    "Method": "SoftDeleteTournament",
+    "RelativePath": "api/Admin/CancelTournament",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "tournamentDto",
+        "Type": "CTDto.Tournaments.TournamentRequestToResolveDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CTApp.Controllers.User.AdminController",
     "Method": "CreateUser",
     "RelativePath": "api/Admin/CreateUser",
     "HttpMethod": "POST",

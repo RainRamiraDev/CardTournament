@@ -1,6 +1,7 @@
 ﻿
 using CTDataModels.Users;
 using CTDataModels.Users.LogIn;
+using CTDto.Tournaments;
 using CTDto.Users;
 using CTDto.Users.Admin;
 using CTDto.Users.Judge;

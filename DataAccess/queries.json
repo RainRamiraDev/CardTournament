@@ -30,7 +30,7 @@
   "QueryValidateJudgesFromTournament": "SELECT id_judge FROM t_tourn_judges WHERE id_tournament = @id_Tournament AND id_judge = @id_Judge;",
 
 
-  "QueryGetPlayersFromTournament": "SELECT tp.id_player,tu.alias, tu.disqualifications, tu.avatar_url FROM t_tourn_players tp JOIN t_users tu ON tp.id_player = tu.id_user WHERE tp.id_tournament = @id_tournament;",
+  "QueryGetPlayersFromTournament": "SELECT tp.id_player, tu.alias, COUNT(td.id_tourn_disqualification) AS disqualifications,  tu.avatar_url FROM t_tourn_players tp JOIN t_users tu ON tp.id_player = tu.id_user LEFT JOIN t_tourn_disqualifications td ON tp.id_player = td.id_player AND td.id_tournament = @id_tournament WHERE tp.id_tournament = @id_tournament GROUP BY tp.id_player, tu.alias, tu.avatar_url;",
 
 
 

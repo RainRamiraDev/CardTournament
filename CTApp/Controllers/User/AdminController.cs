@@ -3,6 +3,7 @@ using CTDto.Tournaments;
 using CTDto.Users;
 using CTDto.Users.Admin;
 using CTDto.Users.LogIn;
+using CTService.Interfaces.Tournaments;
 using CTService.Interfaces.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -15,10 +16,12 @@ namespace CTApp.Controllers.User
     {
 
         private readonly IUserService _userService;
+        private readonly ITournamentService _tournamentService;
 
-        public AdminController(IUserService userService)
+        public AdminController(IUserService userService, ITournamentService tournamentService)
         {
             _userService = userService;
+            _tournamentService = tournamentService;
         }
 
         [Authorize(Roles = "2")]
@@ -78,5 +81,24 @@ namespace CTApp.Controllers.User
             var response = ApiResponse<SoftDeleteUserDto>.SuccessResponse("Usuario dado de baja exitosamente");
             return Created(string.Empty, response);
         }
+
+
+
+        [Authorize(Roles = "2")]
+        [HttpDelete("CancelTournament")]
+        public async Task<IActionResult> SoftDeleteTournament([FromBody] TournamentRequestToResolveDto tournamentDto)
+        {
+            if (tournamentDto == null)
+                return BadRequest("Invalid user data.");
+
+            await _tournamentService.SoftDeleteTournamentAsync(tournamentDto);
+
+            var response = ApiResponse<SoftDeleteUserDto>.SuccessResponse("Torneo cancelado exitosamente");
+            return Created(string.Empty, response);
+        }
+
+
+
+
     }
 }

@@ -55,7 +55,6 @@ CREATE TABLE IF NOT EXISTS `t_users` (
   `passcode` varchar(255) DEFAULT NULL,
   `games_won` int DEFAULT 0,
   `games_lost` int DEFAULT 0,
-  `disqualifications` int DEFAULT 0,
   `avatar_url` varchar(255) DEFAULT NULL,
   `ki` int DEFAULT NULL,
   `active` TINYINT(1) DEFAULT 1,
