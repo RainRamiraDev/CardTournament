@@ -109,7 +109,7 @@
   "QueryGetAllJudges": "SELECT u.Fullname, u.Alias, u.Email, c.country_name as Country, u.avatar_url FROM t_users u JOIN t_countries c ON u.id_country = c.id_country WHERE Id_rol = 3 AND u.Fullname IS NOT NULL AND u.Alias IS NOT NULL AND u.Email IS NOT NULL AND c.country_name IS NOT NULL AND u.avatar_url IS NOT NULL ORDER BY u.alias asc;",
   "QueryGetPlayersRankIds": "SELECT ki FROM t_users WHERE Id_user = @Id;",
 
-  "QueryCreateUser": "INSERT INTO t_Users (Id_Country, Id_Rol, Fullname, Passcode, Alias, Email, Avatar_Url, Games_Won, Games_Lost, Disqualifications,ki) VALUES (@Id_Country, @Id_Rol, @Fullname, @Passcode,@Alias, @Email, @Avatar_Url, @Games_Won, @Games_Lost, @Disqualifications, @Ki); SELECT LAST_INSERT_ID();",
+  "QueryCreateUser": "INSERT INTO t_Users (Id_Country, Id_Rol, Fullname, Passcode, Alias, Email, Avatar_Url, Games_Won, Games_Lost, ki) VALUES (@Id_Country, @Id_Rol, @Fullname, @Passcode,@Alias, @Email, @Avatar_Url, @Games_Won, @Games_Lost, @Ki); SELECT LAST_INSERT_ID();",
 
   "QueryGetUserById": "SELECT id_user, id_country, id_rol, fullname, alias, email, games_won, games_lost, disqualifications, avatar_url, ki, available FROM t_users WHERE id_user = @id_user",
 

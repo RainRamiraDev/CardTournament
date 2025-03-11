@@ -170,7 +170,6 @@ namespace CTService.Implementation.User
                 Avatar_Url = userDto.Avatar_Url,
                 Games_Won = 0,
                 Games_Lost = 0,
-                Disqualifications = 0,
                 Ki = calculateUserKi,
             };
 

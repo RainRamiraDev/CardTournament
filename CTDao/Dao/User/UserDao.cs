@@ -109,7 +109,6 @@ namespace CTDao.Dao.User
                     user.Avatar_Url,
                     user.Games_Won,
                     user.Games_Lost,
-                    user.Disqualifications,
                     user.Ki,
                 });
 

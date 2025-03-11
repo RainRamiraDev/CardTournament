@@ -100,27 +100,9 @@ namespace CTService.Implementation.Game
 
             HashSet<int> eliminatedPlayers = new HashSet<int>();
 
-
-
             // Obtener la programación de los partidos
             var matchSchedule = await CalculateTournamentScheduleAsync(tournamentDto.Tournament_Id, tournamentDto.availableHoursPerDay);
             int scheduleIndex = 0; // Índice para recorrer la programación de los partidos
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
             // torneo fase 2
             await _tournamentDao.SetTournamentToNextPhaseAsync(tournamentModel.Tournament_Id);
@@ -318,9 +300,6 @@ namespace CTService.Implementation.Game
 
             return matchSchedule;
         }
-
-
-
 
         public async Task<List<MatchScheduleDto>> CalculateMatchScheduleAsync(TournamentRequestToResolveDto request)
         {

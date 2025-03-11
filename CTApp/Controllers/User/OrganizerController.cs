@@ -30,6 +30,7 @@ namespace CTApp.Controllers.User
             _cardService = cardService;
         }
 
+        
 
         [Authorize(Roles = "1")]
         [HttpGet("GetJudges")]
@@ -75,7 +76,8 @@ namespace CTApp.Controllers.User
             if (id == 0)
                 throw new InvalidOperationException("Error al crear el torneo.");
 
-            return Created("", ApiResponse<object>.SuccessResponse("Torneo creado exitosamente.", new { id }));
+
+            return Created("", ApiResponse<object>.SuccessResponse("Torneo creado exitosamente.", new AfterCreateTournamentDto { id_Tournament = id }));
         }
 
 

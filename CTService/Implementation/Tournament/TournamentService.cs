@@ -176,9 +176,19 @@ namespace CTService.Implementation.Tournament
             // Sabiendo que por cada match hay dos jugadores, calcula la cantidad máxima de jugadores
             var maxPlayers = maxMatches * 2;
 
+            Console.WriteLine($"Max players calculated: {maxPlayers}");
+
+
             // Me establece que el mínimo son 16 jugadores, es decir, que mínimo voy a tener octavos en mi torneo
             // Si es más de 16, pone el cap en la potencia de 2 más cercana
-            int minPlayers = Math.Max(16, (int)Math.Pow(2, Math.Ceiling(Math.Log2(maxPlayers))));
+            //int minPlayers = Math.Max(16, (int)Math.Pow(2, Math.Ceiling(Math.Log2(maxPlayers))));
+
+            int minPlayers = 16;
+
+
+            Console.WriteLine($"Min players calculated: {minPlayers}");
+
+
 
             minPlayers = Math.Min(minPlayers, maxPlayers);
 
