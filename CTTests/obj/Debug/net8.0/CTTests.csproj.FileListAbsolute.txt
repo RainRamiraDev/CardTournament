@@ -159,3 +159,4 @@ C:\Repositorios\CardTournament\CTTests\obj\Debug\net8.0\refint\CTTests.dll
 C:\Repositorios\CardTournament\CTTests\obj\Debug\net8.0\CTTests.pdb
 C:\Repositorios\CardTournament\CTTests\obj\Debug\net8.0\CTTests.genruntimeconfig.cache
 C:\Repositorios\CardTournament\CTTests\obj\Debug\net8.0\ref\CTTests.dll
+C:\Repositorios\CardTournament\CTTests\bin\Debug\net8.0\NodaTime.dll

@@ -20,7 +20,7 @@ namespace CTService.Interfaces.Tournaments
 
         Task SoftDeleteTournamentAsync(TournamentRequestToResolveDto tournamentDto);
 
-        Task<IEnumerable<TournamentsInformationDto>> GetTournamentsInformationAsync(GetTournamentInformationDto getTournamentInformation);
+        Task<IEnumerable<TournamentsInformationDto>> GetTournamentsInformationAsync(GetTournamentInformationDto getTournamentInformation, string timeZone);
 
         //Judges
         Task<List<int>> GetJudgeIdsByAliasAsync(List<string> judgeAliases);

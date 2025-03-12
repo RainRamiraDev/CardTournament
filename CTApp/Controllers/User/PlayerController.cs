@@ -16,25 +16,52 @@ namespace CTApp.Controllers.User
 
         private readonly ITournamentService _tournamentService;
         private readonly ICardService _cardService;
+        private readonly ILogger<PlayerController> _logger;
 
-        public PlayerController(ITournamentService tournamentService, ICardService cardService)
+
+        public PlayerController(ITournamentService tournamentService, ICardService cardService, ILogger<PlayerController> logger)
         {
             _tournamentService = tournamentService;
             _cardService = cardService;
+            _logger = logger;
         }
 
 
-        [Authorize(Roles = "4")] 
+        [Authorize(Roles = "4")]
         [HttpGet("GetTournamentsInformation")]
-        public async Task<IActionResult> GetTournamentsInformation([FromBody] GetTournamentInformationDto getTournamentInformation )
+        public async Task<IActionResult> GetTournamentsInformation([FromBody] GetTournamentInformationDto getTournamentInformation)
         {
-            var tournaments = await _tournamentService.GetTournamentsInformationAsync(getTournamentInformation);
+            if (!Request.Headers.ContainsKey("X-TimeZone"))
+            {
+                return BadRequest(ApiResponse<IEnumerable<TournamentsInformationDto>>.ErrorResponse("La zona horaria es requerida."));
+            }
+
+            var timeZoneId = Request.Headers["X-TimeZone"].ToString();
+
+            // Pasar la zona horaria junto con el DTO al servicio
+            var tournaments = await _tournamentService.GetTournamentsInformationAsync(getTournamentInformation, timeZoneId);
 
             if (tournaments is null || !tournaments.Any())
                 return NotFound(ApiResponse<IEnumerable<TournamentsInformationDto>>.ErrorResponse("Torneos no encontrados."));
 
-            return Ok(ApiResponse<IEnumerable<TournamentsInformationDto>>.SuccessResponse("Torneos obtenidos exitosamente.", tournaments));
+            try
+            {
+                return Ok(ApiResponse<IEnumerable<TournamentsInformationDto>>.SuccessResponse("Torneos obtenidos exitosamente.", tournaments));
+            }
+            catch (InvalidOperationException ex)
+            {
+                // Registrar el error con detalles más completos
+                _logger.LogError($"Error en GetTournamentsInformation: {ex.Message}. StackTrace: {ex.StackTrace}");
+                return StatusCode(500, "Ocurrió un error al procesar la solicitud.");
+            }
+
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error desconocido: {ex.Message}", ex);
+                return StatusCode(500, "Ocurrió un error inesperado.");
+            }
         }
+
 
 
         [Authorize(Roles = "4")] 

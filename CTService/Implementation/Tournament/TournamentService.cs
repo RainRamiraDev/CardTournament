@@ -26,6 +26,7 @@ using static System.Runtime.InteropServices.JavaScript.JSType;
 using CTDto.Users.Judge;
 using CTDataModels.Users.Judge;
 using CTDto.Users;
+using CTService.Tools;
 
 namespace CTService.Implementation.Tournament
 {
@@ -250,7 +251,7 @@ namespace CTService.Implementation.Tournament
             return await _tournamentDao.GetJudgeIdsByAliasAsync(judgeAliases);
         }
 
-        public async Task<IEnumerable<TournamentsInformationDto>> GetTournamentsInformationAsync(GetTournamentInformationDto getTournamentInformation)
+        public async Task<IEnumerable<TournamentsInformationDto>> GetTournamentsInformationAsync(GetTournamentInformationDto getTournamentInformation, string timeZoneId)
         {
             var getTournamentInformationModel = new GetTournamentInformationModel
             {
@@ -263,14 +264,16 @@ namespace CTService.Implementation.Tournament
             {
                 Id_Torneo = tournament.Id_Torneo,
                 Pais = tournament.Pais,
-                FechaDeInicio = tournament.FechaDeInicio,
-                FechaDeFinalizacion = tournament.FechaDeFinalizacion,
+                // Convierte las fechas a la zona horaria correspondiente
+                FechaDeInicio = DateTimeConverter.ConvertToTimeZone(tournament.FechaDeInicio, timeZoneId),  // Convierte la fecha de inicio
+                FechaDeFinalizacion = DateTimeConverter.ConvertToTimeZone(tournament.FechaDeFinalizacion, timeZoneId),  // Convierte la fecha de finalización
                 Jueces = tournament.Jueces,
                 Series = tournament.Series,
                 Jugadores = tournament.Jugadores,
                 Ganador = tournament.Ganador,
             });
         }
+
 
         public async Task<int> SetTournamentToNextPhase(int tournament_id)
         {

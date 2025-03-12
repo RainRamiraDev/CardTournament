@@ -82,3 +82,4 @@ C:\Repositorios\CardTournament\CTApp\bin\Debug\net8.0\Newtonsoft.Json.dll
 C:\Repositorios\CardTournament\CTApp\bin\Debug\net8.0\DataAccess.dll
 C:\Repositorios\CardTournament\CTApp\bin\Debug\net8.0\DataAccess.pdb
 C:\Repositorios\CardTournament\CTApp\bin\Debug\net8.0\queries.json
+C:\Repositorios\CardTournament\CTApp\bin\Debug\net8.0\NodaTime.dll

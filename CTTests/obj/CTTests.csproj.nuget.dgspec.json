@@ -445,6 +445,10 @@
               "target": "Package",
               "version": "[9.0.0, )"
             },
+            "NodaTime": {
+              "target": "Package",
+              "version": "[3.2.1, )"
+            },
             "System.IdentityModel.Tokens.Jwt": {
               "target": "Package",
               "version": "[7.1.2, )"
