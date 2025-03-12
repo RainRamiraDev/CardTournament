@@ -24,7 +24,7 @@ namespace CTApp.Controllers.User
             _tournamentService = tournamentService;
         }
 
-        [Authorize(Roles = "2")]
+        [Authorize(Roles = "2,1,3,4")]
         [HttpPost("CreateUser")]
         public async Task<IActionResult> CreateUser([FromBody] UserCreationDto userDto)
         {
@@ -45,7 +45,7 @@ namespace CTApp.Controllers.User
             return Created(string.Empty, response);
         }
 
-        [Authorize(Roles = "2")]
+        [Authorize(Roles = "2,1,3,4")]
         [HttpPut("AlterUser")]
         public async Task<IActionResult> AlterUser([FromBody] AlterUserDto userDto)
         {
@@ -60,16 +60,19 @@ namespace CTApp.Controllers.User
                 Id_Rol = userDto.New_Id_Rol,
                 IdCountry = userDto.New_IdCountry,
                 Alias = userDto.New_Alias,
-                Email = userDto.New_Email,     
+                Email = userDto.New_Email,
                 Avatar_Url = userDto.New_Avatar_Url,
             };
 
-            var response = ApiResponse<ShowUserDto>.SuccessResponse("Usuario creado exitosamente", newUser);
-            return Created(string.Empty, response);
+            var response = ApiResponse<ShowUserDto>.SuccessResponse("Usuario actualizado exitosamente", newUser);
+
+            // Usamos Ok en lugar de Created
+            return Ok(response);
         }
 
 
-        [Authorize(Roles = "2")]
+
+        [Authorize(Roles = "1")]
         [HttpDelete("DeactivateUser")]
         public async Task<IActionResult> DeactivateUser([FromBody] SoftDeleteUserDto userDto)
         {
@@ -84,7 +87,7 @@ namespace CTApp.Controllers.User
 
 
 
-        [Authorize(Roles = "2")]
+        [Authorize(Roles = "2,1")]
         [HttpDelete("CancelTournament")]
         public async Task<IActionResult> SoftDeleteTournament([FromBody] TournamentRequestToResolveDto tournamentDto)
         {
