@@ -16,14 +16,11 @@ namespace CTApp.Controllers.User
 
         private readonly ITournamentService _tournamentService;
         private readonly ICardService _cardService;
-        private readonly ILogger<PlayerController> _logger;
 
-
-        public PlayerController(ITournamentService tournamentService, ICardService cardService, ILogger<PlayerController> logger)
+        public PlayerController(ITournamentService tournamentService, ICardService cardService)
         {
             _tournamentService = tournamentService;
             _cardService = cardService;
-            _logger = logger;
         }
 
 
@@ -38,28 +35,27 @@ namespace CTApp.Controllers.User
 
             var timeZoneId = Request.Headers["X-TimeZone"].ToString();
 
-            // Pasar la zona horaria junto con el DTO al servicio
             var tournaments = await _tournamentService.GetTournamentsInformationAsync(getTournamentInformation, timeZoneId);
 
             if (tournaments is null || !tournaments.Any())
                 return NotFound(ApiResponse<IEnumerable<TournamentsInformationDto>>.ErrorResponse("Torneos no encontrados."));
 
-            try
-            {
+            
+            
                 return Ok(ApiResponse<IEnumerable<TournamentsInformationDto>>.SuccessResponse("Torneos obtenidos exitosamente.", tournaments));
-            }
-            catch (InvalidOperationException ex)
-            {
-                // Registrar el error con detalles más completos
-                _logger.LogError($"Error en GetTournamentsInformation: {ex.Message}. StackTrace: {ex.StackTrace}");
-                return StatusCode(500, "Ocurrió un error al procesar la solicitud.");
-            }
+            
+            //catch (InvalidOperationException ex)
+            //{
+            //    // Registrar el error con detalles más completos
+            //    _logger.LogError($"Error en GetTournamentsInformation: {ex.Message}. StackTrace: {ex.StackTrace}");
+            //    return StatusCode(500, "Ocurrió un error al procesar la solicitud.");
+            //}
 
-            catch (Exception ex)
-            {
-                _logger.LogError($"Error desconocido: {ex.Message}", ex);
-                return StatusCode(500, "Ocurrió un error inesperado.");
-            }
+            //catch (Exception ex)
+            //{
+            //    _logger.LogError($"Error desconocido: {ex.Message}", ex);
+            //    return StatusCode(500, "Ocurrió un error inesperado.");
+            //}
         }
 
 

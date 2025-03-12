@@ -10,6 +10,7 @@ using CTDto.Game;
 using CTDto.Tournaments;
 using CTService.Interfaces.Game;
 using CTService.Interfaces.Tournaments;
+using CTService.Tools;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using MySql.Data.MySqlClient;
 using System;
@@ -70,7 +71,7 @@ namespace CTService.Implementation.Game
             return await _gameDao.CreateRoundAsync(roundModel);
         }
 
-        public async Task<GameResultDto> ResolveGameAsync(TournamentRequestToResolveDto tournamentDto)
+        public async Task<GameResultDto> ResolveGameAsync(TournamentRequestToResolveDto tournamentDto, string timeZone)
         {
             var tournamentModel = new TournamentRequestToResolveModel
             {
@@ -101,7 +102,7 @@ namespace CTService.Implementation.Game
             HashSet<int> eliminatedPlayers = new HashSet<int>();
 
             // Obtener la programación de los partidos
-            var matchSchedule = await CalculateTournamentScheduleAsync(tournamentDto.Tournament_Id, tournamentDto.availableHoursPerDay);
+            var matchSchedule = await CalculateTournamentScheduleAsync(tournamentDto.Tournament_Id, tournamentDto.availableHoursPerDay,timeZone);
             int scheduleIndex = 0; // Índice para recorrer la programación de los partidos
 
             // torneo fase 2
@@ -238,7 +239,7 @@ namespace CTService.Implementation.Game
             return await Task.FromResult(judges[randomIndex]);
         }
 
-        public async Task<List<MatchScheduleModel>> CalculateTournamentScheduleAsync(int tournamentId, int availableHoursPerDay)
+        public async Task<List<MatchScheduleModel>> CalculateTournamentScheduleAsync(int tournamentId, int availableHoursPerDay, string clientTimeZonez)
         {
             // Obtenemos la capacidad de jugadores
             PlayerCapacityModel playerCapacity = await _tournamentService.CalculatePlayerCapacity(tournamentId, availableHoursPerDay);
@@ -247,6 +248,13 @@ namespace CTService.Implementation.Game
             TournamentDto tournament = await _tournamentService.GetTournamentById(tournamentId);
             var startDatetime = tournament.Start_datetime.ToUniversalTime();
             var endDatetime = tournament.End_datetime.ToUniversalTime();
+
+
+            // Convertir las fechas UTC a la zona horaria del cliente utilizando tus métodos
+            DateTime startDateTimeLocal = DateTimeConverter.ConvertToTimeZone(startDatetime, clientTimeZonez);
+            DateTime endDateTimeLocal = DateTimeConverter.ConvertToTimeZone(endDatetime, clientTimeZonez);
+
+
 
             // Calculamos los días disponibles para el torneo
             int totalDays = (int)(endDatetime.Date - startDatetime.Date).TotalDays + 1; // Incluye el día de inicio
@@ -301,13 +309,13 @@ namespace CTService.Implementation.Game
             return matchSchedule;
         }
 
-        public async Task<List<MatchScheduleDto>> CalculateMatchScheduleAsync(TournamentRequestToResolveDto request)
+        public async Task<List<MatchScheduleDto>> CalculateMatchScheduleAsync(TournamentRequestToResolveDto request, string timeZone)
         {
             var isValidTournament = await _tournamentDao.TournamentExistsAsync(request.Tournament_Id);
             if (!isValidTournament)
                 throw new ArgumentException("El torneo especificado no existe");
 
-            var matchShoudelModel = await CalculateTournamentScheduleAsync(request.Tournament_Id,request.availableHoursPerDay);
+            var matchShoudelModel = await CalculateTournamentScheduleAsync(request.Tournament_Id,request.availableHoursPerDay, timeZone);
 
             List<MatchScheduleDto> matchResponse = new List<MatchScheduleDto>();
 
