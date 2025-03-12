@@ -38,10 +38,10 @@ namespace CTApp.Controllers.User
 
 
         [Authorize(Roles = "4")] 
-        [HttpGet("ShowCards")]
-        public async Task<IActionResult> GetAllCards([FromBody] TournamentRequestToResolveDto tournamentId)
+        [HttpGet("ShowCardsFromTournament")]
+        public async Task<IActionResult> ShowCardsFromTournament([FromBody] TournamentRequestToResolveDto tournamentId)
         {
-            var cards = await _cardService.GetAllCardsAsync(tournamentId);
+            var cards = await _cardService.GetAllCardsFromTournamentAsync(tournamentId);
 
             if (cards == null || !cards.Any())
                 return NotFound(ApiResponse<IEnumerable<ShowCardsDto>>.ErrorResponse("Cartas no encontradas."));

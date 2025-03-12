@@ -133,7 +133,6 @@ namespace CTService.Implementation.User
             var userModels = await _userDao.GetAllJudgeAsync();
             return userModels.Select(judge => new JudgeDto
             {
-                Fullname = judge.Fullname,
                 Alias = judge.Alias,
                 Email = judge.Email,
                 Avatar_Url = judge.Avatar_Url,

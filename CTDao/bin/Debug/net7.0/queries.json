@@ -90,8 +90,8 @@
 
 
   "QueryCreateMatch": "INSERT INTO T_MATCHES (id_round, id_player1, id_player2, winner, Match_Date) VALUES (@id_round, @id_player1, @id_player2, @winner, @Match_Date); SELECT LAST_INSERT_ID();",
-  
-  
+
+
   "QuerySetNextRound": "INSERT INTO T_ROUNDS (id_tournament, round_number, is_completed) VALUES (@id_tournament, @round_number, FALSE);",
   "QueryGetLastRound": "SELECT COALESCE(MAX(round_number), 0) FROM T_ROUNDS WHERE id_tournament = @id_tournament;",
   "QueryCompleteRound": "UPDATE T_ROUNDS SET is_completed = TRUE WHERE id_tournament = @id_tournament AND round_number = @round_number;",
@@ -106,7 +106,8 @@
   "QueryGetUserWhitToken": "SELECT * FROM T_Users WHERE Id_User = @Id_user;",
   "QueryFirstLogIn": "INSERT INTO T_Users (Fullname, Passcode, Id_Rol) VALUES (@Fullname, @Passcode, @Id_Rol);",
   "QueryGetUserDataByName": "SELECT Id_User, Fullname, Passcode, Id_Rol, Available FROM T_Users WHERE Fullname = @Fullname;",
-  "QueryGetAllJudges": "SELECT u.Fullname, u.Alias, u.Email, c.country_name as Country, u.avatar_url FROM t_users u JOIN t_countries c ON u.id_country = c.id_country WHERE Id_rol = 3 AND u.Fullname IS NOT NULL AND u.Alias IS NOT NULL AND u.Email IS NOT NULL AND c.country_name IS NOT NULL AND u.avatar_url IS NOT NULL ORDER BY u.alias asc;",
+
+  "QueryGetAllJudges": "SELECT u.Fullname, u.Alias, u.Email, c.country_name as Country, u.avatar_url FROM t_users u JOIN t_countries c ON u.id_country = c.id_country WHERE Id_rol = 3 AND available = 1 ORDER BY u.alias ASC;",
   "QueryGetPlayersRankIds": "SELECT ki FROM t_users WHERE Id_user = @Id;",
 
   "QueryCreateUser": "INSERT INTO t_Users (Id_Country, Id_Rol, Fullname, Passcode, Alias, Email, Avatar_Url, Games_Won, Games_Lost, ki) VALUES (@Id_Country, @Id_Rol, @Fullname, @Passcode,@Alias, @Email, @Avatar_Url, @Games_Won, @Games_Lost, @Ki); SELECT LAST_INSERT_ID();",

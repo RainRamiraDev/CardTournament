@@ -26,7 +26,7 @@ namespace CTService.Implementation.Card
         }
 
 
-        public async Task<IEnumerable<ShowCardsDto>> GetAllCardsAsync(TournamentRequestToResolveDto tournamentRequestDto)
+        public async Task<IEnumerable<ShowCardsDto>> GetAllCardsFromTournamentAsync(TournamentRequestToResolveDto tournamentRequestDto)
         {
 
             var seriesIds = await _tournamentDao.GetSeriesFromTournamentAsync(tournamentRequestDto.Tournament_Id);
@@ -36,7 +36,7 @@ namespace CTService.Implementation.Card
                 throw new ArgumentException("Las series no pueden estar vacias");
             }
 
-            var cards = await _cardDao.GetAllAsync(seriesIds);
+            var cards = await _cardDao.GetAllCardsFromTournamentAsync(seriesIds);
             var cardDtos = cards.Select(card => new ShowCardsDto
             {
                 Series_name = card.Series_name,
