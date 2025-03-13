@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("CTTests")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e7cc3f361c0931f1df4cd9c021da5a74a4e08f31")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d49e4d8f242039d69df2f11dba8893cd757a551e")]
 [assembly: System.Reflection.AssemblyProductAttribute("CTTests")]
 [assembly: System.Reflection.AssemblyTitleAttribute("CTTests")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -36,32 +36,31 @@ var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
 
-builder.Services.AddScoped<ICardDao>(provider =>
+builder.Services.AddSingleton<ICardDao>(provider =>
 {
     return new CardDao(connectionString);
 });
 
-builder.Services.AddScoped<IUserDao>(provider =>
+builder.Services.AddSingleton<IUserDao>(provider =>
 {
     return new UserDao(connectionString);
 });
 
-
-builder.Services.AddScoped<IRefreshTokenDao>(provider =>
+builder.Services.AddSingleton<IRefreshTokenDao>(provider =>
 {
     return new RefreshTokenDao(connectionString);
 });
 
-
-builder.Services.AddScoped<ITournamentDao>(provider =>
+builder.Services.AddSingleton<ITournamentDao>(provider =>
 {
     return new TournamentDao(connectionString);
 });
 
-builder.Services.AddScoped<IGameDao>(provider =>
+builder.Services.AddSingleton<IGameDao>(provider =>
 {
     return new GameDao(connectionString);
 });
+
 
 
 //validaciones
@@ -101,13 +100,25 @@ builder.Services.Configure<KeysConfiguration>(builder.Configuration.GetSection("
 //--------
 
 
+//builder.Services.AddCors(options =>
+//{
+//    options.AddDefaultPolicy(policy =>
+//    {
+//        policy.WithOrigins("*");
+//    });
+//});
+
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(policy =>
     {
-        policy.WithOrigins("*");
+        // Asegúrate de listar solo los orígenes que deseas permitir
+        policy.WithOrigins("https://localhost:7276", "http://localhost:5266")
+              .AllowAnyHeader()   // Permite cualquier cabecera
+              .AllowAnyMethod();  // Permite cualquier método HTTP
     });
 });
+
 
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

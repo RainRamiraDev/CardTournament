@@ -19,8 +19,8 @@ CREATE TABLE IF NOT EXISTS `t_series` (
 
 CREATE TABLE IF NOT EXISTS `t_card_series` (
   `id_card_series` int NOT NULL AUTO_INCREMENT,
-  `id_card` int DEFAULT NULL,
-  `id_series` int DEFAULT NULL,
+  `id_card` int NOT NULL,
+  `id_series` int NOT NULL,
   PRIMARY KEY (`id_card_series`),
   KEY `fk_card_cseries` (`id_card`),
   KEY `fk_series_cseries` (`id_series`),
@@ -32,30 +32,30 @@ CREATE TABLE IF NOT EXISTS `t_card_series` (
 
 CREATE TABLE IF NOT EXISTS `t_countries` (
   `id_country` int NOT NULL AUTO_INCREMENT,
-  `country_name` varchar(100) DEFAULT NULL,
+  `country_name` varchar(100) NOT NULL,
   PRIMARY KEY (`id_country`)
 ) ENGINE=InnoDB AUTO_INCREMENT=251 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 
 CREATE TABLE IF NOT EXISTS `t_roles` (
   `id_rol` int NOT NULL AUTO_INCREMENT,
-  `rol` varchar(20) DEFAULT NULL,
+  `rol` varchar(20) NOT NULL,
   PRIMARY KEY (`id_rol`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 
 CREATE TABLE IF NOT EXISTS `t_users` (
   `id_user` int NOT NULL AUTO_INCREMENT,
-  `id_country` int DEFAULT NULL,
-  `id_rol` int DEFAULT NULL,
-  `fullname` varchar(50) DEFAULT NULL,
-  `alias` varchar(20) DEFAULT NULL,
-  `email` varchar(100) DEFAULT NULL,
-  `passcode` varchar(255) DEFAULT NULL,
+  `id_country` int NOT NULL,
+  `id_rol` int NOT NULL,
+  `fullname` varchar(50) NOT NULL,
+  `alias` varchar(20) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `passcode` varchar(255) NOT NULL,
   `games_won` int DEFAULT 0,
   `games_lost` int DEFAULT 0,
-  `avatar_url` varchar(255) DEFAULT NULL,
-  `ki` int DEFAULT NULL,
+  `avatar_url` varchar(255) NOT NULL,
+  `ki` int DEFAULT 0,
   `active` TINYINT(1) DEFAULT 1,
   PRIMARY KEY (`id_user`),
   KEY `fk_country_user` (`id_country`),
@@ -67,7 +67,7 @@ CREATE TABLE IF NOT EXISTS `t_users` (
 
 CREATE TABLE IF NOT EXISTS `t_refresh_tokens` (
   `id_token` int NOT NULL AUTO_INCREMENT,
-  `id_user` int DEFAULT NULL,
+  `id_user` int NOT NULL,
   `token` varchar(255) NOT NULL,
   `expiry_date` datetime NOT NULL,
   `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
@@ -80,11 +80,11 @@ CREATE TABLE IF NOT EXISTS `t_refresh_tokens` (
 
 CREATE TABLE IF NOT EXISTS `t_tournaments` (
   `id_tournament` int NOT NULL AUTO_INCREMENT,
-  `id_country` int DEFAULT NULL,
-  `id_organizer` int DEFAULT NULL,
-  `start_datetime` datetime DEFAULT NULL,
-  `end_datetime` datetime DEFAULT NULL,
-  `current_phase` int DEFAULT NULL,
+  `id_country` int NOT NULL,
+  `id_organizer` int NOT NULL,
+  `start_datetime` datetime NOT NULL,
+  `end_datetime` datetime NOT NULL,
+  `current_phase` int NOT NULL,
   PRIMARY KEY (`id_tournament`),
   KEY `fk_tourn_country` (`id_country`),
   KEY `fk_tourn_organizer` (`id_organizer`),
@@ -95,9 +95,9 @@ CREATE TABLE IF NOT EXISTS `t_tournaments` (
 
 CREATE TABLE IF NOT EXISTS `t_tourn_decks` (
   `id_tourn_deck` int NOT NULL AUTO_INCREMENT,
-  `id_tournament` int DEFAULT NULL,
-  `id_card_series` int DEFAULT NULL,
-  `id_owner` int DEFAULT NULL,
+  `id_tournament` int NOT NULL,
+  `id_card_series` int NOT NULL,
+  `id_owner` int NOT NULL,
   PRIMARY KEY (`id_tourn_deck`),
   KEY `fk_tourn_deck_tourn` (`id_tournament`),
   KEY `fk_tourn_deck_cseries` (`id_card_series`),
@@ -110,9 +110,9 @@ CREATE TABLE IF NOT EXISTS `t_tourn_decks` (
 
 CREATE TABLE IF NOT EXISTS `t_tourn_disqualifications` (
   `id_tourn_disqualification` int NOT NULL AUTO_INCREMENT,
-  `id_tournament` int DEFAULT NULL,
-  `id_player` int DEFAULT NULL,
-  `id_judge` int DEFAULT NULL,
+  `id_tournament` int NOT NULL,
+  `id_player` int NOT NULL,
+  `id_judge` int NOT NULL,
   PRIMARY KEY (`id_tourn_disqualification`),
   KEY `fk_tourn_disq_tourn` (`id_tournament`),
   KEY `fk_tourn_disq_player` (`id_player`),
@@ -125,8 +125,8 @@ CREATE TABLE IF NOT EXISTS `t_tourn_disqualifications` (
 
 CREATE TABLE IF NOT EXISTS `t_tourn_judges` (
   `id_tourn_judge` int NOT NULL AUTO_INCREMENT,
-  `id_tournament` int DEFAULT NULL,
-  `id_judge` int DEFAULT NULL,
+  `id_tournament` int NOT NULL,
+  `id_judge` int NOT NULL,
   PRIMARY KEY (`id_tourn_judge`),
   KEY `fk_tourn_judges_tourn` (`id_tournament`),
   KEY `fk_tourn_judges_judge` (`id_judge`),
@@ -137,8 +137,8 @@ CREATE TABLE IF NOT EXISTS `t_tourn_judges` (
 
 CREATE TABLE IF NOT EXISTS `t_tourn_players` (
   `id_tourn_player` int NOT NULL AUTO_INCREMENT,
-  `id_tournament` int DEFAULT NULL,
-  `id_player` int DEFAULT NULL,
+  `id_tournament` int NOT NULL,
+  `id_player` int NOT NULL,
   PRIMARY KEY (`id_tourn_player`),
   KEY `fk_tourn_player_tourn` (`id_tournament`),
   KEY `fk_tourn_player_player` (`id_player`),
@@ -149,8 +149,8 @@ CREATE TABLE IF NOT EXISTS `t_tourn_players` (
 
 CREATE TABLE IF NOT EXISTS `t_tourn_series` (
   `id_tourn_series` int NOT NULL AUTO_INCREMENT,
-  `id_tournament` int DEFAULT NULL,
-  `id_series` int DEFAULT NULL,
+  `id_tournament` int NOT NULL,
+  `id_series` int NOT NULL,
   PRIMARY KEY (`id_tourn_series`),
   KEY `fk_tourn_series_tourn` (`id_tournament`),
   KEY `fk_tourn_series_series` (`id_series`),
@@ -161,9 +161,9 @@ CREATE TABLE IF NOT EXISTS `t_tourn_series` (
 
 CREATE TABLE IF NOT EXISTS `t_rounds` (
   `id_round` int NOT NULL AUTO_INCREMENT,
-  `id_tournament` int DEFAULT NULL,
-  `round_number` int DEFAULT NULL,
-  `judge` int DEFAULT NULL,
+  `id_tournament` int NOT NULL,
+  `round_number` int NOT NULL,
+  `judge` int NOT NULL,
   PRIMARY KEY (`id_round`),
   KEY `fk_round_tournament` (`id_tournament`),
   CONSTRAINT `fk_round_tournament` FOREIGN KEY (`id_tournament`) REFERENCES `t_tournaments` (`id_tournament`),
@@ -177,7 +177,7 @@ CREATE TABLE IF NOT EXISTS `t_matches` (
   `id_round` int NOT NULL,
   `id_player1` int NOT NULL,
   `id_player2` int NOT NULL,
-  `winner` int DEFAULT NULL,
+  `winner` int NOT NULL,
   PRIMARY KEY (`id_match`),
   KEY `fk_match_round` (`id_round`),
   KEY `fk_match_player1` (`id_player1`),
