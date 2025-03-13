@@ -101,7 +101,14 @@
   "QueryDeleteToken": "DELETE FROM T_REFRESH_TOKENS WHERE token = @Token;",
   "QuerySaveToken": "INSERT INTO T_REFRESH_TOKENS (token, id_user, expiry_date) VALUES (@Token, @id_user, @ExpiryDate);",
   "QueryGetToken": "SELECT token FROM T_REFRESH_TOKENS WHERE id_user = @id_user LIMIT 1;",
-  "QueryGetUser": "SELECT u.id_user, u.fullname, u.email FROM T_USERS u INNER JOIN T_REFRESH_TOKENS rt ON rt.id_user = u.id_user WHERE rt.token = @Token AND rt.expiry_date > @Now;",
+
+
+  "QueryGetUser": "SELECT u.id_user, u.fullname, u.id_rol FROM T_USERS u INNER JOIN T_REFRESH_TOKENS rt ON rt.id_user = u.id_user WHERE rt.token = @Token AND rt.expiry_date > @Now;",
+
+
+
+
+
 
   "QueryGetUserWhitToken": "SELECT * FROM T_Users WHERE Id_User = @Id_user;",
   "QueryFirstLogIn": "INSERT INTO T_Users (Fullname, Passcode, Id_Rol) VALUES (@Fullname, @Passcode, @Id_Rol);",

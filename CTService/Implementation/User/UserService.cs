@@ -84,8 +84,8 @@ namespace CTService.Implementation.User
 
             var user = await GetUserDataByNameAsync(fullname);
 
-
-            //hacer la validacion de usuario activo
+            //TODO: hacer la validacion de usuario activo
+            
             //var isUserDisable = await _userDao.ValidateIfUserAvailable(int userId);
             //if (isUserDisable)
             //throw new ArgumentException("El usuario especificado no se encuentra disponible");
@@ -224,20 +224,6 @@ namespace CTService.Implementation.User
             var emailsExist = await _userDao.ValidateUserEmail(user.Email);
             if (emailsExist)
                 throw new ArgumentException("El Email especificado ya está registrado.");
-
-
-            //var userRol = GetUserRolFromToken();
-            //// Validamos qué roles puede asignar cada usuario
-            //if (userRol == 2) // Organizador solo puede crear jueces (3) o jugadores (4)
-            //    if (user.Id_Rol != 3 && user.Id_Rol != 4)
-            //        throw new UnauthorizedAccessException("Un organizador solo puede crear jueces o jugadores.");
-
-            //else if (userRol == 4) // Jugador solo puede crear jugadores (4)
-            //    if (user.Id_Rol != 4)
-            //        throw new UnauthorizedAccessException("Un jugador solo puede crear otros jugadores.");
-
-            //else if (userRol != 1) // Si no es administrador (1), lanzamos un error
-            //        throw new UnauthorizedAccessException("No tienes permisos para crear usuarios.");
         }
 
         public async Task AlterUserAsync(AlterUserDto userDto)

@@ -25,6 +25,8 @@ namespace CTDao.Dao.RefreshToken
                     new { Token = refreshToken.ToString(), Now = DateTime.UtcNow }
                 );
 
+                Console.WriteLine($"User found: Id={user.Id_User}, Name={user.Fullname}, Role={user.Id_Rol}");
+
                 return user;
             }
         }
@@ -60,9 +62,17 @@ namespace CTDao.Dao.RefreshToken
 
         public async Task<int> SaveRefreshTokenAsync(Guid token, int userId, DateTime expiryDate)
         {
+
+          
+
+
             using (var connection = new MySqlConnection(_connectionString))
             {
                 await connection.OpenAsync();
+
+
+
+
 
                 return await connection.ExecuteAsync(
                     QueryLoader.GetQuery("QuerySaveToken"),

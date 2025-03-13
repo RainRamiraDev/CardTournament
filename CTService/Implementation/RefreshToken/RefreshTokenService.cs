@@ -37,11 +37,18 @@ namespace CTService.Implementation.RefreshToken
         public async Task<(string AccessToken, Guid RefreshToken)> RefreshAccessTokenAsync(Guid oldRefreshToken)
         {
 
+            Console.WriteLine($"OldToken: {oldRefreshToken}");
+
+
             bool isValidToken = await _refreshTokenDao.VerifyTokenAsync(oldRefreshToken);
             if (!isValidToken)
                 throw new UnauthorizedAccessException("Invalid or expired refresh token.");
 
+
+
             var user = await _refreshTokenDao.GetUserByTokenAsync(oldRefreshToken);
+
+
 
 
             if (user == null)
@@ -50,7 +57,9 @@ namespace CTService.Implementation.RefreshToken
 
             await _refreshTokenDao.DeleteRefreshTokenAsync(oldRefreshToken);
 
-            string newAccessToken = await GenerateAccessTokenAsync(user.Id_Rol, user.Fullname,user.Id_Rol);
+            Console.WriteLine($"UserId: {user.Id_User}, UserRole: {user.Id_Rol}, UserName: {user.Fullname}");
+
+            string newAccessToken = await GenerateAccessTokenAsync(user.Id_User, user.Fullname,user.Id_Rol);
 
             var (newRefreshToken, expirationDate) = GenerateRefreshToken();
 
@@ -85,6 +94,9 @@ namespace CTService.Implementation.RefreshToken
                 expires: DateTime.UtcNow.AddDays(_keysConfiguration.ExpirationDays),
                 signingCredentials: credentials
             );
+
+            Console.WriteLine($"UserId: {userId}, UserRole: {userRole}, UserName: {userName}");
+
 
             return await Task.FromResult(new JwtSecurityTokenHandler().WriteToken(token));
         }

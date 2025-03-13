@@ -54,7 +54,6 @@ namespace CTApp.Controllers
 
             var timeZoneId = Request.Headers["X-TimeZone"].ToString();
 
-
             if (request == null)
                 return BadRequest("Invalid request data.");
 
