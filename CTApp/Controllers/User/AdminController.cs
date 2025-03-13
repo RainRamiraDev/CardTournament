@@ -86,7 +86,7 @@ namespace CTApp.Controllers.User
         }
 
 
-
+        //todo: cambiar el dto para tener uno propio
         [Authorize(Roles = "2,1")]
         [HttpDelete("CancelTournament")]
         public async Task<IActionResult> SoftDeleteTournament([FromBody] TournamentRequestToResolveDto tournamentDto)

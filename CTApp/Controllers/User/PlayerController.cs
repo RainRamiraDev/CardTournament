@@ -40,8 +40,6 @@ namespace CTApp.Controllers.User
             if (tournaments is null || !tournaments.Any())
                 return NotFound(ApiResponse<IEnumerable<TournamentsInformationDto>>.ErrorResponse("Torneos no encontrados."));
 
-            
-            
                 return Ok(ApiResponse<IEnumerable<TournamentsInformationDto>>.SuccessResponse("Torneos obtenidos exitosamente.", tournaments));
            
         }

@@ -71,8 +71,13 @@ builder.Services.AddValidatorsFromAssemblyContaining<LogOutRequestDtoValidation>
 builder.Services.AddValidatorsFromAssemblyContaining<TournamentDecksRequestDtoValidation>();
 builder.Services.AddValidatorsFromAssemblyContaining<TournamentDtoValidation>();
 builder.Services.AddValidatorsFromAssemblyContaining<TournamentRequestToResolveDtoValidation>();
-
 builder.Services.AddValidatorsFromAssemblyContaining<UserCreationDtoValidation>();
+builder.Services.AddValidatorsFromAssemblyContaining<AlterUserDtoValidation>();
+builder.Services.AddValidatorsFromAssemblyContaining<SoftDeleteUserDtoValidation>();
+builder.Services.AddValidatorsFromAssemblyContaining<DisqualificationDtoValidation>();
+builder.Services.AddValidatorsFromAssemblyContaining<GetTournamentInformationDtoValidation>();
+
+
 
 builder.Services.AddFluentValidationAutoValidation();
 
