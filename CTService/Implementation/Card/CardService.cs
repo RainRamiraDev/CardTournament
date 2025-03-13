@@ -32,10 +32,8 @@ namespace CTService.Implementation.Card
             var seriesIds = await _tournamentDao.GetSeriesFromTournamentAsync(tournamentRequestDto.Tournament_Id);
 
             if (seriesIds.Count < 1)
-            {
                 throw new InvalidOperationException("Las series no pueden estar vacias");
-            }
-
+            
             var cards = await _cardDao.GetAllCardsFromTournamentAsync(seriesIds);
             var cardDtos = cards.Select(card => new ShowCardsDto
             {
@@ -52,12 +50,10 @@ namespace CTService.Implementation.Card
         public async Task<IEnumerable<ShowCardsDto>> GetCardsBySeriesNamesAsync(List<string> cardSeries)
         {
             if (cardSeries == null || !cardSeries.Any())
-            {
                 return Enumerable.Empty<ShowCardsDto>();
-            }
+            
 
             var cards = await _cardDao.GetCardsBySeriesNamesAsync(cardSeries);
-
             return cards.Select(card => new ShowCardsDto
             {
                 Series_name = card.Series_name,
@@ -71,19 +67,16 @@ namespace CTService.Implementation.Card
         public async Task<List<int>> GetCardsIdsByIllustrationAsync(List<string> cardsIllustrations)
         {
             if (cardsIllustrations == null || !cardsIllustrations.Any())
-            {
                 throw new InvalidOperationException("La lista de cartas no puede estar vacia.");
-            }
-
+            
             return await _cardDao.GetCardIdsByIllustrationAsync(cardsIllustrations);
         }
 
         public async Task<List<int>> GetSeriesIdsByNameAsync(List<string> names)
         {
             if (names == null || !names.Any())
-            {
                 throw new InvalidOperationException("La lista de cartas no puede estar vacia.");
-            }
+            
 
             return await _cardDao.GetSeriesIdsByNameAsync(names);
         }

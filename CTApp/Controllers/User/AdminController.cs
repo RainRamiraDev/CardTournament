@@ -66,7 +66,6 @@ namespace CTApp.Controllers.User
 
             var response = ApiResponse<ShowUserDto>.SuccessResponse("Usuario actualizado exitosamente", newUser);
 
-            // Usamos Ok en lugar de Created
             return Ok(response);
         }
 

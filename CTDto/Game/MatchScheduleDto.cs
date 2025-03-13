@@ -8,8 +8,8 @@ namespace CTDto.Game
 {
     public class MatchScheduleDto
     {
-        public int Id_Match { get; set; } // Número de partido
-        public DateTime Match_Date { get; set; } // Fecha y hora del partido
+        public int Id_Match { get; set; } 
+        public DateTime Match_Date { get; set; }
       
     }
 }

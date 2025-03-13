@@ -30,7 +30,6 @@ namespace CTDto.Validations.Tournament
                 .GreaterThan(t => t.Start_datetime)
                 .WithMessage("La fecha de fin debe ser posterior a la fecha de inicio.");
 
-            // Regla para la duración mínima del torneo
             RuleFor(t => t)
                 .Must(t => t.Start_datetime.AddDays(2) < t.End_datetime) // La duración mínima debe ser de 2 días
                 .WithMessage("La duración del torneo debe ser de al menos 2 días.");

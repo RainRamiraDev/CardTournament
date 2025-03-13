@@ -14,11 +14,9 @@ namespace CTDto.Users
         public string Fullname { get; set; }
         public string Alias { get; set; }
         public string Email { get; set; }
-
         public string Passcode { get; set; }
         public int GamesWon { get; set; }
         public int GamesLost { get; set; }
-        public int Disqualifications { get; set; }
         public string Avatar_Url { get; set; }
 
     }

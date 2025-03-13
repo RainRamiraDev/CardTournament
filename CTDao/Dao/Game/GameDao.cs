@@ -253,7 +253,6 @@ namespace CTDao.Dao.Game
 
                 try
                 {
-                    // Ejecuta la consulta para verificar si el jugador está descalificado en el torneo
                     string query = QueryLoader.GetQuery("QueryCheckPlayerDisqualification");
                     var disqualified = await connection.ExecuteScalarAsync<bool>(query, new
                     {
@@ -261,12 +260,10 @@ namespace CTDao.Dao.Game
                         Id_Tournament = tournamentId
                     });
 
-                    // Retorna true si el jugador está descalificado, false si no lo está
                     return disqualified;
                 }
                 catch (Exception ex)
                 {
-                    // Maneja cualquier error que pueda ocurrir durante la consulta
                     throw new InvalidOperationException("Error al verificar la descalificación del jugador", ex);
                 }
             }

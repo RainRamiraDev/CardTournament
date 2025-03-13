@@ -100,25 +100,13 @@ builder.Services.Configure<KeysConfiguration>(builder.Configuration.GetSection("
 //--------
 
 
-//builder.Services.AddCors(options =>
-//{
-//    options.AddDefaultPolicy(policy =>
-//    {
-//        policy.WithOrigins("*");
-//    });
-//});
-
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(policy =>
     {
-        // Asegúrate de listar solo los orígenes que deseas permitir
-        policy.WithOrigins("https://localhost:7276", "http://localhost:5266")
-              .AllowAnyHeader()   // Permite cualquier cabecera
-              .AllowAnyMethod();  // Permite cualquier método HTTP
+        policy.WithOrigins("*");
     });
 });
-
 
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

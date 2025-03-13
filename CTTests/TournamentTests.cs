@@ -50,18 +50,15 @@ namespace CTTests
                 Series_Id = new List<int> { 1, 2, 3 }
             };
 
-            var fakeResponseId = 5; // Simulamos que el servicio devuelve un ID válido
+            var fakeResponseId = 5; 
 
-            // Crear mocks de los servicios requeridos
             var userService = A.Fake<IUserService>();
             var tournamentService = A.Fake<ITournamentService>();
             var cardService = A.Fake<ICardService>();
 
-            // Configurar comportamiento del servicio de torneos
             A.CallTo(() => tournamentService.CreateTournamentAsync(tournamentDto))
                 .Returns(Task.FromResult(fakeResponseId));
 
-            // Crear el controlador con todos los servicios requeridos
             var controller = new OrganizerController(userService, tournamentService, cardService);
 
             // Act
@@ -69,22 +66,20 @@ namespace CTTests
 
             // Assert
             var result = actionResult as CreatedResult;
-            Assert.NotNull(result); // Verificamos que la respuesta sea Created (201)
-            Assert.Equal(201, result.StatusCode); // Aseguramos que el código HTTP sea 201
+            Assert.NotNull(result);
+            Assert.Equal(201, result.StatusCode); 
 
             var response = result.Value as ApiResponse<object>;
-            Assert.NotNull(response); // Verificamos que haya un ApiResponse
+            Assert.NotNull(response); 
             Assert.True(response.Success, $"Error en la API: {response.Message}");
 
-            // Verificamos que el ID devuelto sea un número válido
             var data = response.Data as dynamic;
             Assert.NotNull(data);
 
             var id = data.id_Tournament;
-            Assert.IsType<int>(id); // Aseguramos que el tipo sea int
+            Assert.IsType<int>(id); 
             Assert.True(id > 0, "El ID devuelto no es válido.");
 
-            // ✅ Verificar que el servicio de torneos fue llamado exactamente una vez con los datos correctos
             A.CallTo(() => tournamentService.CreateTournamentAsync(tournamentDto))
                 .MustHaveHappenedOnceExactly();
         }
@@ -100,15 +95,12 @@ namespace CTTests
                 Cards = new List<int> { 101, 102, 103 }
             };
 
-            // Crear mocks de los servicios requeridos
             var tournamentService = A.Fake<ITournamentService>();
             var cardService = A.Fake<ICardService>();
 
-            // Configurar comportamiento del servicio de torneos
             A.CallTo(() => tournamentService.InsertTournamentDecksAsync(tournamentDeckDto))
-                .Returns(Task.FromResult(1)); // Simulamos que la inserción devuelve 1 como éxito
+                .Returns(Task.FromResult(1)); 
 
-            // Crear el controlador con los servicios mockeados
             var controller = new PlayerController(tournamentService, cardService);
 
             // Act
@@ -116,15 +108,14 @@ namespace CTTests
 
             // Assert
             var result = actionResult as CreatedResult;
-            Assert.NotNull(result); // Verificamos que la respuesta sea Created (201)
-            Assert.Equal(201, result.StatusCode); // Aseguramos que el código HTTP sea 201
+            Assert.NotNull(result); 
+            Assert.Equal(201, result.StatusCode); 
 
             var response = result.Value as ApiResponse<object>;
-            Assert.NotNull(response); // Verificamos que haya un ApiResponse
+            Assert.NotNull(response); 
             Assert.True(response.Success, $"Error en la API: {response.Message}");
             Assert.Equal("Deck agregado exitosamente", response.Message);
 
-            // ✅ Verificamos que el servicio fue llamado exactamente una vez con los datos correctos
             A.CallTo(() => tournamentService.InsertTournamentDecksAsync(tournamentDeckDto))
                 .MustHaveHappenedOnceExactly();
         }

@@ -26,7 +26,6 @@ namespace CTApp.Controllers.User
             _cardService = cardService;
         }
 
-        //Puede descalificar un jugador si es necesario. por endpoint
 
         [Authorize(Roles = "3")]
         [HttpPost("DisqualifyPlayerFromTournament")]
@@ -43,14 +42,11 @@ namespace CTApp.Controllers.User
 
 
 
-        //puede ver los jugadores de un torneo determinado  por endpoint
 
         [Authorize(Roles = "3")]
         [HttpGet("ShowPlayersFromTournament")]
         public async Task<IActionResult> ShowPlayersFromTournament([FromBody] TournamentRequestToResolveDto showPlayersFromTournamentDto)
         {
-            Console.WriteLine("[INFO]: Id del torneo = " + showPlayersFromTournamentDto.Tournament_Id);
-
 
             if (showPlayersFromTournamentDto == null)
                 return BadRequest(ApiResponse<object>.ErrorResponse("Información del torneo incorrecta."));

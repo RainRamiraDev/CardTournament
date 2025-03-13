@@ -25,8 +25,6 @@ namespace CTDao.Dao.RefreshToken
                     new { Token = refreshToken.ToString(), Now = DateTime.UtcNow }
                 );
 
-                Console.WriteLine($"User found: Id={user.Id_User}, Name={user.Fullname}, Role={user.Id_Rol}");
-
                 return user;
             }
         }

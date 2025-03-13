@@ -72,7 +72,6 @@ namespace CTService.Implementation.User
         {
             var user = await _userDao.GetUserDataByNameAsync(fullname);
 
-            //mejorar esto con el control de errores middlewate if is null or empty
             if (user == null)
                 throw new KeyNotFoundException("El usuario especificado con ese nombre no se encuentra registrado");
 
@@ -83,13 +82,6 @@ namespace CTService.Implementation.User
         {
 
             var user = await GetUserDataByNameAsync(fullname);
-
-            //TODO: hacer la validacion de usuario activo
-            
-            //var isUserDisable = await _userDao.ValidateIfUserAvailable(int userId);
-            //if (isUserDisable)
-            //throw new ArgumentException("El usuario especificado no se encuentra disponible");
-
 
             bool isPasswordValid = _passwordHasher.VerifyPassword(passcode, user.Passcode);
             if (!isPasswordValid)
@@ -179,7 +171,6 @@ namespace CTService.Implementation.User
 
         public async Task ValidateUserRol(int rolToCreat)
         {
-            //traer los datos del rol del token
             var userClaims = _httpContextAccessor.HttpContext?.User.Identity as ClaimsIdentity;
             var userRolClaim = userClaims?.FindFirst("UserRole");
 
@@ -189,17 +180,15 @@ namespace CTService.Implementation.User
             if (!int.TryParse(userRolClaim.Value, out int userRol))
                 throw new InvalidOperationException("El Rol del usuario en el token no es válido.");
 
-            //comparar con el rol a crear
-            // Validamos qué roles puede asignar cada usuario
-            if (userRol == 2) // Organizador solo puede crear jueces (3) o jugadores (4)
+            if (userRol == 2) 
                 if (rolToCreat != 3 && rolToCreat != 4)
                     throw new UnauthorizedAccessException("Un organizador solo puede crear jueces o jugadores.");
 
-            else if (userRol == 4) // Jugador solo puede crear jugadores (4)
+            else if (userRol == 4) 
                 if (rolToCreat != 4)
                     throw new UnauthorizedAccessException("Un jugador solo puede crear otros jugadores.");
 
-            else if (userRol != 1) // Si no es administrador (1), lanzamos un error
+            else if (userRol != 1) 
                 throw new UnauthorizedAccessException("No tienes permisos para crear usuarios.");
         }
 

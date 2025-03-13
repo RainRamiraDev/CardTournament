@@ -62,13 +62,6 @@ namespace CTService.Implementation.Tournament
             if (cardSeriesIds == null || !cardSeriesIds.Any())
                 throw new KeyNotFoundException("Nombre de las serie invalido.");
 
-            //todo: revizar
-
-            //var playerCapacity = await CalculatePlayerCapacity(tournamentDecksDto.Id_Tournament);
-            //var capacityCompleted = await _tournamentDao.CheckTournamentCapacity(playerCapacity, tournamentDecksDto.Id_Tournament);
-            //if (capacityCompleted)
-            //    throw new ArgumentException("Torneo completo.");
-
             var tournamentDecksModel = new TournamentDecksModel
             {
                 Id_Tournament = tournamentDecksDto.Id_Tournament,
@@ -153,46 +146,26 @@ namespace CTService.Implementation.Tournament
 
         public async Task<PlayerCapacityModel> CalculatePlayerCapacity(int id_tournament, int AvailableDailyHours)
         {
-            // Traigo las fechas establecidas del torneo 
             TournamentDto tournament = await GetTournamentById(id_tournament);
 
-            // Corroboro que las fechas estén como UTC 
             var startDatetime = tournament.Start_datetime.ToUniversalTime();
             var endDatetime = tournament.End_datetime.ToUniversalTime();
 
-            // Calculo el total de minutos disponibles por día, basándome en las horas disponibles
-            int availableMatchMinutesPerDay = AvailableDailyHours * 60; // Convierte las horas disponibles en minutos
+            int availableMatchMinutesPerDay = AvailableDailyHours * 60; 
 
-            // Calculo los minutos totales disponibles en el plazo de tiempo
             var totalMinutes = (endDatetime - startDatetime).TotalMinutes;
 
-            // Calculo los días totales sabiendo cuál es el plazo de tiempo diario
-            int totalDays = (int)(endDatetime.Date - startDatetime.Date).TotalDays + 1; // +1 porque incluye el día de inicio
+            int totalDays = (int)(endDatetime.Date - startDatetime.Date).TotalDays + 1; 
 
-            // Se calculan la cantidad de partidos que se podrán hacer en los días disponibles en base al tiempo disponible por día
             int totalAvailableMatchMinutes = totalDays * availableMatchMinutesPerDay;
 
-            var maxMatches = totalAvailableMatchMinutes / 30; // 30 minutos por partido
+            var maxMatches = totalAvailableMatchMinutes / 30; 
 
-            // El valor máximo calculado lo redondea a la potencia más cercana de 2
             maxMatches = (int)Math.Pow(2, Math.Floor(Math.Log(maxMatches) / Math.Log(2)));
 
-            // Sabiendo que por cada match hay dos jugadores, calcula la cantidad máxima de jugadores
             var maxPlayers = maxMatches * 2;
 
-
-
-
-            // Me establece que el mínimo son 16 jugadores, es decir, que mínimo voy a tener octavos en mi torneo
-            // Si es más de 16, pone el cap en la potencia de 2 más cercana
-            //int minPlayers = Math.Max(16, (int)Math.Pow(2, Math.Ceiling(Math.Log2(maxPlayers))));
-
             int minPlayers = 16;
-
-
-        
-
-
 
             minPlayers = Math.Min(minPlayers, maxPlayers);
 
@@ -267,9 +240,8 @@ namespace CTService.Implementation.Tournament
             {
                 Id_Torneo = tournament.Id_Torneo,
                 Pais = tournament.Pais,
-                // Convierte las fechas a la zona horaria correspondiente
-                FechaDeInicio = DateTimeConverter.ConvertToTimeZone(tournament.FechaDeInicio, timeZoneId),  // Convierte la fecha de inicio
-                FechaDeFinalizacion = DateTimeConverter.ConvertToTimeZone(tournament.FechaDeFinalizacion, timeZoneId),  // Convierte la fecha de finalización
+                FechaDeInicio = DateTimeConverter.ConvertToTimeZone(tournament.FechaDeInicio, timeZoneId), 
+                FechaDeFinalizacion = DateTimeConverter.ConvertToTimeZone(tournament.FechaDeFinalizacion, timeZoneId), 
                 Jueces = tournament.Jueces,
                 Series = tournament.Series,
                 Jugadores = tournament.Jugadores,
@@ -307,7 +279,6 @@ namespace CTService.Implementation.Tournament
                 Series_Id = tournamentDto.Series_Id
             };
 
-            // Validación sin crear una variable extra
             await ValidateTournament(new TournamentModel
             {
                 Id_Country = alterTournamentModel.Id_Country,
@@ -350,19 +321,14 @@ namespace CTService.Implementation.Tournament
 
         private async Task ValidatePlayerDisqualification(DisqualificationModel disqualificationRequest)
         {
-            //validar que el torneo exista
             var tournamentExist = await _tournamentDao.TournamentExistsAsync(disqualificationRequest.Id_Tournament);
             if (!tournamentExist)
                 throw new KeyNotFoundException("El torneo especificado no se encuentra registrado");
-
-            //validar que el juez pertenezca a ese torneo
 
             var isValidJudge = await _tournamentDao.ValidateJudgesFromTournament(disqualificationRequest.Id_Judge, disqualificationRequest.Id_Tournament);
             if (!isValidJudge)
                 throw new KeyNotFoundException("El juez especificado no se encuentra registrado en este torneo");
 
-
-            //validar que el jugador este jugado a ese torneo y no haya sido previamente descalificado
             var isValidPlayer = await _tournamentDao.ValidateTournamentPlayersAsync(disqualificationRequest.Id_Tournament,disqualificationRequest.Id_Player);
             if(!isValidPlayer.Any())
                 throw new KeyNotFoundException("El jugador especificado no se encuentra registrado en el torneo");
@@ -370,7 +336,6 @@ namespace CTService.Implementation.Tournament
 
         public async Task<List<ShowTournamentPlayersDto>> ShowPlayersFromTournamentAsync(TournamentRequestToResolveDto showPlayersFromTournamentDto)
         {
-            // Verificar si el torneo existe
             var tournamentExist = await _tournamentDao.TournamentExistsAsync(showPlayersFromTournamentDto.Tournament_Id);
             if (!tournamentExist)
                 throw new ArgumentException("El torneo especificado no se encuentra registrado");
