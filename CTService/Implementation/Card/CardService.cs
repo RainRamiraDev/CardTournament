@@ -33,7 +33,7 @@ namespace CTService.Implementation.Card
 
             if (seriesIds.Count < 1)
             {
-                throw new ArgumentException("Las series no pueden estar vacias");
+                throw new InvalidOperationException("Las series no pueden estar vacias");
             }
 
             var cards = await _cardDao.GetAllCardsFromTournamentAsync(seriesIds);
@@ -72,7 +72,7 @@ namespace CTService.Implementation.Card
         {
             if (cardsIllustrations == null || !cardsIllustrations.Any())
             {
-                throw new ArgumentException("La lista de cartas no puede estar vacia.", nameof(cardsIllustrations));
+                throw new InvalidOperationException("La lista de cartas no puede estar vacia.");
             }
 
             return await _cardDao.GetCardIdsByIllustrationAsync(cardsIllustrations);
@@ -82,7 +82,7 @@ namespace CTService.Implementation.Card
         {
             if (names == null || !names.Any())
             {
-                throw new ArgumentException("La lista de cartas no puede estar vacia.", nameof(names));
+                throw new InvalidOperationException("La lista de cartas no puede estar vacia.");
             }
 
             return await _cardDao.GetSeriesIdsByNameAsync(names);

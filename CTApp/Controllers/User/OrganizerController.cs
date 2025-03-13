@@ -32,7 +32,7 @@ namespace CTApp.Controllers.User
 
         
 
-        [Authorize(Roles = "1")]
+        [Authorize(Roles = "1,2")]
         [HttpGet("GetJudges")]
         public async Task<IActionResult> GetJudges()
         {
@@ -45,7 +45,7 @@ namespace CTApp.Controllers.User
         }
 
 
-        [Authorize(Roles = "1")]
+        [Authorize(Roles = "2,1,3,4")]
         [HttpGet("GetCountries")]
         public async Task<IActionResult> GetCountries()
         {
@@ -54,7 +54,7 @@ namespace CTApp.Controllers.User
         }
 
 
-        [Authorize(Roles = "1")]
+        [Authorize(Roles = "2,1,3,4")]
         [HttpGet("GetSeries")]
         public async Task<IActionResult> GetSeries()
         {

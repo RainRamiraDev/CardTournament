@@ -24,7 +24,7 @@ namespace CTApp.Controllers.User
         }
 
 
-        [Authorize(Roles = "4")]
+        [Authorize(Roles = "2,1,3,4")]
         [HttpGet("GetTournamentsInformation")]
         public async Task<IActionResult> GetTournamentsInformation([FromBody] GetTournamentInformationDto getTournamentInformation)
         {
@@ -43,24 +43,12 @@ namespace CTApp.Controllers.User
             
             
                 return Ok(ApiResponse<IEnumerable<TournamentsInformationDto>>.SuccessResponse("Torneos obtenidos exitosamente.", tournaments));
-            
-            //catch (InvalidOperationException ex)
-            //{
-            //    // Registrar el error con detalles más completos
-            //    _logger.LogError($"Error en GetTournamentsInformation: {ex.Message}. StackTrace: {ex.StackTrace}");
-            //    return StatusCode(500, "Ocurrió un error al procesar la solicitud.");
-            //}
-
-            //catch (Exception ex)
-            //{
-            //    _logger.LogError($"Error desconocido: {ex.Message}", ex);
-            //    return StatusCode(500, "Ocurrió un error inesperado.");
-            //}
+           
         }
 
 
 
-        [Authorize(Roles = "4")] 
+        [Authorize(Roles = "2,1,3,4")]
         [HttpGet("ShowCardsFromTournament")]
         public async Task<IActionResult> ShowCardsFromTournament([FromBody] TournamentRequestToResolveDto tournamentId)
         {

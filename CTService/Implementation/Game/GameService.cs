@@ -81,18 +81,18 @@ namespace CTService.Implementation.Game
             bool tournamentExists = await _tournamentDao.TournamentExistsAsync(tournamentModel.Tournament_Id);
 
             if (!tournamentExists)
-                throw new ArgumentException("El torneo especificado no existe.");
+                throw new KeyNotFoundException("El torneo especificado no existe.");
 
             var playerCapacity = await _tournamentService.CalculatePlayerCapacity(tournamentDto.Tournament_Id, tournamentDto.availableHoursPerDay);
             var capacityCompleted = await _tournamentDao.CheckTournamentCapacity(playerCapacity, tournamentDto.Tournament_Id);
             if (!capacityCompleted)
-                throw new ArgumentException("El torneo aun debe completar su capacidad.");
+                throw new InvalidOperationException("El torneo aun debe completar su capacidad.");
 
 
             List<int> playersIds = await _gameDao.GetTournamentPlayersAsync(tournamentModel.Tournament_Id);
 
             if (playersIds.Count < 2)
-                throw new ArgumentException("Se necesitan al menos dos jugadores para iniciar el torneo.");
+                throw new InvalidOperationException("Se necesitan al menos dos jugadores para iniciar el torneo.");
 
 
             List<int> tournamentJudgesIds = await _tournamentDao.GetTournamentJudgesAsync(tournamentDto.Tournament_Id);
@@ -182,28 +182,28 @@ namespace CTService.Implementation.Game
         }
 
 
-        //public async Task DisqualifyPlayerAsync(int playerId, int tournamentId, int judgeId)
-        //{
-        //    await ValidatePlayerDisqualification(playerId, tournamentId, judgeId);
+        public async Task DisqualifyPlayerAsync(int playerId, int tournamentId, int judgeId)
+        {
+            await ValidatePlayerDisqualification(playerId, tournamentId, judgeId);
 
-        //    // Registrar la descalificación en la base de datos
-        //    await _gameDao.InsertDisqualificationAsync(playerId, tournamentId, judgeId);
+            // Registrar la descalificación en la base de datos
+            await _gameDao.InsertDisqualificationAsync(playerId, tournamentId, judgeId);
 
-        //    // Marcar al jugador como descalificado (puedes agregarlo a una lista de eliminados)
-        //    Console.WriteLine($"El jugador {playerId} ha sido descalificado del torneo {tournamentId} por el juez {judgeId}.");
-        //}
+            // Marcar al jugador como descalificado (puedes agregarlo a una lista de eliminados)
+            Console.WriteLine($"El jugador {playerId} ha sido descalificado del torneo {tournamentId} por el juez {judgeId}.");
+        }
 
         public async Task ValidatePlayerDisqualification(int playerId, int tournamentId, int judgeId)
         {
             //validar el torneo
             var isValidTournament = await _tournamentDao.TournamentExistsAsync(tournamentId);
             if (!isValidTournament)
-                throw new ArgumentException("El torneo especificado no es valido");
+                throw new KeyNotFoundException("El torneo especificado no es valido");
 
             //validar el jugador
             var isValidPlayer = await _tournamentDao.ValidateTournamentPlayersAsync(tournamentId,playerId);
             if(!isValidPlayer.Contains(playerId))
-                throw new ArgumentException("El jugador especificado no esta registrado en este torneo");
+                throw new InvalidOperationException("El jugador especificado no esta registrado en este torneo");
 
             //validar el juez
             //TODO: MEJORAR ESTO PARA RECIBIR POR TOKEN    //validar que la persona que elimina (desde el token) es juez
@@ -231,7 +231,7 @@ namespace CTService.Implementation.Game
         {
             if (judges == null || judges.Count == 0)
             {
-                throw new ArgumentException("La lista de jueces no puede estar vacía.");
+                throw new InvalidOperationException("La lista de jueces no puede estar vacía.");
             }
             Random random = new Random();
             int randomIndex = random.Next(judges.Count);
@@ -313,7 +313,7 @@ namespace CTService.Implementation.Game
         {
             var isValidTournament = await _tournamentDao.TournamentExistsAsync(request.Tournament_Id);
             if (!isValidTournament)
-                throw new ArgumentException("El torneo especificado no existe");
+                throw new KeyNotFoundException("El torneo especificado no existe");
 
             var matchShoudelModel = await CalculateTournamentScheduleAsync(request.Tournament_Id,request.availableHoursPerDay, timeZone);
 

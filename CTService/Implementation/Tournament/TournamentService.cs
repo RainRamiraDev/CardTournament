@@ -50,7 +50,8 @@ namespace CTService.Implementation.Tournament
         public async Task<int> InsertTournamentDecksAsync(TournamentDecksDto tournamentDecksDto)
         {
             if (tournamentDecksDto == null)
-                throw new ArgumentException("Invalid tournament data.");
+                throw new ArgumentException("Datos del torneo inválidos.");
+
 
             var idOwner = GetUserIdFromToken();
 
@@ -59,7 +60,9 @@ namespace CTService.Implementation.Tournament
             var cardSeriesIds = await _cardDao.GetIdCardSeriesByCardIdAsync(validatedCards);
 
             if (cardSeriesIds == null || !cardSeriesIds.Any())
-                throw new ArgumentException("Nombre de las serie invalido.");
+                throw new KeyNotFoundException("Nombre de las serie invalido.");
+
+            //todo: revizar
 
             //var playerCapacity = await CalculatePlayerCapacity(tournamentDecksDto.Id_Tournament);
             //var capacityCompleted = await _tournamentDao.CheckTournamentCapacity(playerCapacity, tournamentDecksDto.Id_Tournament);
@@ -81,12 +84,12 @@ namespace CTService.Implementation.Tournament
         {
             bool tournamentExists = await _tournamentDao.TournamentExistsAsync(tournament.Id_Tournament);
             if (!tournamentExists)
-                throw new InvalidOperationException("El torneo especificado no existe.");
+                throw new KeyNotFoundException("El torneo especificado no existe.");
 
 
             var isAvailableTournaments = await _tournamentDao.ValidateAvailableTournamentsAsync(tournament.Id_Tournament);
             if (!isAvailableTournaments.Any())
-                throw new ArgumentException("Este torneo ya se encuentra finalizado");
+                throw new InvalidOperationException("Este torneo ya se encuentra finalizado");
 
             var duplicateCards = tournament.Cards
                 .GroupBy(i => i)
@@ -98,7 +101,7 @@ namespace CTService.Implementation.Tournament
                 throw new InvalidOperationException($"Las siguientes ilustraciones están duplicadas: {string.Join(", ", duplicateCards)}");
 
             if (tournament.Cards == null || !tournament.Cards.Any())
-                throw new ArgumentException("No se proporcionaron cartas para validar.");
+                throw new KeyNotFoundException("No se proporcionaron cartas para validar.");
 
 
             var tournamentSeries = await _tournamentDao.GetSeriesFromTournamentAsync(tournament.Id_Tournament);
@@ -109,7 +112,7 @@ namespace CTService.Implementation.Tournament
             var validCardsFromSeries = await _tournamentDao.GetCardsFromTournamentSeriesAsync(tournamentSeries,tournament.Cards);
             var invalidCardFromSeries = tournament.Cards.Except(validCardsFromSeries).ToList();
             if (invalidCardFromSeries.Any())
-                throw new ArgumentException($"Las siguientes series no están registradas: {string.Join(", ", invalidCardFromSeries)}");
+                throw new KeyNotFoundException($"Las siguientes series no están registradas: {string.Join(", ", invalidCardFromSeries)}");
 
 
             return validCardsFromSeries;
@@ -177,7 +180,7 @@ namespace CTService.Implementation.Tournament
             // Sabiendo que por cada match hay dos jugadores, calcula la cantidad máxima de jugadores
             var maxPlayers = maxMatches * 2;
 
-            Console.WriteLine($"Max players calculated: {maxPlayers}");
+
 
 
             // Me establece que el mínimo son 16 jugadores, es decir, que mínimo voy a tener octavos en mi torneo
@@ -187,7 +190,7 @@ namespace CTService.Implementation.Tournament
             int minPlayers = 16;
 
 
-            Console.WriteLine($"Min players calculated: {minPlayers}");
+        
 
 
 
@@ -222,24 +225,24 @@ namespace CTService.Implementation.Tournament
 
             var registeredCountries = await _tournamentDao.ValidateCountriesFromDbAsync(tournament.Id_Country);
             if (!registeredCountries.Any())
-                throw new ArgumentException("El país especificado no está registrado.");
+                throw new KeyNotFoundException("El país especificado no está registrado.");
 
 
             var isValidOrganizer = await _tournamentDao.ValidateUsersFromDbAsync(1, new List<int> { tournament.Id_Organizer });
             if (!isValidOrganizer.Any())
-                throw new ArgumentException("El organizador especificado no está registrado.");
+                throw new InvalidOperationException("El organizador especificado no está registrado en la base de datos. Verifica que el ID del organizador sea válido.");
 
 
             var areValidJudges = await _tournamentDao.ValidateUsersFromDbAsync(3, tournament.Judges_Id);
             var invalidJudges = (tournament.Judges_Id ?? new List<int>()).Except(areValidJudges).ToList();
              if (invalidJudges.Any())
-                throw new ArgumentException($"Los siguientes jueces no están registrados: {string.Join(", ", invalidJudges)}");
+                throw new InvalidOperationException($"Los siguientes jueces no están registrados: {string.Join(", ", invalidJudges)}. Asegúrate de que todos los ID de jueces sean correctos.");
 
 
             var areValidSeries = await _cardDao.ValidateSeriesAsync(tournament.Series_Id);
             var invalidSeries = tournament.Series_Id.Except(areValidSeries).ToList();
             if (invalidSeries.Any())
-                throw new ArgumentException($"Las siguientes series no están registradas: {string.Join(", ", invalidSeries)}");
+                throw new KeyNotFoundException($"Las siguientes series no están registradas: {string.Join(", ", invalidSeries)}.  Verifica los ID de las series en la base de datos.");
         }
 
         public async Task<List<int>> GetJudgeIdsByAliasAsync(List<string> judgeAliases)
@@ -291,7 +294,7 @@ namespace CTService.Implementation.Tournament
             var isAdmin = await _tournamentDao.ValidateUsersFromDbAsync(2, new List<int> { organizerFromToken });
 
             if (oldTournament.Id_Organizer != organizerFromToken && !isAdmin.Contains(organizerFromToken))
-                throw new UnauthorizedAccessException("No tiene permiso para alterar este torneo.");
+                throw new UnauthorizedAccessException("No tiene permiso para modificar este torneo.");
 
             var alterTournamentModel = new AlterTournamentModel
             {
@@ -322,7 +325,7 @@ namespace CTService.Implementation.Tournament
         {
             var isValidTournament = await _tournamentDao.TournamentExistsAsync(tournamentDto.Tournament_Id);
             if (!isValidTournament)
-                throw new ArgumentException("El torneo especificado no ha sido encontrado");
+                throw new KeyNotFoundException("El torneo especificado no ha sido encontrado");
 
             await _tournamentDao.SoftDeleteTournamentAsync(tournamentDto.Tournament_Id);
         }
@@ -350,19 +353,19 @@ namespace CTService.Implementation.Tournament
             //validar que el torneo exista
             var tournamentExist = await _tournamentDao.TournamentExistsAsync(disqualificationRequest.Id_Tournament);
             if (!tournamentExist)
-                throw new ArgumentException("El torneo especificado no se encuentra registrado");
+                throw new KeyNotFoundException("El torneo especificado no se encuentra registrado");
 
             //validar que el juez pertenezca a ese torneo
 
             var isValidJudge = await _tournamentDao.ValidateJudgesFromTournament(disqualificationRequest.Id_Judge, disqualificationRequest.Id_Tournament);
             if (!isValidJudge)
-                throw new ArgumentException("El juez especificado no se encuentra registrado en este torneo");
+                throw new KeyNotFoundException("El juez especificado no se encuentra registrado en este torneo");
 
 
             //validar que el jugador este jugado a ese torneo y no haya sido previamente descalificado
             var isValidPlayer = await _tournamentDao.ValidateTournamentPlayersAsync(disqualificationRequest.Id_Tournament,disqualificationRequest.Id_Player);
             if(!isValidPlayer.Any())
-                throw new ArgumentException("El jugador especificado no se encuentra registrado en el torneo");
+                throw new KeyNotFoundException("El jugador especificado no se encuentra registrado en el torneo");
         }
 
         public async Task<List<ShowTournamentPlayersDto>> ShowPlayersFromTournamentAsync(TournamentRequestToResolveDto showPlayersFromTournamentDto)
