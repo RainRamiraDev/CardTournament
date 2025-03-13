@@ -8,16 +8,14 @@ CREATE TABLE IF NOT EXISTS `t_cards` (
   `attack` int DEFAULT 0,
   `defense` int DEFAULT 0,
   PRIMARY KEY (`id_card`)
-) ENGINE=InnoDB AUTO_INCREMENT=77 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 CREATE TABLE IF NOT EXISTS `t_series` (
   `id_series` int NOT NULL AUTO_INCREMENT,
   `series_name` varchar(30) NOT NULL,
   `release_date` datetime NOT NULL,
   PRIMARY KEY (`id_series`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 CREATE TABLE IF NOT EXISTS `t_card_series` (
   `id_card_series` int NOT NULL AUTO_INCREMENT,
@@ -28,7 +26,8 @@ CREATE TABLE IF NOT EXISTS `t_card_series` (
   KEY `fk_series_cseries` (`id_series`),
   CONSTRAINT `fk_card_cseries` FOREIGN KEY (`id_card`) REFERENCES `t_cards` (`id_card`),
   CONSTRAINT `fk_series_cseries` FOREIGN KEY (`id_series`) REFERENCES `t_series` (`id_series`)
-) ENGINE=InnoDB AUTO_INCREMENT=77 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
 
 
 CREATE TABLE IF NOT EXISTS `t_countries` (
