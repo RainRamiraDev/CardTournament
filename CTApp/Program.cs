@@ -36,32 +36,31 @@ var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
 
-builder.Services.AddScoped<ICardDao>(provider =>
+builder.Services.AddSingleton<ICardDao>(provider =>
 {
     return new CardDao(connectionString);
 });
 
-builder.Services.AddScoped<IUserDao>(provider =>
+builder.Services.AddSingleton<IUserDao>(provider =>
 {
     return new UserDao(connectionString);
 });
 
-
-builder.Services.AddScoped<IRefreshTokenDao>(provider =>
+builder.Services.AddSingleton<IRefreshTokenDao>(provider =>
 {
     return new RefreshTokenDao(connectionString);
 });
 
-
-builder.Services.AddScoped<ITournamentDao>(provider =>
+builder.Services.AddSingleton<ITournamentDao>(provider =>
 {
     return new TournamentDao(connectionString);
 });
 
-builder.Services.AddScoped<IGameDao>(provider =>
+builder.Services.AddSingleton<IGameDao>(provider =>
 {
     return new GameDao(connectionString);
 });
+
 
 
 //validaciones
@@ -71,8 +70,13 @@ builder.Services.AddValidatorsFromAssemblyContaining<LogOutRequestDtoValidation>
 builder.Services.AddValidatorsFromAssemblyContaining<TournamentDecksRequestDtoValidation>();
 builder.Services.AddValidatorsFromAssemblyContaining<TournamentDtoValidation>();
 builder.Services.AddValidatorsFromAssemblyContaining<TournamentRequestToResolveDtoValidation>();
-
 builder.Services.AddValidatorsFromAssemblyContaining<UserCreationDtoValidation>();
+builder.Services.AddValidatorsFromAssemblyContaining<AlterUserDtoValidation>();
+builder.Services.AddValidatorsFromAssemblyContaining<SoftDeleteUserDtoValidation>();
+builder.Services.AddValidatorsFromAssemblyContaining<DisqualificationDtoValidation>();
+builder.Services.AddValidatorsFromAssemblyContaining<GetTournamentInformationDtoValidation>();
+
+
 
 builder.Services.AddFluentValidationAutoValidation();
 

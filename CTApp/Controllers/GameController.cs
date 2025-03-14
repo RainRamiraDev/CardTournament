@@ -24,10 +24,19 @@ namespace CTApp.Controllers
         [HttpPost("resolve")]
         public async Task<IActionResult> ResolveGame([FromBody] TournamentRequestToResolveDto request)
         {
+
+            if (!Request.Headers.ContainsKey("X-TimeZone"))
+            {
+                return BadRequest(ApiResponse<IEnumerable<TournamentsInformationDto>>.ErrorResponse("La zona horaria es requerida."));
+            }
+
+            var timeZoneId = Request.Headers["X-TimeZone"].ToString();
+
+
             if (request == null)
                 return BadRequest("Invalid request data.");
 
-            GameResultDto result = await _gameService.ResolveGameAsync(request);
+            GameResultDto result = await _gameService.ResolveGameAsync(request, timeZoneId);
 
             var response = ApiResponse<GameResultDto>.SuccessResponse("Juego resuelto exitosamente.", result);
             return Ok(response);
@@ -38,10 +47,17 @@ namespace CTApp.Controllers
         [HttpGet("TournamentSchedule")]
         public async Task<IActionResult> TournamentSchedule([FromBody] TournamentRequestToResolveDto request)
         {
+            if (!Request.Headers.ContainsKey("X-TimeZone"))
+            {
+                return BadRequest(ApiResponse<IEnumerable<TournamentsInformationDto>>.ErrorResponse("La zona horaria es requerida."));
+            }
+
+            var timeZoneId = Request.Headers["X-TimeZone"].ToString();
+
             if (request == null)
                 return BadRequest("Invalid request data.");
 
-            List<MatchScheduleDto> result = await _gameService.CalculateMatchScheduleAsync(request);
+            List<MatchScheduleDto> result = await _gameService.CalculateMatchScheduleAsync(request, timeZoneId);
 
             var response = ApiResponse<List<MatchScheduleDto>>.SuccessResponse("Fechas calculadas exitosamente.", result);
             return Ok(response);

@@ -35,39 +35,40 @@ namespace CTApp.Middleware
 
             var statusCode = exception switch
             {
-                ArgumentException => (int)HttpStatusCode.BadRequest,
-                InvalidOperationException => (int)HttpStatusCode.Conflict,
-                KeyNotFoundException => (int)HttpStatusCode.NotFound,
-                _ => (int)HttpStatusCode.InternalServerError
+                ArgumentException => (int)HttpStatusCode.BadRequest, // 400
+                UnauthorizedAccessException => (int)HttpStatusCode.Unauthorized, // 401
+                KeyNotFoundException => (int)HttpStatusCode.NotFound, // 404
+                InvalidOperationException => (int)HttpStatusCode.Conflict, // 409
+                TimeoutException => (int)HttpStatusCode.RequestTimeout, // 408
+                NotImplementedException => (int)HttpStatusCode.NotImplemented, // 501
+                _ => (int)HttpStatusCode.InternalServerError // 500
             };
 
             context.Response.StatusCode = statusCode;
 
-            ApiResponse<object> response;
-
-            // Usa el mensaje específico de la ArgumentException
-            if (exception is ArgumentException argEx)
+            var responseMessage = exception switch
             {
-                response = ApiResponse<object>.ErrorResponse(argEx.Message);
-            }
-            else
+                ArgumentException argEx => argEx.Message, 
+                UnauthorizedAccessException unauthEx => unauthEx.Message,
+                KeyNotFoundException keyNotFoundEx => keyNotFoundEx.Message, 
+                InvalidOperationException InvalOpEx => InvalOpEx.Message,  
+                TimeoutException => "El tiempo de espera para la solicitud ha expirado.",
+                NotImplementedException => "Esta funcionalidad aún no está implementada.",
+                _ => exception.Message
+            };
+
+            if (string.IsNullOrWhiteSpace(responseMessage))
             {
-                response = ApiResponse<object>.ErrorResponse("Ocurrió un error.");
+                responseMessage = "Ocurrió un error inesperado en el servidor.";
             }
 
-            // Agregar solo el tipo de error a la lista de errores
-            response.Errors.Clear(); // Limpiar la lista de errores antes de agregar
-            response.Errors.Add(exception.GetType().Name); // Agrega el tipo de error a la lista
+            var response = ApiResponse<object>.ErrorResponse(responseMessage);
+
+            response.Errors.Clear();
+            response.Errors.Add(exception.GetType().Name);
 
             return context.Response.WriteAsJsonAsync(response);
         }
-
-
-
-
-
-
-
 
 
     }

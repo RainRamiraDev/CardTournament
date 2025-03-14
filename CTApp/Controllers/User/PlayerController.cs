@@ -24,24 +24,33 @@ namespace CTApp.Controllers.User
         }
 
 
-        [Authorize(Roles = "4")] 
+        [Authorize(Roles = "2,1,3,4")]
         [HttpGet("GetTournamentsInformation")]
-        public async Task<IActionResult> GetTournamentsInformation([FromBody] GetTournamentInformationDto getTournamentInformation )
+        public async Task<IActionResult> GetTournamentsInformation([FromBody] GetTournamentInformationDto getTournamentInformation)
         {
-            var tournaments = await _tournamentService.GetTournamentsInformationAsync(getTournamentInformation);
+            if (!Request.Headers.ContainsKey("X-TimeZone"))
+            {
+                return BadRequest(ApiResponse<IEnumerable<TournamentsInformationDto>>.ErrorResponse("La zona horaria es requerida."));
+            }
+
+            var timeZoneId = Request.Headers["X-TimeZone"].ToString();
+
+            var tournaments = await _tournamentService.GetTournamentsInformationAsync(getTournamentInformation, timeZoneId);
 
             if (tournaments is null || !tournaments.Any())
                 return NotFound(ApiResponse<IEnumerable<TournamentsInformationDto>>.ErrorResponse("Torneos no encontrados."));
 
-            return Ok(ApiResponse<IEnumerable<TournamentsInformationDto>>.SuccessResponse("Torneos obtenidos exitosamente.", tournaments));
+                return Ok(ApiResponse<IEnumerable<TournamentsInformationDto>>.SuccessResponse("Torneos obtenidos exitosamente.", tournaments));
+           
         }
 
 
-        [Authorize(Roles = "4")] 
-        [HttpGet("ShowCards")]
-        public async Task<IActionResult> GetAllCards([FromBody] TournamentRequestToResolveDto tournamentId)
+
+        [Authorize(Roles = "2,1,3,4")]
+        [HttpGet("ShowCardsFromTournament")]
+        public async Task<IActionResult> ShowCardsFromTournament([FromBody] TournamentRequestToResolveDto tournamentId)
         {
-            var cards = await _cardService.GetAllCardsAsync(tournamentId);
+            var cards = await _cardService.GetAllCardsFromTournamentAsync(tournamentId);
 
             if (cards == null || !cards.Any())
                 return NotFound(ApiResponse<IEnumerable<ShowCardsDto>>.ErrorResponse("Cartas no encontradas."));

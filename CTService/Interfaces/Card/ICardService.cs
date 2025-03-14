@@ -11,7 +11,7 @@ namespace CTService.Interfaces.Card
 {
     public interface ICardService
     {
-        Task<IEnumerable<ShowCardsDto>> GetAllCardsAsync(TournamentRequestToResolveDto tournamentRequestDto);
+        Task<IEnumerable<ShowCardsDto>> GetAllCardsFromTournamentAsync(TournamentRequestToResolveDto tournamentRequestDto);
         Task<List<int>> GetCardsIdsByIllustrationAsync(List<string> cardsIllustrations);
         Task<List<int>> GetSeriesIdsByNameAsync(List<string> names);
         Task<IEnumerable<ShowCardsDto>> GetCardsBySeriesNamesAsync(List<string> cardSeries);

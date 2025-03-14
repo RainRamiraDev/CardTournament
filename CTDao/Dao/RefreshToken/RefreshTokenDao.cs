@@ -60,9 +60,17 @@ namespace CTDao.Dao.RefreshToken
 
         public async Task<int> SaveRefreshTokenAsync(Guid token, int userId, DateTime expiryDate)
         {
+
+          
+
+
             using (var connection = new MySqlConnection(_connectionString))
             {
                 await connection.OpenAsync();
+
+
+
+
 
                 return await connection.ExecuteAsync(
                     QueryLoader.GetQuery("QuerySaveToken"),

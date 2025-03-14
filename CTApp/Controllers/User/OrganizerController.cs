@@ -30,8 +30,9 @@ namespace CTApp.Controllers.User
             _cardService = cardService;
         }
 
+        
 
-        [Authorize(Roles = "1")]
+        [Authorize(Roles = "1,2")]
         [HttpGet("GetJudges")]
         public async Task<IActionResult> GetJudges()
         {
@@ -44,7 +45,7 @@ namespace CTApp.Controllers.User
         }
 
 
-        [Authorize(Roles = "1")]
+        [Authorize(Roles = "2,1,3,4")]
         [HttpGet("GetCountries")]
         public async Task<IActionResult> GetCountries()
         {
@@ -53,7 +54,7 @@ namespace CTApp.Controllers.User
         }
 
 
-        [Authorize(Roles = "1")]
+        [Authorize(Roles = "2,1,3,4")]
         [HttpGet("GetSeries")]
         public async Task<IActionResult> GetSeries()
         {
@@ -75,7 +76,8 @@ namespace CTApp.Controllers.User
             if (id == 0)
                 throw new InvalidOperationException("Error al crear el torneo.");
 
-            return Created("", ApiResponse<object>.SuccessResponse("Torneo creado exitosamente.", new { id }));
+
+            return Created("", ApiResponse<object>.SuccessResponse("Torneo creado exitosamente.", new AfterCreateTournamentDto { id_Tournament = id }));
         }
 
 

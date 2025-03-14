@@ -76,7 +76,6 @@
 
   "QueryGetIdCardSeriesByCardId": "SELECT s.series_name, c.illustration, c.attack, c.deffense, s.release_date FROM T_CARDS c JOIN T_CARD_SERIES cs ON c.id_card = cs.id_card JOIN T_SERIES s ON cs.id_series = s.id_series WHERE s.id_series IN @idSeries ORDER BY 1 ASC;",
 
-  //"QueryGetCardsByIllustration": "SELECT id_card FROM t_cards WHERE illustration IN @Illustration;",
   "QueryGetSeriesByName": "SELECT ts.id_series FROM t_series ts WHERE ts.series_name IN @SeriesNames;",
   "QueryGetCardsBySeriesName": "SELECT s.series_name, c.illustration, c.attack, c.deffense, s.release_date FROM T_CARDS c JOIN T_CARD_SERIES cs ON c.id_card = cs.id_card JOIN T_SERIES s ON cs.id_series = s.id_series WHERE s.series_name IN @SeriesName ORDER BY 1 ASC;",
 
@@ -90,8 +89,8 @@
 
 
   "QueryCreateMatch": "INSERT INTO T_MATCHES (id_round, id_player1, id_player2, winner, Match_Date) VALUES (@id_round, @id_player1, @id_player2, @winner, @Match_Date); SELECT LAST_INSERT_ID();",
-  
-  
+
+
   "QuerySetNextRound": "INSERT INTO T_ROUNDS (id_tournament, round_number, is_completed) VALUES (@id_tournament, @round_number, FALSE);",
   "QueryGetLastRound": "SELECT COALESCE(MAX(round_number), 0) FROM T_ROUNDS WHERE id_tournament = @id_tournament;",
   "QueryCompleteRound": "UPDATE T_ROUNDS SET is_completed = TRUE WHERE id_tournament = @id_tournament AND round_number = @round_number;",
@@ -101,17 +100,25 @@
   "QueryDeleteToken": "DELETE FROM T_REFRESH_TOKENS WHERE token = @Token;",
   "QuerySaveToken": "INSERT INTO T_REFRESH_TOKENS (token, id_user, expiry_date) VALUES (@Token, @id_user, @ExpiryDate);",
   "QueryGetToken": "SELECT token FROM T_REFRESH_TOKENS WHERE id_user = @id_user LIMIT 1;",
-  "QueryGetUser": "SELECT u.id_user, u.fullname, u.email FROM T_USERS u INNER JOIN T_REFRESH_TOKENS rt ON rt.id_user = u.id_user WHERE rt.token = @Token AND rt.expiry_date > @Now;",
+
+
+  "QueryGetUser": "SELECT u.id_user, u.fullname, u.id_rol FROM T_USERS u INNER JOIN T_REFRESH_TOKENS rt ON rt.id_user = u.id_user WHERE rt.token = @Token AND rt.expiry_date > @Now;",
+
+
+
+
+
 
   "QueryGetUserWhitToken": "SELECT * FROM T_Users WHERE Id_User = @Id_user;",
   "QueryFirstLogIn": "INSERT INTO T_Users (Fullname, Passcode, Id_Rol) VALUES (@Fullname, @Passcode, @Id_Rol);",
   "QueryGetUserDataByName": "SELECT Id_User, Fullname, Passcode, Id_Rol, Available FROM T_Users WHERE Fullname = @Fullname;",
-  "QueryGetAllJudges": "SELECT u.Fullname, u.Alias, u.Email, c.country_name as Country, u.avatar_url FROM t_users u JOIN t_countries c ON u.id_country = c.id_country WHERE Id_rol = 3 AND u.Fullname IS NOT NULL AND u.Alias IS NOT NULL AND u.Email IS NOT NULL AND c.country_name IS NOT NULL AND u.avatar_url IS NOT NULL ORDER BY u.alias asc;",
+
+  "QueryGetAllJudges": "SELECT u.Fullname, u.Alias, u.Email, c.country_name as Country, u.avatar_url FROM t_users u JOIN t_countries c ON u.id_country = c.id_country WHERE Id_rol = 3 AND available = 1 ORDER BY u.alias ASC;",
   "QueryGetPlayersRankIds": "SELECT ki FROM t_users WHERE Id_user = @Id;",
 
-  "QueryCreateUser": "INSERT INTO t_Users (Id_Country, Id_Rol, Fullname, Passcode, Alias, Email, Avatar_Url, Games_Won, Games_Lost, Disqualifications,ki) VALUES (@Id_Country, @Id_Rol, @Fullname, @Passcode,@Alias, @Email, @Avatar_Url, @Games_Won, @Games_Lost, @Disqualifications, @Ki); SELECT LAST_INSERT_ID();",
+  "QueryCreateUser": "INSERT INTO t_Users (Id_Country, Id_Rol, Fullname, Passcode, Alias, Email, Avatar_Url, Games_Won, Games_Lost, ki) VALUES (@Id_Country, @Id_Rol, @Fullname, @Passcode,@Alias, @Email, @Avatar_Url, @Games_Won, @Games_Lost, @Ki); SELECT LAST_INSERT_ID();",
 
-  "QueryGetUserById": "SELECT id_user, id_country, id_rol, fullname, alias, email, games_won, games_lost, disqualifications, avatar_url, ki, available FROM t_users WHERE id_user = @id_user",
+  "QueryGetUserById": "SELECT id_user, id_country, id_rol, fullname, alias, email, games_won, games_lost, avatar_url, ki, available FROM t_users WHERE id_user = @id_user",
 
   "QueryAlterUser": "UPDATE t_users SET id_country = @id_country, id_rol = @id_rol, fullname = @fullname, alias = @alias, email = @email, avatar_url = @avatar_url WHERE id_user = @id_user;",
 

@@ -72,9 +72,8 @@ namespace CTService.Implementation.User
         {
             var user = await _userDao.GetUserDataByNameAsync(fullname);
 
-            //mejorar esto con el control de errores middlewate if is null or empty
             if (user == null)
-                throw new ArgumentException("El usuario especificado con ese nombre no se encuentra registrado");
+                throw new KeyNotFoundException("El usuario especificado con ese nombre no se encuentra registrado");
 
             return user;
         }
@@ -84,16 +83,9 @@ namespace CTService.Implementation.User
 
             var user = await GetUserDataByNameAsync(fullname);
 
-
-            //hacer la validacion de usuario activo
-            //var isUserDisable = await _userDao.ValidateIfUserAvailable(int userId);
-            //if (isUserDisable)
-            //throw new ArgumentException("El usuario especificado no se encuentra disponible");
-
-
             bool isPasswordValid = _passwordHasher.VerifyPassword(passcode, user.Passcode);
             if (!isPasswordValid)
-                throw new ArgumentException("Contraseña incorrecta");
+                throw new UnauthorizedAccessException("Contraseña incorrecta");
 
             var accessToken = await _refreshTokenService.GenerateAccessTokenAsync(user.Id_User, user.Fullname, user.Id_Rol);
 
@@ -133,7 +125,6 @@ namespace CTService.Implementation.User
             var userModels = await _userDao.GetAllJudgeAsync();
             return userModels.Select(judge => new JudgeDto
             {
-                Fullname = judge.Fullname,
                 Alias = judge.Alias,
                 Email = judge.Email,
                 Avatar_Url = judge.Avatar_Url,
@@ -170,7 +161,6 @@ namespace CTService.Implementation.User
                 Avatar_Url = userDto.Avatar_Url,
                 Games_Won = 0,
                 Games_Lost = 0,
-                Disqualifications = 0,
                 Ki = calculateUserKi,
             };
 
@@ -181,7 +171,6 @@ namespace CTService.Implementation.User
 
         public async Task ValidateUserRol(int rolToCreat)
         {
-            //traer los datos del rol del token
             var userClaims = _httpContextAccessor.HttpContext?.User.Identity as ClaimsIdentity;
             var userRolClaim = userClaims?.FindFirst("UserRole");
 
@@ -191,17 +180,15 @@ namespace CTService.Implementation.User
             if (!int.TryParse(userRolClaim.Value, out int userRol))
                 throw new InvalidOperationException("El Rol del usuario en el token no es válido.");
 
-            //comparar con el rol a crear
-            // Validamos qué roles puede asignar cada usuario
-            if (userRol == 2) // Organizador solo puede crear jueces (3) o jugadores (4)
+            if (userRol == 2) 
                 if (rolToCreat != 3 && rolToCreat != 4)
                     throw new UnauthorizedAccessException("Un organizador solo puede crear jueces o jugadores.");
 
-            else if (userRol == 4) // Jugador solo puede crear jugadores (4)
+            else if (userRol == 4) 
                 if (rolToCreat != 4)
                     throw new UnauthorizedAccessException("Un jugador solo puede crear otros jugadores.");
 
-            else if (userRol != 1) // Si no es administrador (1), lanzamos un error
+            else if (userRol != 1) 
                 throw new UnauthorizedAccessException("No tienes permisos para crear usuarios.");
         }
 
@@ -215,31 +202,17 @@ namespace CTService.Implementation.User
 
             var registeredCountries = await _tournamentDao.ValidateCountriesFromDbAsync(user.Id_Country);
             if (!registeredCountries.Any())
-                throw new ArgumentException("El país especificado no está registrado.");
+                throw new KeyNotFoundException("El país especificado no está registrado.");
 
 
             bool aliasExists = await _userDao.ValidateUsersAlias(user.Alias);
             if (aliasExists)
-                throw new ArgumentException("El Alias especificado ya está registrado y no puede repetirse.");
+                throw new InvalidOperationException("El Alias especificado ya está registrado y no puede repetirse.");
 
 
             var emailsExist = await _userDao.ValidateUserEmail(user.Email);
             if (emailsExist)
-                throw new ArgumentException("El Email especificado ya está registrado.");
-
-
-            //var userRol = GetUserRolFromToken();
-            //// Validamos qué roles puede asignar cada usuario
-            //if (userRol == 2) // Organizador solo puede crear jueces (3) o jugadores (4)
-            //    if (user.Id_Rol != 3 && user.Id_Rol != 4)
-            //        throw new UnauthorizedAccessException("Un organizador solo puede crear jueces o jugadores.");
-
-            //else if (userRol == 4) // Jugador solo puede crear jugadores (4)
-            //    if (user.Id_Rol != 4)
-            //        throw new UnauthorizedAccessException("Un jugador solo puede crear otros jugadores.");
-
-            //else if (userRol != 1) // Si no es administrador (1), lanzamos un error
-            //        throw new UnauthorizedAccessException("No tienes permisos para crear usuarios.");
+                throw new InvalidOperationException("El Email especificado ya está registrado.");
         }
 
         public async Task AlterUserAsync(AlterUserDto userDto)
@@ -266,19 +239,19 @@ namespace CTService.Implementation.User
 
             UserModel oldUser = await _userDao.GetUserById(user.Id_User);
             if (oldUser == null)
-                throw new ArgumentException("El Usuario especificado no está registrado.");
+                throw new KeyNotFoundException("El Usuario especificado no está registrado.");
 
             var registeredCountries = await _tournamentDao.ValidateCountriesFromDbAsync(user.New_IdCountry);
             if (!registeredCountries.Any())
-                throw new ArgumentException("El país especificado no está registrado.");
+                throw new KeyNotFoundException("El país especificado no está registrado.");
 
             bool aliasExists = await _userDao.ValidateUsersAlias(user.New_Alias);
             if (aliasExists)
-                throw new ArgumentException("El Alias especificado ya está registrado y no puede repetirse.");
+                throw new InvalidOperationException("El Alias especificado ya está registrado y no puede repetirse.");
 
             var emailsExists = await _userDao.ValidateUserEmail(user.New_Email);
             if (emailsExists)
-                throw new ArgumentException("El Email especificado ya está registrado y no puede repetirse.");
+                throw new InvalidOperationException("El Email especificado ya está registrado y no puede repetirse.");
 
             await ValidateUserRol(oldUser.Id_Rol);
 
@@ -289,7 +262,7 @@ namespace CTService.Implementation.User
         {
             var user = await _userDao.GetUserById(userDto.Id_User);
             if (user.Available == 0)
-                throw new ArgumentException("El usuario especificado ya ha sido eliminado");
+                throw new InvalidOperationException("El usuario especificado ya ha sido eliminado");
            
             await ValidateUserRol(user.Id_Rol);
             await _userDao.SoftDeleteUserAsync(userDto.Id_User);

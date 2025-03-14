@@ -18,19 +18,18 @@ namespace CTDto.Validations.Tournament
             RuleFor(t => t.Start_datetime)
                 .GreaterThan(DateTime.UtcNow).WithMessage("La fecha de inicio debe ser en el futuro.");
 
-            // Regla para limitar el margen de fechas
-            RuleFor(t => t.Start_datetime)
-                .Must(start => start < DateTime.UtcNow.AddDays(365)) // No debe ser más de un año en el futuro
-                .WithMessage("La fecha de inicio no puede ser más de un año en el futuro.");
+            RuleFor(x => x.Start_datetime)
+             .LessThan(x => x.End_datetime).WithMessage("La fecha de inicio debe ser anterior a la fecha de finalización.")
+             .Must(BeInUtc).WithMessage("La fecha de inicio debe estar en formato UTC.");
 
-            RuleFor(t => t.End_datetime)
-                .GreaterThan(DateTime.UtcNow).WithMessage("La fecha de fin debe ser en el futuro.");
+            RuleFor(x => x.End_datetime)
+                .GreaterThan(x => x.Start_datetime).WithMessage("La fecha de finalización debe ser posterior a la fecha de inicio.")
+                .Must(BeInUtc).WithMessage("La fecha de finalización debe estar en formato UTC.");
 
             RuleFor(t => t.End_datetime)
                 .GreaterThan(t => t.Start_datetime)
                 .WithMessage("La fecha de fin debe ser posterior a la fecha de inicio.");
 
-            // Regla para la duración mínima del torneo
             RuleFor(t => t)
                 .Must(t => t.Start_datetime.AddDays(2) < t.End_datetime) // La duración mínima debe ser de 2 días
                 .WithMessage("La duración del torneo debe ser de al menos 2 días.");
@@ -44,6 +43,11 @@ namespace CTDto.Validations.Tournament
                 .NotEmpty().WithMessage("Debe haber al menos una serie asignada.")
                 .Must(series => series.Count >= 1)
                 .WithMessage("Debe haber al menos una serie definida.");
+        }
+
+        private bool BeInUtc(DateTime date)
+        {
+            return date.Kind == DateTimeKind.Utc;
         }
     }
 }

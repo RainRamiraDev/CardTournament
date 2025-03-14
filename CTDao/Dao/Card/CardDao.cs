@@ -43,7 +43,7 @@ namespace CTDao.Dao.Card
             return cardSeriesIds.ToList();
         }
 
-        public async Task<IEnumerable<ShowCardsModel>> GetAllAsync(List<int> Series)
+        public async Task<IEnumerable<ShowCardsModel>> GetAllCardsFromTournamentAsync(List<int> Series)
         {
             using (var connection = new MySqlConnection(_connectionString))
             {

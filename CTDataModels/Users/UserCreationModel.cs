@@ -17,7 +17,6 @@ namespace CTDataModels.Users
         public string Email { get; set; }
         public int Games_Won { get; set; }
         public int Games_Lost { get; set; }
-        public int Disqualifications { get; set; }
         public int Ki { get; set; }
         public string Avatar_Url { get; set; }
     }

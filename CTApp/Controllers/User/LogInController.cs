@@ -5,6 +5,7 @@ using CTDto.Users.LogIn;
 using CTService.Interfaces.RefreshToken;
 using CTService.Interfaces.Tournaments;
 using CTService.Interfaces.User;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 
@@ -54,7 +55,7 @@ namespace CTApp.Controllers.User
             return Ok(response);
         }
 
-
+        [Authorize(Roles = "2,1,3,4")]
         [HttpPost("RefreshToken")]
         public async Task<IActionResult> RefreshToken()
         {

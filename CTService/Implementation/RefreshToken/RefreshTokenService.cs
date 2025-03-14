@@ -39,18 +39,18 @@ namespace CTService.Implementation.RefreshToken
 
             bool isValidToken = await _refreshTokenDao.VerifyTokenAsync(oldRefreshToken);
             if (!isValidToken)
-                throw new UnauthorizedAccessException("Invalid or expired refresh token.");
+                throw new UnauthorizedAccessException("Token de actualización inválido o expirado.");
 
             var user = await _refreshTokenDao.GetUserByTokenAsync(oldRefreshToken);
 
 
             if (user == null)
-                throw new UnauthorizedAccessException("Invalid refresh token.");
- 
+                throw new UnauthorizedAccessException("Token de actualización inválido.");
+
 
             await _refreshTokenDao.DeleteRefreshTokenAsync(oldRefreshToken);
 
-            string newAccessToken = await GenerateAccessTokenAsync(user.Id_Rol, user.Fullname,user.Id_Rol);
+            string newAccessToken = await GenerateAccessTokenAsync(user.Id_User, user.Fullname,user.Id_Rol);
 
             var (newRefreshToken, expirationDate) = GenerateRefreshToken();
 
