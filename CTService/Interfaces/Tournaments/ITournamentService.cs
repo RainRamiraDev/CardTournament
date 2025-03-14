@@ -1,5 +1,8 @@
-﻿using CTDto.Card;
+﻿using CTDataModels.Game;
+using CTDto.Card;
 using CTDto.Tournaments;
+using CTDto.Users;
+using CTDto.Users.Judge;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,17 +15,25 @@ namespace CTService.Interfaces.Tournaments
     {
         //Tournament
         Task<int> CreateTournamentAsync(TournamentDto tournamentDto);
-        Task<IEnumerable<TournamentDto>> GetAllTournamentAsync();
-        Task<IEnumerable<AvailableTournamentsDto>> GetAllAvailableTournamentsAsync();
+
+        Task AlterTournamentAsync(AlterTournamentDto tournamentDto);
+
+        Task SoftDeleteTournamentAsync(TournamentRequestToResolveDto tournamentDto);
+
+        Task<IEnumerable<TournamentsInformationDto>> GetTournamentsInformationAsync(GetTournamentInformationDto getTournamentInformation, string timeZone);
 
         //Judges
-        Task<int> InsertTournamentJudgesAsync(TournamentJudgeDto tournamentJudgeDto);
         Task<List<int>> GetJudgeIdsByAliasAsync(List<string> judgeAliases);
 
+        Task DisqualifyPlayerFromTournamentAsync(DisqualificationDto disqualificationDto);
+
         //Cards
-        Task<int> InsertTournamentSeriesAsync(TournamentSeriesDto tournamentseriesDto);
         Task<int> InsertTournamentDecksAsync(TournamentDecksDto tournamentDecksDto);
 
+        Task<PlayerCapacityModel> CalculatePlayerCapacity(int id_tournament, int AvailableDailyHours);
 
+        Task<List<ShowTournamentPlayersDto>> ShowPlayersFromTournamentAsync(TournamentRequestToResolveDto showPlayersFromTournamentDto);
+
+        Task<TournamentDto> GetTournamentById(int id_tournament);
     }
 }

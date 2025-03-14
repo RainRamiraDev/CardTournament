@@ -1,4 +1,6 @@
-﻿using CTDto.Game;
+﻿using CTApp.Response;
+using CTDataModels.Game;
+using CTDto.Game;
 using CTDto.Tournaments;
 using CTService.Interfaces.Game;
 using Microsoft.AspNetCore.Authorization;
@@ -17,63 +19,53 @@ namespace CTApp.Controllers
             _gameService = gameService;
         }
 
-        [Authorize(Roles = "1")]
-        [HttpPost("CreateGame")]
-        public async Task<IActionResult> CreateGame([FromBody] GameDto gameDto)
-        {
-            if (gameDto == null)
-            {
-                return BadRequest("Invalid game data.");
-            }
-
-            var id = await _gameService.CreateGameAsync(gameDto);
-
-            if (id == 0)
-            {
-                return StatusCode(500, "Error creating game.");
-            }
-
-            return Created("", new { id });
-        }
-
-
-        [Authorize(Roles = "1")]
-        [HttpPost("InsertGamePlayers")]
-        public async Task<IActionResult> InsertGamePlayers([FromBody] GamePlayersDto gamePlayersDto)
-        {
-            if (gamePlayersDto == null)
-            {
-                return BadRequest("Invalid game data.");
-            }
-
-            var id = await _gameService.InsertGamePlayersAsync(gamePlayersDto);
-
-            if (id == 0)
-            {
-                return StatusCode(500, "Error creating game.");
-            }
-
-            return Created("", new { id });
-        }
 
         [Authorize(Roles = "1")]
         [HttpPost("resolve")]
-        public async Task<IActionResult> ResolveGame()
+        public async Task<IActionResult> ResolveGame([FromBody] TournamentRequestToResolveDto request)
         {
-            try
+
+            if (!Request.Headers.ContainsKey("X-TimeZone"))
             {
-                GameResultDto result = await _gameService.ResolveGameAsync();
-                return Ok(result);
+                return BadRequest(ApiResponse<IEnumerable<TournamentsInformationDto>>.ErrorResponse("La zona horaria es requerida."));
             }
-            catch (InvalidOperationException ex)
-            {
-                return BadRequest(new { message = ex.Message });
-            }
-            catch (Exception ex)
-            {
-                return StatusCode(500, new { message = "Error interno del servidor.", error = ex.Message });
-            }
+
+            var timeZoneId = Request.Headers["X-TimeZone"].ToString();
+
+
+            if (request == null)
+                return BadRequest("Invalid request data.");
+
+            GameResultDto result = await _gameService.ResolveGameAsync(request, timeZoneId);
+
+            var response = ApiResponse<GameResultDto>.SuccessResponse("Juego resuelto exitosamente.", result);
+            return Ok(response);
         }
 
+
+        [Authorize(Roles = "1")]
+        [HttpGet("TournamentSchedule")]
+        public async Task<IActionResult> TournamentSchedule([FromBody] TournamentRequestToResolveDto request)
+        {
+            if (!Request.Headers.ContainsKey("X-TimeZone"))
+            {
+                return BadRequest(ApiResponse<IEnumerable<TournamentsInformationDto>>.ErrorResponse("La zona horaria es requerida."));
+            }
+
+            var timeZoneId = Request.Headers["X-TimeZone"].ToString();
+
+            if (request == null)
+                return BadRequest("Invalid request data.");
+
+            List<MatchScheduleDto> result = await _gameService.CalculateMatchScheduleAsync(request, timeZoneId);
+
+            var response = ApiResponse<List<MatchScheduleDto>>.SuccessResponse("Fechas calculadas exitosamente.", result);
+            return Ok(response);
+        }
+
+
+
+
     }
+
 }

@@ -1,5 +1,10 @@
 ﻿using CTDataModels.Card;
+using CTDataModels.Game;
 using CTDataModels.Tournamets;
+using CTDataModels.Users;
+using CTDataModels.Users.Judge;
+using CTDto.Card;
+using CTDto.Users;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,19 +17,47 @@ namespace CTDao.Interfaces.Tournaments
     {
         //Tournament
         Task<int> CreateTournamentAsync(TournamentModel tournament);
-        Task<IEnumerable<TournamentModel>> GetAllTournamentAsync();
-        Task<IEnumerable<AvailableTournamentsModel>> GetAllAvailableTournamentsAsync();
 
-        Task<int> SetTournamentToNextPhase();
-        Task<int> GetTournamentCurrentPhase(int id_tournament);
+        Task AlterTournamentAsync(AlterTournamentModel tournament);
+
+        Task SoftDeleteTournamentAsync(int id_tournament);
+
+
+        Task<IEnumerable<TournamentsInformationModel>> GetTournamentsInformationAsync(GetTournamentInformationModel tournamentInformationModel);
+        Task<int> SetTournamentToNextPhaseAsync(int tournament_id);
+        Task<int> GetTournamentCurrentPhaseAsync(int id_tournament);
+        Task<bool> TournamentExistsAsync(int tournamentId);
+
+        Task<List<int>> GetSeriesFromTournamentAsync(int tournamentId);
+
+        Task<List<int>> GetCardsFromTournamentSeriesAsync(List<int> tournamentSeries, List<int> tournamentCards);
+
+        Task<DateTime> GetTournamentStartDateAsync(int id_tournament);
+
+
+        Task<List<int>> ValidateCountriesFromDbAsync(int id_country);
+
+        Task<List<int>> ValidateTournamentPlayersAsync(int tournamentId, int id_player);
+
+        Task<List<int>> GetTournamentJudgesAsync(int id_tournament);
+
+        Task<List<int>> ValidateUsersFromDbAsync(int id_rol, List<int>id_user);
+
+        Task<TournamentModel> GetTournamentByIdAsync(int id_tournament);
+
+        Task<List<int>> ValidateAvailableTournamentsAsync(int id_tournament);
 
         //Judge
-        Task<int> InsertTournamentJudgesAsync(List<int> judgeIds);
         Task<List<int>> GetJudgeIdsByAliasAsync(List<string> judgeAliases);
 
         //cards
-        Task<int> InsertTournamentSeriesAsync(List<int> cardsIds);
-        Task<int> InsertTournamentDecksAsync(List<int> cardsIds, int owner);
-        Task<int> InsertTournamentPlayersAsync(int player);
+        Task<int> InsertTournamentDecksAsync(TournamentDecksModel tournamentDecks);
+        Task<int> InsertTournamentPlayersAsync(TournamentDecksModel tournamentDecks);
+
+        Task<bool> CheckTournamentCapacity(PlayerCapacityModel capacity, int id_tournament);
+        Task DisqualifyPlayerFromTournamentAsync(DisqualificationModel disqualificationRequest);
+
+        Task<bool> ValidateJudgesFromTournament(int id_Judge, int id_Tournament);
+        Task<List<ShowTournamentPlayersModel>> ShowPlayersFromTournamentAsync(int tournament_Id);
     }
 }

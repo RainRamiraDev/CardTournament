@@ -13,5 +13,7 @@ namespace CTDataModels.Tournamets
         public DateTime Start_datetime { get; set; }
         public DateTime End_datetime { get; set; }
         public int Current_Phase { get; set; }
+        public List<int> Judges_Id { get; set; }
+        public List<int> Series_Id { get; set; }
     }
 }

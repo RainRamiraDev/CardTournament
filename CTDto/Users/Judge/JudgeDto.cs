@@ -8,7 +8,6 @@ namespace CTDto.Users.Judge
 {
     public class JudgeDto
     {
-        public string Fullname { get; set; }
         public string Alias { get; set; }
         public string Email { get; set; }
         public string Country { get; set; }

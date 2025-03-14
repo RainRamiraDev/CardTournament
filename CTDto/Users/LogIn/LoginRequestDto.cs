@@ -10,6 +10,5 @@ namespace CTDto.Users.LogIn
     {
         public string Fullname { get; set; }
         public string Passcode { get; set; }
-        public int Id_Rol { get; set; }
     }
 }

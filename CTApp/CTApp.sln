@@ -15,10 +15,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CTConfigurations", "..\CTCo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CTDto", "..\CTDto\CTDto.csproj", "{75A57AC1-08F0-4329-A586-BB717D5AF03E}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{885D0741-C30A-4CF3-BAEB-635D1674DF92}"
-	ProjectSection(SolutionItems) = preProject
-		TO-DO.txt = TO-DO.txt
-	EndProjectSection
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataAccess", "..\DataAccess\DataAccess.csproj", "{E52D6071-C800-4056-A549-F0081A11F0F0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CTTests", "..\CTTests\CTTests.csproj", "{66334547-B147-4ABE-A788-33BC046D4012}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -50,6 +49,14 @@ Global
 		{75A57AC1-08F0-4329-A586-BB717D5AF03E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{75A57AC1-08F0-4329-A586-BB717D5AF03E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{75A57AC1-08F0-4329-A586-BB717D5AF03E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E52D6071-C800-4056-A549-F0081A11F0F0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E52D6071-C800-4056-A549-F0081A11F0F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E52D6071-C800-4056-A549-F0081A11F0F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E52D6071-C800-4056-A549-F0081A11F0F0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{66334547-B147-4ABE-A788-33BC046D4012}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{66334547-B147-4ABE-A788-33BC046D4012}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{66334547-B147-4ABE-A788-33BC046D4012}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{66334547-B147-4ABE-A788-33BC046D4012}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

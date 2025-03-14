@@ -250,11 +250,12 @@ INSERT INTO T_Countries (country_name) VALUES
 ('Nicaragua'),
 ('Anguilla');
 
-INSERT INTO T_CARDS (illustration, attack, deffense) VALUES
+SELECT * FROM t_countries
+
+INSERT INTO T_CARDS (illustration, attack, defense) VALUES
 ('Ancestor\'s Chosen', 1000, 1000),
 ('Angel of Mercy', 1000, 1000),
 ('Angelic Blessing', 2728, 1370),
-('Angelic Blessing', 3361, 3581),
 ('Angelic Chorus', 1775, 1005),
 ('Angelic Wall', 1000, 1000),
 ('Aura of Silence', 2588, 3819),
@@ -271,11 +272,9 @@ INSERT INTO T_CARDS (illustration, attack, deffense) VALUES
 ('Glorious Anthem', 1520, 2783),
 ('Hail of Arrows', 1717, 1453),
 ('Heart of Light', 2169, 3669),
-('Heart of Light', 2130, 2509),
 ('High Ground', 2786, 1320),
 ('Holy Day', 3490, 1180),
 ('Holy Strength', 3548, 3140),
-('Holy Strength', 2356, 3266),
 ('Honor Guard', 1000, 1000),
 ('Icatian Priest', 1000, 1000),
 ('Kjeldoran Royal Guard', 1000, 1000),
@@ -283,13 +282,10 @@ INSERT INTO T_CARDS (illustration, attack, deffense) VALUES
 ('Loyal Sentry', 1000, 1000),
 ('Luminesce', 1919, 1513),
 ('Mobilization', 1420, 3601),
-('Mobilization', 2655, 3633),
 ('Nomad Mythmaker', 1000, 1000),
 ('Pacifism', 3212, 1474),
-('Pacifism', 3666, 3407),
 ('Paladin en-Vec', 1000, 1000),
 ('Pariah', 1841, 1127),
-('Pariah', 1522, 1610),
 ('Reviving Dose', 1121, 2894),
 ('Reya Dawnbringer', 1000, 1000),
 ('Righteousness', 2015, 1003),
@@ -297,13 +293,11 @@ INSERT INTO T_CARDS (illustration, attack, deffense) VALUES
 ('Samite Healer', 1000, 1000),
 ('Serra Angel', 1000, 1000),
 ('Serra\'s Embrace', 1868, 1292),
-('Serra\'s Embrace', 3512, 1683),
 ('Skyhunter Patrol', 1000, 1000),
 ('Skyhunter Prowler', 1000, 1000),
 ('Skyhunter Skirmisher', 1000, 1000),
 ('Soul Warden', 1000, 1000),
 ('Spirit Link', 3024, 3373),
-('Spirit Link', 2444, 3633),
 ('Spirit Weaver', 1000, 1000),
 ('Starlight Invoker', 1000, 1000),
 ('Steadfast Guard', 1000, 1000),
@@ -326,7 +320,40 @@ INSERT INTO T_CARDS (illustration, attack, deffense) VALUES
 ('Ambassador Laquatus', 1000, 1000),
 ('Arcanis the Omnipotent', 1000, 1000),
 ('Aura Graft', 3881, 2689),
-('Aven Fisher', 1000, 1000);
+('Aven Fisher', 1000, 1000),
+('Azure Drake', 2100, 1800),
+('Benthic Behemoth', 3000, 2500),
+('Cephalid Scout', 1500, 1200),
+('Coral Eel', 1800, 1000),
+('Deluge', 2750, 3200),
+('Denizen of the Deep', 4000, 3500),
+('Dream Cache', 2600, 2100),
+('Envelop', 1700, 2900),
+('Flood', 2300, 1400),
+('Giant Tortoise', 1000, 2500),
+('Horseshoe Crab', 1900, 2300),
+('Illusionary Forces', 3400, 2200),
+('Index', 2000, 1500),
+('Lat-Nam’s Legacy', 1950, 2850),
+('Looming Shade', 2500, 1000),
+('Merfolk Looter', 1300, 1600),
+('Mind Spring', 3100, 2700),
+('Mystic Remora', 1500, 3400),
+('Phantom Monster', 2800, 2400),
+('Ponder', 1750, 3000),
+('Prodigal Sorcerer', 2000, 1300),
+('Ray of Command', 1900, 2500),
+('Remove Soul', 2200, 1800),
+('Sage Owl', 2400, 1500),
+('Sea Monster', 4000, 2800),
+('Sleight of Hand', 1700, 2100),
+('Sphinx of Foresight', 3500, 3300),
+('Tolarian Winds', 2600, 1900),
+('Vedalken Shackles', 1200, 2500),
+('Wind Drake', 2200, 1800),
+('Fallen Angel', 3200, 1500),
+('Flamekin Harbinger', 2800, 2300);
+
 
 INSERT INTO T_SERIES (series_name, release_date) VALUES
 ('Alpha', '1993-10-01'),
@@ -340,84 +367,113 @@ INSERT INTO T_SERIES (series_name, release_date) VALUES
 ('Tempest', '1997-02-24'),
 ('Urzas Saga', '1998-10-12');
 
-INSERT INTO T_CARD_SERIES (id_card, id_series) VALUES
-(1, 1),  -- Ancestor's Chosen, Alpha
-(2, 1),  -- Angel of Mercy, Alpha
-(3, 1),  -- Angelic Blessing, Alpha
-(4, 2),  -- Angelic Blessing, Beta
-(5, 2),  -- Angelic Chorus, Beta
-(6, 2),  -- Angelic Wall, Beta
-(7, 3),  -- Aura of Silence, Unlimited
-(8, 3),  -- Aven Cloudchaser, Unlimited
-(9, 3),  -- Ballista Squad, Unlimited
-(10, 4), -- Bandage, Arabian Nights
-(11, 4), -- Beacon of Immortality, Arabian Nights
-(12, 4), -- Benalish Knight, Arabian Nights
-(13, 5), -- Cho-Manno, Revolutionary, Antiquities
-(14, 5), -- Condemn, Antiquities
-(15, 6), -- Demystify, Legends
-(16, 6), -- Field Marshal, Legends
-(17, 6), -- Ghost Warden, Legends
-(18, 7), -- Glorious Anthem, The Dark
-(19, 7), -- Hail of Arrows, The Dark
-(20, 8), -- Heart of Light, Mirage
-(21, 8), -- Heart of Light, Mirage
-(22, 8), -- High Ground, Mirage
-(23, 9), -- Holy Day, Tempest
-(24, 9), -- Holy Strength, Tempest
-(25, 9), -- Holy Strength, Tempest
-(26, 9), -- Honor Guard, Tempest
-(27, 10), -- Icatian Priest, Urzas Saga
-(28, 10), -- Kjeldoran Royal Guard, Urzas Saga
-(29, 10), -- Loxodon Mystic, Urzas Saga
-(30, 10), -- Loyal Sentry, Urzas Saga
-(31, 10), -- Luminesce, Urzas Saga
-(32, 1),  -- Mobilization, Alpha
-(33, 1),  -- Mobilization, Alpha
-(34, 2),  -- Nomad Mythmaker, Beta
-(35, 3),  -- Pacifism, Unlimited
-(36, 3),  -- Pacifism, Unlimited
-(37, 4),  -- Paladin en-Vec, Arabian Nights
-(38, 4),  -- Pariah, Arabian Nights
-(39, 4),  -- Pariah, Arabian Nights
-(40, 5),  -- Reviving Dose, Antiquities
-(41, 6),  -- Reya Dawnbringer, Legends
-(42, 7),  -- Righteousness, The Dark
-(43, 8),  -- Rule of Law, Mirage
-(44, 9),  -- Samite Healer, Tempest
-(45, 10), -- Serra Angel, Urzas Saga
-(46, 10), -- Serra's Embrace, Urzas Saga
-(47, 1),  -- Skyhunter Patrol, Alpha
-(48, 1),  -- Skyhunter Prowler, Alpha
-(49, 2),  -- Skyhunter Skirmisher, Beta
-(50, 3),  -- Soul Warden, Unlimited
-(51, 3),  -- Spirit Link, Unlimited
-(52, 4),  -- Spirit Link, Arabian Nights
-(53, 5),  -- Spirit Weaver, Antiquities
-(54, 6),  -- Starlight Invoker, Legends
-(55, 6),  -- Steadfast Guard, Legends
-(56, 7),  -- Story Circle, The Dark
-(57, 8),  -- Suntail Hawk, Mirage
-(58, 8),  -- Tempest of Light, Mirage
-(59, 9),  -- Treasure Hunter, Tempest
-(60, 9),  -- True Believer, Tempest
-(61, 10), -- Tundra Wolves, Urzas Saga
-(62, 10), -- Venerable Monk, Urzas Saga
-(63, 10), -- Voice of All, Urzas Saga
-(64, 1),  -- Wall of Swords, Alpha
-(65, 1),  -- Wall of Swords, Alpha
-(66, 2),  -- Warrior's Honor, Beta
-(67, 3),  -- Wild Griffin, Unlimited
-(68, 3),  -- Windborn Muse, Unlimited
-(69, 4),  -- Wrath of God, Arabian Nights
-(70, 5),  -- Youthful Knight, Antiquities
-(71, 5),  -- Youthful Knight, Antiquities
-(72, 6),  -- Academy Researchers, Legends
-(73, 7),  -- Air Elemental, The Dark
-(74, 7),  -- Ambassador Laquatus, The Dark
-(75, 8),  -- Arcanis the Omnipotent, Mirage
-(76, 8)  -- Aura Graft, Mirage
 
+
+
+INSERT INTO T_CARD_SERIES (id_card, id_series) VALUES
+(1, 1),
+(1, 2),
+(2, 1),
+(2, 2),
+(3, 1),
+(3, 2),
+(4, 2),
+(5, 2),
+(6, 2),
+(7, 3),
+(8, 3),
+(9, 3),
+(10, 4),
+(11, 4),
+(12, 4),
+(13, 5),
+(14, 5),
+(15, 6),
+(16, 6),
+(17, 6),
+(18, 7),
+(19, 7),
+(20, 8),
+(21, 8),
+(22, 8),
+(23, 9),
+(24, 9),
+(25, 9),
+(26, 9),
+(27, 10),
+(28, 10),
+(29, 10),
+(30, 10),
+(31, 10),
+(32, 1),
+(33, 1),
+(34, 2),
+(35, 3),
+(36, 3),
+(37, 4),
+(38, 4),
+(39, 4),
+(40, 5),
+(41, 6),
+(42, 7),
+(43, 8),
+(44, 9),
+(45, 10),
+(46, 10),
+(47, 1),
+(48, 1),
+(49, 2),
+(50, 3),
+(51, 3),
+(52, 4),
+(53, 5),
+(54, 6),
+(55, 6),
+(56, 7),
+(57, 8),
+(58, 8),
+(59, 9),
+(60, 9),
+(61, 10),
+(62, 10),
+(63, 10),
+(64, 1),
+(65, 1),
+(66, 2),
+(67, 3),
+(68, 3),
+(69, 4),
+(70, 5),
+(71, 5),
+(72, 6),
+(73, 7),
+(74, 7),
+(75, 8),
+(76, 8),
+(77, 9),
+(78, 9),
+(79, 10),
+(80, 1),
+(81, 1),
+(82, 2),
+(83, 3),
+(84, 3),
+(85, 4),
+(86, 5),
+(87, 6),
+(88, 7),
+(89, 8),
+(90, 9),
+(91, 10),
+(92, 10),
+(93, 1),
+(94, 1),
+(95, 2),
+(96, 3),
+(97, 4),
+(98, 5),
+(99, 6),
+(100, 7);
 
 
 INSERT INTO T_ROLES (rol) VALUES
@@ -427,46 +483,44 @@ INSERT INTO T_ROLES (rol) VALUES
 ('Player');
 
 
--- Jugadores (20 registros)
-INSERT INTO t_users (id_user, id_country, id_rol, fullname, alias, email, games_won, games_lost, disqualifications, avatar_url, passcode,ki) VALUES
-(1, 1, 4, 'Yugi Mutou', 'KingOfGames', 'yugi.mutou@example.com', 50, 20, 0, 'https://example.com/yugi_avatar.png', 'passcode1',9047),
-(2, 2, 4, 'Seto Kaiba', 'KaibaCorpCEO', 'seto.kaiba@example.com', 60, 15, 1, 'https://example.com/kaiba_avatar.png', 'passcode2',9883),
-(3, 3, 4, 'Joey Wheeler', 'RedEyesFan', 'joey.wheeler@example.com', 45, 30, 2, 'https://example.com/joey_avatar.png', 'passcode3',6098),
-(4, 4, 4, 'Mai Valentine', 'HarpieLady', 'mai.valentine@example.com', 40, 25, 1, 'https://example.com/mai_avatar.png', 'passcode4',2366),
-(5, 5, 4, 'Tea Gardner', 'HeartOfTheCards', 'tea.gardner@example.com', 35, 20, 0, 'https://example.com/tea_avatar.png', 'passcode5',6287),
-(6, 6, 4, 'Bakura Ryou', 'SpiritOfTheRing', 'bakura.ryou@example.com', 50, 20, 1, 'https://example.com/bakura_avatar.png', 'passcode6',2410),
-(7, 7, 4, 'Maximillion Pegasus', 'ToonKing', 'maximillion.pegasus@example.com', 55, 10, 0, 'https://example.com/pegasus_avatar.png', 'passcode7',8538),
-(8, 8, 4, 'Mokuba Kaiba', 'KaibaBro', 'mokuba.kaiba@example.com', 30, 15, 2, 'https://example.com/mokuba_avatar.png', 'passcode8',9420),
-(9, 9, 4, 'Aigami', 'AigamiRuler', 'aigami@example.com', 40, 15, 0, 'https://example.com/aigami_avatar.png', 'passcode9',6532),
-(10, 10, 4, 'Noah Kaiba', 'DigitalKing', 'noah.kaiba@example.com', 45, 15, 1, 'https://example.com/noah_avatar.png', 'passcode10',6367),
-(11, 11, 4, 'Shadi', 'GuardianShadi', 'shadi@example.com', 20, 10, 0, 'https://example.com/shadi_avatar.png', 'passcode11',4019),
-(12, 12, 4, 'Marek Ishtar', 'MarekIshtar', 'marek.ishtar@example.com', 50, 30, 1, 'https://example.com/marek_avatar.png', 'passcode12',3910),
-(13, 13, 4, 'Sera', 'SeraTheStrategist', 'sera@example.com', 25, 10, 1, 'https://example.com/sera_avatar.png', 'passcode13',8299),
-(14, 14, 4, 'Tristan Taylor', 'ToughTristan', 'tristan.taylor@example.com', 35, 20, 0, 'https://example.com/tristan_avatar.png', 'passcode14',4199),
-(15, 15, 4, 'Yami Marik', 'DarkMarik', 'yami.marik@example.com', 60, 20, 2, 'https://example.com/yami_marik_avatar.png', 'passcode15',2766),
-(16, 16, 4, 'Ishizu Ishtar', 'IshizuTheOracle', 'ishizu.ishtar@example.com', 10, 5, 0, 'https://example.com/ishizu_avatar.png', 'passcode16',3595),
-(17, 17, 4, 'Shimon Muran', 'AncientEgyptian', 'shimon.muran@example.com', 50, 15, 1, 'https://example.com/shimon_avatar.png', 'passcode17',3076),
-(18, 18, 4, 'Yami Yugi', 'Pharaoh', 'yami.yugi@example.com', 65, 10, 0, 'https://example.com/yami_yugi_avatar.png', 'passcode18',2534),
-(19, 19, 4, 'Seto Kaiba', 'KaibaMaster', 'seto.kaiba2@example.com', 45, 25, 0, 'https://example.com/kaiba2_avatar.png', 'passcode19',2698),
-(20, 20, 4, 'Marek Ishtar', 'DarkMarek', 'marek.ishtar2@example.com', 30, 20, 1, 'https://example.com/marek2_avatar.png', 'passcode20',6115);
+-- Jugadores (20 registros) passord: AdminSuperRain
+INSERT INTO t_users (id_country, id_rol, fullname, alias, email, games_won, games_lost,avatar_url, passcode,ki) VALUES
+(1, 4, 'Yugi Mutou', 'KingOfGames', 'yugi.mutou@example.com', 50, 20,  'https://example.com/yugi_avatar.png', '$10$D/PokiEvE4he9rO2RlSbFOLM/8YVVrdkE6xoa8lwtj2QAuRXpy5my',9047),
+( 2, 4, 'Seto Kaiba', 'KaibaCorpCEO', 'seto.kaiba@example.com', 60, 15,  'https://example.com/kaiba_avatar.png', '$10$D/PokiEvE4he9rO2RlSbFOLM/8YVVrdkE6xoa8lwtj2QAuRXpy5my',9883),
+( 3, 4, 'Joey Wheeler', 'RedEyesFan', 'joey.wheeler@example.com', 45, 30,  'https://example.com/joey_avatar.png', '$10$D/PokiEvE4he9rO2RlSbFOLM/8YVVrdkE6xoa8lwtj2QAuRXpy5my',6098),
+( 4, 4, 'Mai Valentine', 'HarpieLady', 'mai.valentine@example.com', 40, 25,  'https://example.com/mai_avatar.png', '$10$D/PokiEvE4he9rO2RlSbFOLM/8YVVrdkE6xoa8lwtj2QAuRXpy5my',2366),
+( 5, 4, 'Tea Gardner', 'HeartOfTheCards', 'tea.gardner@example.com', 35, 20,  'https://example.com/tea_avatar.png', '$10$D/PokiEvE4he9rO2RlSbFOLM/8YVVrdkE6xoa8lwtj2QAuRXpy5my',6287),
+( 6, 4, 'Bakura Ryou', 'SpiritOfTheRing', 'bakura.ryou@example.com', 50, 20,  'https://example.com/bakura_avatar.png', '$10$D/PokiEvE4he9rO2RlSbFOLM/8YVVrdkE6xoa8lwtj2QAuRXpy5my',2410),
+( 7, 4, 'Maximillion Pegasus', 'ToonKing', 'maximillion.pegasus@example.com', 55, 10,  'https://example.com/pegasus_avatar.png', '$10$D/PokiEvE4he9rO2RlSbFOLM/8YVVrdkE6xoa8lwtj2QAuRXpy5my',8538),
+( 8, 4, 'Mokuba Kaiba', 'KaibaBro', 'mokuba.kaiba@example.com', 30, 15,  'https://example.com/mokuba_avatar.png', '$10$D/PokiEvE4he9rO2RlSbFOLM/8YVVrdkE6xoa8lwtj2QAuRXpy5my',9420),
+( 9, 4, 'Aigami', 'AigamiRuler', 'aigami@example.com', 40, 15,  'https://example.com/aigami_avatar.png', '$10$D/PokiEvE4he9rO2RlSbFOLM/8YVVrdkE6xoa8lwtj2QAuRXpy5my',6532),
+( 10, 4, 'Noah Kaiba', 'DigitalKing', 'noah.kaiba@example.com', 45, 15, 'https://example.com/noah_avatar.png', '$10$D/PokiEvE4he9rO2RlSbFOLM/8YVVrdkE6xoa8lwtj2QAuRXpy5my',6367),
+( 11, 4, 'Shadi', 'GuardianShadi', 'shadi@example.com', 20, 10,  'https://example.com/shadi_avatar.png', '$10$D/PokiEvE4he9rO2RlSbFOLM/8YVVrdkE6xoa8lwtj2QAuRXpy5my',4019),
+( 12, 4, 'Marek Ishtar', 'MarekIshtar', 'marek.ishtar@example.com', 50, 30,  'https://example.com/marek_avatar.png', '$10$D/PokiEvE4he9rO2RlSbFOLM/8YVVrdkE6xoa8lwtj2QAuRXpy5my',3910),
+( 13, 4, 'Sera', 'SeraTheStrategist', 'sera@example.com', 25, 10,  'https://example.com/sera_avatar.png', '$10$D/PokiEvE4he9rO2RlSbFOLM/8YVVrdkE6xoa8lwtj2QAuRXpy5my',8299),
+( 14, 4, 'Tristan Taylor', 'ToughTristan', 'tristan.taylor@example.com', 35, 20,  'https://example.com/tristan_avatar.png', '$10$D/PokiEvE4he9rO2RlSbFOLM/8YVVrdkE6xoa8lwtj2QAuRXpy5my',4199),
+( 15, 4, 'Yami Marik', 'DarkMarik', 'yami.marik@example.com', 60, 20,  'https://example.com/yami_marik_avatar.png', '$10$D/PokiEvE4he9rO2RlSbFOLM/8YVVrdkE6xoa8lwtj2QAuRXpy5my',2766),
+( 16, 4, 'Ishizu Ishtar', 'IshizuTheOracle', 'ishizu.ishtar@example.com', 10, 5,  'https://example.com/ishizu_avatar.png', '$10$D/PokiEvE4he9rO2RlSbFOLM/8YVVrdkE6xoa8lwtj2QAuRXpy5my',3595),
+( 17, 4, 'Shimon Muran', 'AncientEgyptian', 'shimon.muran@example.com', 50, 15,  'https://example.com/shimon_avatar.png', '$10$D/PokiEvE4he9rO2RlSbFOLM/8YVVrdkE6xoa8lwtj2QAuRXpy5my',3076),
+( 18, 4, 'Yami Yugi', 'Pharaoh', 'yami.yugi@example.com', 65, 10,  'https://example.com/yami_yugi_avatar.png', '$10$D/PokiEvE4he9rO2RlSbFOLM/8YVVrdkE6xoa8lwtj2QAuRXpy5my',2534),
+( 19, 4, 'Seto Kaiba', 'KaibaMaster', 'seto.kaiba2@example.com', 45, 25,  'https://example.com/kaiba2_avatar.png', '$10$D/PokiEvE4he9rO2RlSbFOLM/8YVVrdkE6xoa8lwtj2QAuRXpy5my',2698),
+( 20, 4, 'Marek Ishtar', 'DarkMarek', 'marek.ishtar2@example.com', 30, 20,  'https://example.com/marek2_avatar.png', '$10$D/PokiEvE4he9rO2RlSbFOLM/8YVVrdkE6xoa8lwtj2QAuRXpy5my',6115);
 
--- Jueces (6 registros)
-INSERT INTO t_users (id_user, id_country, id_rol, fullname, alias, email, games_won, games_lost, disqualifications, avatar_url, passcode,ki) VALUES
-(21, 1, 3, 'Maximillion Pegasus', 'JudgeToonKing', 'judge.pegasus@example.com', 0, 0, 0, 'https://example.com/judge_pegasus_avatar.png', 'judgepasscode1'),
-(22, 2, 3, 'Mokuba Kaiba', 'JudgeKaibaBro', 'judge.mokuba@example.com', 0, 0, 0, 'https://example.com/judge_mokuba_avatar.png', 'judgepasscode2'),
-(23, 3, 3, 'Tristan Taylor', 'JudgeToughTristan', 'judge.tristan@example.com', 0, 0, 0, 'https://example.com/judge_tristan_avatar.png', 'judgepasscode3'),
-(24, 4, 3, 'Tea Gardner', 'JudgeHeartOfTheCards', 'judge.tea@example.com', 0, 0, 0, 'https://example.com/judge_tea_avatar.png', 'judgepasscode4'),
-(25, 5, 3, 'Mai Valentine', 'JudgeHarpieLady', 'judge.mai@example.com', 0, 0, 0, 'https://example.com/judge_mai_avatar.png', 'judgepasscode5'),
-(26, 6, 3, 'Shadi', 'JudgeGuardianShadi', 'judge.shadi@example.com', 0, 0, 0, 'https://example.com/judge_shadi_avatar.png', 'judgepasscode6');
+-- Jueces (6 registros) password: 11412SuperRain
+INSERT INTO t_users (id_country, id_rol, fullname, alias, email, games_won, games_lost, avatar_url, passcode) VALUES
+( 1, 3, 'Maximillion Pegasus', 'JudgeToonKing', 'judge.pegasus@example.com', 0, 0,  'https://example.com/judge_pegasus_avatar.png', '$10$9XuZjpSnYAOi1QDewKmNJeX.8XW6Gb1WBt36CbOU6V4aZknfty4ce'),
+( 2, 3, 'Mokuba Kaiba', 'JudgeKaibaBro', 'judge.mokuba@example.com', 0, 0,  'https://example.com/judge_mokuba_avatar.png', '$10$9XuZjpSnYAOi1QDewKmNJeX.8XW6Gb1WBt36CbOU6V4aZknfty4ce'),
+( 3, 3, 'Tristan Taylor', 'JudgeToughTristan', 'judge.tristan@example.com', 0, 0,  'https://example.com/judge_tristan_avatar.png', '$10$9XuZjpSnYAOi1QDewKmNJeX.8XW6Gb1WBt36CbOU6V4aZknfty4ce'),
+( 4, 3, 'Tea Gardner', 'JudgeHeartOfTheCards', 'judge.tea@example.com', 0, 0,  'https://example.com/judge_tea_avatar.png', '$10$9XuZjpSnYAOi1QDewKmNJeX.8XW6Gb1WBt36CbOU6V4aZknfty4ce'),
+( 5, 3, 'Mai Valentine', 'JudgeHarpieLady', 'judge.mai@example.com', 0, 0,  'https://example.com/judge_mai_avatar.png', '$10$9XuZjpSnYAOi1QDewKmNJeX.8XW6Gb1WBt36CbOU6V4aZknfty4ce'),
+( 6, 3, 'Shadi', 'JudgeGuardianShadi', 'judge.shadi@example.com', 0, 0,  'https://example.com/judge_shadi_avatar.png', '$10$9XuZjpSnYAOi1QDewKmNJeX.8XW6Gb1WBt36CbOU6V4aZknfty4ce');
 
--- Administradores (2 registros)
-INSERT INTO t_users (id_user, id_country, id_rol, fullname, alias, email, games_won, games_lost, disqualifications, avatar_url, passcode) VALUES
-(27, 7, 2, 'Yugi Mutou', 'AdminKingOfGames', 'admin.yugi@example.com', 0, 0, 0, 'https://example.com/admin_yugi_avatar.png', 'adminpasscode1'),
-(28, 8, 2, 'Seto Kaiba', 'AdminKaibaCorp', 'admin.seto@example.com', 0, 0, 0, 'https://example.com/admin_kaiba_avatar.png', 'adminpasscode2');
+-- Administradores (2 registros) password: $10$jrd5sDRCdEWqvNS4d1ol6ere0akmgoyuS6VuErR5AjW0juFjqXjYu
+INSERT INTO t_users ( id_country, id_rol, fullname, alias, email, games_won, games_lost, avatar_url, passcode) VALUES
+( 7, 2, 'Yugi Mutou', 'AdminKingOfGames', 'admin.yugi@example.com', 0, 0,  'https://example.com/admin_yugi_avatar.png', '$10$jrd5sDRCdEWqvNS4d1ol6ere0akmgoyuS6VuErR5AjW0juFjqXjYu'),
+( 8, 2, 'Seto Kaiba', 'AdminKaibaCorp', 'admin.seto@example.com', 0, 0,  'https://example.com/admin_kaiba_avatar.png', '$10$jrd5sDRCdEWqvNS4d1ol6ere0akmgoyuS6VuErR5AjW0juFjqXjYu');
 
--- Organizadores (2 registros)
-INSERT INTO t_users (id_user, id_country, id_rol, fullname, alias, email, games_won, games_lost, disqualifications, avatar_url, passcode) VALUES
-(29, 9, 1, 'Marek Ishtar', 'OrganizerMarek', 'organizer.marek@example.com', 0, 0, 0, 'https://example.com/organizer_marek_avatar.png', 'organizerpasscode1'),
-(30, 10, 1, 'Joey Wheeler', 'OrganizerRedEyes', 'organizer.joey@example.com', 0, 0, 0, 'https://example.com/organizer_joey_avatar.png', 'organizerpasscode2');
-
-
+-- Organizadores (2 registros) password: $10$85ZJy/NgU80J5QtbH8.Qb./fCnrIK3EyZW/8tJZjc0BvvuaKcZEJW
+INSERT INTO t_users (id_country, id_rol, fullname, alias, email, games_won, games_lost, avatar_url, passcode) VALUES
+( 9, 1, 'Marek Ishtar', 'OrganizerMarek', 'organizer.marek@example.com', 0, 0,  'https://example.com/organizer_marek_avatar.png', '$10$85ZJy/NgU80J5QtbH8.Qb./fCnrIK3EyZW/8tJZjc0BvvuaKcZEJW'),
+( 10, 1, 'Joey Wheeler', 'OrganizerRedEyes', 'organizer.joey@example.com', 0, 0,  'https://example.com/organizer_joey_avatar.png', '$10$85ZJy/NgU80J5QtbH8.Qb./fCnrIK3EyZW/8tJZjc0BvvuaKcZEJW');

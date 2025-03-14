@@ -8,11 +8,10 @@ namespace CTDto.Tournaments
 {
     public class TournamentDto
     {
-        public int Id_Country { get; set; }  // Nuevo campo
-        public int Id_Organizer { get; set; }  // Nuevo campo
+        public int Id_Country { get; set; }
         public DateTime Start_datetime { get; set; }
         public DateTime End_datetime { get; set; }
-        public int Current_Phase { get; set; }
-
+        public List<int> Judges_Id { get; set; }
+        public List<int> Series_Id { get; set; }
     }
 }

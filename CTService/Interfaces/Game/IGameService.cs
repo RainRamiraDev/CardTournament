@@ -1,4 +1,5 @@
-﻿using CTDto.Game;
+﻿using CTDataModels.Game;
+using CTDto.Game;
 using CTDto.Tournaments;
 using System;
 using System.Collections.Generic;
@@ -10,16 +11,9 @@ namespace CTService.Interfaces.Game
 {
     public interface IGameService
     {
-        Task<int> CreateGameAsync(GameDto gameDto);
-
-        Task<int> InsertGamePlayersAsync(GamePlayersDto gamePlayers);
-
-        Task<int> CreateRoundAsync(int roundNumber);
-
+        Task<int> CreateRoundAsync(int roundNumber, int tournament_id, int id_judge);
         Task<int> CreateMatchAsync(MatchDto match);
-
-        Task<GameResultDto> ResolveGameAsync();
-
-
+        Task<GameResultDto> ResolveGameAsync(TournamentRequestToResolveDto tournamentDto, string timeZone);
+        Task<List<MatchScheduleDto>> CalculateMatchScheduleAsync(TournamentRequestToResolveDto request, string timeZone);
     }
 }

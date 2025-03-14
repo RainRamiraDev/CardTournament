@@ -1,8 +1,10 @@
 ﻿using CTApp.Response;
 using CTDataModels.Tournamets;
+using CTDto.Card;
 using CTDto.Tournaments;
 using CTDto.Users;
 using CTDto.Users.Judge;
+using CTDto.Users.Organizer;
 using CTService.Implementation.User;
 using CTService.Interfaces.Card;
 using CTService.Interfaces.Tournaments;
@@ -18,17 +20,19 @@ namespace CTApp.Controllers.User
     public class OrganizerController : ControllerBase
     {
         private readonly IUserService _userService;
-
         private readonly ITournamentService _tournamentService;
+        private readonly ICardService _cardService;
 
-        public OrganizerController(IUserService userService, ITournamentService tournamentService)
+        public OrganizerController(IUserService userService, ITournamentService tournamentService, ICardService cardService)
         {
             _userService = userService;
             _tournamentService = tournamentService;
+            _cardService = cardService;
         }
 
+        
 
-        [Authorize(Roles = "1")]
+        [Authorize(Roles = "1,2")]
         [HttpGet("GetJudges")]
         public async Task<IActionResult> GetJudges()
         {
@@ -41,74 +45,65 @@ namespace CTApp.Controllers.User
         }
 
 
+        [Authorize(Roles = "2,1,3,4")]
+        [HttpGet("GetCountries")]
+        public async Task<IActionResult> GetCountries()
+        {
+            var countries = await _userService.GetAllCountriesAsync();
+            return Ok(ApiResponse<IEnumerable<CountriesListDto>>.SuccessResponse("Paises obtenidos exitosamente.", countries));
+        }
+
+
+        [Authorize(Roles = "2,1,3,4")]
+        [HttpGet("GetSeries")]
+        public async Task<IActionResult> GetSeries()
+        {
+            var series = await _cardService.GetAllSeriesAsync();
+            return Ok(ApiResponse<IEnumerable<SeriesListDto>>.SuccessResponse("Series obtenidos exitosamente.", series));
+        }
+
+
+
         [Authorize(Roles = "1")]
         [HttpPost("CreateTournament")]
         public async Task<IActionResult> CreateTournament([FromBody] TournamentDto tournamentDto)
         {
             if (tournamentDto == null)
-            {
-                return BadRequest("Invalid tournament data.");
-            }
+                return BadRequest(ApiResponse<object>.ErrorResponse("Los datos del torneo son inválidos."));
 
             var id = await _tournamentService.CreateTournamentAsync(tournamentDto);
 
             if (id == 0)
-            {
-                return StatusCode(500, "Error creating tournament.");
-            }
+                throw new InvalidOperationException("Error al crear el torneo.");
 
-            return Created("", new { id });
+
+            return Created("", ApiResponse<object>.SuccessResponse("Torneo creado exitosamente.", new AfterCreateTournamentDto { id_Tournament = id }));
         }
 
 
         [Authorize(Roles = "1")]
-        [HttpPost("SetTournamentJudges")]
-        public async Task<IActionResult> SetTournamentJudges([FromBody] TournamentJudgeDto tournamentJudgeDto)
+        [HttpPost("AlterTournament")]
+        public async Task<IActionResult> AlterTournament([FromBody] AlterTournamentDto tournamentDto)
         {
-            try
-            {
-                var affectedRows = await _tournamentService.InsertTournamentJudgesAsync(tournamentJudgeDto);
+            if (tournamentDto == null)
+                return BadRequest(ApiResponse<object>.ErrorResponse("Los datos del torneo son inválidos."));
 
-                if (affectedRows == 0)
-                {
-                    return StatusCode(500, "Error assigning judges to tournament.");
-                }
+            await _tournamentService.AlterTournamentAsync(tournamentDto);
 
-                return Created("", new { affectedRows });
-            }
-            catch (ArgumentException ex)
-            {
-                return BadRequest(ex.Message);
-            }
-            catch (Exception)
-            {
-                return StatusCode(500, "An unexpected error occurred.");
-            }
+            return Created("", ApiResponse<object>.SuccessResponse("Torneo modificado exitosamente."));
         }
 
+
         [Authorize(Roles = "1")]
-        [HttpPost("SetTournamentSeries")]
-        public async Task<IActionResult> SetTournamentSeries([FromBody] TournamentSeriesDto tournamentSeriesDto)
+        [HttpPost("CalcelTournament")]
+        public async Task<IActionResult> CalcelTournament([FromBody] TournamentRequestToResolveDto tournamentDto)
         {
-            try
-            {
-                var affectedRows = await _tournamentService.InsertTournamentSeriesAsync(tournamentSeriesDto);
+            if (tournamentDto == null)
+                return BadRequest(ApiResponse<object>.ErrorResponse("Los datos del torneo son inválidos."));
 
-                if (affectedRows == 0)
-                {
-                    return StatusCode(500, "Error assigning series to tournament.");
-                }
+            await _tournamentService.SoftDeleteTournamentAsync(tournamentDto);
 
-                return Created("", new { affectedRows });
-            }
-            catch (ArgumentException ex)
-            {
-                return BadRequest(ex.Message);
-            }
-            catch (Exception)
-            {
-                return StatusCode(500, "An unexpected error occurred.");
-            }
+            return Created("", ApiResponse<object>.SuccessResponse("Torneo dado de baja exitosamente."));
         }
 
     }

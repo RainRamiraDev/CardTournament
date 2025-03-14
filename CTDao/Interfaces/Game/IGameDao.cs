@@ -11,15 +11,19 @@ namespace CTDao.Interfaces.Game
 {
     public interface IGameDao
     {
-        Task<int> CreateGameAsync(GameModel game); 
-        Task<int> InsertGamePlayersAsync(GamePlayersModel playerModel);
+
+        Task InsertDisqualificationAsync(int playerId, int tournamentId, int judgeId);
+
+        Task<bool> IsPlayerDisqualifiedAsync(int playerId, int tournamentId);
+
+
         Task<int> SetGameWinnerAsync(int winner);
         Task<int> SetGameLoserAsync(List<int> losers);
-        Task<List<int>> GetTournamentPlayers(int tournamentId);
+        Task<List<int>> GetTournamentPlayersAsync(int tournamentId);
         Task<int> CreateRoundAsync(RoundModel round); 
         Task<int> CreateMatchAsync(MatchModel match); 
-        Task<int> SetNextRoundAsync();
-        Task<int> SetRoundCompletedAsync(int roundNumber);
-        Task<int> GetLastRoundAsync();
+        Task<int> SetNextRoundAsync(int tournament_id);
+        Task<int> SetRoundCompletedAsync(int roundNumber, int tournament_id);
+        Task<int> GetLastRoundAsync(int tournament_id);
     }
 }

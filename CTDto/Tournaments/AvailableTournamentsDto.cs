@@ -6,18 +6,16 @@ using System.Threading.Tasks;
 
 namespace CTDto.Tournaments
 {
-    public class AvailableTournamentsDto
+    public class TournamentsInformationDto
     {
-        public DateTime Start_DateTime { get; set; }
-        public DateTime End_DateTime { get; set; }
-        public string Tournament_Country { get; set; }
-        public string Organizer_Alias { get; set; }
-        public string Judges { get; set; }
-        public string Series_Played { get; set; }
-        public string Players { get; set; }
-        public string Disqualified_Players { get; set; }
-        public int Total_Games { get; set; }
-        public int Total_Rounds { get; set; }
+        public int Id_Torneo { get; set; }
+        public string Pais { get; set; }
+        public DateTime FechaDeInicio { get; set; }
+        public DateTime FechaDeFinalizacion { get; set; }
+        public string Jueces { get; set; }
+        public string Series { get; set; }
+        public string Jugadores { get; set; }
+        public string Ganador { get; set; }
 
     }
 }

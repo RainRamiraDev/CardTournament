@@ -20,3 +20,6 @@ C:\Repositorios\CardTournament\CTService\bin\Debug\net7.0\CTDto.pdb
 C:\Repositorios\CardTournament\CTService\obj\Debug\net7.0\CTService.csproj.Up2Date
 C:\Repositorios\CardTournament\CTService\bin\Debug\net7.0\CTConfigurations.dll
 C:\Repositorios\CardTournament\CTService\bin\Debug\net7.0\CTConfigurations.pdb
+C:\Repositorios\CardTournament\CTService\bin\Debug\net7.0\DataAccess.dll
+C:\Repositorios\CardTournament\CTService\bin\Debug\net7.0\DataAccess.pdb
+C:\Repositorios\CardTournament\CTService\bin\Debug\net7.0\queries.json

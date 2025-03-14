@@ -1,7 +1,4 @@
-﻿//using Configuration;
-//using Microsoft.Extensions.Options;
-//using Microsoft.IdentityModel.Tokens;
-using CTConfigurations;
+﻿using CTConfigurations;
 using CTDao.Interfaces.RefreshToken;
 using CTService.Interfaces.RefreshToken;
 using Microsoft.Extensions.Options;
@@ -39,22 +36,21 @@ namespace CTService.Implementation.RefreshToken
 
         public async Task<(string AccessToken, Guid RefreshToken)> RefreshAccessTokenAsync(Guid oldRefreshToken)
         {
+
             bool isValidToken = await _refreshTokenDao.VerifyTokenAsync(oldRefreshToken);
             if (!isValidToken)
-            {
-                throw new UnauthorizedAccessException("Invalid or expired refresh token.");
-            }
+                throw new UnauthorizedAccessException("Token de actualización inválido o expirado.");
 
             var user = await _refreshTokenDao.GetUserByTokenAsync(oldRefreshToken);
+
+
             if (user == null)
-            {
-                throw new UnauthorizedAccessException("Invalid refresh token.");
-            }
+                throw new UnauthorizedAccessException("Token de actualización inválido.");
+
 
             await _refreshTokenDao.DeleteRefreshTokenAsync(oldRefreshToken);
 
-
-            string newAccessToken = await GenerateAccessToken(user.Id_Rol, user.Fullname,user.Id_Rol);
+            string newAccessToken = await GenerateAccessTokenAsync(user.Id_User, user.Fullname,user.Id_Rol);
 
             var (newRefreshToken, expirationDate) = GenerateRefreshToken();
 
@@ -69,17 +65,18 @@ namespace CTService.Implementation.RefreshToken
             return rowsAffected > 0;
         }
 
-        public async Task<string> GenerateAccessToken(int userId, string userName, int userRole)
+        public async Task<string> GenerateAccessTokenAsync(int userId, string userName, int userRole)
         {
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_keysConfiguration.Key));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
+
             var claims = new List<Claim>
-    {
-        new Claim(ClaimTypes.Name, userName),
-        new Claim(ClaimTypes.NameIdentifier, userId.ToString()),
-        new Claim(ClaimTypes.Role, userRole.ToString())
-    };
+            {
+                new Claim("UserName", userName),
+                new Claim("UserId", userId.ToString()), 
+                new Claim("UserRole", userRole.ToString()) 
+            };
 
             var token = new JwtSecurityToken(
                 issuer: _keysConfiguration.Issuer,

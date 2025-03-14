@@ -3,7 +3,9 @@ using CTConfigurations;
 using CTDto.Users;
 using CTDto.Users.LogIn;
 using CTService.Interfaces.RefreshToken;
+using CTService.Interfaces.Tournaments;
 using CTService.Interfaces.User;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 
@@ -16,10 +18,9 @@ namespace CTApp.Controllers.User
     {
 
         private readonly IUserService _userService;
-
         private readonly IRefreshTokenService _refreshTokenService;
-
         private readonly KeysConfiguration _keysConfiguration;
+
 
         public LogInController(IUserService userService, IOptions<KeysConfiguration> keys, IRefreshTokenService refreshToken)
         {
@@ -29,7 +30,6 @@ namespace CTApp.Controllers.User
         }
 
 
-        // Método auxiliar para gestionar cookies
         private void ManageRefreshTokenCookie(string refreshTokenValue, DateTime? expirationDate = null)
         {
             Response.Cookies.Append("RefreshToken", refreshTokenValue,
@@ -45,44 +45,33 @@ namespace CTApp.Controllers.User
         [HttpPost("LogIn")]
         public async Task<IActionResult> LogIn([FromBody] LoginRequestDto loginRequest)
         {
-            var user = await _userService.LogInAsync(loginRequest.Fullname, loginRequest.Passcode);
 
-            if (user == null)
-            {
-                return NotFound(ApiResponse<UserDto>.ErrorResponse(
-                    new List<string> { "Usuario o contraseña incorrectos." }
-                ));
-            }
+            var userResponse = await _userService.NewLogInAsync(loginRequest.Fullname, loginRequest.Passcode);
 
-            var accessToken = _refreshTokenService.GenerateAccessToken(user.Id_User, user.Fullname,user.Id_Rol);
+            ManageRefreshTokenCookie(userResponse.RefreshToken.ToString(), userResponse.ExpirationDate);
 
-            Guid refreshToken = Guid.NewGuid();
-            DateTime expirationDate = DateTime.UtcNow.AddDays(_keysConfiguration.ExpirationDays);
+            var response = ApiResponse<string>.SuccessResponse("Inicio de sesión exitoso.", userResponse.AccessToken);
 
-            await _refreshTokenService.SaveRefreshTokenAsync(refreshToken, user.Id_User, expirationDate);
-
-            ManageRefreshTokenCookie(refreshToken.ToString(), expirationDate);
-            return Ok(new { AccessToken = accessToken });
+            return Ok(response);
         }
 
-
+        [Authorize(Roles = "2,1,3,4")]
         [HttpPost("RefreshToken")]
         public async Task<IActionResult> RefreshToken()
         {
             var refreshTokenFromCookie = Request.Cookies["RefreshToken"];
 
             if (string.IsNullOrEmpty(refreshTokenFromCookie) || !Guid.TryParse(refreshTokenFromCookie, out Guid refreshToken))
-            {
                 return Unauthorized(new { Message = "No se encontró un refresh token válido." });
-            }
 
             var (newAccessToken, newRefreshToken) = await _refreshTokenService.RefreshAccessTokenAsync(refreshToken);
 
             ManageRefreshTokenCookie(newRefreshToken.ToString(), DateTime.UtcNow.AddDays(7));
-            return Ok(new { AccessToken = newAccessToken });
+
+            var response = ApiResponse<string>.SuccessResponse("Token renovado exitosamente.", newAccessToken);
+
+            return Ok(response);
         }
-
-
 
         [HttpPost("Logout")]
         public async Task<IActionResult> Logout()
@@ -94,28 +83,13 @@ namespace CTApp.Controllers.User
             bool result = await _refreshTokenService.LogoutAsync(refreshToken);
 
             if (!result)
-            {
                 return NotFound(new { Message = "El token no fue encontrado o ya se eliminó." });
-            }
 
             ManageRefreshTokenCookie("", DateTime.Now);
-            return Ok(new { Message = "Sesión cerrada exitosamente." });
+
+            var response = ApiResponse<string>.SuccessResponse("Sesión cerrada exitosamente.");
+
+            return Ok(response);
         }
-
-
-        [HttpPost("FirstLogIn")]
-        public async Task<IActionResult> CreateUserWhitHashedPassword([FromBody] LoginRequestDto loginDto)
-        {
-            var userId = await _userService.CreateWhitHashedPasswordAsync(loginDto);
-            var user = new UserDto
-            {
-                Fullname = loginDto.Fullname,
-                Passcode = loginDto.Passcode,
-                Id_Rol = loginDto.Id_Rol 
-            };
-            var response = ApiResponse<LoginRequestDto>.SuccessResponse("Usuario creado exitosamente", loginDto);
-            return Created(string.Empty, response);
-        }
-
     }
 }
