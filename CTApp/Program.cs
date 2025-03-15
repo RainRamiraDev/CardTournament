@@ -33,7 +33,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 
 
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+var connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING") ??
+                                   builder.Configuration.GetConnectionString("DefaultConnection");
 
 
 builder.Services.AddSingleton<ICardDao>(provider =>

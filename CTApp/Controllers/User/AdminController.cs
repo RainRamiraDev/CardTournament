@@ -24,7 +24,7 @@ namespace CTApp.Controllers.User
             _tournamentService = tournamentService;
         }
 
-        [Authorize(Roles = "2,1,3,4")]
+        //[Authorize(Roles = "2,1,3,4")]
         [HttpPost("CreateUser")]
         public async Task<IActionResult> CreateUser([FromBody] UserCreationDto userDto)
         {

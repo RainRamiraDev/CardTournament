@@ -1,0 +1,10 @@
+services:
+  ctapp:
+    build: .
+    ports:
+      - "8080:8080"
+      - "8081:8081"
+    environment:
+      - DB_CONNECTION_STRING="Server=host.docker.internal;Port=3306;Database=card_tournamentdbv5;User=root;Password=1234;"
+    volumes:
+      - ./app:/app

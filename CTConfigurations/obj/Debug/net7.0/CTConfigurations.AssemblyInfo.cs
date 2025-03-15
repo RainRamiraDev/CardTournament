@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("CTConfigurations")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+29ce63e12719c116789670f211e18ad271845224")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+07be520d84c9b5be4acf1d1de4f171a49c968c0c")]
 [assembly: System.Reflection.AssemblyProductAttribute("CTConfigurations")]
 [assembly: System.Reflection.AssemblyTitleAttribute("CTConfigurations")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
