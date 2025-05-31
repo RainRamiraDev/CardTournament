@@ -102,11 +102,16 @@ builder.Services.Configure<KeysConfiguration>(builder.Configuration.GetSection("
 
 builder.Services.AddCors(options =>
 {
-    options.AddDefaultPolicy(policy =>
+    options.AddPolicy("AllowReactDevServer", policy =>
     {
-        policy.WithOrigins("*");
+        policy.WithOrigins("http://localhost:5173") // puerto de Vite dev server
+              .AllowAnyHeader()
+              .AllowAnyMethod()
+              .AllowCredentials();
     });
 });
+
+
 
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -140,7 +145,10 @@ app.UseMiddleware<ErrorHandlerMiddleware>();
 
 app.UseHttpsRedirection();
 
-app.UseCors();
+//app.UseCors();
+
+app.UseCors("AllowReactDevServer");
+
 
 app.UseAuthentication();
 

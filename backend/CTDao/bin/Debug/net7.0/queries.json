@@ -111,7 +111,7 @@
 
   "QueryGetUserWhitToken": "SELECT * FROM T_Users WHERE Id_User = @Id_user;",
   "QueryFirstLogIn": "INSERT INTO T_Users (Fullname, Passcode, Id_Rol) VALUES (@Fullname, @Passcode, @Id_Rol);",
-  "QueryGetUserDataByName": "SELECT Id_User, Fullname, Passcode, Id_Rol, Available FROM T_Users WHERE Fullname = @Fullname;",
+  "QueryGetUserDataByName": "SELECT Id_User, Fullname, Passcode, Id_Rol, Active FROM T_Users WHERE Fullname = @Fullname;",
 
   "QueryGetAllJudges": "SELECT u.Fullname, u.Alias, u.Email, c.country_name as Country, u.avatar_url FROM t_users u JOIN t_countries c ON u.id_country = c.id_country WHERE Id_rol = 3 AND available = 1 ORDER BY u.alias ASC;",
   "QueryGetPlayersRankIds": "SELECT ki FROM t_users WHERE Id_user = @Id;",

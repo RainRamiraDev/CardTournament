@@ -1,12 +1,1 @@
-{
-  "Version": 1,
-  "Hash": "cIzRnDJFBhrS+RJfzN0iwO0ojnpWQX8KuPuiq6ZtPos=",
-  "Source": "CTApp",
-  "BasePath": "_content/CTApp",
-  "Mode": "Default",
-  "ManifestType": "Build",
-  "ReferencedProjectsConfiguration": [],
-  "DiscoveryPatterns": [],
-  "Assets": [],
-  "Endpoints": []
-}
+{"Version":1,"Hash":"cIzRnDJFBhrS+RJfzN0iwO0ojnpWQX8KuPuiq6ZtPos=","Source":"CTApp","BasePath":"_content/CTApp","Mode":"Default","ManifestType":"Build","ReferencedProjectsConfiguration":[],"DiscoveryPatterns":[],"Assets":[],"Endpoints":[]}

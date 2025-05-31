@@ -165,7 +165,7 @@ namespace CTService.Implementation.User
             };
 
             await ValidateUserCreation(userModel);
-            await ValidateUserRol(userModel.Id_Rol);
+        //    await ValidateUserRol(userModel.Id_Rol);
             return await _userDao.CreateUserAsync(userModel);
         }
 

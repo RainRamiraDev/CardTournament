@@ -1,23 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Repositorios\\CardTournament\\CTApp\\CTApp.csproj": {}
+    "C:\\Dev\\Bootcamp\\CardTournament\\backend\\CTApp\\CTApp.csproj": {}
   },
   "projects": {
-    "C:\\Repositorios\\CardTournament\\CTApp\\CTApp.csproj": {
+    "C:\\Dev\\Bootcamp\\CardTournament\\backend\\CTApp\\CTApp.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Repositorios\\CardTournament\\CTApp\\CTApp.csproj",
+        "projectUniqueName": "C:\\Dev\\Bootcamp\\CardTournament\\backend\\CTApp\\CTApp.csproj",
         "projectName": "CTApp",
-        "projectPath": "C:\\Repositorios\\CardTournament\\CTApp\\CTApp.csproj",
-        "packagesPath": "C:\\Users\\r4yn1\\.nuget\\packages\\",
-        "outputPath": "C:\\Repositorios\\CardTournament\\CTApp\\obj\\",
+        "projectPath": "C:\\Dev\\Bootcamp\\CardTournament\\backend\\CTApp\\CTApp.csproj",
+        "packagesPath": "C:\\Users\\rsann\\.nuget\\packages\\",
+        "outputPath": "C:\\Dev\\Bootcamp\\CardTournament\\backend\\CTApp\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\r4yn1\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\rsann\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -32,14 +32,14 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "C:\\Repositorios\\CardTournament\\CTConfigurations\\CTConfigurations.csproj": {
-                "projectPath": "C:\\Repositorios\\CardTournament\\CTConfigurations\\CTConfigurations.csproj"
+              "C:\\Dev\\Bootcamp\\CardTournament\\backend\\CTConfigurations\\CTConfigurations.csproj": {
+                "projectPath": "C:\\Dev\\Bootcamp\\CardTournament\\backend\\CTConfigurations\\CTConfigurations.csproj"
               },
-              "C:\\Repositorios\\CardTournament\\CTDto\\CTDto.csproj": {
-                "projectPath": "C:\\Repositorios\\CardTournament\\CTDto\\CTDto.csproj"
+              "C:\\Dev\\Bootcamp\\CardTournament\\backend\\CTDto\\CTDto.csproj": {
+                "projectPath": "C:\\Dev\\Bootcamp\\CardTournament\\backend\\CTDto\\CTDto.csproj"
               },
-              "C:\\Repositorios\\CardTournament\\CTService\\CTService.csproj": {
-                "projectPath": "C:\\Repositorios\\CardTournament\\CTService\\CTService.csproj"
+              "C:\\Dev\\Bootcamp\\CardTournament\\backend\\CTService\\CTService.csproj": {
+                "projectPath": "C:\\Dev\\Bootcamp\\CardTournament\\backend\\CTService\\CTService.csproj"
               }
             }
           }
@@ -54,7 +54,7 @@
           "auditLevel": "low",
           "auditMode": "direct"
         },
-        "SdkAnalysisLevel": "9.0.100"
+        "SdkAnalysisLevel": "9.0.300"
       },
       "frameworks": {
         "net8.0": {
@@ -88,24 +88,24 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.103/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.300/PortableRuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Repositorios\\CardTournament\\CTConfigurations\\CTConfigurations.csproj": {
+    "C:\\Dev\\Bootcamp\\CardTournament\\backend\\CTConfigurations\\CTConfigurations.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Repositorios\\CardTournament\\CTConfigurations\\CTConfigurations.csproj",
+        "projectUniqueName": "C:\\Dev\\Bootcamp\\CardTournament\\backend\\CTConfigurations\\CTConfigurations.csproj",
         "projectName": "CTConfigurations",
-        "projectPath": "C:\\Repositorios\\CardTournament\\CTConfigurations\\CTConfigurations.csproj",
-        "packagesPath": "C:\\Users\\r4yn1\\.nuget\\packages\\",
-        "outputPath": "C:\\Repositorios\\CardTournament\\CTConfigurations\\obj\\",
+        "projectPath": "C:\\Dev\\Bootcamp\\CardTournament\\backend\\CTConfigurations\\CTConfigurations.csproj",
+        "packagesPath": "C:\\Users\\rsann\\.nuget\\packages\\",
+        "outputPath": "C:\\Dev\\Bootcamp\\CardTournament\\backend\\CTConfigurations\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\r4yn1\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\rsann\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -132,7 +132,7 @@
           "auditLevel": "low",
           "auditMode": "direct"
         },
-        "SdkAnalysisLevel": "9.0.100"
+        "SdkAnalysisLevel": "9.0.300"
       },
       "frameworks": {
         "net7.0": {
@@ -148,29 +148,43 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.AspNetCore.App.Ref",
+              "version": "[7.0.20, 7.0.20]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Ref",
+              "version": "[7.0.20, 7.0.20]"
+            },
+            {
+              "name": "Microsoft.WindowsDesktop.App.Ref",
+              "version": "[7.0.20, 7.0.20]"
+            }
+          ],
           "frameworkReferences": {
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.103\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.300\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Repositorios\\CardTournament\\CTDao\\CTDao.csproj": {
+    "C:\\Dev\\Bootcamp\\CardTournament\\backend\\CTDao\\CTDao.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Repositorios\\CardTournament\\CTDao\\CTDao.csproj",
+        "projectUniqueName": "C:\\Dev\\Bootcamp\\CardTournament\\backend\\CTDao\\CTDao.csproj",
         "projectName": "CTDao",
-        "projectPath": "C:\\Repositorios\\CardTournament\\CTDao\\CTDao.csproj",
-        "packagesPath": "C:\\Users\\r4yn1\\.nuget\\packages\\",
-        "outputPath": "C:\\Repositorios\\CardTournament\\CTDao\\obj\\",
+        "projectPath": "C:\\Dev\\Bootcamp\\CardTournament\\backend\\CTDao\\CTDao.csproj",
+        "packagesPath": "C:\\Users\\rsann\\.nuget\\packages\\",
+        "outputPath": "C:\\Dev\\Bootcamp\\CardTournament\\backend\\CTDao\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\r4yn1\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\rsann\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -185,14 +199,14 @@
           "net7.0": {
             "targetAlias": "net7.0",
             "projectReferences": {
-              "C:\\Repositorios\\CardTournament\\CTDataModels\\CTDataModels.csproj": {
-                "projectPath": "C:\\Repositorios\\CardTournament\\CTDataModels\\CTDataModels.csproj"
+              "C:\\Dev\\Bootcamp\\CardTournament\\backend\\CTDataModels\\CTDataModels.csproj": {
+                "projectPath": "C:\\Dev\\Bootcamp\\CardTournament\\backend\\CTDataModels\\CTDataModels.csproj"
               },
-              "C:\\Repositorios\\CardTournament\\CTDto\\CTDto.csproj": {
-                "projectPath": "C:\\Repositorios\\CardTournament\\CTDto\\CTDto.csproj"
+              "C:\\Dev\\Bootcamp\\CardTournament\\backend\\CTDto\\CTDto.csproj": {
+                "projectPath": "C:\\Dev\\Bootcamp\\CardTournament\\backend\\CTDto\\CTDto.csproj"
               },
-              "C:\\Repositorios\\CardTournament\\DataAccess\\DataAccess.csproj": {
-                "projectPath": "C:\\Repositorios\\CardTournament\\DataAccess\\DataAccess.csproj"
+              "C:\\Dev\\Bootcamp\\CardTournament\\backend\\DataAccess\\DataAccess.csproj": {
+                "projectPath": "C:\\Dev\\Bootcamp\\CardTournament\\backend\\DataAccess\\DataAccess.csproj"
               }
             }
           }
@@ -207,7 +221,7 @@
           "auditLevel": "low",
           "auditMode": "direct"
         },
-        "SdkAnalysisLevel": "9.0.100"
+        "SdkAnalysisLevel": "9.0.300"
       },
       "frameworks": {
         "net7.0": {
@@ -242,24 +256,24 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.103\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.300\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Repositorios\\CardTournament\\CTDataModels\\CTDataModels.csproj": {
+    "C:\\Dev\\Bootcamp\\CardTournament\\backend\\CTDataModels\\CTDataModels.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Repositorios\\CardTournament\\CTDataModels\\CTDataModels.csproj",
+        "projectUniqueName": "C:\\Dev\\Bootcamp\\CardTournament\\backend\\CTDataModels\\CTDataModels.csproj",
         "projectName": "CTDataModels",
-        "projectPath": "C:\\Repositorios\\CardTournament\\CTDataModels\\CTDataModels.csproj",
-        "packagesPath": "C:\\Users\\r4yn1\\.nuget\\packages\\",
-        "outputPath": "C:\\Repositorios\\CardTournament\\CTDataModels\\obj\\",
+        "projectPath": "C:\\Dev\\Bootcamp\\CardTournament\\backend\\CTDataModels\\CTDataModels.csproj",
+        "packagesPath": "C:\\Users\\rsann\\.nuget\\packages\\",
+        "outputPath": "C:\\Dev\\Bootcamp\\CardTournament\\backend\\CTDataModels\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\r4yn1\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\rsann\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -286,7 +300,7 @@
           "auditLevel": "low",
           "auditMode": "direct"
         },
-        "SdkAnalysisLevel": "9.0.100"
+        "SdkAnalysisLevel": "9.0.300"
       },
       "frameworks": {
         "net7.0": {
@@ -302,29 +316,43 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.AspNetCore.App.Ref",
+              "version": "[7.0.20, 7.0.20]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Ref",
+              "version": "[7.0.20, 7.0.20]"
+            },
+            {
+              "name": "Microsoft.WindowsDesktop.App.Ref",
+              "version": "[7.0.20, 7.0.20]"
+            }
+          ],
           "frameworkReferences": {
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.103\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.300\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Repositorios\\CardTournament\\CTDto\\CTDto.csproj": {
+    "C:\\Dev\\Bootcamp\\CardTournament\\backend\\CTDto\\CTDto.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Repositorios\\CardTournament\\CTDto\\CTDto.csproj",
+        "projectUniqueName": "C:\\Dev\\Bootcamp\\CardTournament\\backend\\CTDto\\CTDto.csproj",
         "projectName": "CTDto",
-        "projectPath": "C:\\Repositorios\\CardTournament\\CTDto\\CTDto.csproj",
-        "packagesPath": "C:\\Users\\r4yn1\\.nuget\\packages\\",
-        "outputPath": "C:\\Repositorios\\CardTournament\\CTDto\\obj\\",
+        "projectPath": "C:\\Dev\\Bootcamp\\CardTournament\\backend\\CTDto\\CTDto.csproj",
+        "packagesPath": "C:\\Users\\rsann\\.nuget\\packages\\",
+        "outputPath": "C:\\Dev\\Bootcamp\\CardTournament\\backend\\CTDto\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\r4yn1\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\rsann\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -351,7 +379,7 @@
           "auditLevel": "low",
           "auditMode": "direct"
         },
-        "SdkAnalysisLevel": "9.0.100"
+        "SdkAnalysisLevel": "9.0.300"
       },
       "frameworks": {
         "net7.0": {
@@ -373,29 +401,43 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.AspNetCore.App.Ref",
+              "version": "[7.0.20, 7.0.20]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Ref",
+              "version": "[7.0.20, 7.0.20]"
+            },
+            {
+              "name": "Microsoft.WindowsDesktop.App.Ref",
+              "version": "[7.0.20, 7.0.20]"
+            }
+          ],
           "frameworkReferences": {
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.103\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.300\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Repositorios\\CardTournament\\CTService\\CTService.csproj": {
+    "C:\\Dev\\Bootcamp\\CardTournament\\backend\\CTService\\CTService.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Repositorios\\CardTournament\\CTService\\CTService.csproj",
+        "projectUniqueName": "C:\\Dev\\Bootcamp\\CardTournament\\backend\\CTService\\CTService.csproj",
         "projectName": "CTService",
-        "projectPath": "C:\\Repositorios\\CardTournament\\CTService\\CTService.csproj",
-        "packagesPath": "C:\\Users\\r4yn1\\.nuget\\packages\\",
-        "outputPath": "C:\\Repositorios\\CardTournament\\CTService\\obj\\",
+        "projectPath": "C:\\Dev\\Bootcamp\\CardTournament\\backend\\CTService\\CTService.csproj",
+        "packagesPath": "C:\\Users\\rsann\\.nuget\\packages\\",
+        "outputPath": "C:\\Dev\\Bootcamp\\CardTournament\\backend\\CTService\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\r4yn1\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\rsann\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -410,17 +452,17 @@
           "net7.0": {
             "targetAlias": "net7.0",
             "projectReferences": {
-              "C:\\Repositorios\\CardTournament\\CTConfigurations\\CTConfigurations.csproj": {
-                "projectPath": "C:\\Repositorios\\CardTournament\\CTConfigurations\\CTConfigurations.csproj"
+              "C:\\Dev\\Bootcamp\\CardTournament\\backend\\CTConfigurations\\CTConfigurations.csproj": {
+                "projectPath": "C:\\Dev\\Bootcamp\\CardTournament\\backend\\CTConfigurations\\CTConfigurations.csproj"
               },
-              "C:\\Repositorios\\CardTournament\\CTDao\\CTDao.csproj": {
-                "projectPath": "C:\\Repositorios\\CardTournament\\CTDao\\CTDao.csproj"
+              "C:\\Dev\\Bootcamp\\CardTournament\\backend\\CTDao\\CTDao.csproj": {
+                "projectPath": "C:\\Dev\\Bootcamp\\CardTournament\\backend\\CTDao\\CTDao.csproj"
               },
-              "C:\\Repositorios\\CardTournament\\CTDataModels\\CTDataModels.csproj": {
-                "projectPath": "C:\\Repositorios\\CardTournament\\CTDataModels\\CTDataModels.csproj"
+              "C:\\Dev\\Bootcamp\\CardTournament\\backend\\CTDataModels\\CTDataModels.csproj": {
+                "projectPath": "C:\\Dev\\Bootcamp\\CardTournament\\backend\\CTDataModels\\CTDataModels.csproj"
               },
-              "C:\\Repositorios\\CardTournament\\CTDto\\CTDto.csproj": {
-                "projectPath": "C:\\Repositorios\\CardTournament\\CTDto\\CTDto.csproj"
+              "C:\\Dev\\Bootcamp\\CardTournament\\backend\\CTDto\\CTDto.csproj": {
+                "projectPath": "C:\\Dev\\Bootcamp\\CardTournament\\backend\\CTDto\\CTDto.csproj"
               }
             }
           }
@@ -435,7 +477,7 @@
           "auditLevel": "low",
           "auditMode": "direct"
         },
-        "SdkAnalysisLevel": "9.0.100"
+        "SdkAnalysisLevel": "9.0.300"
       },
       "frameworks": {
         "net7.0": {
@@ -470,24 +512,24 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.103\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.300\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Repositorios\\CardTournament\\DataAccess\\DataAccess.csproj": {
+    "C:\\Dev\\Bootcamp\\CardTournament\\backend\\DataAccess\\DataAccess.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Repositorios\\CardTournament\\DataAccess\\DataAccess.csproj",
+        "projectUniqueName": "C:\\Dev\\Bootcamp\\CardTournament\\backend\\DataAccess\\DataAccess.csproj",
         "projectName": "DataAccess",
-        "projectPath": "C:\\Repositorios\\CardTournament\\DataAccess\\DataAccess.csproj",
-        "packagesPath": "C:\\Users\\r4yn1\\.nuget\\packages\\",
-        "outputPath": "C:\\Repositorios\\CardTournament\\DataAccess\\obj\\",
+        "projectPath": "C:\\Dev\\Bootcamp\\CardTournament\\backend\\DataAccess\\DataAccess.csproj",
+        "packagesPath": "C:\\Users\\rsann\\.nuget\\packages\\",
+        "outputPath": "C:\\Dev\\Bootcamp\\CardTournament\\backend\\DataAccess\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\r4yn1\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\rsann\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -514,7 +556,7 @@
           "auditLevel": "low",
           "auditMode": "direct"
         },
-        "SdkAnalysisLevel": "9.0.100"
+        "SdkAnalysisLevel": "9.0.300"
       },
       "frameworks": {
         "net7.0": {
@@ -536,12 +578,26 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.AspNetCore.App.Ref",
+              "version": "[7.0.20, 7.0.20]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Ref",
+              "version": "[7.0.20, 7.0.20]"
+            },
+            {
+              "name": "Microsoft.WindowsDesktop.App.Ref",
+              "version": "[7.0.20, 7.0.20]"
+            }
+          ],
           "frameworkReferences": {
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.103\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.300\\RuntimeIdentifierGraph.json"
         }
       }
     }
