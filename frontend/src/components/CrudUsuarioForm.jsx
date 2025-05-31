@@ -8,59 +8,48 @@ import {
   MenuItem,
   Select,
   InputLabel,
-  FormControl
+  FormControl,
 } from '@mui/material';
-
 import Button from './ui/Button';
 import TextField from './ui/TextField';
+import { useSnackbar } from '../hooks/useSnackbar';
+import { useForm } from '../hooks/useForm';
 
-
+const initialForm = {
+  Id_User: '',
+  Id_Country: '',
+  Id_Rol: '',
+  Fullname: '',
+  Passcode: '',
+  Alias: '',
+  Email: '',
+  Avatar_Url: '',
+};
 
 const CrudUsuarioForm = () => {
-  const [action, setAction] = useState('CREATE');
-  const [formData, setFormData] = useState({
-    Id_User: '',
-    Id_Country: '',
-    Id_Rol: '',
-    Fullname: '',
-    Passcode: '',
-    Alias: '',
-    Email: '',
-    Avatar_Url: ''
-  });
+   const [action, setAction] = useState('CREATE');
+  const { open, showSnackbar, closeSnackbar } = useSnackbar();
 
-  const [snackbarOpen, setSnackbarOpen] = useState(false);
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
+  // Pasamos action al hook useForm para que la validación sea acorde
+  const { form, errors, handleChange, validate, setForm, setErrors, resetForm } = useForm(initialForm, action);
 
   const handleActionChange = (e) => {
     setAction(e.target.value);
-    setFormData({
-      Id_User: '',
-      Id_Country: '',
-      Id_Rol: '',
-      Fullname: '',
-      Passcode: '',
-      Alias: '',
-      Email: '',
-      Avatar_Url: ''
-    });
+    resetForm();
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (!validate()) {
+      console.log('Errores de validación:', errors);
+      return;
+    }
+
     console.log('Acción:', action);
-    console.log('Datos:', formData);
-    setSnackbarOpen(true);
-    // Aquí se conectaría a tu API (con fetch o axios)
+    console.log('Datos:', form);
+    showSnackbar();
   };
 
-  const handleCloseSnackbar = () => {
-    setSnackbarOpen(false);
-  };
 
   const isCreate = action === 'CREATE';
   const isAlter = action === 'ALTER';
@@ -82,110 +71,106 @@ const CrudUsuarioForm = () => {
       </FormControl>
 
       <Box component="form" onSubmit={handleSubmit} noValidate>
-        {/* ID para ALTER y DELETE */}
         {(isAlter || isDelete) && (
           <TextField
-            fullWidth
             label="ID de Usuario"
             name="Id_User"
-            value={formData.Id_User}
+            value={form.Id_User}
             onChange={handleChange}
-            margin="normal"
+            error={!!errors.Id_User}
+            helperText={errors.Id_User}
             required
           />
         )}
 
-        {/* CREATE / ALTER campos */}
         {(isCreate || isAlter) && (
           <>
             <TextField
-              fullWidth
               label="ID País"
-              name={isCreate ? 'Id_Country' : 'Id_Country'}
-              value={formData.Id_Country}
+              name="Id_Country"
+              value={form.Id_Country}
               onChange={handleChange}
-              margin="normal"
-              required={isCreate}
-              disabled={isDelete}
+              error={!!errors.Id_Country}
+              helperText={errors.Id_Country}
+              required
             />
             <TextField
-              fullWidth
               label="ID Rol"
-              name={isCreate ? 'Id_Rol' : 'Id_Rol'}
-              value={formData.Id_Rol}
+              name="Id_Rol"
+              value={form.Id_Rol}
               onChange={handleChange}
-              margin="normal"
-              required={isCreate}
-              disabled={isDelete}
+              error={!!errors.Id_Rol}
+              helperText={errors.Id_Rol}
+              required
             />
             <TextField
-              fullWidth
               label="Nombre completo"
               name="Fullname"
-              value={formData.Fullname}
+              value={form.Fullname}
               onChange={handleChange}
-              margin="normal"
-              required={isCreate}
-              disabled={isDelete}
+              error={!!errors.Fullname}
+              helperText={errors.Fullname}
+              required
             />
             {isCreate && (
               <TextField
-                fullWidth
                 label="Contraseña"
                 name="Passcode"
                 type="password"
-                value={formData.Passcode}
+                value={form.Passcode}
                 onChange={handleChange}
-                margin="normal"
+                error={!!errors.Passcode}
+                helperText={errors.Passcode}
                 required
               />
             )}
             <TextField
-              fullWidth
               label="Alias"
               name="Alias"
-              value={formData.Alias}
+              value={form.Alias}
               onChange={handleChange}
-              margin="normal"
-              required={isCreate}
-              disabled={isDelete}
+              error={!!errors.Alias}
+              helperText={errors.Alias}
+              required
             />
             <TextField
-              fullWidth
               label="Email"
               name="Email"
-              value={formData.Email}
-              onChange={handleChange}
-              margin="normal"
               type="email"
-              required={isCreate}
-              disabled={isDelete}
+              value={form.Email}
+              onChange={handleChange}
+              error={!!errors.Email}
+              helperText={errors.Email}
+              required
             />
             <TextField
-              fullWidth
               label="Avatar URL"
               name="Avatar_Url"
-              value={formData.Avatar_Url}
+              value={form.Avatar_Url}
               onChange={handleChange}
-              margin="normal"
-              required={isCreate}
-              disabled={isDelete}
+              error={!!errors.Avatar_Url}
+              helperText={errors.Avatar_Url}
+              required
             />
           </>
         )}
 
         <Button type="submit" variant="contained" fullWidth sx={{ mt: 2 }}>
-          {action === 'CREATE' ? 'Crear' : action === 'ALTER' ? 'Modificar' : 'Eliminar'}
+          {action === 'CREATE'
+            ? 'Crear'
+            : action === 'ALTER'
+            ? 'Modificar'
+            : 'Eliminar'}
         </Button>
       </Box>
 
       <Snackbar
-        open={snackbarOpen}
+        open={open}
         autoHideDuration={3000}
-        onClose={handleCloseSnackbar}
+        onClose={closeSnackbar}
         anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
       >
-        <Alert severity="success" onClose={handleCloseSnackbar}>
+        <Alert severity="success" onClose={closeSnackbar}>
           ¡Acción {action} ejecutada exitosamente!
         </Alert>
       </Snackbar>

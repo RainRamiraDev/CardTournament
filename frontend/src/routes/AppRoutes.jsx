@@ -2,7 +2,7 @@ import { Routes, Route } from "react-router-dom";
 import LogInForm from '../components/LogInForm';
 import Error404 from "../components/ui/Error404";
 import ProtectedRoutes from './ProtectedRoutes';
-import Menu from '../components/Menu';
+import Menu from '../components/ui/menu/Menu';
 import CrudUsuarioView from '../views/CrudUsuarioView';
 
 const AppRoutes = () => {

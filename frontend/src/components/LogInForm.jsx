@@ -1,57 +1,41 @@
-import React, { useState } from 'react';
-import { Box, Typography, Paper, Snackbar, Alert } from '@mui/material';
+// src/components/LogInForm.jsx
+import React from 'react';
+import { Box, Typography, Paper } from '@mui/material';
 import TextField from './ui/TextField.jsx';
 import Button from './ui/Button.jsx';
 import LogInService from '../services/logInService.js';
 import { useNavigate } from 'react-router-dom';
-
 import { useDispatch } from 'react-redux';
 import { login } from '../store/authSlice';
+import { useForm } from '../hooks/useForm.js';
+import { validateForm } from '../utils/validateForm.js';
 
 const LogInForm = () => {
-   const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [form, setForm] = useState({ fullname: '', passcode: '' });
-  const [errors, setErrors] = useState({});
-  const [openSnackbar, setOpenSnackbar] = useState(false);
 
-  const handleChange = e => setForm({ ...form, [e.target.name]: e.target.value });
+  const {
+  form,
+  errors,
+  handleChange,
+  validate,
+  setErrors,
+} = useForm({ fullname: '', passcode: '' }, validateForm);
 
-  const validate = () => {
-    const newErrors = {};
-    const fullnameRegex = /^[A-Za-zÁÉÍÓÚÑáéíóúñ\s]+$/;
-    if (!form.fullname.trim()) {
-      newErrors.fullname = 'El nombre completo es requerido';
-    }
-    const passcodeRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{3,}$/;
-    if (!form.passcode) {
-      newErrors.passcode = 'La contraseña es requerida';
-    }
-    return newErrors;
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     const validationErrors = validate();
-    if (Object.keys(validationErrors).length > 0) {
-      setErrors(validationErrors);
-    } else {
-      try {
-        const resultado = await LogInService(form.fullname, form.passcode);
-        console.log('Login exitoso:', resultado);
-        setErrors({});
-        // Navega pasando estado para mostrar Snackbar en la siguiente página
-        dispatch(login()); // marca como autenticado
-        navigate('/menu', { state: { fromLogin: true } });
-      } catch (error) {
-        setErrors({ general: error.message });
-      }
-    }
-  };
+    if (Object.keys(validationErrors).length > 0) return;
 
-  const handleCloseSnackbar = (event, reason) => {
-    if (reason === 'clickaway') return;
-    setOpenSnackbar(false);
+    try {
+      const resultado = await LogInService(form.fullname, form.passcode);
+      console.log('Login exitoso:', resultado);
+      dispatch(login());
+      navigate('/menu', { state: { fromLogin: true } });
+    } catch (error) {
+      setErrors({ general: error.message });
+    }
   };
 
   return (
@@ -87,8 +71,6 @@ const LogInForm = () => {
           <Button type="submit">Ingresar</Button>
         </form>
       </Paper>
-
-      {/* Este Snackbar no es necesario porque el mensaje se mostrará en /menu */}
     </Box>
   );
 };

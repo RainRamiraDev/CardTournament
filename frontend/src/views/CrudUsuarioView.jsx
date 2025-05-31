@@ -1,6 +1,6 @@
 import React from 'react';
 import { Box, CssBaseline } from '@mui/material';
-import Menu from '../components/Menu'; // Asegurate de que el path sea correcto
+import Menu from '../components/ui/menu/Menu'; // Asegurate de que el path sea correcto
 import UserCrudForm from '../components/CrudUsuarioForm'; // Componente del formulario
 
 const CrudUsuarioView = () => {
