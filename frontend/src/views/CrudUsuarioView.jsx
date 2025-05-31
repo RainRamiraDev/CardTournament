@@ -5,11 +5,21 @@ import UserCrudForm from '../components/CrudUsuarioForm'; // Componente del form
 
 const CrudUsuarioView = () => {
   return (
-    <Box sx={{ display: 'flex' }}>
+    <Box sx={{ display: 'flex', height: '100vh' }}>
       <CssBaseline />
       <Menu />
 
-      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+      <Box
+        component="main"
+        sx={{
+          flexGrow: 1,
+          p: 3,
+          display: 'flex',
+          justifyContent: 'center', // centra horizontalmente el contenido dentro de main
+          alignItems: 'center', // centra verticalmente el contenido dentro de main
+          height: '100vh',
+        }}
+      >
         <UserCrudForm />
       </Box>
     </Box>
@@ -17,3 +27,4 @@ const CrudUsuarioView = () => {
 };
 
 export default CrudUsuarioView;
+

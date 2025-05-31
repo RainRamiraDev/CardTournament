@@ -3,45 +3,83 @@ import { createTheme } from '@mui/material/styles';
 
 const theme = createTheme({
   palette: {
-    mode: 'dark', // 🌓 Estilo nocturno elegante
+    mode: 'dark',
     primary: {
-      main: '#D4AF37', // dorado para botones clave
+      main: '#00BFFF', // azul brillante, tipo cristales mágicos
+      contrastText: '#FFFFFF',
     },
     secondary: {
-      main: '#C62828', // rojo intenso
+      main: '#FFB347', // naranja cálido, luz de fuego
+      contrastText: '#1B1B1B',
     },
     background: {
-      default: '#1B1B1B', // fondo tipo mesa
-      paper: '#2E2E2E',   // cartas o componentes
+      default: '#121212',  // fondo oscuro neutro
+      paper: '#1E1E2F',    // cartas o paneles con un azul muy oscuro
     },
     text: {
-      primary: '#ffffff',
-      secondary: '#BDBDBD',
+      primary: '#E0E0E0',
+      secondary: '#A0A0A0',
+      disabled: '#555555',
+    },
+    error: {
+      main: '#F44336',
+    },
+    warning: {
+      main: '#FF9800',
+    },
+    info: {
+      main: '#2196F3',
+    },
+    success: {
+      main: '#4CAF50',
     },
   },
+
   typography: {
-    fontFamily: `'Cinzel', 'Georgia', serif`, // estilo clásico de cartas
+    fontFamily: `'Cinzel Decorative', serif`,
     h1: {
-      fontWeight: 700,
+      fontWeight: 800,
       letterSpacing: '2px',
+      color: '#00BFFF',
+      textShadow: '0 0 8px #00BFFF',
+    },
+    h2: {
+      fontWeight: 700,
+      letterSpacing: '1.5px',
+      color: '#FFB347',
+      textShadow: '0 0 6px #FFB347',
     },
     button: {
       textTransform: 'uppercase',
-      fontWeight: 'bold',
-      letterSpacing: '1px',
+      fontWeight: 700,
+      letterSpacing: '1.2px',
+      fontSize: '0.9rem',
+      color: '#1B1B1B',
+      textShadow: '1px 1px 2px rgba(0,0,0,0.8)',
     },
   },
+
   components: {
     MuiButton: {
       styleOverrides: {
         root: {
-          borderRadius: 12,
-          padding: '10px 20px',
-          boxShadow: '0 4px 12px rgba(0,0,0,0.3)',
+          borderRadius: 10,
+          padding: '10px 25px',
+          backgroundImage:
+            'linear-gradient(45deg, #00BFFF 0%, #0077B6 100%)',
+          boxShadow: '0 4px 15px rgba(0,191,255,0.6)',
           transition: 'all 0.3s ease',
+          fontWeight: 700,
           '&:hover': {
+            backgroundImage:
+              'linear-gradient(45deg, #33CCFF 0%, #0099CC 100%)',
+            boxShadow: '0 6px 20px rgba(51,204,255,0.9)',
             transform: 'scale(1.05)',
-            boxShadow: '0 6px 18px rgba(0,0,0,0.5)',
+          },
+          '&:disabled': {
+            backgroundColor: '#555555',
+            boxShadow: 'none',
+            color: '#aaa',
           },
         },
       },
@@ -49,22 +87,61 @@ const theme = createTheme({
     MuiPaper: {
       styleOverrides: {
         root: {
-          borderRadius: 16,
-          padding: '1rem',
-          backgroundImage: 'linear-gradient(145deg, #2e2e2e, #252525)',
-          boxShadow: '0 4px 12px rgba(0,0,0,0.4)',
+          borderRadius: 15,
+          backgroundImage:
+            'radial-gradient(circle at center, #1E1E2F, #12121E 90%)',
+          boxShadow:
+            '0 8px 25px rgba(0,0,0,0.8), inset 0 0 10px #00BFFF',
+          padding: '1.5rem',
+          border: '1.5px solid #00BFFF',
+          color: '#E0E0E0',
         },
       },
     },
     MuiCard: {
       styleOverrides: {
         root: {
-          borderRadius: 16,
-          backgroundColor: '#333',
-          border: '2px solid #D4AF37',
+          borderRadius: 14,
+          backgroundColor: '#27354B',
+          border: '2px solid #00BFFF',
+          boxShadow:
+            '0 0 12px 3px rgba(0,191,255,0.7), 0 6px 20px rgba(0,0,0,0.9)',
+          transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+          '&:hover': {
+            transform: 'scale(1.04)',
+            boxShadow:
+              '0 0 20px 5px #33CCFF, 0 10px 30px rgba(0,0,0,1)',
+          },
         },
       },
     },
+     MuiCssBaseline: {
+      styleOverrides: {
+        body: {
+          backgroundImage: `url('https://plus.unsplash.com/premium_photo-1699967711142-bc002e47990c?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')`,
+          backgroundRepeat: 'repeat',
+          backgroundSize: 'auto',
+          backgroundPosition: 'center',
+          // opcional: efecto de opacidad o filtro
+          
+        },
+      },
+    },
+    MuiSnackbar: {
+      styleOverrides: {
+        root: {
+          '& .MuiAlert-root': {
+            borderRadius: 10,
+            backgroundColor: '#FFB347',
+            color: '#FFB347',
+            fontWeight: 'bold',
+            boxShadow: '0 0 10px #FFB347',
+            textShadow: '0 0 3px rgba(0,0,0,0.7)',
+          },
+        },
+      },
+    },
+    
   },
 });
 
