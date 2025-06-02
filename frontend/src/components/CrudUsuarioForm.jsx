@@ -14,46 +14,75 @@ import Button from './ui/Button';
 import TextField from './ui/TextField';
 import { useSnackbar } from '../hooks/useSnackbar';
 import { useForm } from '../hooks/useForm';
+import { createUser, alterUser, deactivateUser } from '../services/userService';
 
-const initialForm = {
-  Id_User: '',
-  Id_Country: '',
-  Id_Rol: '',
-  Fullname: '',
-  Passcode: '',
-  Alias: '',
-  Email: '',
-  Avatar_Url: '',
-};
+  const initialForm = {
+    Id_User: '',
+    Id_Country: '',
+    Id_Rol: '',
+    Fullname: '',
+    Passcode: '',
+    Alias: '',
+    Email: '',
+    Avatar_Url: '',
+  };
 
-const CrudUsuarioForm = () => {
-   const [action, setAction] = useState('CREATE');
+export const CrudUsuarioForm = () => {
+  const [action, setAction] = useState('CREATE');
   const { open, showSnackbar, closeSnackbar } = useSnackbar();
 
   // Pasamos action al hook useForm para que la validación sea acorde
   const { form, errors, handleChange, validate, setForm, setErrors, resetForm } = useForm(initialForm, action);
 
-  const handleActionChange = (e) => {
-    setAction(e.target.value);
-    resetForm();
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (!validate()) {
-      console.log('Errores de validación:', errors);
-      return;
-    }
-
-    console.log('Acción:', action);
-    console.log('Datos:', form);
-    showSnackbar();
-  };
-
-
   const isCreate = action === 'CREATE';
   const isAlter = action === 'ALTER';
   const isDelete = action === 'DELETE';
+
+
+  const handleActionChange = (e) => {
+    setAction(e.target.value)
+    resetForm();
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!validate()) {
+      console.log('Errores de validación:', errors)
+    }
+
+    try {
+    if (action === 'CREATE') {
+      await createUser(
+        form.Id_Country,
+        form.Id_Rol,
+        form.Passcode,
+        form.Fullname,
+        form.Alias,
+        form.Email,
+        form.Avatar_Url
+      );
+    } else if (action === 'ALTER') {
+      await alterUser(
+        form.Id_User,
+        form.Id_Country,
+        form.Id_Rol,
+        form.Fullname,
+        form.Alias,
+        form.Email,
+        form.Avatar_Url
+      );
+    } else if (action === 'DELETE') {
+      await deactivateUser(form.Id_User)
+    }
+
+    console.log('Acción:', action)
+    console.log('Datos:', form)
+    showSnackbar();
+  }
+  catch (error) {
+    console.error('Error al ejecutar la acción:', error)
+  }
+
 
   return (
     <Paper elevation={3} sx={{ p: 4, maxWidth: 500, mx: 'auto' }}>
@@ -176,6 +205,5 @@ const CrudUsuarioForm = () => {
       </Snackbar>
     </Paper>
   );
-};
+}
 
-export default CrudUsuarioForm;

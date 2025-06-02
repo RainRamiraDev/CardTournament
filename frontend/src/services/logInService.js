@@ -1,20 +1,23 @@
-// src/services/LoginService.js
 import axios from 'axios';
+import { handleAxiosError } from '../utils/handleAxiosError';
 
-export async function logInService(Fullname, Passcode) {
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
+
+
+
+// Ejemplo de uso
+export async function logInUser(Fullname, Passcode) {
   try {
-    const response = await axios.post('http://localhost:7276/Api/LogIn/Login', {
+    const response = await axios.post(`${API_BASE_URL}/LogIn/LogIn`, {
       Fullname,
       Passcode,
     });
-    return response.data; // datos devueltos por el backend
+    return response.data;
   } catch (error) {
-    if (error.response) {
-      throw new Error(error.response.data.message || 'Error en el login');
-    } else {
-      throw new Error('No se pudo conectar con el servidor');
-    }
+    handleAxiosError()(error, 'Error al iniciar sesión');
   }
 }
 
-export default logInService;
+
+

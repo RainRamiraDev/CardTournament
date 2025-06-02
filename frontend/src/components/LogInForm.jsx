@@ -3,7 +3,9 @@ import React from 'react';
 import { Box, Typography, Paper } from '@mui/material';
 import TextField from './ui/TextField.jsx';
 import Button from './ui/Button.jsx';
-import LogInService from '../services/logInService.js';
+
+import {logInUser} from '../services/logInService.js';
+
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { login } from '../store/authSlice';
@@ -29,7 +31,7 @@ const LogInForm = () => {
     if (Object.keys(validationErrors).length > 0) return;
 
     try {
-      const resultado = await LogInService(form.fullname, form.passcode);
+      const resultado = await logInUser(form.fullname, form.passcode);
       console.log('Login exitoso:', resultado);
       dispatch(login());
       navigate('/menu', { state: { fromLogin: true } });

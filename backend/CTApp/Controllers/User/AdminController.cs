@@ -45,7 +45,7 @@ namespace CTApp.Controllers.User
             return Created(string.Empty, response);
         }
 
-        [Authorize(Roles = "2,1,3,4")]
+       // [Authorize(Roles = "2,1,3,4")]
         [HttpPut("AlterUser")]
         public async Task<IActionResult> AlterUser([FromBody] AlterUserDto userDto)
         {
