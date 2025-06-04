@@ -143,6 +143,17 @@ namespace CTService.Implementation.User
             }).ToList();
         }
 
+        public async Task<IEnumerable<RolesListDto>> GetAllRolesAsync()
+        {
+            var roleModels = await _userDao.GetAllRolesAsync();
+
+            return roleModels.Select(role => new RolesListDto
+            {
+                Id_rol = role.Id_rol,
+                rol = role.rol
+            }).ToList();
+        }
+
         public async Task<int>CreateUserAsync(UserCreationDto userDto)
         {
 
@@ -267,6 +278,8 @@ namespace CTService.Implementation.User
             await ValidateUserRol(user.Id_Rol);
             await _userDao.SoftDeleteUserAsync(userDto.Id_User);
         }
+
+        
     }
 }
 

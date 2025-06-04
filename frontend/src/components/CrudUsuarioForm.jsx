@@ -108,126 +108,154 @@ export const CrudUsuarioForm = () => {
 
 
   return (
-    <Paper elevation={3} sx={{ p: 4, maxWidth: 500, mx: 'auto' }}>
-      <Typography variant="h6" gutterBottom>
-        Gestión de Usuario ({action})
-      </Typography>
+  <Paper elevation={3} sx={{ p: 4, maxWidth: 500, mx: 'auto' }}>
+    <Typography variant="h6" gutterBottom>
+      Gestión de Usuario ({action})
+    </Typography>
 
-      <FormControl fullWidth sx={{ mb: 3 }}>
-        <InputLabel>Acción</InputLabel>
-        <Select value={action} label="Acción" onChange={handleActionChange}>
-          <MenuItem value="CREATE">Crear</MenuItem>
-          <MenuItem value="ALTER">Modificar</MenuItem>
-          <MenuItem value="DELETE">Eliminar</MenuItem>
-        </Select>
-      </FormControl>
+    <FormControl fullWidth sx={{ mb: 3 }}>
+      <InputLabel>Acción</InputLabel>
+      <Select value={action} label="Acción" onChange={handleActionChange}>
+        <MenuItem value="CREATE">Crear</MenuItem>
+        <MenuItem value="ALTER">Modificar</MenuItem>
+        <MenuItem value="DELETE">Eliminar</MenuItem>
+      </Select>
+    </FormControl>
 
-      <Box component="form" onSubmit={handleSubmit} noValidate>
-        {(isAlter || isDelete) && (
+    <Box component="form" onSubmit={handleSubmit} noValidate>
+      {(isAlter || isDelete) && (
+        <PerTextField
+          label="ID de Usuario"
+          name="Id_User"
+          value={form.Id_User}
+          onChange={handleChange}
+          error={!!errors.Id_User}
+          helperText={errors.Id_User}
+          required
+        />
+      )}
+
+      {(isCreate || isAlter) && (
+        <>
+          <FormControl fullWidth sx={{ mb: 3 }} error={!!errors.Id_Country}>
+              <InputLabel id="label-pais">País</InputLabel>
+                <Select
+                  labelId="label-pais"
+                  name="Id_Country"
+                  value={form.Id_Country || ''}
+                  onChange={handleChange}
+                  label="País"
+                  required
+                >
+                  {countries?.map((pais) => (
+                    <MenuItem key={pais.id_country} value={pais.id_country}>
+                      {pais.country_name}
+                    </MenuItem>
+                  ))}
+                </Select>
+              {errors.Id_Country && (
+                <FormHelperText>{errors.Id_Country}</FormHelperText>
+              )}
+          </FormControl>
+
+
+          {/* Select Rol */}
+         <FormControl fullWidth sx={{ mb: 2 }} error={!!errors.Id_Rol}>
+            <InputLabel id="rol-label">Rol</InputLabel>
+              <Select
+                labelId="rol-label"
+                name="Id_Rol"
+                value={form.Id_Rol || ''}
+                onChange={handleChange}
+                label="Rol"
+                required
+              >
+                {roles?.map((rol) => (
+                  <MenuItem key={rol.id_rol} value={rol.id_rol}>
+                    {rol.rol}
+                  </MenuItem>
+                ))}
+              </Select>
+            {errors.Id_Rol && (
+              <FormHelperText>{errors.Id_Rol}</FormHelperText>
+            )}
+        </FormControl>
+
+
+
           <PerTextField
-            label="ID de Usuario"
-            name="Id_User"
-            value={form.Id_User}
+            label="Nombre completo"
+            name="Fullname"
+            value={form.Fullname}
             onChange={handleChange}
-            error={!!errors.Id_User}
-            helperText={errors.Id_User}
+            error={!!errors.Fullname}
+            helperText={errors.Fullname}
             required
           />
-        )}
+          {isCreate && (
+            <PerTextField
+              label="Contraseña"
+              name="Passcode"
+              type="password"
+              value={form.Passcode}
+              onChange={handleChange}
+              error={!!errors.Passcode}
+              helperText={errors.Passcode}
+              required
+            />
+          )}
+          <PerTextField
+            label="Alias"
+            name="Alias"
+            value={form.Alias}
+            onChange={handleChange}
+            error={!!errors.Alias}
+            helperText={errors.Alias}
+            required
+          />
+          <PerTextField
+            label="Email"
+            name="Email"
+            type="email"
+            value={form.Email}
+            onChange={handleChange}
+            error={!!errors.Email}
+            helperText={errors.Email}
+            required
+          />
+          <PerTextField
+            label="Avatar URL"
+            name="Avatar_Url"
+            value={form.Avatar_Url}
+            onChange={handleChange}
+            error={!!errors.Avatar_Url}
+            helperText={errors.Avatar_Url}
+            required
+          />
+        </>
+      )}
 
-        {(isCreate || isAlter) && (
-          <>
-            <Select
-              label="País"
-              name="Id_Country"
-              value={form.Id_Country}
-              onChange={handleChange}
-              error={!!errors.Id_Country}
-              helperText={errors.Id_Country}
-              required
-            />
-            <Select
-              label="Rol"
-              name="Id_Rol"
-              value={form.Id_Rol}
-              onChange={handleChange}
-              error={!!errors.Id_Rol}
-              helperText={errors.Id_Rol}
-              required
-            />
-            <PerTextField
-              label="Nombre completo"
-              name="Fullname"
-              value={form.Fullname}
-              onChange={handleChange}
-              error={!!errors.Fullname}
-              helperText={errors.Fullname}
-              required
-            />
-            {isCreate && (
-              <PerTextField
-                label="Contraseña"
-                name="Passcode"
-                type="password"
-                value={form.Passcode}
-                onChange={handleChange}
-                error={!!errors.Passcode}
-                helperText={errors.Passcode}
-                required
-              />
-            )}
-            <PerTextField
-              label="Alias"
-              name="Alias"
-              value={form.Alias}
-              onChange={handleChange}
-              error={!!errors.Alias}
-              helperText={errors.Alias}
-              required
-            />
-            <PerTextField
-              label="Email"
-              name="Email"
-              type="email"
-              value={form.Email}
-              onChange={handleChange}
-              error={!!errors.Email}
-              helperText={errors.Email}
-              required
-            />
-            <PerTextField
-              label="Avatar URL"
-              name="Avatar_Url"
-              value={form.Avatar_Url}
-              onChange={handleChange}
-              error={!!errors.Avatar_Url}
-              helperText={errors.Avatar_Url}
-              required
-            />
-          </>
-        )}
+      <PerButton type="submit" variant="contained" fullWidth sx={{ mt: 2 }}>
+        {action === 'CREATE'
+          ? 'Crear'
+          : action === 'ALTER'
+          ? 'Modificar'
+          : 'Eliminar'}
+      </PerButton>
+    </Box>
 
-        <PerButton type="submit" variant="contained" fullWidth sx={{ mt: 2 }}>
-          {action === 'CREATE'
-            ? 'Crear'
-            : action === 'ALTER'
-            ? 'Modificar'
-            : 'Eliminar'}
-        </PerButton>
-      </Box>
-
-      <Snackbar
-        open={open}
-        autoHideDuration={3000}
-        onClose={closeSnackbar}
-        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-      >
-        <Alert severity="success" onClose={closeSnackbar}>
-          ¡Acción {action} ejecutada exitosamente!
-        </Alert>
-      </Snackbar>
-    </Paper>
-  );
+    <Snackbar
+      open={open}
+      autoHideDuration={3000}
+      onClose={closeSnackbar}
+      anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+    >
+      <Alert severity="success" onClose={closeSnackbar}>
+        ¡Acción {action} ejecutada exitosamente!
+      </Alert>
+    </Snackbar>
+  </Paper>
+);
 }
 
 export default CrudUsuarioForm;

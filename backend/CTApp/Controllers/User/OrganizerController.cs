@@ -45,12 +45,19 @@ namespace CTApp.Controllers.User
         }
 
 
-        [Authorize(Roles = "2,1,3,4")]
+        //[Authorize(Roles = "2,1,3,4")]
         [HttpGet("GetCountries")]
         public async Task<IActionResult> GetCountries()
         {
             var countries = await _userService.GetAllCountriesAsync();
             return Ok(ApiResponse<IEnumerable<CountriesListDto>>.SuccessResponse("Paises obtenidos exitosamente.", countries));
+        }
+
+        [HttpGet("GetRoles")]
+        public async Task<IActionResult> GetRoles()
+        {
+            var roles = await _userService.GetAllRolesAsync();
+            return Ok(ApiResponse<IEnumerable<RolesListDto>>.SuccessResponse("Roles obtenidos exitosamente.", roles));
         }
 
 

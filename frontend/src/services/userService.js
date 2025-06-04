@@ -56,8 +56,8 @@ export async function deactivateUser(Id_User) {
 // Obtener países
 export async function getCountries() {
   try {
-    const response = await api.get('/Admin/GetCountries');
-    return response.data;
+    const response = await api.get('/Organizer/GetCountries');
+    return response.data.data; // 👈 devolvés solo el array
   } catch (error) {
     handleAxiosError(error, 'obtener los países');
   }
@@ -66,10 +66,11 @@ export async function getCountries() {
 // Obtener roles
 export async function getRoles() {
   try {
-    const response = await api.get('/Admin/GetRoles');
-    return response.data;
+    const response = await api.get('/Organizer/GetRoles');
+    return response.data.data; // 👈 devolvés solo el array
   } catch (error) {
-    handleAxiosError(error, 'obtener los roles');
+    handleAxiosError(error, 'Error al obtener roles');
   }
 }
+
 

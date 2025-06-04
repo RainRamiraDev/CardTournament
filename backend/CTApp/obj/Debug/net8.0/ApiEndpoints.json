@@ -233,6 +233,16 @@
   },
   {
     "ContainingType": "CTApp.Controllers.User.OrganizerController",
+    "Method": "GetRoles",
+    "RelativePath": "api/Organizer/GetRoles",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CTApp.Controllers.User.OrganizerController",
     "Method": "GetSeries",
     "RelativePath": "api/Organizer/GetSeries",
     "HttpMethod": "GET",

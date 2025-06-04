@@ -69,6 +69,11 @@
 
 
   "QueryGetAllCountries": "SELECT country_name, id_country FROM t_countries WHERE country_name IS NOT NULL ORDER BY country_name asc;",
+
+  "QueryGetAllRoles": "SELECT id_rol,rol FROM t_roles",
+
+
+
   "QueryValidateSeries": "SELECT id_series FROM t_series WHERE id_series IN @id_series;",
   "QueryValidateTournamentPlayers": "SELECT id_player FROM t_tourn_players WHERE id_tournament = @id_tournament AND id_player = @id_player;",
 

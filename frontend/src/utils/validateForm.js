@@ -29,11 +29,11 @@ function validateUserId(form, action) {
 function validateUserFields(form, action) {
   const errors = {};
 
-  if (!form.Id_Country?.trim()) {
+  if (!form.Id_Country && form.Id_Country !== 0) {
     errors.Id_Country = 'El ID del país es requerido';
   }
 
-  if (!form.Id_Rol?.trim()) {
+  if (!form.Id_Rol && form.Id_Rol !== 0) {
     errors.Id_Rol = 'El ID del rol es requerido';
   }
 
@@ -43,13 +43,15 @@ function validateUserFields(form, action) {
     errors.Fullname = 'El nombre contiene caracteres inválidos';
   }
 
-  if (action === 'CREATE') {
-    if (!form.Passcode?.trim()) {
-      errors.Passcode = 'La contraseña es requerida';
-    } else if (!passcodeRegex.test(form.Passcode)) {
-      errors.Passcode = 'Debe tener al menos 3 caracteres, incluyendo letras y números';
-    }
+ if (action === 'CREATE') {
+  const passcode = form.Passcode ?? ''; // si es null o undefined, lo convierte en string vacío
+  if (!passcode.trim()) {
+    errors.Passcode = 'La contraseña es requerida';
+  } else if (!passcodeRegex.test(passcode)) {
+    errors.Passcode = 'Debe tener al menos 3 caracteres, incluyendo letras y números';
   }
+}
+
 
   if (!form.Alias?.trim()) {
     errors.Alias = 'El alias es requerido';
