@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Box,
   Typography,
@@ -10,11 +10,11 @@ import {
   InputLabel,
   FormControl,
 } from '@mui/material';
-import Button from './ui/Button';
-import TextField from './ui/TextField';
+import PerButton from './ui/PerButton';
+import PerTextField from './ui/PerTextField';
 import { useSnackbar } from '../hooks/useSnackbar';
 import { useForm } from '../hooks/useForm';
-import { createUser, alterUser, deactivateUser } from '../services/userService';
+import { createUser, alterUser, deactivateUser, getCountries, getRoles } from '../services/userService';
 
   const initialForm = {
     Id_User: '',
@@ -30,6 +30,27 @@ import { createUser, alterUser, deactivateUser } from '../services/userService';
 export const CrudUsuarioForm = () => {
   const [action, setAction] = useState('CREATE');
   const { open, showSnackbar, closeSnackbar } = useSnackbar();
+  const [countries, setCountries] = useState([]);
+  const [roles, setRoles] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const paises = await getCountries();
+        const roles = await getRoles();
+        setCountries(paises);
+        setRoles(roles);
+      } catch (error) {
+        console.error('Error cargando datos:', error.message);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+
+
+
 
   // Pasamos action al hook useForm para que la validación sea acorde
   const { form, errors, handleChange, validate, setForm, setErrors, resetForm } = useForm(initialForm, action);
@@ -48,6 +69,7 @@ export const CrudUsuarioForm = () => {
     e.preventDefault();
     if (!validate()) {
       console.log('Errores de validación:', errors)
+      return; 
     }
 
     try {
@@ -82,6 +104,7 @@ export const CrudUsuarioForm = () => {
   catch (error) {
     console.error('Error al ejecutar la acción:', error)
   }
+}
 
 
   return (
@@ -101,7 +124,7 @@ export const CrudUsuarioForm = () => {
 
       <Box component="form" onSubmit={handleSubmit} noValidate>
         {(isAlter || isDelete) && (
-          <TextField
+          <PerTextField
             label="ID de Usuario"
             name="Id_User"
             value={form.Id_User}
@@ -114,8 +137,8 @@ export const CrudUsuarioForm = () => {
 
         {(isCreate || isAlter) && (
           <>
-            <TextField
-              label="ID País"
+            <Select
+              label="País"
               name="Id_Country"
               value={form.Id_Country}
               onChange={handleChange}
@@ -123,8 +146,8 @@ export const CrudUsuarioForm = () => {
               helperText={errors.Id_Country}
               required
             />
-            <TextField
-              label="ID Rol"
+            <Select
+              label="Rol"
               name="Id_Rol"
               value={form.Id_Rol}
               onChange={handleChange}
@@ -132,7 +155,7 @@ export const CrudUsuarioForm = () => {
               helperText={errors.Id_Rol}
               required
             />
-            <TextField
+            <PerTextField
               label="Nombre completo"
               name="Fullname"
               value={form.Fullname}
@@ -142,7 +165,7 @@ export const CrudUsuarioForm = () => {
               required
             />
             {isCreate && (
-              <TextField
+              <PerTextField
                 label="Contraseña"
                 name="Passcode"
                 type="password"
@@ -153,7 +176,7 @@ export const CrudUsuarioForm = () => {
                 required
               />
             )}
-            <TextField
+            <PerTextField
               label="Alias"
               name="Alias"
               value={form.Alias}
@@ -162,7 +185,7 @@ export const CrudUsuarioForm = () => {
               helperText={errors.Alias}
               required
             />
-            <TextField
+            <PerTextField
               label="Email"
               name="Email"
               type="email"
@@ -172,7 +195,7 @@ export const CrudUsuarioForm = () => {
               helperText={errors.Email}
               required
             />
-            <TextField
+            <PerTextField
               label="Avatar URL"
               name="Avatar_Url"
               value={form.Avatar_Url}
@@ -184,13 +207,13 @@ export const CrudUsuarioForm = () => {
           </>
         )}
 
-        <Button type="submit" variant="contained" fullWidth sx={{ mt: 2 }}>
+        <PerButton type="submit" variant="contained" fullWidth sx={{ mt: 2 }}>
           {action === 'CREATE'
             ? 'Crear'
             : action === 'ALTER'
             ? 'Modificar'
             : 'Eliminar'}
-        </Button>
+        </PerButton>
       </Box>
 
       <Snackbar
@@ -207,3 +230,4 @@ export const CrudUsuarioForm = () => {
   );
 }
 
+export default CrudUsuarioForm;

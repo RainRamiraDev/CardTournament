@@ -1,7 +1,7 @@
 import React from 'react';
 import { Box, Typography} from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import Button from '../ui/Button';
+import PerButton from './PerButton';
 
 const Error404 = () => {
   const navigate = useNavigate();
@@ -29,9 +29,9 @@ const Error404 = () => {
       <Typography variant="body1" gutterBottom>
         Lo sentimos, la página que estás buscando no existe.
       </Typography>
-      <Button variant="contained" color="primary" onClick={handleGoHome}>
+      <PerButton variant="contained" color="primary" onClick={handleGoHome}>
         Ir al inicio
-      </Button>
+      </PerButton>
     </Box>
   );
 };

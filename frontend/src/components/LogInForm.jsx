@@ -1,8 +1,8 @@
 // src/components/LogInForm.jsx
 import React from 'react';
 import { Box, Typography, Paper } from '@mui/material';
-import TextField from './ui/TextField.jsx';
-import Button from './ui/Button.jsx';
+import PerTextField from './ui/PerTextField.jsx';
+import PerButton from './ui/PerButton.jsx';
 
 import {logInUser} from '../services/logInService.js';
 
@@ -28,7 +28,8 @@ const LogInForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const validationErrors = validate();
-    if (Object.keys(validationErrors).length > 0) return;
+    if (Object.keys(validationErrors).length > 0) 
+      return;
 
     try {
       const resultado = await logInUser(form.fullname, form.passcode);
@@ -47,7 +48,7 @@ const LogInForm = () => {
           Iniciar sesión
         </Typography>
         <form onSubmit={handleSubmit} noValidate>
-          <TextField
+          <PerTextField
             label="Nombre completo"
             name="fullname"
             type="text"
@@ -56,7 +57,7 @@ const LogInForm = () => {
             error={Boolean(errors.fullname)}
             helperText={errors.fullname}
           />
-          <TextField
+          <PerTextField
             label="Contraseña"
             name="passcode"
             type="password"
@@ -70,7 +71,7 @@ const LogInForm = () => {
               {errors.general}
             </Typography>
           )}
-          <Button type="submit">Ingresar</Button>
+          <PerButton type="submit">Ingresar</PerButton>
         </form>
       </Paper>
     </Box>

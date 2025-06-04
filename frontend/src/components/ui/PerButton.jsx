@@ -1,7 +1,7 @@
 import React from 'react';
 import { Button as MuiButton } from '@mui/material';
 
-const Button = ({ children, ...props }) => {
+const PerButton = ({ children, ...props }) => {
   return (
     <MuiButton
       variant="contained"
@@ -15,4 +15,4 @@ const Button = ({ children, ...props }) => {
   );
 };
 
-export default Button;
+export default PerButton;

@@ -253,7 +253,7 @@ namespace CTService.Implementation.User
             if (emailsExists)
                 throw new InvalidOperationException("El Email especificado ya está registrado y no puede repetirse.");
 
-            await ValidateUserRol(oldUser.Id_Rol);
+            //await ValidateUserRol(oldUser.Id_Rol);
 
             return response;
         }

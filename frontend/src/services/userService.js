@@ -1,15 +1,13 @@
 import axios from 'axios';
 import { handleAxiosError } from '../utils/handleAxiosError';
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
-
-
+import api from './Api';
 
 
 // Registro
 export async function createUser(Id_Country, Id_Rol, Passcode, Fullname, Alias, Email, Avatar_Url) {
   try {
-    const response = await axios.post(`${API_BASE_URL}/Admin/CreateUser`,{
+    const response = await api.post('/Admin/CreateUser',{
         Id_Country,
         Id_Rol,
         Passcode, 
@@ -27,7 +25,7 @@ export async function createUser(Id_Country, Id_Rol, Passcode, Fullname, Alias, 
 // Modificacion
 export async function alterUser(Id_User, New_IdCountry, New_Id_Rol, New_Fullname, New_Alias, New_Email, New_Avatar_Url) {
   try {
-    const response = await axios.put(`${API_BASE_URL}/Admin/AlterUser`,{
+    const response = await api.put('/Admin/AlterUser',{
       Id_User, 
       New_IdCountry, 
       New_Id_Rol, 
@@ -43,11 +41,10 @@ export async function alterUser(Id_User, New_IdCountry, New_Id_Rol, New_Fullname
 }
 
 // Eliminacion
-// Eliminacion
 export async function deactivateUser(Id_User) {
   try {
-    const response = await axios.delete(
-      `${API_BASE_URL}/Admin/DeactivateUser`,
+    const response = await api.delete(
+      '/Admin/DeactivateUser',
       { data: { Id_User } } // <-- así se envía el body en DELETE
     );
     return response.data;
@@ -55,3 +52,24 @@ export async function deactivateUser(Id_User) {
      handleAxiosError(error, 'desactivar al usuario');
   }
 }
+
+// Obtener países
+export async function getCountries() {
+  try {
+    const response = await api.get('/Admin/GetCountries');
+    return response.data;
+  } catch (error) {
+    handleAxiosError(error, 'obtener los países');
+  }
+}
+
+// Obtener roles
+export async function getRoles() {
+  try {
+    const response = await api.get('/Admin/GetRoles');
+    return response.data;
+  } catch (error) {
+    handleAxiosError(error, 'obtener los roles');
+  }
+}
+

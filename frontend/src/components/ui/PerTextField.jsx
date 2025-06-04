@@ -1,7 +1,7 @@
 import React from 'react';
 import { TextField as MuiTextField } from '@mui/material';
 
-const TextField = ({ label, name, type = 'text', value, onChange, error, helperText }) => {
+const PerTextField = ({ label, name, type = 'text', value, onChange, error, helperText }) => {
   return (
     <MuiTextField
       label={label}
@@ -17,4 +17,4 @@ const TextField = ({ label, name, type = 'text', value, onChange, error, helperT
   );
 };
 
-export default TextField;
+export default PerTextField;

@@ -71,7 +71,7 @@ namespace CTApp.Controllers.User
 
 
 
-        [Authorize(Roles = "1")]
+      //  [Authorize(Roles = "1")]
         [HttpDelete("DeactivateUser")]
         public async Task<IActionResult> DeactivateUser([FromBody] SoftDeleteUserDto userDto)
         {
