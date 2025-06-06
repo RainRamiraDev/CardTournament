@@ -51,6 +51,7 @@
   "QueryGetCardsFromTournamentSeries": "SELECT id_card FROM t_card_series WHERE id_series IN @Id_series AND id_card IN @id_card;",
 
 
+  "GetAllUsers": "SELECT Id_user, Fullname, Id_Rol FROM t_users",
 
 
   "QueryGetCardsByIllustration": "SELECT illustration FROM t_cards WHERE id_card IN @id_card;",

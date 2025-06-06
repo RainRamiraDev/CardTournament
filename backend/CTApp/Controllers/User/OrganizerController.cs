@@ -61,6 +61,8 @@ namespace CTApp.Controllers.User
         }
 
 
+
+
         [Authorize(Roles = "2,1,3,4")]
         [HttpGet("GetSeries")]
         public async Task<IActionResult> GetSeries()

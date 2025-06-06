@@ -64,6 +64,16 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "CTApp.Controllers.User.AdminController",
+    "Method": "GetAllUsers",
+    "RelativePath": "api/Admin/GetAllUsers",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "CTApp.Controllers.GameController",
     "Method": "ResolveGame",
     "RelativePath": "api/Game/resolve",

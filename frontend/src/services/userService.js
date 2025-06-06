@@ -73,4 +73,14 @@ export async function getRoles() {
   }
 }
 
+// Obtener usuarios
+export async function getAllUsers() {
+  try {
+    const response = await api.get('/Admin/GetAllUsers');
+    return response.data.data; // 👈 devolvés solo el array
+  } catch (error) {
+    handleAxiosError(error, 'Error al obtener usuarios');
+  }
+}
+
 

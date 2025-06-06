@@ -101,6 +101,15 @@ namespace CTApp.Controllers.User
 
 
 
+        [HttpGet("GetAllUsers")]
+        public async Task<IActionResult> GetAllUsers()
+        {
+            var users = await _userService.GetAllUsersAsync();
+            return Ok(ApiResponse<IEnumerable<UserListDto>>.SuccessResponse("Usuarios obtenidos exitosamente.", users));
+        }
+
+
+
 
     }
 }

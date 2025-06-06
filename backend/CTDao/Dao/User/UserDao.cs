@@ -92,6 +92,16 @@ namespace CTDao.Dao.User
             }
         }
 
+        public async Task<IEnumerable<UserListModel>> GetAllUsersAsync()
+        {
+            using (var connection = new MySqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+                var users = await connection.QueryAsync<UserListModel>(QueryLoader.GetQuery("GetAllUsers"));
+                return users;
+            }
+        }
+
 
         public async Task<IEnumerable<RolesListModel>> GetAllRolesAsync()
         {

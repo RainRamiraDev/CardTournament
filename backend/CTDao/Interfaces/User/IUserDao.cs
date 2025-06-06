@@ -38,5 +38,6 @@ namespace CTDao.Interfaces.User
 
         Task SoftDeleteUserAsync(int id_user);
         Task<IEnumerable<RolesListModel>> GetAllRolesAsync();
+        Task<IEnumerable<UserListModel>> GetAllUsersAsync();
     }
 }
