@@ -3,14 +3,17 @@
   "WorkspaceRootPath": "C:\\Dev\\Bootcamp\\CardTournament\\backend\\CTApp\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{A8904742-057E-4415-B867-60EE8A95FC92}|..\\CTService\\CTService.csproj|c:\\dev\\bootcamp\\cardtournament\\backend\\ctservice\\implementation\\user\\userservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{B7618BD3-70F2-4885-97AD-F372B59C2CF7}|..\\CTDao\\CTDao.csproj|c:\\dev\\bootcamp\\cardtournament\\backend\\ctdao\\dao\\user\\userdao.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{044F8FA9-5241-4DFD-9606-88BD2C275654}|CTApp.csproj|c:\\dev\\bootcamp\\cardtournament\\backend\\ctapp\\controllers\\user\\admincontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{044F8FA9-5241-4DFD-9606-88BD2C275654}|CTApp.csproj|solutionrelative:controllers\\user\\admincontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{B7618BD3-70F2-4885-97AD-F372B59C2CF7}|..\\CTDao\\CTDao.csproj|c:\\dev\\bootcamp\\cardtournament\\backend\\ctdao\\dao\\user\\userdao.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{A8904742-057E-4415-B867-60EE8A95FC92}|..\\CTService\\CTService.csproj|c:\\dev\\bootcamp\\cardtournament\\backend\\ctservice\\implementation\\user\\userservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9C4A1EFF-F957-47CA-9EAB-FEC2C5050E84}|..\\CTDataModels\\CTDataModels.csproj|c:\\dev\\bootcamp\\cardtournament\\backend\\ctdatamodels\\users\\usermodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{E52D6071-C800-4056-A549-F0081A11F0F0}|..\\DataAccess\\DataAccess.csproj|c:\\dev\\bootcamp\\cardtournament\\backend\\dataaccess\\queries.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
@@ -23,7 +26,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 184,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Document",
@@ -33,7 +36,7 @@
               "RelativeDocumentMoniker": "Controllers\\User\\AdminController.cs",
               "ToolTip": "C:\\Dev\\Bootcamp\\CardTournament\\backend\\CTApp\\Controllers\\User\\AdminController.cs",
               "RelativeToolTip": "Controllers\\User\\AdminController.cs",
-              "ViewState": "AgIAAFYAAAAAAAAAAAAqwGkAAAAIAAAAAAAAAA==",
+              "ViewState": "AgIAACAAAAAAAAAAAAAwwDIAAAAIAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-06-06T05:15:08.039Z",
               "IsPinned": true,
@@ -41,13 +44,13 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 2,
               "Title": "UserService.cs",
               "DocumentMoniker": "C:\\Dev\\Bootcamp\\CardTournament\\backend\\CTService\\Implementation\\User\\UserService.cs",
               "RelativeDocumentMoniker": "..\\CTService\\Implementation\\User\\UserService.cs",
-              "ToolTip": "C:\\Dev\\Bootcamp\\CardTournament\\backend\\CTService\\Implementation\\User\\UserService.cs",
-              "RelativeToolTip": "..\\CTService\\Implementation\\User\\UserService.cs",
-              "ViewState": "AgIAAIYAAAAAAAAAAAAEwJgAAAApAAAAAAAAAA==",
+              "ToolTip": "C:\\Dev\\Bootcamp\\CardTournament\\backend\\CTService\\Implementation\\User\\UserService.cs*",
+              "RelativeToolTip": "..\\CTService\\Implementation\\User\\UserService.cs*",
+              "ViewState": "AgIAAAsBAAAAAAAAAAAwwCUBAAAIAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-06-06T05:20:53.173Z",
               "IsPinned": true,
@@ -55,13 +58,13 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 0,
               "Title": "UserDao.cs",
               "DocumentMoniker": "C:\\Dev\\Bootcamp\\CardTournament\\backend\\CTDao\\Dao\\User\\UserDao.cs",
               "RelativeDocumentMoniker": "..\\CTDao\\Dao\\User\\UserDao.cs",
               "ToolTip": "C:\\Dev\\Bootcamp\\CardTournament\\backend\\CTDao\\Dao\\User\\UserDao.cs",
               "RelativeToolTip": "..\\CTDao\\Dao\\User\\UserDao.cs",
-              "ViewState": "AgIAAC0AAAAAAAAAAAAwwGMAAABoAAAAAAAAAA==",
+              "ViewState": "AgIAAHIAAAAAAAAAAAAIwKYAAAAIAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-06-06T05:24:24.817Z",
               "IsPinned": true,
@@ -69,13 +72,13 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 4,
               "Title": "queries.json",
               "DocumentMoniker": "C:\\Dev\\Bootcamp\\CardTournament\\backend\\DataAccess\\queries.json",
               "RelativeDocumentMoniker": "..\\DataAccess\\queries.json",
               "ToolTip": "C:\\Dev\\Bootcamp\\CardTournament\\backend\\DataAccess\\queries.json",
               "RelativeToolTip": "..\\DataAccess\\queries.json",
-              "ViewState": "AgIAAC0AAAAAAAAAAAAAADUAAABBAAAAAAAAAA==",
+              "ViewState": "AgIAAHQAAAAAAAAAAADwv34AAACAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
               "WhenOpened": "2025-06-06T05:26:16.541Z",
               "IsPinned": true,
@@ -88,6 +91,19 @@
             {
               "$type": "Bookmark",
               "Name": "ST:0:0:{eefa5220-e298-11d0-8f78-00a0c9110057}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "UserModel.cs",
+              "DocumentMoniker": "C:\\Dev\\Bootcamp\\CardTournament\\backend\\CTDataModels\\Users\\UserModel.cs",
+              "RelativeDocumentMoniker": "..\\CTDataModels\\Users\\UserModel.cs",
+              "ToolTip": "C:\\Dev\\Bootcamp\\CardTournament\\backend\\CTDataModels\\Users\\UserModel.cs",
+              "RelativeToolTip": "..\\CTDataModels\\Users\\UserModel.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-06T06:19:35.496Z",
+              "EditorCaption": ""
             }
           ]
         }

@@ -142,6 +142,6 @@
 
   "QueryVerifyAlias": "SELECT COUNT(*) FROM t_users WHERE alias = @alias;",
 
-  "QuerySoftDeleteUser": "UPDATE t_Users SET available = FALSE WHERE id_user = @id_user;"
+  "QuerySoftDeleteUser": "UPDATE t_Users SET active = FALSE WHERE id_user = @id_user;"
 
 }

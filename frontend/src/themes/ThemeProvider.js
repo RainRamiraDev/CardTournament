@@ -127,22 +127,36 @@ const theme = createTheme({
         },
       },
     },
-    MuiSnackbar: {
-      styleOverrides: {
-        root: {
-          '& .MuiAlert-root': {
-            borderRadius: 10,
-            backgroundColor: '#FFB347',
-            color: '#FFB347',
-            fontWeight: 'bold',
-            boxShadow: '0 0 10px #FFB347',
-            textShadow: '0 0 3px rgba(0,0,0,0.7)',
-          },
+
+    // NUEVO: estilos personalizados para roles
+  },
+  MuiSnackbar: {
+    styleOverrides: {
+      root: {
+        '& .MuiAlert-root': {
+          borderRadius: 10,
+          backgroundColor: '#FFB347',
+          color: '#1B1B1B',
+          fontWeight: 'bold',
+          boxShadow: '0 0 10px #FFB347',
+          textShadow: '0 0 3px rgba(0,0,0,0.7)',
         },
       },
     },
-    
   },
 });
+
+// Custom roles styles (not part of MUI theme spec, but can be exported separately)
+export const customRoles = {
+  1: { color: '#FF0000', fontWeight: 'bold' },       // Organizer rojo y negrita
+  2: { color: '#0077FF', fontWeight: '600' },        // Administrator azul medio fuerte
+  3: { color: '#00AA00', fontWeight: '600' },        // Judge verde medio fuerte
+  4: { color: '#AAAAAA', fontWeight: 'normal' },     // Player gris normal
+};
+
+
+
+
+
 
 export default theme;

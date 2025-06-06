@@ -1,7 +1,8 @@
 const fullnameRegex = /^[A-Za-zÁÉÍÓÚÑáéíóúñ\s]+$/;
 const passcodeRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{3,}$/;
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const urlRegex = /^(https?:\/\/)?([\w-]+\.)+[\w-]{2,}(\/[\w\-._~:/?#[\]@!$&'()*+,;=]*)?$/;
+const urlRegex = /^(https?:\/\/)[^\s/$.?#].[^\s]*$/i;
+
 
 // Validación para login
 export function validateLoginForm(form) {
@@ -20,11 +21,15 @@ export function validateLoginForm(form) {
 // Validación para acciones de usuario (crear, modificar, eliminar)
 function validateUserId(form, action) {
   const errors = {};
-  if ((action === 'ALTER' || action === 'DELETE') && !form.Id_User?.trim()) {
+  const idUserStr = form.Id_User !== undefined && form.Id_User !== null ? String(form.Id_User).trim() : '';
+
+  if ((action === 'ALTER' || action === 'DELETE') && idUserStr === '') {
     errors.Id_User = 'El ID de usuario es requerido';
   }
+
   return errors;
 }
+
 
 function validateUserFields(form, action) {
   const errors = {};

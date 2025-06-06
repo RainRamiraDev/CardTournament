@@ -251,6 +251,8 @@ namespace CTService.Implementation.User
               New_Id_Rol  = userDto.New_Id_Rol,
            };
 
+            Console.WriteLine(alterUserModel.ToString());
+
             var isValidUser = await ValidateUserModificationAsync(alterUserModel);
             if (isValidUser)
                 await _userDao.AlterUserAsync(alterUserModel);
@@ -284,10 +286,10 @@ namespace CTService.Implementation.User
         public async Task SoftDeleteUserAsync(SoftDeleteUserDto userDto)
         {
             var user = await _userDao.GetUserById(userDto.Id_User);
-            if (user.Available == 0)
+            if (user.Active == 0)
                 throw new InvalidOperationException("El usuario especificado ya ha sido eliminado");
            
-            await ValidateUserRol(user.Id_Rol);
+          //  await ValidateUserRol(user.Id_Rol);
             await _userDao.SoftDeleteUserAsync(userDto.Id_User);
         }
 

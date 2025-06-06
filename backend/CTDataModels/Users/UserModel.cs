@@ -20,6 +20,6 @@ namespace CTDataModels.Users
         public int Disqualifications { get; set; }
         public string Avatar_Url { get; set; }
 
-        public int Available { get; set; }
+        public int Active { get; set; }
     }
 }
