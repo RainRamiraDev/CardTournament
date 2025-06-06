@@ -31,7 +31,7 @@ import { useNavigate } from 'react-router-dom';
 
 const initialForm = {
   Id_User: '',
-  Id_Country: '',
+  id_Country: '',
   id_Rol: '',
   Fullname: '',
   Passcode: '',
@@ -49,6 +49,8 @@ export const CrudUsuarioForm = () => {
   const theme = useTheme();
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
+  const [selectedUser, setSelectedUser] = useState(null);
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -97,7 +99,7 @@ export const CrudUsuarioForm = () => {
     try {
       if (isCreate) {
         await createUser(
-          form.Id_Country,
+          form.id_Country,
           form.id_Rol,
           form.Passcode,
           form.Fullname,
@@ -109,7 +111,7 @@ export const CrudUsuarioForm = () => {
       } else if (isAlter) {
         await alterUser(
           form.Id_User,
-          form.Id_Country,
+          form.id_Country,
           form.id_Rol,
           form.Fullname,
           form.Alias,
@@ -195,6 +197,11 @@ export const CrudUsuarioForm = () => {
     <PerTextField
       label="Buscar por nombre"
       value={searchTerm}
+      onClick={() => {
+      handleChange({ target: { name: 'Id_User', value: user.id_user } });
+      setSelectedUser(user);
+    }}
+
       onChange={(e) => setSearchTerm(e.target.value)}
       fullWidth
       sx={{ mb: 2 }}
@@ -211,13 +218,18 @@ export const CrudUsuarioForm = () => {
             const style = roleStyles[user.id_Rol] || {};
             const isSelected = form.Id_User === user.id_user;
             return (
-              <ListItem
-                key={user.id_user}
-                button
-                selected={isSelected}
-                onClick={() => handleChange({ target: { name: 'Id_User', value: user.id_user } })}
-                sx={{ ...style }}
-              >
+          <ListItem
+            key={user.id_user}
+            button
+            selected={form.Id_User === user.id_user}
+            onClick={() => {
+              setSelectedUser(user);
+              setForm((prev) => ({ ...prev, Id_User: user.id_user }));
+            }}
+            sx={{ ...style }}
+          >
+
+
                 <ListItemText
                   primary={`${user.fullname} [${rolName.toUpperCase()}]`}
                   sx={{
@@ -231,6 +243,41 @@ export const CrudUsuarioForm = () => {
       </List>
     </Paper>
 
+    {selectedUser && (
+  <Paper
+    elevation={2}
+    sx={{
+      p: 2,
+      mt: 2,
+      borderLeft: `5px solid ${theme.palette.primary.main}`,
+      backgroundColor: '#f9f9f9',
+    }}
+  >
+    <Typography variant="h6" gutterBottom>
+      Detalles del Usuario
+    </Typography>
+    <Typography><strong>Nombre:</strong> {selectedUser.fullname}</Typography>
+    <Typography><strong>Alias:</strong> {selectedUser.alias}</Typography>
+    <Typography><strong>Email:</strong> {selectedUser.email}</Typography>
+    <Typography><strong>Rol:</strong> {
+      roles.find((r) => r.id_Rol === selectedUser.id_Rol)?.rol || 'Sin rol'
+    }</Typography>
+    <Typography><strong>País:</strong> {
+      countries.find((c) => c.id_Country === selectedUser.id_Country)?.country_name || 'Desconocido'
+    }</Typography>
+    {selectedUser.Avatar_Url && (
+      <Box mt={2}>
+        <img
+          src={selectedUser.Avatar_Url}
+          alt="Avatar"
+          style={{ maxWidth: '100%', maxHeight: 150 }}
+        />
+      </Box>
+    )}
+  </Paper>
+)}
+
+
     {errors.Id_User && (
       <FormHelperText error>{errors.Id_User}</FormHelperText>
     )}
@@ -240,24 +287,24 @@ export const CrudUsuarioForm = () => {
         {(isCreate || isAlter) && (
           <>
             {/* País */}
-            <FormControl fullWidth sx={{ mb: 3 }} error={!!errors.Id_Country}>
+            <FormControl fullWidth sx={{ mb: 3 }} error={!!errors.id_Country}>
               <InputLabel id="label-pais">País</InputLabel>
               <Select
                 labelId="label-pais"
-                name="Id_Country"
-                value={form.Id_Country || ''}
+                name="id_Country"
+                value={form.id_Country || ''}
                 onChange={handleChange}
                 label="País"
                 required
               >
                 {countries.map((pais) => (
-                  <MenuItem key={pais.id_country} value={pais.id_country}>
+                  <MenuItem key={pais.id_Country} value={pais.id_Country}>
                     {pais.country_name}
                   </MenuItem>
                 ))}
               </Select>
-              {errors.Id_Country && (
-                <FormHelperText>{errors.Id_Country}</FormHelperText>
+              {errors.id_Country && (
+                <FormHelperText>{errors.id_Country}</FormHelperText>
               )}
             </FormControl>
 

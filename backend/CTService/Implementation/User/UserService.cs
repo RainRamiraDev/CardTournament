@@ -138,7 +138,7 @@ namespace CTService.Implementation.User
 
             return countryModels.Select(country => new CountriesListDto
             {
-                Id_country = country.Id_country,
+                Id_Country = country.Id_Country,
                 Country_name = country.Country_name
             }).ToList();
         }
@@ -165,7 +165,7 @@ namespace CTService.Implementation.User
 
             return roleModels.Select(role => new RolesListDto
             {
-                Id_rol = role.Id_rol,
+                Id_Rol = role.Id_Rol,
                 rol = role.rol
             }).ToList();
         }

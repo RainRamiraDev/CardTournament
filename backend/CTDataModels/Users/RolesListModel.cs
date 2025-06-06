@@ -8,7 +8,7 @@ namespace CTDataModels.Users
 {
     public class RolesListModel
     {
-        public int Id_rol { get; set; }
+        public int Id_Rol { get; set; }
         public string rol { get; set; }
     }
 }

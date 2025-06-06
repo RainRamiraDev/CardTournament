@@ -8,7 +8,7 @@ namespace CTDto.Users
 {
     public class RolesListDto
     {
-        public int Id_rol { get; set; }
+        public int Id_Rol { get; set; }
         public string rol { get; set; }
     }
 }
