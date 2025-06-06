@@ -143,15 +143,19 @@ namespace CTService.Implementation.User
             }).ToList();
         }
 
-        public async Task<IEnumerable<UserListDto>> GetAllUsersAsync()
+        public async Task<IEnumerable<ShowUserDto>> GetAllUsersAsync()
         {
             var userModels = await _userDao.GetAllUsersAsync();
 
-            return userModels.Select(user => new UserListDto
+            return userModels.Select(user => new ShowUserDto
             {
                 Id_user = user.Id_user,
-                Fullname = user.fullname,
-                Id_rol = user.id_rol
+                Id_Country = user.Id_Country,
+                Id_Rol = user.Id_Rol,
+                Fullname = user.Fullname,   
+                Alias = user.Alias,
+                Email = user.Email,
+                Avatar_Url = user.Avatar_Url
             }).ToList();
         }
 

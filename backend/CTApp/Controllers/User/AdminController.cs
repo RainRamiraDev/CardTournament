@@ -58,7 +58,7 @@ namespace CTApp.Controllers.User
             {
                 Fullname = userDto.New_Fullname,
                 Id_Rol = userDto.New_Id_Rol,
-                IdCountry = userDto.New_IdCountry,
+                Id_Country = userDto.New_IdCountry,
                 Alias = userDto.New_Alias,
                 Email = userDto.New_Email,
                 Avatar_Url = userDto.New_Avatar_Url,
@@ -105,7 +105,7 @@ namespace CTApp.Controllers.User
         public async Task<IActionResult> GetAllUsers()
         {
             var users = await _userService.GetAllUsersAsync();
-            return Ok(ApiResponse<IEnumerable<UserListDto>>.SuccessResponse("Usuarios obtenidos exitosamente.", users));
+            return Ok(ApiResponse<IEnumerable<ShowUserDto>>.SuccessResponse("Usuarios obtenidos exitosamente.", users));
         }
 
 

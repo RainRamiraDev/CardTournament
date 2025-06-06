@@ -8,7 +8,8 @@ namespace CTDto.Users
 {
     public class ShowUserDto
     {
-        public int IdCountry { get; set; }
+        public int Id_user { get; set; }
+        public int Id_Country { get; set; }
         public int Id_Rol { get; set; }
         public string Fullname { get; set; }
         public string Alias { get; set; }

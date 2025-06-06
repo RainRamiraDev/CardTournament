@@ -32,7 +32,7 @@ import { useNavigate } from 'react-router-dom';
 const initialForm = {
   Id_User: '',
   Id_Country: '',
-  Id_Rol: '',
+  id_Rol: '',
   Fullname: '',
   Passcode: '',
   Alias: '',
@@ -98,7 +98,7 @@ export const CrudUsuarioForm = () => {
       if (isCreate) {
         await createUser(
           form.Id_Country,
-          form.Id_Rol,
+          form.id_Rol,
           form.Passcode,
           form.Fullname,
           form.Alias,
@@ -110,7 +110,7 @@ export const CrudUsuarioForm = () => {
         await alterUser(
           form.Id_User,
           form.Id_Country,
-          form.Id_Rol,
+          form.id_Rol,
           form.Fullname,
           form.Alias,
           form.Email,
@@ -167,15 +167,15 @@ export const CrudUsuarioForm = () => {
               renderValue={(selectedId) => {
                 const user = users.find((u) => u.id_user === selectedId);
                 const rolName =
-                  roles.find((r) => r.id_rol === user?.id_rol)?.rol || 'Sin rol';
+                  roles.find((r) => r.id_Rol === user?.id_Rol)?.rol || 'Sin rol';
                 return `${user?.fullname} [${rolName}]`;
               }}
             >
               {users.map((user) => {
                 const rolName =
-                  roles.find((r) => r.id_rol === user.id_rol)?.rol || 'Sin rol';
+                  roles.find((r) => r.id_Rol === user.id_Rol)?.rol || 'Sin rol';
                 const style =
-                  roleStyles[user.id_rol] || { color: 'inherit', fontWeight: 'normal' };
+                  roleStyles[user.id_Rol] || { color: 'inherit', fontWeight: 'normal' };
 
                 return (
                   <MenuItem key={user.id_user} value={user.id_user}>
@@ -207,8 +207,8 @@ export const CrudUsuarioForm = () => {
             user.fullname.toLowerCase().includes(searchTerm.toLowerCase())
           )
           .map((user) => {
-            const rolName = roles.find((r) => r.id_rol === user.id_rol)?.rol || 'Sin rol';
-            const style = roleStyles[user.id_rol] || {};
+            const rolName = roles.find((r) => r.id_Rol === user.id_Rol)?.rol || 'Sin rol';
+            const style = roleStyles[user.id_Rol] || {};
             const isSelected = form.Id_User === user.id_user;
             return (
               <ListItem
@@ -262,30 +262,31 @@ export const CrudUsuarioForm = () => {
             </FormControl>
 
             {/* Rol */}
-            <FormControl fullWidth sx={{ mb: 2 }} error={!!errors.Id_Rol}>
+            <FormControl fullWidth sx={{ mb: 2 }} error={!!errors.id_Rol}>
               <InputLabel id="rol-label">Rol</InputLabel>
               <Select
                 labelId="rol-label"
-                name="Id_Rol"
-                value={form.Id_Rol || ''}
+                name="id_Rol"
+                value={form.id_Rol || ''}
                 onChange={handleChange}
                 label="Rol"
                 required
               >
                 {roles.map((rol) => {
-                  const style = roleStyles[rol.id_rol] || {
+                  const style = roleStyles[rol.id_Rol] || {
                     color: 'inherit',
                     fontWeight: 'normal',
                   };
                   return (
-                    <MenuItem key={rol.id_rol} value={rol.id_rol}>
-                      <span style={style}>{rol.rol}</span>
-                    </MenuItem>
+               <MenuItem key={rol.id_Rol} value={rol.id_Rol} sx={style}>
+                {rol.rol}
+              </MenuItem>
+
                   );
                 })}
               </Select>
-              {errors.Id_Rol && (
-                <FormHelperText>{errors.Id_Rol}</FormHelperText>
+              {errors.id_Rol && (
+                <FormHelperText>{errors.id_Rol}</FormHelperText>
               )}
             </FormControl>
 
