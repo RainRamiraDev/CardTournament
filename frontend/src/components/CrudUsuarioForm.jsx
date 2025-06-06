@@ -37,7 +37,7 @@ const initialForm = {
   Passcode: '',
   Alias: '',
   Email: '',
-  Avatar_Url: '',
+  avatar_Url: '',
 };
 
 export const CrudUsuarioForm = () => {
@@ -105,7 +105,7 @@ export const CrudUsuarioForm = () => {
           form.Fullname,
           form.Alias,
           form.Email,
-          form.Avatar_Url
+          form.avatar_Url
         );
         showSnackbar('Usuario creado exitosamente');
       } else if (isAlter) {
@@ -116,7 +116,7 @@ export const CrudUsuarioForm = () => {
           form.Fullname,
           form.Alias,
           form.Email,
-          form.Avatar_Url
+          form.avatar_Url
         );
         showSnackbar('Usuario modificado exitosamente');
       } else if (isDelete) {
@@ -139,7 +139,14 @@ export const CrudUsuarioForm = () => {
     4: { color: theme.palette.success.main, fontWeight: 'normal' },
   };
 
+
+if (selectedUser) {
+  console.log(selectedUser.avatar_Url)
+}
+
+
   return (
+    
     <Paper elevation={3} sx={{ p: 4, maxWidth: 500, mx: 'auto' }}>
       <Typography variant="h6" gutterBottom>
         Gestión de Usuario ({action})
@@ -265,10 +272,10 @@ export const CrudUsuarioForm = () => {
     <Typography><strong>País:</strong> {
       countries.find((c) => c.id_Country === selectedUser.id_Country)?.country_name || 'Desconocido'
     }</Typography>
-    {selectedUser.Avatar_Url && (
+    {selectedUser.avatar_Url && (
       <Box mt={2}>
         <img
-          src={selectedUser.Avatar_Url}
+          src={selectedUser.avatar_Url}
           alt="Avatar"
           style={{ maxWidth: '100%', maxHeight: 150 }}
         />
@@ -380,11 +387,11 @@ export const CrudUsuarioForm = () => {
             />
             <PerTextField
               label="Avatar URL"
-              name="Avatar_Url"
-              value={form.Avatar_Url}
+              name="avatar_Url"
+              value={form.avatar_Url}
               onChange={handleChange}
-              error={!!errors.Avatar_Url}
-              helperText={errors.Avatar_Url}
+              error={!!errors.avatar_Url}
+              helperText={errors.avatar_Url}
               required
             />
           </>
