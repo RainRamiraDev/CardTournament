@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("CTRefreshToken")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+d4189ec96c44f52f54f50e156a3f8f8c4ceb68e0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+36942ad644460196a1a97bc61bfcdce0cbd3bf8c")]
 [assembly: System.Reflection.AssemblyProductAttribute("CTRefreshToken")]
 [assembly: System.Reflection.AssemblyTitleAttribute("CTRefreshToken")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

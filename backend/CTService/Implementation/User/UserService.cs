@@ -138,8 +138,35 @@ namespace CTService.Implementation.User
 
             return countryModels.Select(country => new CountriesListDto
             {
-                Id_country = country.Id_country,
+                Id_Country = country.Id_Country,
                 Country_name = country.Country_name
+            }).ToList();
+        }
+
+        public async Task<IEnumerable<ShowUserDto>> GetAllUsersAsync()
+        {
+            var userModels = await _userDao.GetAllUsersAsync();
+
+            return userModels.Select(user => new ShowUserDto
+            {
+                Id_user = user.Id_user,
+                Id_Country = user.Id_Country,
+                Id_Rol = user.Id_Rol,
+                Fullname = user.Fullname,   
+                Alias = user.Alias,
+                Email = user.Email,
+                Avatar_Url = user.Avatar_Url
+            }).ToList();
+        }
+
+        public async Task<IEnumerable<RolesListDto>> GetAllRolesAsync()
+        {
+            var roleModels = await _userDao.GetAllRolesAsync();
+
+            return roleModels.Select(role => new RolesListDto
+            {
+                Id_Rol = role.Id_Rol,
+                rol = role.rol
             }).ToList();
         }
 
@@ -165,7 +192,7 @@ namespace CTService.Implementation.User
             };
 
             await ValidateUserCreation(userModel);
-            await ValidateUserRol(userModel.Id_Rol);
+        //    await ValidateUserRol(userModel.Id_Rol);
             return await _userDao.CreateUserAsync(userModel);
         }
 
@@ -228,6 +255,8 @@ namespace CTService.Implementation.User
               New_Id_Rol  = userDto.New_Id_Rol,
            };
 
+            Console.WriteLine(alterUserModel.ToString());
+
             var isValidUser = await ValidateUserModificationAsync(alterUserModel);
             if (isValidUser)
                 await _userDao.AlterUserAsync(alterUserModel);
@@ -253,7 +282,7 @@ namespace CTService.Implementation.User
             if (emailsExists)
                 throw new InvalidOperationException("El Email especificado ya está registrado y no puede repetirse.");
 
-            await ValidateUserRol(oldUser.Id_Rol);
+            //await ValidateUserRol(oldUser.Id_Rol);
 
             return response;
         }
@@ -261,12 +290,14 @@ namespace CTService.Implementation.User
         public async Task SoftDeleteUserAsync(SoftDeleteUserDto userDto)
         {
             var user = await _userDao.GetUserById(userDto.Id_User);
-            if (user.Available == 0)
+            if (user.Active == 0)
                 throw new InvalidOperationException("El usuario especificado ya ha sido eliminado");
            
-            await ValidateUserRol(user.Id_Rol);
+          //  await ValidateUserRol(user.Id_Rol);
             await _userDao.SoftDeleteUserAsync(userDto.Id_User);
         }
+
+       
     }
 }
 

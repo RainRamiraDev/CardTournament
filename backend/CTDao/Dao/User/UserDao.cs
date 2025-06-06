@@ -92,6 +92,27 @@ namespace CTDao.Dao.User
             }
         }
 
+        public async Task<IEnumerable<ShowUserModel>> GetAllUsersAsync()
+        {
+            using (var connection = new MySqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+                var users = await connection.QueryAsync<ShowUserModel>(QueryLoader.GetQuery("GetAllUsers"));
+                return users;
+            }
+        }
+
+
+        public async Task<IEnumerable<RolesListModel>> GetAllRolesAsync()
+        {
+            using (var connection = new MySqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+                var roles = await connection.QueryAsync<RolesListModel>(QueryLoader.GetQuery("QueryGetAllRoles"));
+                return roles;
+            }
+        }
+
         public async Task<int> CreateUserAsync(UserCreationModel user)
         {
             using (var connection = new MySqlConnection(_connectionString))
@@ -186,5 +207,7 @@ namespace CTDao.Dao.User
                 });
             }
         }
+
+        
     }
 }

@@ -8,7 +8,7 @@ namespace CTDto.Users.Organizer
 {
     public class CountriesListDto
     {
-        public int Id_country { get; set; }
+        public int Id_Country { get; set; }
         public string Country_name { get; set; }
 
     }

@@ -1424,7 +1424,7 @@
         },
         "runtime": {
           "CTApp.dll": {
-            "assemblyVersion": "1.0.0",
+            "assemblyVersion": "1.0.0.0",
             "fileVersion": "1.0.0.0"
           }
         }
@@ -1432,7 +1432,7 @@
       "CTConfigurations/1.0.0": {
         "runtime": {
           "CTConfigurations.dll": {
-            "assemblyVersion": "1.0.0",
+            "assemblyVersion": "1.0.0.0",
             "fileVersion": "1.0.0.0"
           }
         }
@@ -1448,7 +1448,7 @@
         },
         "runtime": {
           "CTDao.dll": {
-            "assemblyVersion": "1.0.0",
+            "assemblyVersion": "1.0.0.0",
             "fileVersion": "1.0.0.0"
           }
         }
@@ -1456,7 +1456,7 @@
       "CTDataModels/1.0.0": {
         "runtime": {
           "CTDataModels.dll": {
-            "assemblyVersion": "1.0.0",
+            "assemblyVersion": "1.0.0.0",
             "fileVersion": "1.0.0.0"
           }
         }
@@ -1467,7 +1467,7 @@
         },
         "runtime": {
           "CTDto.dll": {
-            "assemblyVersion": "1.0.0",
+            "assemblyVersion": "1.0.0.0",
             "fileVersion": "1.0.0.0"
           }
         }
@@ -1484,7 +1484,7 @@
         },
         "runtime": {
           "CTService.dll": {
-            "assemblyVersion": "1.0.0",
+            "assemblyVersion": "1.0.0.0",
             "fileVersion": "1.0.0.0"
           }
         }
@@ -1495,7 +1495,7 @@
         },
         "runtime": {
           "DataAccess.dll": {
-            "assemblyVersion": "1.0.0",
+            "assemblyVersion": "1.0.0.0",
             "fileVersion": "1.0.0.0"
           }
         }

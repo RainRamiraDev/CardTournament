@@ -34,5 +34,7 @@ namespace CTService.Interfaces.User
         Task AlterUserAsync(AlterUserDto userDto);
 
         Task SoftDeleteUserAsync(SoftDeleteUserDto userDto);
+        Task<IEnumerable<RolesListDto>> GetAllRolesAsync();
+        Task<IEnumerable<ShowUserDto>> GetAllUsersAsync();
     }
 }

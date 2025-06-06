@@ -51,6 +51,7 @@
   "QueryGetCardsFromTournamentSeries": "SELECT id_card FROM t_card_series WHERE id_series IN @Id_series AND id_card IN @id_card;",
 
 
+  "GetAllUsers": "SELECT Id_user,Id_country,Id_rol,Fullname,Alias,Email,Avatar_Url FROM t_users WHERE ACTIVE = 1",
 
 
   "QueryGetCardsByIllustration": "SELECT illustration FROM t_cards WHERE id_card IN @id_card;",
@@ -69,6 +70,11 @@
 
 
   "QueryGetAllCountries": "SELECT country_name, id_country FROM t_countries WHERE country_name IS NOT NULL ORDER BY country_name asc;",
+
+  "QueryGetAllRoles": "SELECT id_rol,rol FROM t_roles",
+
+
+
   "QueryValidateSeries": "SELECT id_series FROM t_series WHERE id_series IN @id_series;",
   "QueryValidateTournamentPlayers": "SELECT id_player FROM t_tourn_players WHERE id_tournament = @id_tournament AND id_player = @id_player;",
 
@@ -111,14 +117,14 @@
 
   "QueryGetUserWhitToken": "SELECT * FROM T_Users WHERE Id_User = @Id_user;",
   "QueryFirstLogIn": "INSERT INTO T_Users (Fullname, Passcode, Id_Rol) VALUES (@Fullname, @Passcode, @Id_Rol);",
-  "QueryGetUserDataByName": "SELECT Id_User, Fullname, Passcode, Id_Rol, Available FROM T_Users WHERE Fullname = @Fullname;",
+  "QueryGetUserDataByName": "SELECT Id_User, Fullname, Passcode, Id_Rol, Active FROM T_Users WHERE Fullname = @Fullname;",
 
   "QueryGetAllJudges": "SELECT u.Fullname, u.Alias, u.Email, c.country_name as Country, u.avatar_url FROM t_users u JOIN t_countries c ON u.id_country = c.id_country WHERE Id_rol = 3 AND available = 1 ORDER BY u.alias ASC;",
   "QueryGetPlayersRankIds": "SELECT ki FROM t_users WHERE Id_user = @Id;",
 
   "QueryCreateUser": "INSERT INTO t_Users (Id_Country, Id_Rol, Fullname, Passcode, Alias, Email, Avatar_Url, Games_Won, Games_Lost, ki) VALUES (@Id_Country, @Id_Rol, @Fullname, @Passcode,@Alias, @Email, @Avatar_Url, @Games_Won, @Games_Lost, @Ki); SELECT LAST_INSERT_ID();",
 
-  "QueryGetUserById": "SELECT id_user, id_country, id_rol, fullname, alias, email, games_won, games_lost, avatar_url, ki, available FROM t_users WHERE id_user = @id_user",
+  "QueryGetUserById": "SELECT id_user, id_country, id_rol, fullname, alias, email, games_won, games_lost, avatar_url, ki, active FROM t_users WHERE id_user = @id_user",
 
   "QueryAlterUser": "UPDATE t_users SET id_country = @id_country, id_rol = @id_rol, fullname = @fullname, alias = @alias, email = @email, avatar_url = @avatar_url WHERE id_user = @id_user;",
 
@@ -136,6 +142,6 @@
 
   "QueryVerifyAlias": "SELECT COUNT(*) FROM t_users WHERE alias = @alias;",
 
-  "QuerySoftDeleteUser": "UPDATE t_Users SET available = FALSE WHERE id_user = @id_user;"
+  "QuerySoftDeleteUser": "UPDATE t_Users SET active = FALSE WHERE id_user = @id_user;"
 
 }

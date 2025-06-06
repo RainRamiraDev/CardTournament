@@ -24,7 +24,7 @@ namespace CTApp.Controllers.User
             _tournamentService = tournamentService;
         }
 
-        [Authorize(Roles = "2,1,3,4")]
+       // [Authorize(Roles = "2,1,3,4")]
         [HttpPost("CreateUser")]
         public async Task<IActionResult> CreateUser([FromBody] UserCreationDto userDto)
         {
@@ -45,7 +45,7 @@ namespace CTApp.Controllers.User
             return Created(string.Empty, response);
         }
 
-        [Authorize(Roles = "2,1,3,4")]
+       // [Authorize(Roles = "2,1,3,4")]
         [HttpPut("AlterUser")]
         public async Task<IActionResult> AlterUser([FromBody] AlterUserDto userDto)
         {
@@ -58,7 +58,7 @@ namespace CTApp.Controllers.User
             {
                 Fullname = userDto.New_Fullname,
                 Id_Rol = userDto.New_Id_Rol,
-                IdCountry = userDto.New_IdCountry,
+                Id_Country = userDto.New_IdCountry,
                 Alias = userDto.New_Alias,
                 Email = userDto.New_Email,
                 Avatar_Url = userDto.New_Avatar_Url,
@@ -71,7 +71,7 @@ namespace CTApp.Controllers.User
 
 
 
-        [Authorize(Roles = "1")]
+      //  [Authorize(Roles = "1")]
         [HttpDelete("DeactivateUser")]
         public async Task<IActionResult> DeactivateUser([FromBody] SoftDeleteUserDto userDto)
         {
@@ -97,6 +97,15 @@ namespace CTApp.Controllers.User
 
             var response = ApiResponse<SoftDeleteUserDto>.SuccessResponse("Torneo cancelado exitosamente");
             return Created(string.Empty, response);
+        }
+
+
+
+        [HttpGet("GetAllUsers")]
+        public async Task<IActionResult> GetAllUsers()
+        {
+            var users = await _userService.GetAllUsersAsync();
+            return Ok(ApiResponse<IEnumerable<ShowUserDto>>.SuccessResponse("Usuarios obtenidos exitosamente.", users));
         }
 
 
