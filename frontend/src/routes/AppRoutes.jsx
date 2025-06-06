@@ -4,6 +4,7 @@ import Error404 from "../components/ui/Error404";
 import ProtectedRoutes from './ProtectedRoutes';
 import Menu from '../components/ui/menu/Menu';
 import CrudUsuarioView from '../views/CrudUsuarioView';
+import AssignCardsToUser from  '../components/AssignCardsToUser'; 
 
 const AppRoutes = () => {
   return (
@@ -12,6 +13,10 @@ const AppRoutes = () => {
       <Route
         path="/menu"
         element={<ProtectedRoutes element={<Menu />} />}
+      />
+        <Route
+        path="/cartas"
+        element={<ProtectedRoutes element={<AssignCardsToUser />} />}
       />
        <Route
         path="/usuarios"

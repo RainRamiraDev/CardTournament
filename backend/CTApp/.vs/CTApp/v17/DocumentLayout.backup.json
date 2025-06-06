@@ -3,10 +3,8 @@
   "WorkspaceRootPath": "C:\\Dev\\Bootcamp\\CardTournament\\backend\\CTApp\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{9C4A1EFF-F957-47CA-9EAB-FEC2C5050E84}|..\\CTDataModels\\CTDataModels.csproj|c:\\dev\\bootcamp\\cardtournament\\backend\\ctdatamodels\\users\\organizer\\countrieslistmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{75A57AC1-08F0-4329-A586-BB717D5AF03E}|..\\CTDto\\CTDto.csproj|c:\\dev\\bootcamp\\cardtournament\\backend\\ctdto\\users\\organizer\\countrieslistdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{044F8FA9-5241-4DFD-9606-88BD2C275654}|CTApp.csproj|c:\\dev\\bootcamp\\cardtournament\\backend\\ctapp\\controllers\\user\\playercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{044F8FA9-5241-4DFD-9606-88BD2C275654}|CTApp.csproj|solutionrelative:controllers\\user\\playercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{044F8FA9-5241-4DFD-9606-88BD2C275654}|CTApp.csproj|c:\\dev\\bootcamp\\cardtournament\\backend\\ctapp\\controllers\\user\\admincontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -14,6 +12,12 @@
     },
     {
       "AbsoluteMoniker": "D:0:0:{A8904742-057E-4415-B867-60EE8A95FC92}|..\\CTService\\CTService.csproj|c:\\dev\\bootcamp\\cardtournament\\backend\\ctservice\\implementation\\user\\userservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9C4A1EFF-F957-47CA-9EAB-FEC2C5050E84}|..\\CTDataModels\\CTDataModels.csproj|c:\\dev\\bootcamp\\cardtournament\\backend\\ctdatamodels\\users\\organizer\\countrieslistmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{75A57AC1-08F0-4329-A586-BB717D5AF03E}|..\\CTDto\\CTDto.csproj|c:\\dev\\bootcamp\\cardtournament\\backend\\ctdto\\users\\organizer\\countrieslistdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{9C4A1EFF-F957-47CA-9EAB-FEC2C5050E84}|..\\CTDataModels\\CTDataModels.csproj|c:\\dev\\bootcamp\\cardtournament\\backend\\ctdatamodels\\users\\roleslistmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
@@ -44,17 +48,17 @@
       "DocumentGroups": [
         {
           "DockedWidth": 184,
-          "SelectedChildIndex": 6,
+          "SelectedChildIndex": 3,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 1,
               "Title": "AdminController.cs",
               "DocumentMoniker": "C:\\Dev\\Bootcamp\\CardTournament\\backend\\CTApp\\Controllers\\User\\AdminController.cs",
               "RelativeDocumentMoniker": "Controllers\\User\\AdminController.cs",
               "ToolTip": "C:\\Dev\\Bootcamp\\CardTournament\\backend\\CTApp\\Controllers\\User\\AdminController.cs",
               "RelativeToolTip": "Controllers\\User\\AdminController.cs",
-              "ViewState": "AgIAAAgAAAAAAAAAAAAtwEMAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAD4AAAAAAAAAAAArwEMAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-06-06T05:15:08.039Z",
               "IsPinned": true,
@@ -62,13 +66,13 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 2,
               "Title": "UserService.cs",
               "DocumentMoniker": "C:\\Dev\\Bootcamp\\CardTournament\\backend\\CTService\\Implementation\\User\\UserService.cs",
               "RelativeDocumentMoniker": "..\\CTService\\Implementation\\User\\UserService.cs",
               "ToolTip": "C:\\Dev\\Bootcamp\\CardTournament\\backend\\CTService\\Implementation\\User\\UserService.cs",
               "RelativeToolTip": "..\\CTService\\Implementation\\User\\UserService.cs",
-              "ViewState": "AgIAAIUAAAAAAAAAAAAewKkAAAAYAAAAAAAAAA==",
+              "ViewState": "AgIAACsAAAAAAAAAAAAhwJAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-06-06T05:20:53.173Z",
               "IsPinned": true,
@@ -76,7 +80,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 9,
               "Title": "UserDao.cs",
               "DocumentMoniker": "C:\\Dev\\Bootcamp\\CardTournament\\backend\\CTDao\\Dao\\User\\UserDao.cs",
               "RelativeDocumentMoniker": "..\\CTDao\\Dao\\User\\UserDao.cs",
@@ -90,15 +94,15 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "CountriesListDto.cs",
-              "DocumentMoniker": "C:\\Dev\\Bootcamp\\CardTournament\\backend\\CTDto\\Users\\Organizer\\CountriesListDto.cs",
-              "RelativeDocumentMoniker": "..\\CTDto\\Users\\Organizer\\CountriesListDto.cs",
-              "ToolTip": "C:\\Dev\\Bootcamp\\CardTournament\\backend\\CTDto\\Users\\Organizer\\CountriesListDto.cs",
-              "RelativeToolTip": "..\\CTDto\\Users\\Organizer\\CountriesListDto.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAArAAAAAAAAAA==",
+              "DocumentIndex": 0,
+              "Title": "PlayerController.cs",
+              "DocumentMoniker": "C:\\Dev\\Bootcamp\\CardTournament\\backend\\CTApp\\Controllers\\User\\PlayerController.cs",
+              "RelativeDocumentMoniker": "Controllers\\User\\PlayerController.cs",
+              "ToolTip": "C:\\Dev\\Bootcamp\\CardTournament\\backend\\CTApp\\Controllers\\User\\PlayerController.cs*",
+              "RelativeToolTip": "Controllers\\User\\PlayerController.cs*",
+              "ViewState": "AgIAADAAAAAAAAAAAAAowEoAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-06T08:35:22.796Z",
+              "WhenOpened": "2025-06-06T09:45:19.032Z",
               "EditorCaption": ""
             },
             {
@@ -111,7 +115,20 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 4,
+              "Title": "CountriesListDto.cs",
+              "DocumentMoniker": "C:\\Dev\\Bootcamp\\CardTournament\\backend\\CTDto\\Users\\Organizer\\CountriesListDto.cs",
+              "RelativeDocumentMoniker": "..\\CTDto\\Users\\Organizer\\CountriesListDto.cs",
+              "ToolTip": "C:\\Dev\\Bootcamp\\CardTournament\\backend\\CTDto\\Users\\Organizer\\CountriesListDto.cs",
+              "RelativeToolTip": "..\\CTDto\\Users\\Organizer\\CountriesListDto.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAArAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-06T08:35:22.796Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
               "Title": "CountriesListModel.cs",
               "DocumentMoniker": "C:\\Dev\\Bootcamp\\CardTournament\\backend\\CTDataModels\\Users\\Organizer\\CountriesListModel.cs",
               "RelativeDocumentMoniker": "..\\CTDataModels\\Users\\Organizer\\CountriesListModel.cs",
@@ -124,7 +141,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 5,
               "Title": "RolesListModel.cs",
               "DocumentMoniker": "C:\\Dev\\Bootcamp\\CardTournament\\backend\\CTDataModels\\Users\\RolesListModel.cs",
               "RelativeDocumentMoniker": "..\\CTDataModels\\Users\\RolesListModel.cs",
@@ -137,7 +154,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 6,
               "Title": "RolesListDto.cs",
               "DocumentMoniker": "C:\\Dev\\Bootcamp\\CardTournament\\backend\\CTDto\\Users\\RolesListDto.cs",
               "RelativeDocumentMoniker": "..\\CTDto\\Users\\RolesListDto.cs",
@@ -150,7 +167,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 7,
               "Title": "ShowUserModel.cs",
               "DocumentMoniker": "C:\\Dev\\Bootcamp\\CardTournament\\backend\\CTDataModels\\Users\\ShowUserModel.cs",
               "RelativeDocumentMoniker": "..\\CTDataModels\\Users\\ShowUserModel.cs",
@@ -163,7 +180,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 8,
               "Title": "ShowUserDto.cs",
               "DocumentMoniker": "C:\\Dev\\Bootcamp\\CardTournament\\backend\\CTDto\\Users\\ShowUserDto.cs",
               "RelativeDocumentMoniker": "..\\CTDto\\Users\\ShowUserDto.cs",
@@ -176,7 +193,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 11,
               "Title": "IUserDao.cs",
               "DocumentMoniker": "C:\\Dev\\Bootcamp\\CardTournament\\backend\\CTDao\\Interfaces\\User\\IUserDao.cs",
               "RelativeDocumentMoniker": "..\\CTDao\\Interfaces\\User\\IUserDao.cs",
@@ -189,7 +206,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 10,
               "Title": "IUserService.cs",
               "DocumentMoniker": "C:\\Dev\\Bootcamp\\CardTournament\\backend\\CTService\\Interfaces\\User\\IUserService.cs",
               "RelativeDocumentMoniker": "..\\CTService\\Interfaces\\User\\IUserService.cs",

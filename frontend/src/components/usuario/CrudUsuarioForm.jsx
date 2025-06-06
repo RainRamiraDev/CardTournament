@@ -13,6 +13,7 @@ import {
   List,
   ListItem,
   ListItemText,
+  Grid
 } from '@mui/material';
 import PerButton from './ui/PerButton';
 import PerTextField from './ui/PerTextField';
@@ -84,10 +85,18 @@ export const CrudUsuarioForm = () => {
   const isDelete = action === 'DELETE';
   const isView = action === 'VIEW';
 
-  const handleActionChange = (e) => {
-    setAction(e.target.value);
-    resetForm();
-  };
+const handleActionChange = (event) => {
+  const newAction = event.target.value;
+  setAction(newAction);
+  setForm(initialForm);
+  setErrors({});
+
+  if (newAction !== 'VIEW') {
+    setSelectedUser(null); // 👈 Limpia el detalle al salir de VIEW
+    setSearchTerm('');
+  }
+};
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -162,7 +171,11 @@ if (selectedUser) {
         </Select>
       </FormControl>
 
-      <Box component="form" onSubmit={handleSubmit} noValidate>
+      <Box>
+        <Grid container spacing={4}>
+        {/* Columna izquierda: formulario principal */}
+        <Grid item xs={12} md={6}>
+          <Box component="form" onSubmit={handleSubmit} noValidate>
         {(isAlter || isDelete) && (
           <FormControl fullWidth sx={{ mb: 3 }} error={!!errors.Id_User}>
             <InputLabel id="label-usuario">Usuario</InputLabel>
@@ -250,39 +263,7 @@ if (selectedUser) {
       </List>
     </Paper>
 
-    {selectedUser && (
-  <Paper
-    elevation={2}
-    sx={{
-      p: 2,
-      mt: 2,
-      borderLeft: `5px solid ${theme.palette.primary.main}`,
-      backgroundColor: '#f9f9f9',
-    }}
-  >
-    <Typography variant="h6" gutterBottom>
-      Detalles del Usuario
-    </Typography>
-    <Typography><strong>Nombre:</strong> {selectedUser.fullname}</Typography>
-    <Typography><strong>Alias:</strong> {selectedUser.alias}</Typography>
-    <Typography><strong>Email:</strong> {selectedUser.email}</Typography>
-    <Typography><strong>Rol:</strong> {
-      roles.find((r) => r.id_Rol === selectedUser.id_Rol)?.rol || 'Sin rol'
-    }</Typography>
-    <Typography><strong>País:</strong> {
-      countries.find((c) => c.id_Country === selectedUser.id_Country)?.country_name || 'Desconocido'
-    }</Typography>
-    {selectedUser.avatar_Url && (
-      <Box mt={2}>
-        <img
-          src={selectedUser.avatar_Url}
-          alt="Avatar"
-          style={{ maxWidth: '100%', maxHeight: 150 }}
-        />
-      </Box>
-    )}
-  </Paper>
-)}
+   
 
 
     {errors.Id_User && (
@@ -407,6 +388,46 @@ if (selectedUser) {
           </PerButton>
         )}
       </Box>
+      </Grid>
+
+       <Grid item xs={12} md={6}>
+
+         {selectedUser && (
+        <Paper
+          elevation={2}
+          sx={{
+            p: 2,
+            mt: 2,
+            borderLeft: `5px solid ${theme.palette.primary.main}`,
+            backgroundColor: '#f9f9f9',
+          }}
+        >
+          <Typography variant="h6" gutterBottom>
+            Detalles del Usuario
+          </Typography>
+          <Typography><strong>Nombre:</strong> {selectedUser.fullname}</Typography>
+          <Typography><strong>Alias:</strong> {selectedUser.alias}</Typography>
+          <Typography><strong>Email:</strong> {selectedUser.email}</Typography>
+          <Typography><strong>Rol:</strong> {
+            roles.find((r) => r.id_Rol === selectedUser.id_Rol)?.rol || 'Sin rol'
+          }</Typography>
+          <Typography><strong>País:</strong> {
+            countries.find((c) => c.id_Country === selectedUser.id_Country)?.country_name || 'Desconocido'
+          }</Typography>
+          {selectedUser.avatar_Url && (
+            <Box mt={2}>
+              <img
+                src={selectedUser.avatar_Url}
+                alt="Avatar"
+                style={{ maxWidth: '100%', maxHeight: 150 }}
+              />
+            </Box>
+          )}
+        </Paper>
+      )}
+      </Grid>
+    </Grid>
+    </Box>
 
       <Snackbar open={open} autoHideDuration={3000} onClose={closeSnackbar}>
         <Alert severity="success" onClose={closeSnackbar} sx={{ width: '100%' }}>
@@ -414,6 +435,8 @@ if (selectedUser) {
         </Alert>
       </Snackbar>
     </Paper>
+
+      
   );
 };
 
