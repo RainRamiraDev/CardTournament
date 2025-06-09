@@ -15,10 +15,10 @@ import {
   ListItemText,
   Grid
 } from '@mui/material';
-import PerButton from './ui/PerButton';
-import PerTextField from './ui/PerTextField';
-import { useSnackbar } from '../hooks/useSnackbar';
-import { useForm } from '../hooks/useForm';
+import PerButton from '../ui/PerButton';
+import PerTextField from '../ui/PerTextField';
+import { useSnackbar} from '../../hooks/useSnackbar';
+import { useForm } from '../../hooks/useForm';
 import {
   createUser,
   alterUser,
@@ -26,7 +26,7 @@ import {
   getCountries,
   getRoles,
   getAllUsers,
-} from '../services/userService';
+} from '../../services/userService';
 import { useTheme } from '@mui/material/styles';
 import { useNavigate } from 'react-router-dom';
 

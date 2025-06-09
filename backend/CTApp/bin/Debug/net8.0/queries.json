@@ -47,8 +47,13 @@
 
   "QueryCheckTournamentCapacity": "SELECT COUNT(*) FROM t_tourn_players WHERE id_tournament = @id_tournament;",
 
+  "QueryAssignCardToPlayer": "INSERT INTO t_users_cards (id_user, id_card) VALUES (@id_user, @id_card);",
 
   "QueryGetCardsFromTournamentSeries": "SELECT id_card FROM t_card_series WHERE id_series IN @Id_series AND id_card IN @id_card;",
+
+  "GetCardCountAsync": "SELECT COUNT(*) FROM t_users_cards WHERE id_user = @id_user;",
+
+  "GetAllCards": "SELECT DISTINCT id_card,illustration,attack,defense FROM T_CARDS",
 
 
   "GetAllUsers": "SELECT Id_user,Id_country,Id_rol,Fullname,Alias,Email,Avatar_Url FROM t_users WHERE ACTIVE = 1",

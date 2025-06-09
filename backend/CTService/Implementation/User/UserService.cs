@@ -3,10 +3,12 @@ using CTDao.Dao.Security;
 using CTDao.Dao.User;
 using CTDao.Interfaces.Tournaments;
 using CTDao.Interfaces.User;
+using CTDataModels.Tournamets;
 using CTDataModels.Users;
 using CTDataModels.Users.Admin;
 using CTDataModels.Users.LogIn;
 using CTDto.Card;
+using CTDto.Tournaments;
 using CTDto.Users;
 using CTDto.Users.Admin;
 using CTDto.Users.Judge;
@@ -143,6 +145,26 @@ namespace CTService.Implementation.User
             }).ToList();
         }
 
+        public async Task<int> AssignCardToPlayerAsync(AssignCardToPlayerDto dto)
+        {
+            
+            var AssignCardToPlayerModel = new AssignCardToPlayerModel
+            {
+                    id_user = dto.id_user,
+                    id_card = dto.id_card
+            };
+
+            await ValidateCardToPlayer(dto);
+            return await _userDao.AssignCardToPlayerAsync(AssignCardToPlayerModel);
+        }
+
+        private async Task ValidateCardToPlayer(AssignCardToPlayerDto dto)
+        {
+           int cardCount = await _userDao.GetCardCountAsync(dto.id_user);
+            if (cardCount >= 15)
+                throw new InvalidOperationException("El jugador ya tiene 15 cartas asignadas, no se pueden asignar más.");
+        }
+
         public async Task<IEnumerable<ShowUserDto>> GetAllUsersAsync()
         {
             var userModels = await _userDao.GetAllUsersAsync();
@@ -156,6 +178,19 @@ namespace CTService.Implementation.User
                 Alias = user.Alias,
                 Email = user.Email,
                 Avatar_Url = user.Avatar_Url
+            }).ToList();
+        }
+
+        public async Task<IEnumerable<ManageCardsDto>> GetAllCardsAsync()
+        {
+            var cardModels = await _userDao.GetAllCardsAsync();
+
+            return cardModels.Select(user => new ManageCardsDto
+            {
+                Id_Card = user.Id_Card,
+                Illustration = user.Illustration,
+                Attack = user.Attack,
+                Defense = user.Defense
             }).ToList();
         }
 
@@ -297,7 +332,7 @@ namespace CTService.Implementation.User
             await _userDao.SoftDeleteUserAsync(userDto.Id_User);
         }
 
-       
+      
     }
 }
 

@@ -190,6 +190,13 @@ CREATE TABLE IF NOT EXISTS `t_matches` (
 ) ENGINE=InnoDB AUTO_INCREMENT=107 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 
-
+CREATE TABLE t_users_cards (
+    id_user_card INT NOT NULL AUTO_INCREMENT,
+    id_user INT NOT NULL,
+    id_card INT NOT NULL,
+    CONSTRAINT PK_users_cards PRIMARY KEY (id_user_card),
+    CONSTRAINT FK_users_cards_users FOREIGN KEY (id_user) REFERENCES t_users(id_user),
+    CONSTRAINT FK_users_cards_cards FOREIGN KEY (id_card) REFERENCES t_cards(id_card)
+);
 
 

@@ -4,7 +4,7 @@ import Error404 from "../components/ui/Error404";
 import ProtectedRoutes from './ProtectedRoutes';
 import Menu from '../components/ui/menu/Menu';
 import CrudUsuarioView from '../views/CrudUsuarioView';
-import AssignCardsToUser from  '../components/AssignCardsToUser'; 
+import AssignCardsToUser from  '../components/cartas/AssignCardsToUser'; 
 
 const AppRoutes = () => {
   return (

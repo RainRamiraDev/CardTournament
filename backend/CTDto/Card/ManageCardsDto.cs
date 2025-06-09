@@ -11,6 +11,6 @@ namespace CTDto.Card
         public int Id_Card { get; set; }
         public string Illustration { get; set; }
         public int Attack { get; set; }
-        public int Deffense { get; set; }
+        public int Defense { get; set; }
     }
 }

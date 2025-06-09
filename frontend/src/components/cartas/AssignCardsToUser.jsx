@@ -1,8 +1,226 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react';
+import {
+  Box,
+  Paper,
+  Typography,
+  List,
+  ListItem,
+  ListItemText,
+  ListItemIcon,
+  Checkbox,
+  Button,
+  Divider,
+  CircularProgress,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  Snackbar,
+  Alert,
+} from '@mui/material';
+
+import { getAllCards, assignCardToPlayer } from '../../services/cardService';
+import { getAllUsers } from '../../services/userService';
+import { handleAxiosError } from '../../utils/handleAxiosError';
 
 export default function AssignCardsToUser() {
-  return (
-    <div>AssignCardsToUser</div>
+  const [cards, setCards] = useState([]);
+  const [users, setUsers] = useState([]);
+  const [selectedCards, setSelectedCards] = useState([]);
+  const [selectedUser, setSelectedUser] = useState('');
+  const [loading, setLoading] = useState(true);
+  const [assigning, setAssigning] = useState(false);
+  const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'success' });
+  const [errors, setErrors] = useState({});
 
-  )
+  const fetchData = async () => {
+    setLoading(true);
+    try {
+      const cardsData = await getAllCards();
+      const usersData = await getAllUsers();
+      setCards(cardsData);
+      setUsers(usersData);
+    } catch (error) {
+      setSnackbar({ open: true, message: 'Error cargando datos', severity: 'error' });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const validate = () => {
+    const errors = {};
+    if (!selectedUser) errors.user = 'Selecciona un jugador';
+    if (selectedCards.length === 0) errors.cards = 'Selecciona al menos una carta';
+    setErrors(errors);
+    return errors;
+  };
+
+  const handleToggleCard = (cardId) => {
+    setSelectedCards((prev) =>
+      prev.includes(cardId) ? prev.filter((id) => id !== cardId) : [...prev, cardId]
+    );
+  };
+
+  const handleUserChange = (e) => {
+    setSelectedUser(e.target.value);
+    setErrors((prev) => ({ ...prev, user: undefined }));
+  };
+
+  const handleAssign = async () => {
+    const validationErrors = validate();
+    if (Object.keys(validationErrors).length > 0) {
+      setSnackbar({ open: true, message: Object.values(validationErrors).join(', '), severity: 'warning' });
+      return;
+    }
+    setAssigning(true);
+    try {
+      await assignCardToPlayer(selectedUser, selectedCards);
+      setSnackbar({ open: true, message: 'Cartas asignadas correctamente', severity: 'success' });
+      setSelectedCards([]);
+      setSelectedUser('');
+      await fetchData();
+      setErrors({});
+    } catch (error) {
+      setSnackbar({ open: true, message: handleAxiosError(error), severity: 'error' });
+    } finally {
+      setAssigning(false);
+    }
+  };
+
+ return (
+  <>
+    <Typography variant="h5" gutterBottom align="center" sx={{ mt: 4 }}>
+      Asignar Cartas a Jugador
+    </Typography>
+
+    {loading ? (
+      <Box sx={{ display: 'flex', justifyContent: 'center', my: 4 }}>
+        <CircularProgress />
+      </Box>
+    ) : (
+      <Box
+        sx={{
+          display: 'flex',
+          gap: 4,
+          justifyContent: 'center',
+          mt: 4,
+          flexWrap: 'wrap',
+        }}
+      >
+        {/* Cartas */}
+        <Paper
+          sx={{
+            p: 4,
+            width: 400,
+            height: 500,
+            overflowY: 'auto',
+            display: 'flex',
+            flexDirection: 'column',
+          }}
+        >
+          <Typography variant="h6" gutterBottom>
+            Cartas
+          </Typography>
+          <List>
+            {cards.map((card) => (
+              <ListItem
+                key={card.id_Card}
+                button
+                onClick={() => handleToggleCard(card.id_Card)}
+                selected={selectedCards.includes(card.id_Card)}
+                sx={{ borderRadius: 1 }}
+              >
+                <ListItemIcon>
+                  <Checkbox
+                    edge="start"
+                    checked={selectedCards.includes(card.id_Card)}
+                    tabIndex={-1}
+                    disableRipple
+                    onChange={() => handleToggleCard(card.id_Card)}
+                  />
+                </ListItemIcon>
+                <ListItemText
+                  primary={`#${card.id_Card} - ${card.illustration}`}
+                  secondary={`Ataque: ${card.attack} / Defensa: ${card.defense}`}
+                />
+              </ListItem>
+            ))}
+          </List>
+          {errors.cards && (
+            <Typography color="error" variant="caption">
+              {errors.cards}
+            </Typography>
+          )}
+        </Paper>
+
+        {/* Jugadores */}
+        <Paper
+          sx={{
+            p: 4,
+            width: 400,
+            height: 500,
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'space-between',
+          }}
+        >
+          <Box>
+            <Typography variant="h6" gutterBottom>
+              Jugadores
+            </Typography>
+        <FormControl fullWidth sx={{ mb: 3 }} error={!!errors.user}>
+  <InputLabel id="label-usuario">Usuario</InputLabel>
+  <Select
+    labelId="label-usuario"
+    value={selectedUser}
+    onChange={handleUserChange}
+    label="Usuario"
+    renderValue={(selectedId) => {
+      const user = users.find((u) => u.id_user === selectedId);
+      return user ? user.fullname : 'Selecciona un usuario';
+    }}
+  >
+    {users.map((user) => (
+      <MenuItem key={user.id_user} value={user.id_user}>
+        {user.fullname}
+      </MenuItem>
+    ))}
+  </Select>
+  {errors.user && <FormHelperText>{errors.user}</FormHelperText>}
+</FormControl>
+
+          </Box>
+          <Button
+            variant="contained"
+            color="primary"
+            fullWidth
+            disabled={assigning || !selectedUser || selectedCards.length === 0}
+            onClick={handleAssign}
+          >
+            {assigning ? 'Asignando...' : 'Asignar Cartas'}
+          </Button>
+        </Paper>
+      </Box>
+    )}
+
+    <Snackbar
+      open={snackbar.open}
+      autoHideDuration={3000}
+      onClose={() => setSnackbar({ ...snackbar, open: false })}
+      anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+    >
+      <Alert
+        severity={snackbar.severity}
+        onClose={() => setSnackbar({ ...snackbar, open: false })}
+      >
+        {snackbar.message}
+      </Alert>
+    </Snackbar>
+  </>
+);
 }
+   

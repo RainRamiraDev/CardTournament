@@ -60,6 +60,14 @@ namespace CTApp.Controllers.User
             return Ok(ApiResponse<IEnumerable<RolesListDto>>.SuccessResponse("Roles obtenidos exitosamente.", roles));
         }
 
+        [HttpGet("GetAllCards")]
+        public async Task<IActionResult> GetCards()
+        {
+            var cards = await _userService.GetAllCardsAsync();
+            return Ok(ApiResponse<IEnumerable<ManageCardsDto>>.SuccessResponse("Cartas obtenidas exitosamente.", cards));
+        }
+
+
 
 
 
@@ -87,6 +95,18 @@ namespace CTApp.Controllers.User
 
 
             return Created("", ApiResponse<object>.SuccessResponse("Torneo creado exitosamente.", new AfterCreateTournamentDto { id_Tournament = id }));
+        }
+
+      //  [Authorize(Roles = "1")]
+        [HttpPost("AssignCardToPlayer")]
+        public async Task<IActionResult> AssignCardToPlayer([FromBody] AssignCardToPlayerDto dto)
+        {
+            var id = await _userService.AssignCardToPlayerAsync(dto);
+
+            if (id == 0)
+                throw new InvalidOperationException("Error al asignar cartas.");
+
+            return Created("", ApiResponse<object>.SuccessResponse("cartas asignadas correctamente."));
         }
 
 
