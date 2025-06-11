@@ -1,6 +1,7 @@
 ﻿using CTApp.Response;
 using CTDataModels.Tournamets;
 using CTDto.Card;
+using CTDto.Game;
 using CTDto.Tournaments;
 using CTDto.Users;
 using CTDto.Users.Judge;
@@ -66,6 +67,18 @@ namespace CTApp.Controllers.User
             var cards = await _userService.GetAllCardsAsync();
             return Ok(ApiResponse<IEnumerable<ManageCardsDto>>.SuccessResponse("Cartas obtenidas exitosamente.", cards));
         }
+
+
+
+
+        [HttpGet("GetCardsByUser")]
+        public async Task<IActionResult> GetCardsByUser([FromQuery] int id_user)
+        {
+            var result = await _userService.GetCardsByUserAsync(id_user);
+            var response = ApiResponse<List<ShowCardDataByUserIdDto>>.SuccessResponse("Traídos correctamente", result);
+            return Ok(response);
+        }
+
 
 
 

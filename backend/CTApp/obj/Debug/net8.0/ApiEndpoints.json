@@ -249,6 +249,22 @@
   },
   {
     "ContainingType": "CTApp.Controllers.User.OrganizerController",
+    "Method": "GetCardsByUser",
+    "RelativePath": "api/Organizer/GetCardsByUser",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id_user",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CTApp.Controllers.User.OrganizerController",
     "Method": "GetCountries",
     "RelativePath": "api/Organizer/GetCountries",
     "HttpMethod": "GET",

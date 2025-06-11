@@ -29,4 +29,18 @@ export async function assignCardToPlayer(id_user, id_card_array) {
 }
 
 
+export async function getCardsByUserId(id_User) {
+  try {
+    const response = await api.get(`/Organizer/GetCardsByUser?id_user=${id_User}`);
+    return response.data;
+  } catch (error) {
+    handleAxiosError(error, 'Error al obtener cartas del jugador');
+  }
+}
+
+
+
+
+
+
 

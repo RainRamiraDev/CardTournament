@@ -332,7 +332,20 @@ namespace CTService.Implementation.User
             await _userDao.SoftDeleteUserAsync(userDto.Id_User);
         }
 
-      
+        public async Task<List<ShowCardDataByUserIdDto>> GetCardsByUserAsync(int id_User)
+        {
+           var cardsByUser = await _userDao.GetCardsByUserAsync(id_User);
+            if (cardsByUser == null || !cardsByUser.Any())
+                throw new KeyNotFoundException("No se encontraron cartas para el usuario especificado.");
+            return cardsByUser.Select(card => new ShowCardDataByUserIdDto
+            {
+                Illustration = card.Illustration,
+                Attack = card.Attack,
+                Defense = card.Defense,
+                Series_Name = card.Series_Name,
+                Release_Date = card.Release_Date
+            }).ToList();
+        }
     }
 }
 

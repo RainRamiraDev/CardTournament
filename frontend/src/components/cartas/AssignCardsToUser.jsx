@@ -17,8 +17,7 @@ import {
   Snackbar,
   Alert,
   FormHelperText,
-  Grid,
-  GridItem
+  Grid
 } from '@mui/material';
 
 import { getAllCards, assignCardToPlayer } from '../../services/cardService';
@@ -138,16 +137,15 @@ const handleSubmit = async (e) => {
         </Box>
       ) : (
         <form onSubmit={handleSubmit}>
-         <Box
-            sx={{
-              display: 'flex',
-              gap: 4,
-              justifyContent: 'center',
-              mt: 4,
-              flexWrap: 'wrap', // ya permite que se envuelvan en pantallas pequeñas
-            }}
-          >
+
+          <Grid container spacing={4} justifyContent="center" sx={{ mt: 4 }}>
+
+
+
+
             {/* Cartas */}
+
+             <Grid item xs={12} sm={6} md={4}>
           <Paper
             sx={{
               p: 4,
@@ -192,8 +190,10 @@ const handleSubmit = async (e) => {
                 </Typography>
               )}
             </Paper>
+          </Grid>
 
             {/* Jugadores */}
+            <Grid item xs={12} sm={6} md={4}>
             <Paper
               sx={{
                 p: 4,
@@ -240,7 +240,8 @@ const handleSubmit = async (e) => {
                 {assigning ? 'Asignando...' : 'Asignar Cartas'}
               </Button>
             </Paper>
-          </Box>
+          </Grid>
+        </Grid>
         </form>
       )}
 

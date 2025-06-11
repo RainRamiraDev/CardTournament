@@ -39,5 +39,6 @@ namespace CTService.Interfaces.User
         Task<IEnumerable<ShowUserDto>> GetAllUsersAsync();
         Task<IEnumerable<ManageCardsDto>> GetAllCardsAsync();
         Task<int> AssignCardToPlayerAsync(AssignCardToPlayerDto dto);
+        Task<List<ShowCardDataByUserIdDto>> GetCardsByUserAsync(int id_User);
     }
 }

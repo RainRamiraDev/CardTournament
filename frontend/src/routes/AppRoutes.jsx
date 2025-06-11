@@ -5,6 +5,7 @@ import ProtectedRoutes from './ProtectedRoutes';
 import Menu from '../components/ui/menu/Menu';
 import CrudUsuarioView from '../views/CrudUsuarioView';
 import AssignCardsToUserView from '../views/AssignCardsToUserView';
+import PlayerCardsView from '../views/PlayersCardsView';
 
 const AppRoutes = () => {
   return (
@@ -19,6 +20,11 @@ const AppRoutes = () => {
         <Route
         path="/cartas"
         element={<ProtectedRoutes element={<AssignCardsToUserView />} />}
+      />
+
+         <Route
+        path="/CardsUsuarios"
+        element={<ProtectedRoutes element={<PlayerCardsView />} />}
       />
        <Route
         path="/usuarios"

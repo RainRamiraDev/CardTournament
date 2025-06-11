@@ -31,7 +31,7 @@ const SideDrawer = ({ open, onClose, navigate, theme }) => {
   const menuItems = [
     { text: 'Manejo usuario', icon: <PeopleAltIcon />, route: '/usuarios' },
     { text: 'Asignar carta a usuario', icon: <AddCardIcon />, route: '/cartas' },
-    { text: 'Cartas de jugador', icon: <FormatListBulletedIcon />, route: '/cartas' },
+    { text: 'Cartas de jugador', icon: <FormatListBulletedIcon />, route: '/CardsUsuarios' },
   ];
 
   return (

@@ -32,7 +32,7 @@
 
   "QueryGetPlayersFromTournament": "SELECT tp.id_player, tu.alias, COUNT(td.id_tourn_disqualification) AS disqualifications,  tu.avatar_url FROM t_tourn_players tp JOIN t_users tu ON tp.id_player = tu.id_user LEFT JOIN t_tourn_disqualifications td ON tp.id_player = td.id_player AND td.id_tournament = @id_tournament WHERE tp.id_tournament = @id_tournament GROUP BY tp.id_player, tu.alias, tu.avatar_url;",
 
-
+  "QueryGetCardsByUserId": "SELECT c.illustration, c.attack, c.defense, s.series_name, DATE_FORMAT(s.release_date, '%d de %M, %Y') AS release_date FROM t_users_cards uc JOIN t_users u ON u.id_user = uc.id_user JOIN t_cards c ON c.id_card = uc.id_card  JOIN t_card_series cs ON cs.id_card = c.id_card JOIN t_series s ON s.id_series = cs.id_series WHERE u.id_user = @id_user ORDER BY c.illustration, s.series_name asc;",
 
 
   "QueryInsertDecks": "INSERT INTO T_TOURN_DECKS (id_tournament, id_card_series, id_owner) VALUES (@id_tournament, @id_card_series, @id_owner);",

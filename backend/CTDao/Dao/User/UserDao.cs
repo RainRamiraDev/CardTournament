@@ -4,6 +4,7 @@ using CTDataModels.Users;
 using CTDataModels.Users.Admin;
 using CTDataModels.Users.LogIn;
 using CTDataModels.Users.Organizer;
+using CTDto.Card;
 using Dapper;
 using DataAccess;
 using MySql.Data.MySqlClient;
@@ -259,5 +260,22 @@ namespace CTDao.Dao.User
                 return count;
             }
         }
+
+        public async Task<IEnumerable<ShowCardDataByUserIdModel>> GetCardsByUserAsync(int request)
+        {
+            using (var connection = new MySqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+
+                var result = await connection.QueryAsync<ShowCardDataByUserIdModel>(
+                    QueryLoader.GetQuery("QueryGetCardsByUserId"),
+                    new { id_user = request } // Coincide con @id_user en tu SQL
+                );
+
+                return result;
+            }
+
+        }
+
     }
 }

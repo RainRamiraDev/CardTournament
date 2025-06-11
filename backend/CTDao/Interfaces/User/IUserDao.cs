@@ -44,5 +44,6 @@ namespace CTDao.Interfaces.User
         Task<IEnumerable<ManageCardsModel>> GetAllCardsAsync();
         Task<int> AssignCardToPlayerAsync(AssignCardToPlayerModel assignCardToPlayerModel);
         Task<int> GetCardCountAsync(int id_user);
+        Task<IEnumerable<ShowCardDataByUserIdModel>> GetCardsByUserAsync(int id_User);
     }
 }
