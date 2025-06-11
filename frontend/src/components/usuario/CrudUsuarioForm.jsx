@@ -116,7 +116,7 @@ const handleActionChange = (event) => {
           form.Email,
           form.avatar_Url
         );
-        showSnackbar('Usuario creado exitosamente');
+        showSnackbar(res.message || 'Usuario creado exitosamente');
       } else if (isAlter) {
         await alterUser(
           form.Id_User,
@@ -127,19 +127,20 @@ const handleActionChange = (event) => {
           form.Email,
           form.avatar_Url
         );
-        showSnackbar('Usuario modificado exitosamente');
+       showSnackbar(res.message || 'Usuario modificado exitosamente');
       } else if (isDelete) {
         await deactivateUser(form.Id_User);
-        showSnackbar('Usuario eliminado exitosamente');
+        showSnackbar(res.message || 'Usuario eliminado exitosamente');
       }
 
       setTimeout(() => {
         navigate('/menu');
       }, 3000);
     } catch (error) {
-      console.error('Error al ejecutar la acción:', error);
-    }
-  };
+  showSnackbar(error.message || 'Error al ejecutar la acción');
+  console.error('Error al ejecutar la acción:', error);
+}
+};
 
   const roleStyles = {
     1: { color: theme.palette.primary.main, fontWeight: 'bold' },
