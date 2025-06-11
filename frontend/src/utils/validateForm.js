@@ -34,12 +34,23 @@ function validateUserId(form, action) {
 function validateUserFields(form, action) {
   const errors = {};
 
-    if (!Number.isInteger(Number(form.Id_Country)) || Number(form.Id_Country) <= 0) {
-    errors.Id_Country = 'El país es requerido';
+   console.log("Id_Country:"+form.id_Country);
+   console.log("Alias:"+form.Alias);
+   console.log("Fullname:"+form.Fullname);
+   console.log("Email:"+form.Email);
+   console.log("Id_Rol:"+form.id_Rol);
+   console.log("passcode:"+form.Passcode);
+  console.log("avatar_Url:"+form.avatar_Url);
+         
+
+ 
+
+    if (!Number.isInteger(Number(form.id_Country)) || Number(form.id_Country) <= 0) {
+    errors.id_Country = 'El país es requerido';
   }
 
-  if (!Number.isInteger(Number(form.Id_Rol)) || Number(form.Id_Rol) <= 0) {
-    errors.Id_Rol = 'El rol es requerido';
+  if (!Number.isInteger(Number(form.id_Rol)) || Number(form.id_Rol) <= 0) {
+    errors.id_Rol = 'El rol es requerido';
   }
 
   if (!form.Fullname?.trim()) {
@@ -68,10 +79,10 @@ function validateUserFields(form, action) {
     errors.Email = 'El email no es válido';
   }
 
-  if (!form.Avatar_Url?.trim()) {
-    errors.Avatar_Url = 'La URL del avatar es requerida';
-  } else if (!urlRegex.test(form.Avatar_Url)) {
-    errors.Avatar_Url = 'La URL no es válida';
+  if (!form.avatar_Url?.trim()) {
+    errors.avatar_Url = 'La URL del avatar es requerida';
+  } else if (!urlRegex.test(form.avatar_Url)) {
+    errors.avatar_Url = 'La URL no es válida';
   }
 
   return errors;

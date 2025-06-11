@@ -33,7 +33,7 @@ import { Form, useNavigate } from 'react-router-dom';
 const initialForm = {
   Id_User: 0,
   id_Country: 0,
-  Id_Rol: 0,
+  id_Rol: 0,
   Fullname: '',
   Passcode: '',
   Alias: '',
@@ -109,7 +109,7 @@ const handleActionChange = (event) => {
       if (isCreate) {
         await createUser(
           form.id_Country,
-          form.Id_Rol,
+          form.id_Rol,
           form.Passcode,
           form.Fullname,
           form.Alias,
