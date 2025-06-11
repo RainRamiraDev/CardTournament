@@ -1,9 +1,9 @@
 import React from 'react';
 import { Box, CssBaseline, useTheme, useMediaQuery } from '@mui/material';
 import Menu from '../components/ui/menu/Menu';
-import UserCrudForm from '../components/usuario/CrudUsuarioForm';
+import AssignCardsToUser from '../components/cartas/AssignCardsToUser';
 
-const CrudUsuarioView = () => {
+const AssignCardsToUserView = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
@@ -24,10 +24,10 @@ const CrudUsuarioView = () => {
           overflowY: 'auto',
         }}
       >
-        <UserCrudForm />
+        <AssignCardsToUser />
       </Box>
     </Box>
   );
 };
 
-export default CrudUsuarioView;
+export default AssignCardsToUserView;

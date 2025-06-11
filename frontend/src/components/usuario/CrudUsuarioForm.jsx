@@ -369,7 +369,7 @@ if (selectedUser) {
               required
             />
             <PerTextField
-              label="Avatar URL"
+              label="avatar URL"
               name="avatar_Url"
               value={form.avatar_Url}
               onChange={handleChange}
@@ -420,7 +420,7 @@ if (selectedUser) {
             <Box mt={2}>
               <img
                 src={selectedUser.avatar_Url}
-                alt="Avatar"
+                alt="avatar"
                 style={{ maxWidth: '100%', maxHeight: 150 }}
               />
             </Box>

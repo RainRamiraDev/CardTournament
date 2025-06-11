@@ -17,6 +17,8 @@ import {
   Snackbar,
   Alert,
   FormHelperText,
+  Grid,
+  GridItem
 } from '@mui/material';
 
 import { getAllCards, assignCardToPlayer } from '../../services/cardService';
@@ -136,26 +138,27 @@ const handleSubmit = async (e) => {
         </Box>
       ) : (
         <form onSubmit={handleSubmit}>
-          <Box
+         <Box
             sx={{
               display: 'flex',
               gap: 4,
               justifyContent: 'center',
               mt: 4,
-              flexWrap: 'wrap',
+              flexWrap: 'wrap', // ya permite que se envuelvan en pantallas pequeñas
             }}
           >
             {/* Cartas */}
-            <Paper
-              sx={{
-                p: 4,
-                width: 400,
-                height: 500,
-                overflowY: 'auto',
-                display: 'flex',
-                flexDirection: 'column',
-              }}
-            >
+          <Paper
+            sx={{
+              p: 4,
+              width: { xs: '100%', sm: 400 },  // ancho completo en móvil, 400px en desktop
+              height: 500,
+              overflowY: 'auto',
+              display: 'flex',
+              flexDirection: 'column',
+              mb: { xs: 2, sm: 0 }, // margen inferior en móvil para separar cards y usuarios
+            }}
+          >
               <Typography variant="h6" gutterBottom>
                 Cartas
               </Typography>
@@ -194,11 +197,12 @@ const handleSubmit = async (e) => {
             <Paper
               sx={{
                 p: 4,
-                width: 400,
+                width: { xs: '100%', sm: 400 },  // ancho completo en móvil, 400px en desktop
                 height: 500,
+                overflowY: 'auto',
                 display: 'flex',
                 flexDirection: 'column',
-                justifyContent: 'space-between',
+                mb: { xs: 2, sm: 0 }, // margen inferior en móvil para separar cards y usuarios
               }}
             >
               <Box>
