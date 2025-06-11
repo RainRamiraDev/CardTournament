@@ -53,8 +53,7 @@ export default function PlayersCards() {
     setLoadingCards(true);
     try {
       const response = await getCardsByUserId(id_user);
-      setUserCards(response?.data || []);
-
+      setUserCards(response.data);
     } catch (error) {
       setSnackbar({ open: true, message: 'Error cargando cartas del usuario', severity: 'error' });
     } finally {
@@ -73,24 +72,25 @@ export default function PlayersCards() {
     await fetchUserCards(userId);
   };
 
-  return (
-    <>
-      <Typography variant="h5" gutterBottom align="center" sx={{ mt: 4 }}>
-        Seleccionar Jugador
-      </Typography>
+return (
+  <>
+   
 
-      {loading ? (
-        <Box sx={{ display: 'flex', justifyContent: 'center', my: 4 }}>
-          <CircularProgress />
-        </Box>
-      ) : (
-        <Grid container spacing={4} justifyContent="center" sx={{ mt: 4 }}>
-          <Grid item xs={12} sm={6} md={4}>
-            <Paper sx={{ p: 4, height: 500, overflowY: 'auto' }}>
+    {loading ? (
+      <Box sx={{ display: 'flex', justifyContent: 'center', my: 4 }}>
+        <CircularProgress />
+      </Box>
+    ) : (
+      <Box sx={{ maxWidth: '1200px', mx: 'auto', px: 2 }}>
+        <Grid container spacing={4} sx={{ mt: 4 }} justifyContent="center" >
+          {/* Selector de usuario */}
+          <Grid item xs={12} sm={6} md={4} lg={2.4}>
+
+            <Paper sx={{ p: 4 }}>
               <Typography variant="h6" gutterBottom>
                 Jugadores
               </Typography>
-              <FormControl fullWidth sx={{ mb: 3 }} error={!!errors.user}>
+              <FormControl fullWidth error={!!errors.user}>
                 <InputLabel id="label-usuario">Usuario</InputLabel>
                 <Select
                   labelId="label-usuario"
@@ -109,64 +109,119 @@ export default function PlayersCards() {
             </Paper>
           </Grid>
 
+          {/* Cartas del jugador */}
           {selectedUser && (
-            <Grid item xs={12} sm={6} md={6}>
-              <Paper sx={{ p: 4, height: 500, overflowY: 'auto' }}>
+            <Grid item xs={12}>
+              <Paper sx={{ p: 4 }}>
                 <Typography variant="h6" gutterBottom>
                   Cartas del Jugador
                 </Typography>
+
                 {loadingCards ? (
                   <Box sx={{ display: 'flex', justifyContent: 'center', mt: 3 }}>
                     <CircularProgress />
                   </Box>
                 ) : userCards.length > 0 ? (
-                  userCards.map((card, index) => (
-                    <Box key={index} sx={{ mb: 2, p: 2, border: '1px solid #ccc', borderRadius: 2, background: '#f9f9f9' }}>
-                      <Typography variant="subtitle1"><strong>{card.illustration}</strong></Typography>
-                      <Typography variant="body2">Ataque: {card.attack}</Typography>
-                      <Typography variant="body2">Defensa: {card.defense}</Typography>
-                      <Typography variant="body2">Serie: {card.series_Name}</Typography>
-                      <Typography variant="body2">Lanzamiento: {card.release_Date}</Typography>
-                    </Box>
-                  ))
+                  <Grid container spacing={5} sx={{ mt: 7 }} justifyContent="center">
+                    {userCards.map((card, index) => (
+                      <Grid item xs={12} sm={6} md={3} lg={2} key={index}>
+                        <Paper
+  elevation={3}
+  sx={{
+    p: 3,
+    height: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    borderRadius: 3,
+    backgroundColor: '#121212',
+    border: '1.5px solid cyan',
+    color: 'cyan',
+    fontFamily: "'Cinzel', serif",
+    boxShadow: '0 0 10px cyan',
+    transition: '0.3s',
+    '&:hover': {
+      boxShadow: '0 0 20px #00ffff',
+      backgroundColor: '#1b1b1b',
+    },
+  }}
+>
+  <Typography
+    variant="subtitle1"
+    fontWeight="900"
+    gutterBottom
+    sx={{
+      letterSpacing: 2,
+      fontSize: '1.2rem',
+      textShadow: '0 0 5px cyan',
+      color: '#00ffff',
+      textTransform: 'uppercase',
+      mb: 2,
+    }}
+  >
+    {card.illustration}
+  </Typography>
+
+  <Box sx={{ flexGrow: 1, mb: 2 }}>
+    <Typography variant="body2" sx={{ mb: 0.7, fontWeight: '600', color: '#88ffff' }}>
+      ATAQUE: <span style={{ fontWeight: 'bold', color: 'white' }}>{card.attack}</span>
+    </Typography>
+    <Typography variant="body2" sx={{ mb: 0.7, fontWeight: '600', color: '#88ffff' }}>
+      DEFENSA: <span style={{ fontWeight: 'bold', color: 'white' }}>{card.defense}</span>
+    </Typography>
+    <Typography variant="body2" sx={{ mb: 0.7, fontWeight: '600', color: '#88ffff' }}>
+      SERIE: <span style={{ fontWeight: 'bold', color: 'white' }}>{card.series_Name}</span>
+    </Typography>
+    <Typography variant="body2" sx={{ fontWeight: '600', color: '#88ffff' }}>
+      LANZAMIENTO: <span style={{ fontWeight: 'bold', color: 'white' }}>{card.release_Date}</span>
+    </Typography>
+  </Box>
+</Paper>
+
+                      </Grid>
+                    ))}
+                  </Grid>
                 ) : (
-                  <Typography variant="body2">Este jugador no tiene cartas asignadas.</Typography>
+                  <Typography variant="body2" sx={{ mt: 2 }}>
+                    Este jugador no tiene cartas asignadas.
+                  </Typography>
                 )}
               </Paper>
             </Grid>
           )}
         </Grid>
-      )}
+      </Box>
+    )}
 
-      <Snackbar
-        open={snackbar.open}
-        autoHideDuration={3000}
+    {/* Snackbar de feedback */}
+    <Snackbar
+      open={snackbar.open}
+      autoHideDuration={3000}
+      onClose={() => setSnackbar({ ...snackbar, open: false })}
+      anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+    >
+      <Alert
+        severity={snackbar.severity}
         onClose={() => setSnackbar({ ...snackbar, open: false })}
-        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
       >
-        <Alert
-          severity={snackbar.severity}
-          onClose={() => setSnackbar({ ...snackbar, open: false })}
-        >
-          {snackbar.message}
-        </Alert>
-      </Snackbar>
+        {snackbar.message}
+      </Alert>
+    </Snackbar>
 
-      <Drawer anchor="right" open={open} onClose={closeDrawer}>
-        <Box sx={{ width: 300, p: 3 }}>
-          <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-            <IconButton onClick={closeDrawer}>
-              <CloseIcon />
-            </IconButton>
-          </Box>
-          <Typography variant="h6" gutterBottom>
-            Asignación exitosa
-          </Typography>
-          <Typography>
-            Cartas mostradas exitosamente.
-          </Typography>
+    {/* Drawer lateral */}
+    <Drawer anchor="right" open={open} onClose={closeDrawer}>
+      <Box sx={{ width: 300, p: 3 }}>
+        <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+          <IconButton onClick={closeDrawer}>
+            <CloseIcon />
+          </IconButton>
         </Box>
-      </Drawer>
-    </>
-  );
+        <Typography variant="h6" gutterBottom>
+          Asignación exitosa
+        </Typography>
+        <Typography>Cartas mostradas exitosamente.</Typography>
+      </Box>
+    </Drawer>
+  </>
+);
 }
