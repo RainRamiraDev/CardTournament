@@ -28,12 +28,12 @@ import {
   getAllUsers,
 } from '../../services/userService';
 import { useTheme } from '@mui/material/styles';
-import { useNavigate } from 'react-router-dom';
+import { Form, useNavigate } from 'react-router-dom';
 
 const initialForm = {
-  Id_User: '',
-  id_Country: '',
-  id_Rol: '',
+  Id_User: 0,
+  id_Country: 0,
+  Id_Rol: 0,
   Fullname: '',
   Passcode: '',
   Alias: '',
@@ -109,7 +109,7 @@ const handleActionChange = (event) => {
       if (isCreate) {
         await createUser(
           form.id_Country,
-          form.id_Rol,
+          form.Id_Rol,
           form.Passcode,
           form.Fullname,
           form.Alias,
@@ -275,7 +275,7 @@ if (selectedUser) {
         {(isCreate || isAlter) && (
           <>
             {/* País */}
-            <FormControl fullWidth sx={{ mb: 3 }} error={!!errors.id_Country}>
+             <FormControl fullWidth sx={{ mb: 3 }} error={!!errors.id_Country}>
               <InputLabel id="label-pais">País</InputLabel>
               <Select
                 labelId="label-pais"
@@ -294,7 +294,9 @@ if (selectedUser) {
               {errors.id_Country && (
                 <FormHelperText>{errors.id_Country}</FormHelperText>
               )}
-            </FormControl>
+            </FormControl> 
+
+
 
             {/* Rol */}
             <FormControl fullWidth sx={{ mb: 2 }} error={!!errors.id_Rol}>

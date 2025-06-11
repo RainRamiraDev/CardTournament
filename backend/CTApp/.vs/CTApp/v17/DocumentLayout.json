@@ -3,6 +3,9 @@
   "WorkspaceRootPath": "C:\\Dev\\Bootcamp\\CardTournament\\backend\\CTApp\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{75A57AC1-08F0-4329-A586-BB717D5AF03E}|..\\CTDto\\CTDto.csproj|c:\\dev\\bootcamp\\cardtournament\\backend\\ctdto\\validations\\users\\assigncardtoplayerdtovalidation.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{044F8FA9-5241-4DFD-9606-88BD2C275654}|CTApp.csproj|c:\\dev\\bootcamp\\cardtournament\\backend\\ctapp\\controllers\\user\\organizercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{044F8FA9-5241-4DFD-9606-88BD2C275654}|CTApp.csproj|solutionrelative:controllers\\user\\organizercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -14,9 +17,6 @@
       "RelativeMoniker": "D:0:0:{044F8FA9-5241-4DFD-9606-88BD2C275654}|CTApp.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{75A57AC1-08F0-4329-A586-BB717D5AF03E}|..\\CTDto\\CTDto.csproj|c:\\dev\\bootcamp\\cardtournament\\backend\\ctdto\\validations\\users\\assigncardtoplayerdtovalidation.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{75A57AC1-08F0-4329-A586-BB717D5AF03E}|..\\CTDto\\CTDto.csproj|c:\\dev\\bootcamp\\cardtournament\\backend\\ctdto\\validations\\users\\alteruserdtovalidation.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
@@ -26,18 +26,37 @@
       "VerticalTabListWidth": 256,
       "DocumentGroups": [
         {
-          "DockedWidth": 184,
-          "SelectedChildIndex": 3,
+          "DockedWidth": 194,
+          "SelectedChildIndex": 0,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 1,
+              "Title": "OrganizerController.cs",
+              "DocumentMoniker": "C:\\Dev\\Bootcamp\\CardTournament\\backend\\CTApp\\Controllers\\User\\OrganizerController.cs",
+              "RelativeDocumentMoniker": "Controllers\\User\\OrganizerController.cs",
+              "ToolTip": "C:\\Dev\\Bootcamp\\CardTournament\\backend\\CTApp\\Controllers\\User\\OrganizerController.cs",
+              "RelativeToolTip": "Controllers\\User\\OrganizerController.cs",
+              "ViewState": "AgIAAFYAAAAAAAAAAAAiwG4AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-09T19:11:53.956Z",
+              "EditorCaption": ""
+            }
+          ]
+        },
+        {
+          "DockedWidth": 174,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
               "Title": "AssignCardToPlayerDtoValidation.cs",
               "DocumentMoniker": "C:\\Dev\\Bootcamp\\CardTournament\\backend\\CTDto\\Validations\\Users\\AssignCardToPlayerDtoValidation.cs",
               "RelativeDocumentMoniker": "..\\CTDto\\Validations\\Users\\AssignCardToPlayerDtoValidation.cs",
               "ToolTip": "C:\\Dev\\Bootcamp\\CardTournament\\backend\\CTDto\\Validations\\Users\\AssignCardToPlayerDtoValidation.cs",
               "RelativeToolTip": "..\\CTDto\\Validations\\Users\\AssignCardToPlayerDtoValidation.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAABRAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABkAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-06-09T19:07:48.483Z",
               "IsPinned": true,
@@ -53,20 +72,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "OrganizerController.cs",
-              "DocumentMoniker": "C:\\Dev\\Bootcamp\\CardTournament\\backend\\CTApp\\Controllers\\User\\OrganizerController.cs",
-              "RelativeDocumentMoniker": "Controllers\\User\\OrganizerController.cs",
-              "ToolTip": "C:\\Dev\\Bootcamp\\CardTournament\\backend\\CTApp\\Controllers\\User\\OrganizerController.cs",
-              "RelativeToolTip": "Controllers\\User\\OrganizerController.cs",
-              "ViewState": "AgIAAFYAAAAAAAAAAAAiwGYAAAAIAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-09T19:11:53.956Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\Dev\\Bootcamp\\CardTournament\\backend\\CTApp\\Program.cs",
               "RelativeDocumentMoniker": "Program.cs",
@@ -74,21 +80,19 @@
               "RelativeToolTip": "Program.cs",
               "ViewState": "AgIAAEUAAAAAAAAAAADwv04AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-09T19:11:09.224Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-06-09T19:11:09.224Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "AssignCardToPlayerDto.cs",
               "DocumentMoniker": "C:\\Dev\\Bootcamp\\CardTournament\\backend\\CTDto\\Users\\Organizer\\AssignCardToPlayerDto.cs",
               "RelativeDocumentMoniker": "..\\CTDto\\Users\\Organizer\\AssignCardToPlayerDto.cs",
               "ToolTip": "C:\\Dev\\Bootcamp\\CardTournament\\backend\\CTDto\\Users\\Organizer\\AssignCardToPlayerDto.cs",
               "RelativeToolTip": "..\\CTDto\\Users\\Organizer\\AssignCardToPlayerDto.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-09T19:08:55.057Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-06-09T19:08:55.057Z"
             },
             {
               "$type": "Document",
@@ -100,8 +104,7 @@
               "RelativeToolTip": "..\\CTDto\\Validations\\Users\\AlterUserDtoValidation.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAAnAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2025-06-09T19:08:04.715Z",
-              "EditorCaption": ""
+              "WhenOpened": "2025-06-09T19:08:04.715Z"
             }
           ]
         }

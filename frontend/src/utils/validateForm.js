@@ -34,12 +34,12 @@ function validateUserId(form, action) {
 function validateUserFields(form, action) {
   const errors = {};
 
-  if (!form.Id_Country && form.Id_Country !== 0) {
-    errors.Id_Country = 'El ID del país es requerido';
+    if (!Number.isInteger(Number(form.Id_Country)) || Number(form.Id_Country) <= 0) {
+    errors.Id_Country = 'El país es requerido';
   }
 
-  if (!form.Id_Rol && form.Id_Rol !== 0) {
-    errors.Id_Rol = 'El ID del rol es requerido';
+  if (!Number.isInteger(Number(form.Id_Rol)) || Number(form.Id_Rol) <= 0) {
+    errors.Id_Rol = 'El rol es requerido';
   }
 
   if (!form.Fullname?.trim()) {

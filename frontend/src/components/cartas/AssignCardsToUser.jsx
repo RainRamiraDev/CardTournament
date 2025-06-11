@@ -22,8 +22,13 @@ import {
 import { getAllCards, assignCardToPlayer } from '../../services/cardService';
 import { getAllUsers } from '../../services/userService';
 import { handleAxiosError } from '../../utils/handleAxiosError';
+import useDrawer from '../../hooks/useDrawer';
+import { Drawer, IconButton } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
+
 
 export default function AssignCardsToUser() {
+  const { open, openDrawer, closeDrawer } = useDrawer();
   const [cards, setCards] = useState([]);
   const [users, setUsers] = useState([]);
   const [selectedCards, setSelectedCards] = useState([]);
@@ -92,11 +97,13 @@ const handleSubmit = async (e) => {
     if (response.status === 200) {
       console.log('Cartas asignadas correctamente:', response.data);
 
-      setSnackbar({
+          setSnackbar({
         open: true,
         severity: 'success',
         message: 'Cartas asignadas correctamente.',
       });
+
+  openDrawer(); // 👉 Mostrar Drawer
 
       setSelectedCards([]);
       setSelectedUser('');
@@ -246,6 +253,22 @@ const handleSubmit = async (e) => {
           {snackbar.message}
         </Alert>
       </Snackbar>
+
+      <Drawer anchor="right" open={open} onClose={closeDrawer}>
+  <Box sx={{ width: 300, p: 3 }}>
+    <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+      <IconButton onClick={closeDrawer}>
+        <CloseIcon />
+      </IconButton>
+    </Box>
+    <Typography variant="h6" gutterBottom>
+      Asignación exitosa
+    </Typography>
+    <Typography>
+      Las cartas fueron asignadas correctamente al jugador seleccionado.
+    </Typography>
+  </Box>
+</Drawer>
     </>
   );
 }

@@ -10,6 +10,8 @@ const AppRoutes = () => {
   return (
     <Routes>
       <Route path="/login" element={<LogInForm />} />
+
+
       <Route
         path="/menu"
         element={<ProtectedRoutes element={<Menu />} />}
