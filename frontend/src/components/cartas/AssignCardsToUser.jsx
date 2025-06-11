@@ -127,9 +127,7 @@ const handleSubmit = async (e) => {
 
   return (
     <>
-      <Typography variant="h5" gutterBottom align="center" sx={{ mt: 4 }}>
-        Asignar Cartas a Jugador
-      </Typography>
+ 
 
       {loading ? (
         <Box sx={{ display: 'flex', justifyContent: 'center', my: 4 }}>
@@ -139,10 +137,6 @@ const handleSubmit = async (e) => {
         <form onSubmit={handleSubmit}>
 
           <Grid container spacing={4} justifyContent="center" sx={{ mt: 4 }}>
-
-
-
-
             {/* Cartas */}
 
              <Grid item xs={12} sm={6} md={4}>

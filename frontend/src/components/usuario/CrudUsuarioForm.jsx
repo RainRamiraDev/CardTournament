@@ -156,12 +156,15 @@ if (selectedUser) {
 
   return (
     
-    <Paper elevation={3} sx={{ p: 4, maxWidth: 500, mx: 'auto' }}>
+    <Paper elevation={3} sx={{ p: 4, maxWidth: 500, mx: 'auto' }} >
       <Typography variant="h6" gutterBottom>
         Gestión de Usuario ({action})
       </Typography>
 
-      <FormControl fullWidth sx={{ mb: 3 }}>
+
+
+
+      <FormControl fullWidth sx={{ mb: 3, mt: 4, mx: 'auto', width: '80%' }} >
         <InputLabel>Acción</InputLabel>
         <Select value={action} label="Acción" onChange={handleActionChange}>
           <MenuItem value="CREATE">Crear</MenuItem>
@@ -172,27 +175,27 @@ if (selectedUser) {
       </FormControl>
 
       <Box>
-        <Grid container spacing={4}>
+        <Grid container spacing={4} justifyContent="center" >
         {/* Columna izquierda: formulario principal */}
-        <Grid item xs={12} md={6}>
+        <Grid item xs={12} md={6}  >
           <Box component="form" onSubmit={handleSubmit} noValidate>
         {(isAlter || isDelete) && (
-          <FormControl fullWidth sx={{ mb: 3 }} error={!!errors.Id_User}>
+          <FormControl fullWidth sx={{ mb: 3  }} error={!!errors.Id_User}   >
             <InputLabel id="label-usuario">Usuario</InputLabel>
-            <Select
-              labelId="label-usuario"
-              name="Id_User"
-              value={form.Id_User || ''}
-              onChange={handleChange}
-              label="Usuario"
-              required
-              renderValue={(selectedId) => {
-                const user = users.find((u) => u.id_user === selectedId);
-                const rolName =
-                  roles.find((r) => r.id_Rol === user?.id_Rol)?.rol || 'Sin rol';
-                return `${user?.fullname} [${rolName}]`;
-              }}
-            >
+           <Select
+        labelId="label-usuario"
+        name="Id_User"
+        value={form.Id_User || ''}
+        onChange={handleChange}
+        label="Usuario"
+        required
+        renderValue={(selectedId) => {
+          const user = users.find((u) => u.id_user === selectedId);
+          const rolName =
+            roles.find((r) => r.id_Rol === user?.id_Rol)?.rol || 'Sin rol';
+          return `${user?.fullname} [${rolName}]`;
+        }}
+      >
               {users.map((user) => {
                 const rolName =
                   roles.find((r) => r.id_Rol === user.id_Rol)?.rol || 'Sin rol';
@@ -396,35 +399,56 @@ if (selectedUser) {
 
          {selectedUser && (
         <Paper
-          elevation={2}
-          sx={{
-            p: 2,
-            mt: 2,
-            borderLeft: `5px solid ${theme.palette.primary.main}`,
-            backgroundColor: '#f9f9f9',
-          }}
-        >
-          <Typography variant="h6" gutterBottom>
-            Detalles del Usuario
-          </Typography>
-          <Typography><strong>Nombre:</strong> {selectedUser.fullname}</Typography>
-          <Typography><strong>Alias:</strong> {selectedUser.alias}</Typography>
-          <Typography><strong>Email:</strong> {selectedUser.email}</Typography>
-          <Typography><strong>Rol:</strong> {
-            roles.find((r) => r.id_Rol === selectedUser.id_Rol)?.rol || 'Sin rol'
-          }</Typography>
-          <Typography><strong>País:</strong> {
-            countries.find((c) => c.id_Country === selectedUser.id_Country)?.country_name || 'Desconocido'
-          }</Typography>
-          {selectedUser.avatar_Url && (
-            <Box mt={2}>
-              <img
-                src={selectedUser.avatar_Url}
-                alt="avatar"
-                style={{ maxWidth: '100%', maxHeight: 150 }}
-              />
-            </Box>
-          )}
+            elevation={3}
+            sx={{
+              p: 2,
+              height: '100%',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'space-between',
+              borderRadius: 3,
+              backgroundColor: '#121212',
+              border: '1.5px solid cyan',
+              color: 'cyan',
+              fontFamily: "'Cinzel', serif",
+              boxShadow: '0 0 10px cyan',
+              transition: '0.3s',
+              '&:hover': {
+                boxShadow: '0 0 20px #00ffff',
+                backgroundColor: '#1b1b1b',
+              },
+            }}
+          >
+         <Typography variant="h6" gutterBottom>
+    Detalles del Usuario
+  </Typography>
+  {selectedUser.avatar_Url && (
+    <Box mt={2} mb={2} sx={{ alignSelf: 'center' }}>
+      <img
+        src={selectedUser.avatar_Url}
+        alt="avatar"
+        style={{ maxWidth: '100%', maxHeight: 150 }}
+      />
+    </Box>
+  )}
+  <Typography>
+    <strong>Nombre:</strong> {selectedUser.fullname}
+  </Typography>
+  <Typography>
+    <strong>Alias:</strong> {selectedUser.alias}
+  </Typography>
+  <Typography>
+    <strong>Email:</strong> {selectedUser.email}
+  </Typography>
+  <Typography>
+    <strong>Rol:</strong>{' '}
+    {roles.find((r) => r.id_Rol === selectedUser.id_Rol)?.rol || 'Sin rol'}
+  </Typography>
+  <Typography>
+    <strong>País:</strong>{' '}
+    {countries.find((c) => c.id_Country === selectedUser.id_Country)?.country_name ||
+      'Desconocido'}
+  </Typography>
         </Paper>
       )}
       </Grid>

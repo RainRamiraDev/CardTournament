@@ -26,6 +26,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import { getAllUsers } from '../../services/userService';
 import { getCardsByUserId } from '../../services/cardService';
 import useDrawer from '../../hooks/useDrawer';
+import cardImage from '../../assets/card.jpg'; // Asegúrate de que la ruta sea correcta
 
 export default function PlayersCards() {
   const { open, openDrawer, closeDrawer } = useDrawer();
@@ -125,60 +126,78 @@ return (
                   <Grid container spacing={5} sx={{ mt: 7 }} justifyContent="center">
                     {userCards.map((card, index) => (
                       <Grid item xs={12} sm={6} md={3} lg={2} key={index}>
-                        <Paper
-  elevation={3}
-  sx={{
-    p: 3,
-    height: '100%',
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-    borderRadius: 3,
-    backgroundColor: '#121212',
-    border: '1.5px solid cyan',
-    color: 'cyan',
-    fontFamily: "'Cinzel', serif",
-    boxShadow: '0 0 10px cyan',
-    transition: '0.3s',
-    '&:hover': {
-      boxShadow: '0 0 20px #00ffff',
-      backgroundColor: '#1b1b1b',
-    },
-  }}
->
-  <Typography
-    variant="subtitle1"
-    fontWeight="900"
-    gutterBottom
+  <Paper
+    elevation={3}
     sx={{
-      letterSpacing: 2,
-      fontSize: '1.2rem',
-      textShadow: '0 0 5px cyan',
-      color: '#00ffff',
-      textTransform: 'uppercase',
-      mb: 2,
+      p: 2,
+      height: '100%',
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'space-between',
+      borderRadius: 3,
+      backgroundColor: '#121212',
+      border: '1.5px solid cyan',
+      color: 'cyan',
+      fontFamily: "'Cinzel', serif",
+      boxShadow: '0 0 10px cyan',
+      transition: '0.3s',
+      '&:hover': {
+        boxShadow: '0 0 20px #00ffff',
+        backgroundColor: '#1b1b1b',
+      },
     }}
   >
-    {card.illustration}
-  </Typography>
+    {/* Imagen arriba */}
+    <Box
+      component="img"
+      src={cardImage}
+      alt="Card Illustration"
+       sx={{
+        width: '100%',
+        mt: 4,
+        md: 4,
+        height: 120,
+        objectFit: 'contain',
+        mb: 2,
+        borderRadius: 2,
+        transform: 'scale(1.2)',  // escala la imagen un 20% más grande
+        transformOrigin: 'center', // escala desde el centro
+      }}
+    />
 
-  <Box sx={{ flexGrow: 1, mb: 2 }}>
-    <Typography variant="body2" sx={{ mb: 0.7, fontWeight: '600', color: '#88ffff' }}>
-      ATAQUE: <span style={{ fontWeight: 'bold', color: 'white' }}>{card.attack}</span>
+    <Typography
+      variant="subtitle1"
+      fontWeight="900"
+      gutterBottom
+      sx={{
+        letterSpacing: 2,
+        fontSize: '1.2rem',
+        textShadow: '0 0 5px cyan',
+        color: '#00ffff',
+        textTransform: 'uppercase',
+        mb: 2,
+      }}
+    >
+      {card.illustration}
     </Typography>
-    <Typography variant="body2" sx={{ mb: 0.7, fontWeight: '600', color: '#88ffff' }}>
-      DEFENSA: <span style={{ fontWeight: 'bold', color: 'white' }}>{card.defense}</span>
-    </Typography>
-    <Typography variant="body2" sx={{ mb: 0.7, fontWeight: '600', color: '#88ffff' }}>
-      SERIE: <span style={{ fontWeight: 'bold', color: 'white' }}>{card.series_Name}</span>
-    </Typography>
-    <Typography variant="body2" sx={{ fontWeight: '600', color: '#88ffff' }}>
-      LANZAMIENTO: <span style={{ fontWeight: 'bold', color: 'white' }}>{card.release_Date}</span>
-    </Typography>
-  </Box>
-</Paper>
 
-                      </Grid>
+    <Box sx={{ flexGrow: 1, mb: 2 }}>
+      <Typography variant="body2" sx={{ mb: 0.7, fontWeight: '600', color: '#88ffff' }}>
+        ATAQUE: <span style={{ fontWeight: 'bold', color: 'white' }}>{card.attack}</span>
+      </Typography>
+      <Typography variant="body2" sx={{ mb: 0.7, fontWeight: '600', color: '#88ffff' }}>
+        DEFENSA: <span style={{ fontWeight: 'bold', color: 'white' }}>{card.defense}</span>
+      </Typography>
+      <Typography variant="body2" sx={{ mb: 0.7, fontWeight: '600', color: '#88ffff' }}>
+        SERIE: <span style={{ fontWeight: 'bold', color: 'white' }}>{card.series_Name}</span>
+      </Typography>
+      <Typography variant="body2" sx={{ fontWeight: '600', color: '#88ffff' }}>
+        LANZAMIENTO: <span style={{ fontWeight: 'bold', color: 'white' }}>{card.release_Date}</span>
+      </Typography>
+    </Box>
+  </Paper>
+</Grid>
+
                     ))}
                   </Grid>
                 ) : (
