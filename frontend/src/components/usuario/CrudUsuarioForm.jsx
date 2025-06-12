@@ -92,7 +92,7 @@ const handleActionChange = (event) => {
   setErrors({});
 
   if (newAction !== 'VIEW') {
-    setSelectedUser(null); // 👈 Limpia el detalle al salir de VIEW
+    setSelectedUser(null); 
     setSearchTerm('');
   }
 };
@@ -156,9 +156,6 @@ if (selectedUser) {
 
 
   return (
-
-
-    
     <Paper
   sx={{
     p: { xs: 2, sm: 3, md: 4 },
@@ -194,7 +191,6 @@ if (selectedUser) {
 
       <Box>
         <Grid container spacing={4} justifyContent="center" >
-        {/* Columna izquierda: formulario principal */}
         <Grid item xs={12} md={6}  >
           <Box component="form" onSubmit={handleSubmit} noValidate>
         {(isAlter || isDelete) && (
@@ -477,7 +473,7 @@ if (selectedUser) {
   open={open}
   autoHideDuration={3000}
   onClose={closeSnackbar}
-  anchorOrigin={{ vertical: 'top', horizontal: 'center' }} // <-- Cambia aquí
+  anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
 >
   <Alert severity="success" onClose={closeSnackbar} sx={{ width: '100%' }}>
     {message}
