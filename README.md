@@ -46,4 +46,114 @@ El sistema contará con los siguientes roles para los usuarios:
   - Los jugadores pueden registrarse en el sistema por su cuenta.
 
 
+# CardTournament Frontend
+
+Frontend de la aplicación **CardTournament**, desarrollada en React con Material UI, para la gestión de usuarios y cartas en un torneo de cartas coleccionables.
+
+## Tabla de Contenidos
+
+- [Características](#características)
+- [Instalación](#instalación)
+- [Estructura del Proyecto](#estructura-del-proyecto)
+- [Temas y Estilos](#temas-y-estilos)
+- [Componentes Principales](#componentes-principales)
+- [Vistas](#vistas)
+- [Manejo de Errores](#manejo-de-errores)
+- [Scripts Disponibles](#scripts-disponibles)
+- [Créditos](#créditos)
+
+---
+
+## Características
+
+- Gestión de usuarios (CRUD)
+- Asignación y visualización de cartas por usuario
+- Navegación protegida y rutas amigables
+- Interfaz moderna y responsiva con Material UI
+- Tematización avanzada y personalizable
+- Manejo de errores y notificaciones visuales
+
+## Instalación
+
+1. Clona el repositorio:
+   ```bash
+   git clone https://github.com/tuusuario/CardTournament-frontend.git
+   cd CardTournament-frontend
+   ```
+
+2. Instala las dependencias:
+   ```bash
+   npm install
+   # o
+   yarn install
+   ```
+
+3. Inicia la aplicación:
+   ```bash
+   npm run dev
+   # o
+   yarn dev
+   ```
+
+4. Accede a [http://localhost:5173](http://localhost:5173) en tu navegador.
+
+## Estructura del Proyecto
+
+```
+src/
+├── assets/                # Imágenes y recursos estáticos
+├── components/            # Componentes reutilizables (UI, menú, usuario, cartas, error)
+│   ├── ui/
+│   ├── menu/
+│   ├── usuario/
+│   └── cartas/
+├── hooks/                 # Custom hooks
+├── services/              # Servicios para llamadas a API
+├── themes/                # Temas y configuración de Material UI
+├── views/                 # Vistas principales (CRUD, login, etc)
+└── App.jsx                # Componente raíz
+```
+
+## Temas y Estilos
+
+- El proyecto utiliza un **ThemeProvider** personalizado con Material UI.
+- Soporta modo oscuro, gradientes, sombras y estilos responsivos.
+- El fondo puede ser una imagen local o remota, configurable en `src/themes/ThemeProvider.js`.
+
+## Componentes Principales
+
+- **Menu**: Barra superior y drawer lateral para navegación.
+- **CrudUsuarioForm**: Formulario para gestión de usuarios.
+- **PlayersCards**: Visualización de cartas por usuario.
+- **Error404**: Página de error personalizada y animada.
+- **Snackbar/Alert**: Notificaciones visuales para feedback del usuario.
+
+## Vistas
+
+- **CrudUsuarioView**: Vista principal para gestión de usuarios.
+- **CartasUsuarioView**: Vista para asignar y ver cartas de usuarios.
+- **Error404**: Página para rutas no encontradas.
+
+## Manejo de Errores
+
+- Las rutas no válidas muestran una página 404 animada y centrada.
+- Los errores de red y validación se notifican mediante Snackbar/Alert.
+
+## Scripts Disponibles
+
+- `npm run dev` — Inicia el servidor de desarrollo.
+- `npm run build` — Genera la build de producción.
+- `npm run preview` — Previsualiza la build de producción.
+
+## Créditos
+
+- [React](https://react.dev/)
+- [Material UI](https://mui.com/)
+- [Vite](https://vitejs.dev/)
+
+---
+
+**Desarrollado por [Tu Nombre o Equipo]**
+
+
 
