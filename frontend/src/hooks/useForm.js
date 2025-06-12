@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { validateForm } from '../utils/validateForm'; // ajusta la ruta según tu proyecto
+import { validateForm } from '../utils/validateForm';
 
 export const useForm = (initialForm, action) => {
   const [form, setForm] = useState(initialForm);
