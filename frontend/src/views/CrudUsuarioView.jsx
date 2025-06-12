@@ -20,8 +20,9 @@ const CrudUsuarioView = () => {
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
-          justifyContent: isMobile ? 'flex-start' : 'center',
+          justifyContent: 'center',
           overflowY: 'auto',
+          marginTop: '64px', // <-- Compensa el AppBar fijo
         }}
       >
         <UserCrudForm />

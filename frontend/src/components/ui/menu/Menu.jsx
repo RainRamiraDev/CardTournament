@@ -27,11 +27,9 @@ const Menu = () => {
 
   return (
     <>
-      <Box sx={{ height: 0 }}>
-        <CssBaseline />
-        <AppBarMenu onToggleDrawer={handleToggleDrawer} />
-        <SideDrawer open={openDrawer} onClose={handleDrawerClose} navigate={navigate} theme={theme} />
-      </Box>
+      <CssBaseline />
+      <AppBarMenu onToggleDrawer={handleToggleDrawer} />
+      <SideDrawer open={openDrawer} onClose={handleDrawerClose} navigate={navigate} theme={theme} />
 
       <Snackbar
         open={openSnackbar}

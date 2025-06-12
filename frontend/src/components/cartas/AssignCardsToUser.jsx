@@ -117,17 +117,17 @@ export default function AssignCardsToUser() {
          
             {/* Cartas */}
             <Grid item xs={12} sm={6} md={4}>
-              <Paper
-                sx={{
-                  p: 4,
-                  width: { xs: '100%', sm: 400 },
-                  height: 500,
-                  overflowY: 'auto',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  mb: { xs: 2, sm: 0 },
-                }}
-              >
+             <Paper
+  sx={{
+    p: { xs: 2, sm: 3, md: 4 },
+    width: { xs: '100%', sm: 350, md: 400 },
+    height: { xs: 350, sm: 420, md: 500 },
+    mb: { xs: 2, sm: 0 },
+    overflowY: 'auto',
+    display: 'flex',
+    flexDirection: 'column',
+  }}
+>
                 <Typography variant="h6" gutterBottom>
                   Cartas
                 </Typography>
@@ -165,17 +165,17 @@ export default function AssignCardsToUser() {
 
             {/* Jugadores */}
             <Grid item xs={12} sm={6} md={4}>
-              <Paper
-                sx={{
-                  p: 4,
-                  width: { xs: '100%', sm: 400 },
-                  height: 500,
-                  overflowY: 'auto',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  mb: { xs: 2, sm: 0 },
-                }}
-              >
+             <Paper
+  sx={{
+    p: { xs: 2, sm: 3, md: 4 },
+    width: { xs: '100%', sm: 350, md: 400 },
+    height: { xs: 350, sm: 420, md: 500 },
+    mb: { xs: 2, sm: 0 },
+    overflowY: 'auto',
+    display: 'flex',
+    flexDirection: 'column',
+  }}
+>
                 <Box>
                   <Typography variant="h6" gutterBottom>
                     Jugadores

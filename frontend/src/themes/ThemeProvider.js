@@ -1,5 +1,6 @@
 // src/theme.js
 import { createTheme } from '@mui/material/styles';
+import bgImage from '../assets/backgrounddesk.png'; // Ajusta la ruta y nombre de tu imagen
 
 // === PALETA DE COLORES (usamos como variables base) ===
 const colors = {
@@ -187,17 +188,17 @@ const theme = createTheme({
       ],
     },
 
-    MuiCssBaseline: {
-      styleOverrides: {
-        body: {
-          backgroundImage: `url('https://plus.unsplash.com/premium_photo-1699967711142-bc002e47990c?q=80&w=1974&auto=format&fit=crop')`,
-          backgroundRepeat: 'repeat',
-          backgroundSize: 'auto',
-          backgroundPosition: 'center',
-          backgroundAttachment: 'fixed',
-        },
-      },
+MuiCssBaseline: {
+  styleOverrides: {
+    body: {
+      backgroundImage: `url(${bgImage})`,
+      backgroundRepeat: 'no-repeat',
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+      backgroundAttachment: 'fixed',
     },
+  },
+},
     
 
     MuiSnackbar: {

@@ -43,7 +43,25 @@ const LogInForm = () => {
 
   return (
     <Box sx={{ width: 350, margin: 'auto', marginTop: 10 }}>
-      <Paper elevation={3} sx={{ padding: 4 }}>
+      <Paper
+  sx={{
+    p: { xs: 2, sm: 3, md: 4 },
+    width: { xs: '100%', sm: 320, md: 350 },
+    minHeight: { xs: 220, sm: 260 },
+    m: { xs: 1, md: 2 },
+    borderRadius: 3,
+    backgroundColor: '#121212',
+    border: '1.5px solid cyan',
+    color: 'cyan',
+    fontFamily: "'Cinzel', serif",
+    boxShadow: '0 0 10px cyan',
+    transition: '0.3s',
+    '&:hover': {
+      boxShadow: '0 0 20px #00ffff',
+      backgroundColor: '#1b1b1b',
+    },
+  }}
+>
         <Typography variant="h5" component="h1" gutterBottom>
           Iniciar sesión
         </Typography>

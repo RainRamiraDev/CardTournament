@@ -159,7 +159,25 @@ if (selectedUser) {
 
 
     
-    <Paper elevation={3} sx={{ p: 4, maxWidth: 500, mx: 'auto' }} >
+    <Paper
+  sx={{
+    p: { xs: 2, sm: 3, md: 4 },
+    width: { xs: '100%', sm: 320, md: 350 },
+    minHeight: { xs: 220, sm: 260 },
+    m: { xs: 1, md: 2 },
+    borderRadius: 3,
+    backgroundColor: '#121212',
+    border: '1.5px solid cyan',
+    color: 'cyan',
+    fontFamily: "'Cinzel', serif",
+    boxShadow: '0 0 10px cyan',
+    transition: '0.3s',
+    '&:hover': {
+      boxShadow: '0 0 20px #00ffff',
+      backgroundColor: '#1b1b1b',
+    },
+  }}
+>
       <Typography variant="h6" gutterBottom>
         Gestión de Usuario ({action})
       </Typography>
