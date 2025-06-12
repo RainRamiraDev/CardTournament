@@ -191,6 +191,22 @@
   },
   {
     "ContainingType": "CTApp.Controllers.User.OrganizerController",
+    "Method": "AssignCardToPlayer",
+    "RelativePath": "api/Organizer/AssignCardToPlayer",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "CTDto.Users.Organizer.AssignCardToPlayerDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CTApp.Controllers.User.OrganizerController",
     "Method": "CalcelTournament",
     "RelativePath": "api/Organizer/CalcelTournament",
     "HttpMethod": "POST",
@@ -217,6 +233,32 @@
         "Name": "tournamentDto",
         "Type": "CTDto.Tournaments.TournamentDto",
         "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CTApp.Controllers.User.OrganizerController",
+    "Method": "GetCards",
+    "RelativePath": "api/Organizer/GetAllCards",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CTApp.Controllers.User.OrganizerController",
+    "Method": "GetCardsByUser",
+    "RelativePath": "api/Organizer/GetCardsByUser",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id_user",
+        "Type": "System.Int32",
+        "IsRequired": false
       }
     ],
     "ReturnTypes": []

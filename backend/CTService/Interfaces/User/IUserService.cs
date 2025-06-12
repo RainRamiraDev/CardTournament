@@ -1,6 +1,7 @@
 ﻿
 using CTDataModels.Users;
 using CTDataModels.Users.LogIn;
+using CTDto.Card;
 using CTDto.Tournaments;
 using CTDto.Users;
 using CTDto.Users.Admin;
@@ -36,5 +37,8 @@ namespace CTService.Interfaces.User
         Task SoftDeleteUserAsync(SoftDeleteUserDto userDto);
         Task<IEnumerable<RolesListDto>> GetAllRolesAsync();
         Task<IEnumerable<ShowUserDto>> GetAllUsersAsync();
+        Task<IEnumerable<ManageCardsDto>> GetAllCardsAsync();
+        Task<int> AssignCardToPlayerAsync(AssignCardToPlayerDto dto);
+        Task<List<ShowCardDataByUserIdDto>> GetCardsByUserAsync(int id_User);
     }
 }

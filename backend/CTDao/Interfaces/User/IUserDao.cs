@@ -1,7 +1,9 @@
-﻿using CTDataModels.Users;
+﻿using CTDataModels.Card;
+using CTDataModels.Users;
 using CTDataModels.Users.Admin;
 using CTDataModels.Users.LogIn;
 using CTDataModels.Users.Organizer;
+using CTDto.Card;
 using CTDto.Users.Organizer;
 using System;
 using System.Collections.Generic;
@@ -39,5 +41,9 @@ namespace CTDao.Interfaces.User
         Task SoftDeleteUserAsync(int id_user);
         Task<IEnumerable<RolesListModel>> GetAllRolesAsync();
         Task<IEnumerable<ShowUserModel>> GetAllUsersAsync();
+        Task<IEnumerable<ManageCardsModel>> GetAllCardsAsync();
+        Task<int> AssignCardToPlayerAsync(AssignCardToPlayerModel assignCardToPlayerModel);
+        Task<int> GetCardCountAsync(int id_user);
+        Task<IEnumerable<ShowCardDataByUserIdModel>> GetCardsByUserAsync(int id_User);
     }
 }

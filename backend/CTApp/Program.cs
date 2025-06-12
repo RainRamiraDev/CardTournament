@@ -75,6 +75,7 @@ builder.Services.AddValidatorsFromAssemblyContaining<AlterUserDtoValidation>();
 builder.Services.AddValidatorsFromAssemblyContaining<SoftDeleteUserDtoValidation>();
 builder.Services.AddValidatorsFromAssemblyContaining<DisqualificationDtoValidation>();
 builder.Services.AddValidatorsFromAssemblyContaining<GetTournamentInformationDtoValidation>();
+builder.Services.AddValidatorsFromAssemblyContaining<AssignCardToPlayerDtoValidation>();
 
 
 

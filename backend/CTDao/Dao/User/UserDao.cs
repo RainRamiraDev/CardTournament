@@ -1,8 +1,10 @@
 ﻿using CTDao.Interfaces.User;
+using CTDataModels.Card;
 using CTDataModels.Users;
 using CTDataModels.Users.Admin;
 using CTDataModels.Users.LogIn;
 using CTDataModels.Users.Organizer;
+using CTDto.Card;
 using Dapper;
 using DataAccess;
 using MySql.Data.MySqlClient;
@@ -11,6 +13,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Transactions;
 
 namespace CTDao.Dao.User
 {
@@ -99,6 +102,16 @@ namespace CTDao.Dao.User
                 await connection.OpenAsync();
                 var users = await connection.QueryAsync<ShowUserModel>(QueryLoader.GetQuery("GetAllUsers"));
                 return users;
+            }
+        }
+
+        public async Task<IEnumerable<ManageCardsModel>> GetAllCardsAsync()
+        {
+            using (var connection = new MySqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+                var cards = await connection.QueryAsync<ManageCardsModel>(QueryLoader.GetQuery("GetAllCards"));
+                return cards;
             }
         }
 
@@ -208,6 +221,61 @@ namespace CTDao.Dao.User
             }
         }
 
-        
+        public async Task<int> AssignCardToPlayerAsync(AssignCardToPlayerModel model)
+        {
+            using (var connection = new MySqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+
+                int rowsAffected = 0;
+
+                foreach (var id_card in model.id_card)
+                {
+                    rowsAffected += await connection.ExecuteAsync(
+                        QueryLoader.GetQuery("QueryAssignCardToPlayer"),
+                        new
+                        {
+                            id_user = model.id_user,
+                            id_card = id_card
+                        }
+                    );
+                }
+
+                return rowsAffected;
+            }
+        }
+
+
+
+        public async Task<int> GetCardCountAsync(int id_user)
+        {
+            using (var connection = new MySqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+                var count = await connection.QueryFirstOrDefaultAsync<int>(
+                    QueryLoader.GetQuery("GetCardCountAsync"),
+                    new { id_user = id_user }
+                );
+
+                return count;
+            }
+        }
+
+        public async Task<IEnumerable<ShowCardDataByUserIdModel>> GetCardsByUserAsync(int request)
+        {
+            using (var connection = new MySqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+
+                var result = await connection.QueryAsync<ShowCardDataByUserIdModel>(
+                    QueryLoader.GetQuery("QueryGetCardsByUserId"),
+                    new { id_user = request } // Coincide con @id_user en tu SQL
+                );
+
+                return result;
+            }
+
+        }
+
     }
 }

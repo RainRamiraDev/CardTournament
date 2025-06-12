@@ -1,6 +1,7 @@
 ﻿using CTApp.Response;
 using CTDataModels.Tournamets;
 using CTDto.Card;
+using CTDto.Game;
 using CTDto.Tournaments;
 using CTDto.Users;
 using CTDto.Users.Judge;
@@ -60,6 +61,26 @@ namespace CTApp.Controllers.User
             return Ok(ApiResponse<IEnumerable<RolesListDto>>.SuccessResponse("Roles obtenidos exitosamente.", roles));
         }
 
+        [HttpGet("GetAllCards")]
+        public async Task<IActionResult> GetCards()
+        {
+            var cards = await _userService.GetAllCardsAsync();
+            return Ok(ApiResponse<IEnumerable<ManageCardsDto>>.SuccessResponse("Cartas obtenidas exitosamente.", cards));
+        }
+
+
+
+
+        [HttpGet("GetCardsByUser")]
+        public async Task<IActionResult> GetCardsByUser([FromQuery] int id_user)
+        {
+            var result = await _userService.GetCardsByUserAsync(id_user);
+            var response = ApiResponse<List<ShowCardDataByUserIdDto>>.SuccessResponse("Traídos correctamente", result);
+            return Ok(response);
+        }
+
+
+
 
 
 
@@ -87,6 +108,18 @@ namespace CTApp.Controllers.User
 
 
             return Created("", ApiResponse<object>.SuccessResponse("Torneo creado exitosamente.", new AfterCreateTournamentDto { id_Tournament = id }));
+        }
+
+      //  [Authorize(Roles = "1")]
+        [HttpPost("AssignCardToPlayer")]
+        public async Task<IActionResult> AssignCardToPlayer([FromBody] AssignCardToPlayerDto dto)
+        {
+            var id = await _userService.AssignCardToPlayerAsync(dto);
+
+            if (id == 0)
+                throw new InvalidOperationException("Error al asignar cartas.");
+
+            return Created("", ApiResponse<object>.SuccessResponse("cartas asignadas correctamente."));
         }
 
 

@@ -15,10 +15,10 @@ import {
   ListItemText,
   Grid
 } from '@mui/material';
-import PerButton from './ui/PerButton';
-import PerTextField from './ui/PerTextField';
-import { useSnackbar } from '../hooks/useSnackbar';
-import { useForm } from '../hooks/useForm';
+import PerButton from '../ui/PerButton';
+import PerTextField from '../ui/PerTextField';
+import { useSnackbar} from '../../hooks/useSnackbar';
+import { useForm } from '../../hooks/useForm';
 import {
   createUser,
   alterUser,
@@ -26,14 +26,14 @@ import {
   getCountries,
   getRoles,
   getAllUsers,
-} from '../services/userService';
+} from '../../services/userService';
 import { useTheme } from '@mui/material/styles';
-import { useNavigate } from 'react-router-dom';
+import { Form, useNavigate } from 'react-router-dom';
 
 const initialForm = {
-  Id_User: '',
-  id_Country: '',
-  id_Rol: '',
+  Id_User: 0,
+  id_Country: 0,
+  id_Rol: 0,
   Fullname: '',
   Passcode: '',
   Alias: '',
@@ -107,7 +107,7 @@ const handleActionChange = (event) => {
 
     try {
       if (isCreate) {
-        await createUser(
+        const res = await createUser(
           form.id_Country,
           form.id_Rol,
           form.Passcode,
@@ -116,9 +116,9 @@ const handleActionChange = (event) => {
           form.Email,
           form.avatar_Url
         );
-        showSnackbar('Usuario creado exitosamente');
+        showSnackbar(res.message || 'Usuario creado exitosamente');
       } else if (isAlter) {
-        await alterUser(
+        const res = await alterUser(
           form.Id_User,
           form.id_Country,
           form.id_Rol,
@@ -127,16 +127,17 @@ const handleActionChange = (event) => {
           form.Email,
           form.avatar_Url
         );
-        showSnackbar('Usuario modificado exitosamente');
+        showSnackbar(res.message || 'Usuario modificado exitosamente');
       } else if (isDelete) {
-        await deactivateUser(form.Id_User);
-        showSnackbar('Usuario eliminado exitosamente');
+        const res = await deactivateUser(form.Id_User);
+        showSnackbar(res.message || 'Usuario eliminado exitosamente');
       }
 
       setTimeout(() => {
         navigate('/menu');
       }, 3000);
     } catch (error) {
+      showSnackbar(error.message || 'Error al ejecutar la acción');
       console.error('Error al ejecutar la acción:', error);
     }
   };
@@ -155,13 +156,33 @@ if (selectedUser) {
 
 
   return (
+
+
     
-    <Paper elevation={3} sx={{ p: 4, maxWidth: 500, mx: 'auto' }}>
+    <Paper
+  sx={{
+    p: { xs: 2, sm: 3, md: 4 },
+    width: { xs: '100%', sm: 320, md: 350 },
+    minHeight: { xs: 220, sm: 260 },
+    m: { xs: 1, md: 2 },
+    borderRadius: 3,
+    backgroundColor: '#121212',
+    border: '1.5px solid cyan',
+    color: 'cyan',
+    fontFamily: "'Cinzel', serif",
+    boxShadow: '0 0 10px cyan',
+    transition: '0.3s',
+    '&:hover': {
+      boxShadow: '0 0 20px #00ffff',
+      backgroundColor: '#1b1b1b',
+    },
+  }}
+>
       <Typography variant="h6" gutterBottom>
         Gestión de Usuario ({action})
       </Typography>
 
-      <FormControl fullWidth sx={{ mb: 3 }}>
+      <FormControl fullWidth sx={{ mb: 3, mt: 4, mx: 'auto', width: '80%' }} >
         <InputLabel>Acción</InputLabel>
         <Select value={action} label="Acción" onChange={handleActionChange}>
           <MenuItem value="CREATE">Crear</MenuItem>
@@ -172,27 +193,27 @@ if (selectedUser) {
       </FormControl>
 
       <Box>
-        <Grid container spacing={4}>
+        <Grid container spacing={4} justifyContent="center" >
         {/* Columna izquierda: formulario principal */}
-        <Grid item xs={12} md={6}>
+        <Grid item xs={12} md={6}  >
           <Box component="form" onSubmit={handleSubmit} noValidate>
         {(isAlter || isDelete) && (
-          <FormControl fullWidth sx={{ mb: 3 }} error={!!errors.Id_User}>
+          <FormControl fullWidth sx={{ mb: 3  }} error={!!errors.Id_User}   >
             <InputLabel id="label-usuario">Usuario</InputLabel>
-            <Select
-              labelId="label-usuario"
-              name="Id_User"
-              value={form.Id_User || ''}
-              onChange={handleChange}
-              label="Usuario"
-              required
-              renderValue={(selectedId) => {
-                const user = users.find((u) => u.id_user === selectedId);
-                const rolName =
-                  roles.find((r) => r.id_Rol === user?.id_Rol)?.rol || 'Sin rol';
-                return `${user?.fullname} [${rolName}]`;
-              }}
-            >
+           <Select
+        labelId="label-usuario"
+        name="Id_User"
+        value={form.Id_User || ''}
+        onChange={handleChange}
+        label="Usuario"
+        required
+        renderValue={(selectedId) => {
+          const user = users.find((u) => u.id_user === selectedId);
+          const rolName =
+            roles.find((r) => r.id_Rol === user?.id_Rol)?.rol || 'Sin rol';
+          return `${user?.fullname} [${rolName}]`;
+        }}
+      >
               {users.map((user) => {
                 const rolName =
                   roles.find((r) => r.id_Rol === user.id_Rol)?.rol || 'Sin rol';
@@ -275,7 +296,7 @@ if (selectedUser) {
         {(isCreate || isAlter) && (
           <>
             {/* País */}
-            <FormControl fullWidth sx={{ mb: 3 }} error={!!errors.id_Country}>
+             <FormControl fullWidth sx={{ mb: 3 }} error={!!errors.id_Country}>
               <InputLabel id="label-pais">País</InputLabel>
               <Select
                 labelId="label-pais"
@@ -294,7 +315,9 @@ if (selectedUser) {
               {errors.id_Country && (
                 <FormHelperText>{errors.id_Country}</FormHelperText>
               )}
-            </FormControl>
+            </FormControl> 
+
+
 
             {/* Rol */}
             <FormControl fullWidth sx={{ mb: 2 }} error={!!errors.id_Rol}>
@@ -367,7 +390,7 @@ if (selectedUser) {
               required
             />
             <PerTextField
-              label="Avatar URL"
+              label="avatar URL"
               name="avatar_Url"
               value={form.avatar_Url}
               onChange={handleChange}
@@ -394,46 +417,72 @@ if (selectedUser) {
 
          {selectedUser && (
         <Paper
-          elevation={2}
-          sx={{
-            p: 2,
-            mt: 2,
-            borderLeft: `5px solid ${theme.palette.primary.main}`,
-            backgroundColor: '#f9f9f9',
-          }}
-        >
-          <Typography variant="h6" gutterBottom>
-            Detalles del Usuario
-          </Typography>
-          <Typography><strong>Nombre:</strong> {selectedUser.fullname}</Typography>
-          <Typography><strong>Alias:</strong> {selectedUser.alias}</Typography>
-          <Typography><strong>Email:</strong> {selectedUser.email}</Typography>
-          <Typography><strong>Rol:</strong> {
-            roles.find((r) => r.id_Rol === selectedUser.id_Rol)?.rol || 'Sin rol'
-          }</Typography>
-          <Typography><strong>País:</strong> {
-            countries.find((c) => c.id_Country === selectedUser.id_Country)?.country_name || 'Desconocido'
-          }</Typography>
-          {selectedUser.avatar_Url && (
-            <Box mt={2}>
-              <img
-                src={selectedUser.avatar_Url}
-                alt="Avatar"
-                style={{ maxWidth: '100%', maxHeight: 150 }}
-              />
-            </Box>
-          )}
+            elevation={3}
+            sx={{
+              p: 2,
+              height: '100%',
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'space-between',
+              borderRadius: 3,
+              backgroundColor: '#121212',
+              border: '1.5px solid cyan',
+              color: 'cyan',
+              fontFamily: "'Cinzel', serif",
+              boxShadow: '0 0 10px cyan',
+              transition: '0.3s',
+              '&:hover': {
+                boxShadow: '0 0 20px #00ffff',
+                backgroundColor: '#1b1b1b',
+              },
+            }}
+          >
+         <Typography variant="h6" gutterBottom>
+    Detalles del Usuario
+  </Typography>
+  {selectedUser.avatar_Url && (
+    <Box mt={2} mb={2} sx={{ alignSelf: 'center' }}>
+      <img
+        src={selectedUser.avatar_Url}
+        alt="avatar"
+        style={{ maxWidth: '100%', maxHeight: 150 }}
+      />
+    </Box>
+  )}
+  <Typography>
+    <strong>Nombre:</strong> {selectedUser.fullname}
+  </Typography>
+  <Typography>
+    <strong>Alias:</strong> {selectedUser.alias}
+  </Typography>
+  <Typography>
+    <strong>Email:</strong> {selectedUser.email}
+  </Typography>
+  <Typography>
+    <strong>Rol:</strong>{' '}
+    {roles.find((r) => r.id_Rol === selectedUser.id_Rol)?.rol || 'Sin rol'}
+  </Typography>
+  <Typography>
+    <strong>País:</strong>{' '}
+    {countries.find((c) => c.id_Country === selectedUser.id_Country)?.country_name ||
+      'Desconocido'}
+  </Typography>
         </Paper>
       )}
       </Grid>
     </Grid>
     </Box>
 
-      <Snackbar open={open} autoHideDuration={3000} onClose={closeSnackbar}>
-        <Alert severity="success" onClose={closeSnackbar} sx={{ width: '100%' }}>
-          {message}
-        </Alert>
-      </Snackbar>
+  <Snackbar
+  open={open}
+  autoHideDuration={3000}
+  onClose={closeSnackbar}
+  anchorOrigin={{ vertical: 'top', horizontal: 'center' }} // <-- Cambia aquí
+>
+  <Alert severity="success" onClose={closeSnackbar} sx={{ width: '100%' }}>
+    {message}
+  </Alert>
+</Snackbar>
     </Paper>
 
       

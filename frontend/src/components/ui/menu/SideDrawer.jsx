@@ -7,7 +7,8 @@ import {
   ListItemButton,
   ListItemIcon,
   ListItemText,
-  IconButton
+  IconButton,
+  Box
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
 
@@ -25,31 +26,54 @@ const DrawerHeader = styled('div')(({ theme }) => ({
   padding: theme.spacing(0, 1),
   ...theme.mixins.toolbar,
   justifyContent: 'flex-end',
+  background: `linear-gradient(90deg, ${theme.palette.primary.main} 0%, ${theme.palette.secondary.main} 100%)`,
+  boxShadow: `0 2px 8px 0 ${theme.palette.primary.main}33`,
+}));
+
+const StyledDrawer = styled(Drawer)(({ theme }) => ({
+  '& .MuiDrawer-paper': {
+    width: drawerWidth,
+    boxSizing: 'border-box',
+    background: `radial-gradient(circle at 30% 20%, ${theme.palette.background.paper} 80%, ${theme.palette.background.default} 100%)`,
+    borderRight: `2px solid ${theme.palette.primary.main}`,
+    color: theme.palette.text.primary,
+    boxShadow: `0 0 20px 2px ${theme.palette.primary.main}22`,
+    backdropFilter: 'blur(6px)',
+  },
+}));
+
+const StyledListItemButton = styled(ListItemButton)(({ theme }) => ({
+  borderRadius: 8,
+  margin: '4px 8px',
+  transition: 'background 0.2s, transform 0.2s',
+  '&:hover': {
+    background: theme.palette.primary.main + '22',
+    transform: 'scale(1.03)',
+    boxShadow: `0 2px 8px 0 ${theme.palette.primary.main}33`,
+  },
+}));
+
+const StyledListItemIcon = styled(ListItemIcon)(({ theme }) => ({
+  color: theme.palette.primary.main,
+  minWidth: 40,
+  fontSize: 26,
 }));
 
 const SideDrawer = ({ open, onClose, navigate, theme }) => {
   const menuItems = [
-    { text: 'Manejo usuario', icon: <PeopleAltIcon />, route: '/usuarios' },
-    { text: 'Asignar carta a usuario', icon: <AddCardIcon />, route: '/cartas' },
-    { text: 'Cartas de jugador', icon: <FormatListBulletedIcon />, route: '/cartas' },
+    { text: 'Manejo usuario', icon: <PeopleAltIcon fontSize="medium" />, route: '/usuarios' },
+    { text: 'Asignar carta a usuario', icon: <AddCardIcon fontSize="medium" />, route: '/cartas' },
+    { text: 'Cartas de jugador', icon: <FormatListBulletedIcon fontSize="medium" />, route: '/CardsUsuarios' },
   ];
 
   return (
-    <Drawer
-      sx={{
-        width: drawerWidth,
-        flexShrink: 0,
-        '& .MuiDrawer-paper': {
-          width: drawerWidth,
-          boxSizing: 'border-box',
-        },
-      }}
+    <StyledDrawer
       variant="persistent"
       anchor="left"
       open={open}
     >
       <DrawerHeader>
-        <IconButton onClick={onClose}>
+        <IconButton onClick={onClose} sx={{ color: 'white' }}>
           {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
         </IconButton>
       </DrawerHeader>
@@ -57,14 +81,22 @@ const SideDrawer = ({ open, onClose, navigate, theme }) => {
       <List>
         {menuItems.map(({ text, icon, route }) => (
           <ListItem key={text} disablePadding>
-            <ListItemButton onClick={() => navigate(route)}>
-              <ListItemIcon>{icon}</ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItemButton>
+            <StyledListItemButton onClick={() => navigate(route)}>
+              <StyledListItemIcon>{icon}</StyledListItemIcon>
+              <ListItemText
+                primary={text}
+                primaryTypographyProps={{
+                  fontWeight: 600,
+                  letterSpacing: 1,
+                  sx: { color: 'inherit' }
+                }}
+              />
+            </StyledListItemButton>
           </ListItem>
         ))}
       </List>
-    </Drawer>
+      <Box sx={{ flexGrow: 1 }} />
+    </StyledDrawer>
   );
 };
 

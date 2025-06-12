@@ -1,11 +1,14 @@
 import React from 'react';
-import { Box, CssBaseline } from '@mui/material';
-import Menu from '../components/ui/menu/Menu'; // Asegurate de que el path sea correcto
-import UserCrudForm from '../components/CrudUsuarioForm'; // Componente del formulario
+import { Box, CssBaseline, useTheme, useMediaQuery } from '@mui/material';
+import Menu from '../components/ui/menu/Menu';
+import UserCrudForm from '../components/usuario/CrudUsuarioForm';
 
 const CrudUsuarioView = () => {
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+
   return (
-    <Box sx={{ display: 'flex', height: '100vh' }}>
+    <Box sx={{ display: 'flex', minHeight: '100vh' }}>
       <CssBaseline />
       <Menu />
 
@@ -13,11 +16,13 @@ const CrudUsuarioView = () => {
         component="main"
         sx={{
           flexGrow: 1,
-          p: 3,
+          p: isMobile ? 2 : 4,
           display: 'flex',
-          justifyContent: 'center', // centra horizontalmente el contenido dentro de main
-          alignItems: 'center', // centra verticalmente el contenido dentro de main
-          height: '100vh',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          overflowY: 'auto',
+          marginTop: '64px', // <-- Compensa el AppBar fijo
         }}
       >
         <UserCrudForm />
@@ -27,4 +32,3 @@ const CrudUsuarioView = () => {
 };
 
 export default CrudUsuarioView;
-
