@@ -1,4 +1,3 @@
-// src/components/LogInForm.jsx
 import React from 'react';
 import { Box, Typography, Paper } from '@mui/material';
 import PerTextField from './ui/PerTextField.jsx';
