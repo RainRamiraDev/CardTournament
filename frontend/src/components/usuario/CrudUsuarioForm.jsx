@@ -107,7 +107,7 @@ const handleActionChange = (event) => {
 
     try {
       if (isCreate) {
-        await createUser(
+        const res = await createUser(
           form.id_Country,
           form.id_Rol,
           form.Passcode,
@@ -118,7 +118,7 @@ const handleActionChange = (event) => {
         );
         showSnackbar(res.message || 'Usuario creado exitosamente');
       } else if (isAlter) {
-        await alterUser(
+        const res = await alterUser(
           form.Id_User,
           form.id_Country,
           form.id_Rol,
@@ -127,9 +127,9 @@ const handleActionChange = (event) => {
           form.Email,
           form.avatar_Url
         );
-       showSnackbar(res.message || 'Usuario modificado exitosamente');
+        showSnackbar(res.message || 'Usuario modificado exitosamente');
       } else if (isDelete) {
-        await deactivateUser(form.Id_User);
+        const res = await deactivateUser(form.Id_User);
         showSnackbar(res.message || 'Usuario eliminado exitosamente');
       }
 
@@ -137,10 +137,10 @@ const handleActionChange = (event) => {
         navigate('/menu');
       }, 3000);
     } catch (error) {
-  showSnackbar(error.message || 'Error al ejecutar la acción');
-  console.error('Error al ejecutar la acción:', error);
-}
-};
+      showSnackbar(error.message || 'Error al ejecutar la acción');
+      console.error('Error al ejecutar la acción:', error);
+    }
+  };
 
   const roleStyles = {
     1: { color: theme.palette.primary.main, fontWeight: 'bold' },
@@ -156,14 +156,13 @@ if (selectedUser) {
 
 
   return (
+
+
     
     <Paper elevation={3} sx={{ p: 4, maxWidth: 500, mx: 'auto' }} >
       <Typography variant="h6" gutterBottom>
         Gestión de Usuario ({action})
       </Typography>
-
-
-
 
       <FormControl fullWidth sx={{ mb: 3, mt: 4, mx: 'auto', width: '80%' }} >
         <InputLabel>Acción</InputLabel>
@@ -456,11 +455,16 @@ if (selectedUser) {
     </Grid>
     </Box>
 
-      <Snackbar open={open} autoHideDuration={3000} onClose={closeSnackbar}>
-        <Alert severity="success" onClose={closeSnackbar} sx={{ width: '100%' }}>
-          {message}
-        </Alert>
-      </Snackbar>
+  <Snackbar
+  open={open}
+  autoHideDuration={3000}
+  onClose={closeSnackbar}
+  anchorOrigin={{ vertical: 'top', horizontal: 'center' }} // <-- Cambia aquí
+>
+  <Alert severity="success" onClose={closeSnackbar} sx={{ width: '100%' }}>
+    {message}
+  </Alert>
+</Snackbar>
     </Paper>
 
       

@@ -205,11 +205,11 @@ const theme = createTheme({
         root: {
           '& .MuiAlert-root': {
             borderRadius: 10,
-            backgroundColor: colors.fireLight,
-            color: colors.fireText,
+            backgroundColor: colors.info,
+            color: colors.textPrimary,
             fontWeight: 'bold',
             boxShadow: `0 0 10px ${colors.fireLight}`,
-            textShadow: '0 0 3px rgba(0,0,0,0.7)',
+     
           },
         },
       },
