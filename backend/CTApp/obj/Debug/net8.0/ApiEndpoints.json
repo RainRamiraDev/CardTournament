@@ -1,0 +1,354 @@
+[
+  {
+    "ContainingType": "CTApp.Controllers.User.AdminController",
+    "Method": "AlterUser",
+    "RelativePath": "api/Admin/AlterUser",
+    "HttpMethod": "PUT",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "userDto",
+        "Type": "CTDto.Users.Admin.AlterUserDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CTApp.Controllers.User.AdminController",
+    "Method": "SoftDeleteTournament",
+    "RelativePath": "api/Admin/CancelTournament",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "tournamentDto",
+        "Type": "CTDto.Tournaments.TournamentRequestToResolveDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CTApp.Controllers.User.AdminController",
+    "Method": "CreateUser",
+    "RelativePath": "api/Admin/CreateUser",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "userDto",
+        "Type": "CTDto.Users.UserCreationDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CTApp.Controllers.User.AdminController",
+    "Method": "DeactivateUser",
+    "RelativePath": "api/Admin/DeactivateUser",
+    "HttpMethod": "DELETE",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "userDto",
+        "Type": "CTDto.Users.Admin.SoftDeleteUserDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CTApp.Controllers.User.AdminController",
+    "Method": "GetAllUsers",
+    "RelativePath": "api/Admin/GetAllUsers",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CTApp.Controllers.GameController",
+    "Method": "ResolveGame",
+    "RelativePath": "api/Game/resolve",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "CTDto.Tournaments.TournamentRequestToResolveDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CTApp.Controllers.GameController",
+    "Method": "TournamentSchedule",
+    "RelativePath": "api/Game/TournamentSchedule",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "request",
+        "Type": "CTDto.Tournaments.TournamentRequestToResolveDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CTApp.Controllers.User.JudgeController",
+    "Method": "DisqualifyPlayerFromTournament",
+    "RelativePath": "api/Judge/DisqualifyPlayerFromTournament",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "disqualificationDto",
+        "Type": "CTDto.Users.Judge.DisqualificationDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CTApp.Controllers.User.JudgeController",
+    "Method": "ShowPlayersFromTournament",
+    "RelativePath": "api/Judge/ShowPlayersFromTournament",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "showPlayersFromTournamentDto",
+        "Type": "CTDto.Tournaments.TournamentRequestToResolveDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CTApp.Controllers.User.LogInController",
+    "Method": "LogIn",
+    "RelativePath": "api/LogIn/LogIn",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "loginRequest",
+        "Type": "CTDto.Users.LogIn.LoginRequestDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CTApp.Controllers.User.LogInController",
+    "Method": "Logout",
+    "RelativePath": "api/LogIn/Logout",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CTApp.Controllers.User.LogInController",
+    "Method": "RefreshToken",
+    "RelativePath": "api/LogIn/RefreshToken",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CTApp.Controllers.User.OrganizerController",
+    "Method": "AlterTournament",
+    "RelativePath": "api/Organizer/AlterTournament",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "tournamentDto",
+        "Type": "CTDto.Tournaments.AlterTournamentDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CTApp.Controllers.User.OrganizerController",
+    "Method": "AssignCardToPlayer",
+    "RelativePath": "api/Organizer/AssignCardToPlayer",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "CTDto.Users.Organizer.AssignCardToPlayerDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CTApp.Controllers.User.OrganizerController",
+    "Method": "CalcelTournament",
+    "RelativePath": "api/Organizer/CalcelTournament",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "tournamentDto",
+        "Type": "CTDto.Tournaments.TournamentRequestToResolveDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CTApp.Controllers.User.OrganizerController",
+    "Method": "CreateTournament",
+    "RelativePath": "api/Organizer/CreateTournament",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "tournamentDto",
+        "Type": "CTDto.Tournaments.TournamentDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CTApp.Controllers.User.OrganizerController",
+    "Method": "GetCards",
+    "RelativePath": "api/Organizer/GetAllCards",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CTApp.Controllers.User.OrganizerController",
+    "Method": "GetCardsByUser",
+    "RelativePath": "api/Organizer/GetCardsByUser",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id_user",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CTApp.Controllers.User.OrganizerController",
+    "Method": "GetCountries",
+    "RelativePath": "api/Organizer/GetCountries",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CTApp.Controllers.User.OrganizerController",
+    "Method": "GetJudges",
+    "RelativePath": "api/Organizer/GetJudges",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CTApp.Controllers.User.OrganizerController",
+    "Method": "GetRoles",
+    "RelativePath": "api/Organizer/GetRoles",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CTApp.Controllers.User.OrganizerController",
+    "Method": "GetSeries",
+    "RelativePath": "api/Organizer/GetSeries",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CTApp.Controllers.User.PlayerController",
+    "Method": "GetTournamentsInformation",
+    "RelativePath": "api/Player/GetTournamentsInformation",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "getTournamentInformation",
+        "Type": "CTDto.Tournaments.GetTournamentInformationDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CTApp.Controllers.User.PlayerController",
+    "Method": "SetTournamentDecks",
+    "RelativePath": "api/Player/SetTournamentDecks",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "tournamentDeckDto",
+        "Type": "CTDto.Card.TournamentDecksDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "CTApp.Controllers.User.PlayerController",
+    "Method": "ShowCardsFromTournament",
+    "RelativePath": "api/Player/ShowCardsFromTournament",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "tournamentId",
+        "Type": "CTDto.Tournaments.TournamentRequestToResolveDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": []
+  }
+]

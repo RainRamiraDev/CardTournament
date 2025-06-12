@@ -1,49 +1,181 @@
-# Trabajo Final Backend - Curso Extrados 2024
+# CardTournament Frontend
 
-## Introducción
+Frontend de la aplicación **CardTournament**, desarrollada en React + Material UI, para la gestión de usuarios y cartas en un torneo de cartas coleccionables.
 
-El trabajo final consiste en la programación de un backend para un sistema de administración de torneos de eliminaciones online de juegos de cartas coleccionables.
+---
 
-## Entidades Principales
+## Cumplimiento de la Consigna
 
-### Cartas
-Las cartas se publican en "series". Una carta puede pertenecer a una o más series (por ejemplo, la carta X pertenece a la serie 1, la carta Y pertenece tanto a la serie 1 como a la serie 2).
+A continuación se detalla cómo y dónde se cumple cada punto de la consigna en este proyecto:
 
-### Mazos
-Un mazo de cartas consta de 15 cartas únicas, no se permiten cartas repetidas.
+### 1. **Pantalla Login con datos hardcodeados**
+- **Ubicación:** `src/views/LoginView.jsx` y componentes relacionados.
+- **Descripción:**  
+  El login solicita usuario y contraseña, los cuales están hardcodeados en el frontend para simular la autenticación.  
+  Si los datos son correctos, se permite el acceso al sistema.
 
-### Juegos/Partidas
-Un juego debe durar un máximo de 30 minutos, consta de un jugador vs un jugador, y siempre hay un ganador (no se permite empates).
+### 2. **CRUD de usuario con roles (Admin, Organizador, Juez, Jugador)**
+- **Ubicación:**  
+  - Formulario y tabla: `src/components/usuario/CrudUsuarioForm.jsx`  
+  - Vista principal: `src/views/CrudUsuarioView.jsx`
+- **Descripción:**  
+  Permite crear, leer, actualizar y eliminar usuarios.  
+  Cada usuario puede tener uno de los siguientes roles:  
+  - **Admin**
+  - **Organizador**
+  - **Juez**
+  - **Jugador**  
+  Los roles se visualizan y gestionan desde el formulario y la tabla de usuarios.
 
-### Torneo
-Un torneo es organizado por un **Organizador**, quien asigna **Jueces** para oficializar los resultados. El sistema debe planificar, según la cantidad de jugadores y el tiempo disponible, los días y horarios de los juegos del torneo. Además, el torneo puede limitar las series de cartas con las que se puede jugar.
+### 3. **Asignación de cartas con validaciones**
+- **Ubicación:**  
+  - Asignación: `src/components/cartas/AsignarCartaForm.jsx`  
+  - Lógica de validación: `src/services/cardService.js` y componentes de cartas.
+- **Validaciones implementadas:**  
+  - **No se puede asignar una carta repetida a un usuario.**
+  - **Cada usuario puede tener un máximo de 15 cartas y un mínimo de 8.**
+  - Los mensajes de error y éxito se muestran mediante Snackbar/Alert.
 
-El torneo tiene 3 fases básicas:
+### 4. **Visualización de cartas del jugador**
+- **Ubicación:**  
+  - Componente: `src/components/cartas/PlayersCards.jsx`
+  - Vista: `src/views/CartasUsuarioView.jsx`
+- **Descripción:**  
+  Permite seleccionar un usuario y ver todas sus cartas asignadas, mostrando detalles y atributos de cada carta.
 
-1. **Fase 1 - Registro**: Los jugadores se registran con su mazo de cartas (el cual debe estar compuesto por cartas pertenecientes a las series aceptadas por el torneo). El organizador debe finalizar el registro manualmente.
-2. **Fase 2 - Torneo**: Durante esta fase, no se pueden registrar nuevos jugadores y se deben planificar los juegos. La fase incluye múltiples rondas donde los jugadores eliminados en cada ronda son reagrupados con los ganadores para nuevas rondas. Una vez que todos los juegos de una ronda finalicen, el sistema debe pasar automáticamente a la siguiente ronda.
-3. **Fase 3 - Finalización**: Cuando el juego final se haya oficializado, el torneo se marca como "finalizado".
+### 5. **Sistema web responsivo (web y celular)**
+- **Ubicación:**  
+  - Estilos globales: `src/themes/ThemeProvider.js`
+  - Uso de breakpoints y Grid en todos los componentes principales.
+- **Descripción:**  
+  El sistema utiliza Material UI y breakpoints personalizados para asegurar que todas las vistas y componentes se adapten correctamente a pantallas de escritorio y dispositivos móviles.
 
-## Roles
+### 6. **Uso de `.env` para variables de entorno**
+- **Ubicación:**  
+  - Archivo: `.env`
+  - Uso en código: `import.meta.env` o `process.env` según configuración de Vite/React.
+- **Descripción:**  
+  Las URLs de la API y otras configuraciones sensibles se gestionan a través de variables de entorno, permitiendo fácil configuración para distintos entornos (desarrollo, producción, etc).
 
-El sistema contará con los siguientes roles para los usuarios:
+---
 
-- **Administrador**: 
-  - Crear, editar y eliminar otros administradores, organizadores, jueces y jugadores.
-  - Ver y cancelar torneos.
-  - Debe existir al menos un administrador en la base de datos.
-- **Organizador**: 
-  - Crear, editar y cancelar torneos, así como crear jueces.
-  - Avanzar el torneo a la siguiente fase.
-  - Modificar los juegos del torneo.
-  - Debe ser creado por un administrador.
-- **Juez**:
-  - Oficializar los resultados de un juego y descalificar jugadores si es necesario.
-  - Crear por un administrador o organizador.
-- **Jugador**:
-  - Registrar las cartas de su colección y registrarse en un torneo.
-  - Crear un mazo de cartas con las cartas disponibles para un torneo.
-  - Los jugadores pueden registrarse en el sistema por su cuenta.
+## Estructura del Proyecto
 
+```
+src/
+├── assets/                # Imágenes y recursos estáticos
+├── components/            # Componentes reutilizables (UI, menú, usuario, cartas, error)
+│   ├── ui/
+│   │   ├── Error404.jsx
+│   │   ├── PerButton.jsx
+│   │   └── ...otros componentes UI
+│   ├── menu/
+│   │   ├── AppbarMenu.jsx
+│   │   ├── Menu.jsx
+│   │   └── SideDrawer.jsx
+│   ├── usuario/
+│   │   ├── CrudUsuarioForm.jsx
+│   │   └── ...otros relacionados a usuario
+│   └── cartas/
+│       ├── AsignarCartaForm.jsx
+│       ├── PlayersCards.jsx
+│       └── ...otros relacionados a cartas
+├── hooks/                 # Custom hooks (por ejemplo, useDrawer.js)
+├── services/              # Servicios para llamadas a API y lógica de negocio
+│   ├── userService.js
+│   ├── cardService.js
+│   └── ...otros servicios
+├── themes/                # Temas y configuración de Material UI
+│   └── ThemeProvider.js
+├── views/                 # Vistas principales (CRUD, login, etc)
+│   ├── CrudUsuarioView.jsx
+│   ├── CartasUsuarioView.jsx
+│   ├── LoginView.jsx
+│   └── ...otras vistas
+├── App.jsx                # Componente raíz
+└── main.jsx               # Entry point de la app
+```
 
+---
 
+## Detalle de los Elementos del Proyecto
+
+### **Carpeta `assets/`**
+- Imágenes de cartas, fondos y recursos gráficos utilizados en la app.
+
+### **Carpeta `components/ui/`**
+- **Error404.jsx:** Página de error personalizada y animada para rutas no encontradas.
+- **PerButton.jsx:** Botón personalizado reutilizable en toda la app.
+- Otros componentes UI reutilizables.
+
+### **Carpeta `components/menu/`**
+- **AppbarMenu.jsx:** Barra superior fija, con gradiente y responsiva.
+- **Menu.jsx:** Componente que integra AppBar y Drawer para la navegación.
+- **SideDrawer.jsx:** Drawer lateral con navegación y estilos avanzados.
+
+### **Carpeta `components/usuario/`**
+- **CrudUsuarioForm.jsx:** Formulario y tabla para gestión CRUD de usuarios y roles.
+- Otros componentes relacionados a usuario.
+
+### **Carpeta `components/cartas/`**
+- **AsignarCartaForm.jsx:** Formulario para asignar cartas a usuarios con validaciones.
+- **PlayersCards.jsx:** Visualización de cartas asignadas a cada usuario.
+- Otros componentes relacionados a cartas.
+
+### **Carpeta `hooks/`**
+- **useDrawer.js:** Custom hook para manejar el estado del Drawer lateral.
+- Otros hooks personalizados según necesidades.
+
+### **Carpeta `services/`**
+- **userService.js:** Funciones para interactuar con la API de usuarios.
+- **cardService.js:** Funciones para interactuar con la API de cartas y lógica de validación.
+- Otros servicios para la lógica de negocio.
+
+### **Carpeta `themes/`**
+- **ThemeProvider.js:** Configuración avanzada de Material UI, breakpoints, paleta de colores, gradientes, fondos y estilos globales.
+
+### **Carpeta `views/`**
+- **CrudUsuarioView.jsx:** Vista principal para gestión de usuarios.
+- **CartasUsuarioView.jsx:** Vista para asignar y ver cartas de usuarios.
+- **LoginView.jsx:** Vista de login con datos hardcodeados.
+- Otras vistas según la navegación de la app.
+
+### **Archivos principales**
+- **App.jsx:** Componente raíz que define las rutas y estructura general.
+- **main.jsx:** Punto de entrada de la aplicación.
+
+### **Archivo `.env`**
+- Variables de entorno como la URL de la API y otras configuraciones sensibles.
+
+---
+
+## Instalación y Uso
+
+1. Clona el repositorio:
+   ```bash
+   git clone https://github.com/tuusuario/CardTournament-frontend.git
+   cd CardTournament-frontend
+   ```
+
+2. Crea un archivo `.env` en la raíz y define tus variables de entorno, por ejemplo:
+   ```
+   VITE_API_URL=http://localhost:3000/api
+   ```
+
+3. Instala las dependencias:
+   ```bash
+   npm install
+   # o
+   yarn install
+   ```
+
+4. Inicia la aplicación:
+   ```bash
+   npm run dev
+   # o
+   yarn dev
+   ```
+
+5. Accede a [http://localhost:5173](http://localhost:5173) en tu navegador.
+
+---
