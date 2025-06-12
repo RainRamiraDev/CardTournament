@@ -19,7 +19,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import { getAllUsers } from '../../services/userService';
 import { getCardsByUserId } from '../../services/cardService';
 import useDrawer from '../../hooks/useDrawer';
-import cardImage from '../../assets/card.jpg'; // Asegúrate de que la ruta sea correcta
+import cardImage from '../../assets/card.jpg';
 
 export default function PlayersCards() {
   const { open, openDrawer, closeDrawer } = useDrawer();
