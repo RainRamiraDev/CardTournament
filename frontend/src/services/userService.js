@@ -1,10 +1,7 @@
 import axios from 'axios';
 import { handleAxiosError } from '../utils/handleAxiosError';
-
 import api from './Api';
 
-
-// Registro
 export async function createUser(Id_Country, Id_Rol, Passcode, Fullname, Alias, Email, Avatar_Url) {
   try {
     const response = await api.post('/Admin/CreateUser', {
@@ -27,9 +24,6 @@ export async function createUser(Id_Country, Id_Rol, Passcode, Fullname, Alias, 
   }
 }
 
-// Haz lo mismo para alterUser y deactivateUser
-
-// Modificacion
 export async function alterUser(Id_User, New_IdCountry, New_Id_Rol, New_Fullname, New_Alias, New_Email, New_Avatar_Url) {
   try {
     const response = await api.put('/Admin/AlterUser',{
@@ -52,7 +46,6 @@ export async function alterUser(Id_User, New_IdCountry, New_Id_Rol, New_Fullname
   }
 }
 
-// Eliminacion
 export async function deactivateUser(Id_User) {
   try {
     const response = await api.delete(
@@ -70,7 +63,6 @@ export async function deactivateUser(Id_User) {
   }
 }
 
-// Obtener países
 export async function getCountries() {
   try {
     const response = await api.get('/Organizer/GetCountries');
@@ -80,7 +72,6 @@ export async function getCountries() {
   }
 }
 
-// Obtener roles
 export async function getRoles() {
   try {
     const response = await api.get('/Organizer/GetRoles');
@@ -90,7 +81,6 @@ export async function getRoles() {
   }
 }
 
-// Obtener usuarios
 export async function getAllUsers() {
   try {
     const response = await api.get('/Admin/GetAllUsers');
