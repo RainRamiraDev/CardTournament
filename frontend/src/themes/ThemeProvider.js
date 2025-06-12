@@ -1,6 +1,5 @@
-// src/theme.js
 import { createTheme } from '@mui/material/styles';
-import bgImage from '../assets/backgrounddesk.png'; // Ajusta la ruta y nombre de tu imagen
+import bgImage from '../assets/backgrounddesk.png'; 
 
 // === PALETA DE COLORES (usamos como variables base) ===
 const colors = {
@@ -33,7 +32,7 @@ const theme = createTheme({
   breakpoints: {
     values: {
       xs: 0,
-      sm: 500,   // cambié sm de 600 a 500px para que se active antes
+      sm: 500,  
       md: 900,
       lg: 1200,
       xl: 1536,
