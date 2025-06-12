@@ -50,7 +50,7 @@ export async function deactivateUser(Id_User) {
   try {
     const response = await api.delete(
       '/Admin/DeactivateUser',
-      { data: { Id_User } } // <-- así se envía el body en DELETE
+      { data: { Id_User } }
     );
      if (response.data && response.data.success) {
       return response.data;
@@ -66,7 +66,7 @@ export async function deactivateUser(Id_User) {
 export async function getCountries() {
   try {
     const response = await api.get('/Organizer/GetCountries');
-    return response.data.data; // 👈 devolvés solo el array
+    return response.data.data; 
   } catch (error) {
     handleAxiosError(error, 'obtener los países');
   }
@@ -75,7 +75,7 @@ export async function getCountries() {
 export async function getRoles() {
   try {
     const response = await api.get('/Organizer/GetRoles');
-    return response.data.data; // 👈 devolvés solo el array
+    return response.data.data; 
   } catch (error) {
     handleAxiosError(error, 'Error al obtener roles');
   }
@@ -84,7 +84,7 @@ export async function getRoles() {
 export async function getAllUsers() {
   try {
     const response = await api.get('/Admin/GetAllUsers');
-    return response.data.data; // 👈 devolvés solo el array
+    return response.data.data;
   } catch (error) {
     handleAxiosError(error, 'Error al obtener usuarios');
   }
