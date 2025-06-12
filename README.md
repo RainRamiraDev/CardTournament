@@ -66,15 +66,86 @@ src/
 ├── assets/                # Imágenes y recursos estáticos
 ├── components/            # Componentes reutilizables (UI, menú, usuario, cartas, error)
 │   ├── ui/
+│   │   ├── Error404.jsx
+│   │   ├── PerButton.jsx
+│   │   └── ...otros componentes UI
 │   ├── menu/
+│   │   ├── AppbarMenu.jsx
+│   │   ├── Menu.jsx
+│   │   └── SideDrawer.jsx
 │   ├── usuario/
+│   │   ├── CrudUsuarioForm.jsx
+│   │   └── ...otros relacionados a usuario
 │   └── cartas/
-├── hooks/                 # Custom hooks
+│       ├── AsignarCartaForm.jsx
+│       ├── PlayersCards.jsx
+│       └── ...otros relacionados a cartas
+├── hooks/                 # Custom hooks (por ejemplo, useDrawer.js)
 ├── services/              # Servicios para llamadas a API y lógica de negocio
+│   ├── userService.js
+│   ├── cardService.js
+│   └── ...otros servicios
 ├── themes/                # Temas y configuración de Material UI
+│   └── ThemeProvider.js
 ├── views/                 # Vistas principales (CRUD, login, etc)
-└── App.jsx                # Componente raíz
+│   ├── CrudUsuarioView.jsx
+│   ├── CartasUsuarioView.jsx
+│   ├── LoginView.jsx
+│   └── ...otras vistas
+├── App.jsx                # Componente raíz
+└── main.jsx               # Entry point de la app
 ```
+
+---
+
+## Detalle de los Elementos del Proyecto
+
+### **Carpeta `assets/`**
+- Imágenes de cartas, fondos y recursos gráficos utilizados en la app.
+
+### **Carpeta `components/ui/`**
+- **Error404.jsx:** Página de error personalizada y animada para rutas no encontradas.
+- **PerButton.jsx:** Botón personalizado reutilizable en toda la app.
+- Otros componentes UI reutilizables.
+
+### **Carpeta `components/menu/`**
+- **AppbarMenu.jsx:** Barra superior fija, con gradiente y responsiva.
+- **Menu.jsx:** Componente que integra AppBar y Drawer para la navegación.
+- **SideDrawer.jsx:** Drawer lateral con navegación y estilos avanzados.
+
+### **Carpeta `components/usuario/`**
+- **CrudUsuarioForm.jsx:** Formulario y tabla para gestión CRUD de usuarios y roles.
+- Otros componentes relacionados a usuario.
+
+### **Carpeta `components/cartas/`**
+- **AsignarCartaForm.jsx:** Formulario para asignar cartas a usuarios con validaciones.
+- **PlayersCards.jsx:** Visualización de cartas asignadas a cada usuario.
+- Otros componentes relacionados a cartas.
+
+### **Carpeta `hooks/`**
+- **useDrawer.js:** Custom hook para manejar el estado del Drawer lateral.
+- Otros hooks personalizados según necesidades.
+
+### **Carpeta `services/`**
+- **userService.js:** Funciones para interactuar con la API de usuarios.
+- **cardService.js:** Funciones para interactuar con la API de cartas y lógica de validación.
+- Otros servicios para la lógica de negocio.
+
+### **Carpeta `themes/`**
+- **ThemeProvider.js:** Configuración avanzada de Material UI, breakpoints, paleta de colores, gradientes, fondos y estilos globales.
+
+### **Carpeta `views/`**
+- **CrudUsuarioView.jsx:** Vista principal para gestión de usuarios.
+- **CartasUsuarioView.jsx:** Vista para asignar y ver cartas de usuarios.
+- **LoginView.jsx:** Vista de login con datos hardcodeados.
+- Otras vistas según la navegación de la app.
+
+### **Archivos principales**
+- **App.jsx:** Componente raíz que define las rutas y estructura general.
+- **main.jsx:** Punto de entrada de la aplicación.
+
+### **Archivo `.env`**
+- Variables de entorno como la URL de la API y otras configuraciones sensibles.
 
 ---
 
