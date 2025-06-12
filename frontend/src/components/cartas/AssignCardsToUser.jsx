@@ -26,8 +26,6 @@ import { handleAxiosError } from '../../utils/handleAxiosError';
 import useDrawer from '../../hooks/useDrawer';
 import { Drawer, IconButton } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
-
-// Usa el hook de snackbar global
 import { useSnackbar } from '../../hooks/useSnackbar';
 
 export default function AssignCardsToUser() {
@@ -75,11 +73,10 @@ export default function AssignCardsToUser() {
   };
 
   const handleUserChange = (e) => {
-    setSelectedUser(Number(e.target.value)); // Forzar a número
+    setSelectedUser(Number(e.target.value));
     setErrors((prev) => ({ ...prev, user: undefined }));
   };
 
-  // --- HANDLE SUBMIT usando el snackbar global ---
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validate()) return;
@@ -216,7 +213,6 @@ export default function AssignCardsToUser() {
         </form>
       )}
 
-      {/* Snackbar centralizado y usando el mensaje del backend */}
       <Snackbar
         open={snackbarOpen}
         autoHideDuration={3000}
