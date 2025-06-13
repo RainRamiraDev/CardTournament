@@ -26,6 +26,7 @@ import {
   getCountries,
   getRoles,
   getAllUsers,
+  getUserById
 } from '../../services/userService';
 import { useTheme } from '@mui/material/styles';
 import { Form, useNavigate } from 'react-router-dom';
@@ -176,6 +177,31 @@ const handleConfirmDelete = async () => {
     console.error('Error al ejecutar la acción:', error);
   }
 };
+
+  // Cuando cambia el usuario seleccionado en ALTER, trae los datos y los carga en el formulario
+  useEffect(() => {
+    const fetchAndSetUser = async () => {
+      if (isAlter && form.Id_User) {
+        try {
+          const userData = await getUserById(form.Id_User);
+          setForm((prev) => ({
+            ...prev,
+            id_Country: userData.id_Country || 0,
+            id_Rol: userData.id_Rol || 0,
+            Fullname: userData.fullname || '',
+            Alias: userData.alias || '',
+            Email: userData.email || '',
+            avatar_Url: userData.avatar_Url || '',
+            // Passcode no se trae por seguridad, se deja vacío
+          }));
+        } catch (error) {
+          showSnackbar('No se pudo cargar el usuario seleccionado');
+        }
+      }
+    };
+    fetchAndSetUser();
+    // Solo cuando cambia el usuario seleccionado o la acción
+  }, [form.Id_User, isAlter]);
 
   return (
     <Paper

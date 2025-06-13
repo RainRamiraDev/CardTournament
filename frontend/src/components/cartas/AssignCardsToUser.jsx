@@ -22,15 +22,10 @@ import {
 
 import { getAllCards, assignCardToPlayer } from '../../services/cardService';
 import { getAllUsers } from '../../services/userService';
-import { handleAxiosError } from '../../utils/handleAxiosError';
-import useDrawer from '../../hooks/useDrawer';
-import { Drawer, IconButton } from '@mui/material';
-import CloseIcon from '@mui/icons-material/Close';
 import { useSnackbar } from '../../hooks/useSnackbar';
 
 export default function AssignCardsToUser() {
-  const { open, openDrawer, closeDrawer } = useDrawer();
-  const { message, showSnackbar, closeSnackbar, severity, setSeverity, open: snackbarOpen, setOpen: setSnackbarOpen } = useSnackbar();
+  const { message, showSnackbar, closeSnackbar, severity, open: snackbarOpen } = useSnackbar();
 
   const [cards, setCards] = useState([]);
   const [users, setUsers] = useState([]);
@@ -88,7 +83,6 @@ export default function AssignCardsToUser() {
 
       if (response && response.success) {
         showSnackbar(response.message || 'Cartas asignadas correctamente.', 'success');
-        openDrawer();
         setSelectedCards([]);
         setSelectedUser('');
         setErrors({});
@@ -111,20 +105,19 @@ export default function AssignCardsToUser() {
       ) : (
         <form onSubmit={handleSubmit}>
           <Grid container spacing={4} justifyContent="center" sx={{ mt: 4 }}>
-         
             {/* Cartas */}
             <Grid item xs={12} sm={6} md={4}>
-             <Paper
-  sx={{
-    p: { xs: 2, sm: 3, md: 4 },
-    width: { xs: '100%', sm: 350, md: 400 },
-    height: { xs: 350, sm: 420, md: 500 },
-    mb: { xs: 2, sm: 0 },
-    overflowY: 'auto',
-    display: 'flex',
-    flexDirection: 'column',
-  }}
->
+              <Paper
+                sx={{
+                  p: { xs: 2, sm: 3, md: 4 },
+                  width: { xs: '100%', sm: 350, md: 400 },
+                  height: { xs: 350, sm: 420, md: 500 },
+                  mb: { xs: 2, sm: 0 },
+                  overflowY: 'auto',
+                  display: 'flex',
+                  flexDirection: 'column',
+                }}
+              >
                 <Typography variant="h6" gutterBottom>
                   Cartas
                 </Typography>
@@ -162,17 +155,17 @@ export default function AssignCardsToUser() {
 
             {/* Jugadores */}
             <Grid item xs={12} sm={6} md={4}>
-             <Paper
-  sx={{
-    p: { xs: 2, sm: 3, md: 4 },
-    width: { xs: '100%', sm: 350, md: 400 },
-    height: { xs: 350, sm: 420, md: 500 },
-    mb: { xs: 2, sm: 0 },
-    overflowY: 'auto',
-    display: 'flex',
-    flexDirection: 'column',
-  }}
->
+              <Paper
+                sx={{
+                  p: { xs: 2, sm: 3, md: 4 },
+                  width: { xs: '100%', sm: 350, md: 400 },
+                  height: { xs: 350, sm: 420, md: 500 },
+                  mb: { xs: 2, sm: 0 },
+                  overflowY: 'auto',
+                  display: 'flex',
+                  flexDirection: 'column',
+                }}
+              >
                 <Box>
                   <Typography variant="h6" gutterBottom>
                     Jugadores
@@ -227,22 +220,6 @@ export default function AssignCardsToUser() {
           {message}
         </Alert>
       </Snackbar>
-
-      <Drawer anchor="right" open={open} onClose={closeDrawer}>
-        <Box sx={{ width: 300, p: 3 }}>
-          <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-            <IconButton onClick={closeDrawer}>
-              <CloseIcon />
-            </IconButton>
-          </Box>
-          <Typography variant="h6" gutterBottom>
-            Asignación exitosa
-          </Typography>
-          <Typography>
-            Las cartas fueron asignadas correctamente al jugador seleccionado.
-          </Typography>
-        </Box>
-      </Drawer>
     </>
   );
 }

@@ -323,7 +323,7 @@ namespace CTService.Implementation.User
         {
             var response = true;
 
-            UserModel oldUser = await _userDao.GetUserById(user.Id_User);
+            var oldUser = await _userDao.GetUserById(user.Id_User);
             if (oldUser == null)
                 throw new KeyNotFoundException("El Usuario especificado no está registrado.");
 
@@ -331,18 +331,25 @@ namespace CTService.Implementation.User
             if (!registeredCountries.Any())
                 throw new KeyNotFoundException("El país especificado no está registrado.");
 
-            bool aliasExists = await _userDao.ValidateUsersAlias(user.New_Alias);
-            if (aliasExists)
-                throw new InvalidOperationException("El Alias especificado ya está registrado y no puede repetirse.");
+            // Solo validar alias si cambió
+            if (!string.Equals(oldUser.Alias, user.New_Alias, StringComparison.OrdinalIgnoreCase))
+            {
+                bool aliasExists = await _userDao.ValidateUsersAlias(user.New_Alias);
+                if (aliasExists)
+                    throw new InvalidOperationException("El Alias especificado ya está registrado y no puede repetirse.");
+            }
 
-            var emailsExists = await _userDao.ValidateUserEmail(user.New_Email);
-            if (emailsExists)
-                throw new InvalidOperationException("El Email especificado ya está registrado y no puede repetirse.");
-
-            //await ValidateUserRol(oldUser.Id_Rol);
+            // Solo validar email si cambió
+            if (!string.Equals(oldUser.Email, user.New_Email, StringComparison.OrdinalIgnoreCase))
+            {
+                bool emailExists = await _userDao.ValidateUserEmail(user.New_Email);
+                if (emailExists)
+                    throw new InvalidOperationException("El Email especificado ya está registrado y no puede repetirse.");
+            }
 
             return response;
         }
+
 
         public async Task SoftDeleteUserAsync(SoftDeleteUserDto userDto)
         {
