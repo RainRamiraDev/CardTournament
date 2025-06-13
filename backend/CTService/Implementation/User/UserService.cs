@@ -80,6 +80,28 @@ namespace CTService.Implementation.User
             return user;
         }
 
+
+        public async Task<GetUserByIdDto> GetUserByIdAsync(int id_user)
+        {
+            var userModel = await _userDao.GetUserByIdAsync(id_user);
+
+            return new GetUserByIdDto
+            {
+                Id_Country = userModel.Id_Country,
+                Id_Rol = userModel.Id_Rol,
+                Fullname = userModel.Fullname,
+                Alias = userModel.Alias,
+                Email = userModel.Email,
+                Avatar_Url = userModel.Avatar_Url,
+            };
+        }
+
+
+
+
+
+
+
         public async Task<LogInResponseModel> NewLogInAsync(string fullname, string passcode)
         {
 
@@ -346,6 +368,8 @@ namespace CTService.Implementation.User
                 Release_Date = card.Release_Date
             }).ToList();
         }
+
+        
     }
 }
 

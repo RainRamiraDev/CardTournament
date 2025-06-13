@@ -131,6 +131,10 @@
 
   "QueryGetUserById": "SELECT id_user, id_country, id_rol, fullname, alias, email, games_won, games_lost, avatar_url, ki, active FROM t_users WHERE id_user = @id_user",
 
+  "QueryGetUserById2": "SELECT id_country, id_rol, fullname, alias, email,avatar_url FROM t_users WHERE id_user = @id_user",
+
+
+
   "QueryAlterUser": "UPDATE t_users SET id_country = @id_country, id_rol = @id_rol, fullname = @fullname, alias = @alias, email = @email, avatar_url = @avatar_url WHERE id_user = @id_user;",
 
 

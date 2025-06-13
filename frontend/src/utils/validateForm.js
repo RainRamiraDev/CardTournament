@@ -33,16 +33,6 @@ function validateUserId(form, action) {
 
 function validateUserFields(form, action) {
   const errors = {};
-
-   console.log("Id_Country:"+form.id_Country);
-   console.log("Alias:"+form.Alias);
-   console.log("Fullname:"+form.Fullname);
-   console.log("Email:"+form.Email);
-   console.log("Id_Rol:"+form.id_Rol);
-   console.log("passcode:"+form.Passcode);
-  console.log("avatar_Url:"+form.avatar_Url);
-         
-
  
 
     if (!Number.isInteger(Number(form.id_Country)) || Number(form.id_Country) <= 0) {

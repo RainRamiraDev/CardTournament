@@ -29,6 +29,14 @@ import {
 } from '../../services/userService';
 import { useTheme } from '@mui/material/styles';
 import { Form, useNavigate } from 'react-router-dom';
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogActions from '@mui/material/DialogActions';
+
+
+
 
 const initialForm = {
   Id_User: 0,
@@ -51,7 +59,7 @@ export const CrudUsuarioForm = () => {
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedUser, setSelectedUser] = useState(null);
-
+  const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -105,6 +113,11 @@ const handleActionChange = (event) => {
       return;
     }
 
+    if (isDelete) {
+      setConfirmDeleteOpen(true);
+      return;
+    }
+
     try {
       if (isCreate) {
         const res = await createUser(
@@ -128,11 +141,7 @@ const handleActionChange = (event) => {
           form.avatar_Url
         );
         showSnackbar(res.message || 'Usuario modificado exitosamente');
-      } else if (isDelete) {
-        const res = await deactivateUser(form.Id_User);
-        showSnackbar(res.message || 'Usuario eliminado exitosamente');
       }
-
       setTimeout(() => {
         navigate('/menu');
       }, 3000);
@@ -154,6 +163,19 @@ if (selectedUser) {
   console.log(selectedUser.avatar_Url)
 }
 
+const handleConfirmDelete = async () => {
+  setConfirmDeleteOpen(false);
+  try {
+    const res = await deactivateUser(form.Id_User);
+    showSnackbar(res.message || 'Usuario eliminado exitosamente');
+    setTimeout(() => {
+      navigate('/menu');
+    }, 3000);
+  } catch (error) {
+    showSnackbar(error.message || 'Error al ejecutar la acción');
+    console.error('Error al ejecutar la acción:', error);
+  }
+};
 
   return (
     <Paper
@@ -479,6 +501,27 @@ if (selectedUser) {
     {message}
   </Alert>
 </Snackbar>
+
+{/* Diálogo de confirmación de eliminación */}
+      <Dialog
+        open={confirmDeleteOpen}
+        onClose={() => setConfirmDeleteOpen(false)}
+      >
+        <DialogTitle>Confirmar eliminación</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            ¿Estás seguro de que deseas eliminar este usuario? Esta acción no se puede deshacer.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <PerButton onClick={() => setConfirmDeleteOpen(false)} color="primary">
+            Cancelar
+          </PerButton>
+          <PerButton onClick={handleConfirmDelete} color="error" variant="contained">
+            Eliminar
+          </PerButton>
+        </DialogActions>
+      </Dialog>
     </Paper>
 
       

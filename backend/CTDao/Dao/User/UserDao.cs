@@ -5,6 +5,7 @@ using CTDataModels.Users.Admin;
 using CTDataModels.Users.LogIn;
 using CTDataModels.Users.Organizer;
 using CTDto.Card;
+using CTDto.Users.Admin;
 using Dapper;
 using DataAccess;
 using MySql.Data.MySqlClient;
@@ -189,6 +190,19 @@ namespace CTDao.Dao.User
             }
         }
 
+        public async Task<GetUserByIdModel> GetUserByIdAsync(int id_user)
+        {
+            using (var connection = new MySqlConnection(_connectionString))
+            {
+                await connection.OpenAsync();
+                var user = await connection.QueryFirstOrDefaultAsync<GetUserByIdModel>(
+                    QueryLoader.GetQuery("QueryGetUserById2"),
+                    new { Id_user = id_user }
+                );
+                return user;
+            }
+        }
+
         public async Task AlterUserAsync(AlterUserModel user)
         {
             using (var connection = new MySqlConnection(_connectionString))
@@ -277,5 +291,6 @@ namespace CTDao.Dao.User
 
         }
 
+    
     }
 }
