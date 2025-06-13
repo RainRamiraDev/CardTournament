@@ -19,18 +19,15 @@ import {
   FormHelperText,
   Grid
 } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
 import { getAllCards, assignCardToPlayer } from '../../services/cardService';
 import { getAllUsers } from '../../services/userService';
-import { handleAxiosError } from '../../utils/handleAxiosError';
-import useDrawer from '../../hooks/useDrawer';
-import { Drawer, IconButton } from '@mui/material';
-import CloseIcon from '@mui/icons-material/Close';
 import { useSnackbar } from '../../hooks/useSnackbar';
 
 export default function AssignCardsToUser() {
-  const { open, openDrawer, closeDrawer } = useDrawer();
-  const { message, showSnackbar, closeSnackbar, severity, setSeverity, open: snackbarOpen, setOpen: setSnackbarOpen } = useSnackbar();
+  const { message, showSnackbar, closeSnackbar, severity, open: snackbarOpen } = useSnackbar();
+  const navigate = useNavigate();
 
   const [cards, setCards] = useState([]);
   const [users, setUsers] = useState([]);
@@ -62,14 +59,21 @@ export default function AssignCardsToUser() {
     const errors = {};
     if (!selectedUser) errors.user = 'Selecciona un jugador';
     if (selectedCards.length === 0) errors.cards = 'Selecciona al menos una carta';
+    if (selectedCards.length < 8) errors.cards = 'Debes seleccionar al menos 8 cartas';
     setErrors(errors);
     return Object.keys(errors).length === 0;
   };
 
   const handleToggleCard = (cardId) => {
-    setSelectedCards((prev) =>
-      prev.includes(cardId) ? prev.filter((id) => id !== cardId) : [...prev, cardId]
-    );
+    if (selectedCards.includes(cardId)) {
+      setSelectedCards((prev) => prev.filter((id) => id !== cardId));
+    } else {
+      if (selectedCards.length >= 15) {
+        showSnackbar('No puedes asignar más de 15 cartas a un jugador.', 'warning');
+        return;
+      }
+      setSelectedCards((prev) => [...prev, cardId]);
+    }
   };
 
   const handleUserChange = (e) => {
@@ -79,7 +83,12 @@ export default function AssignCardsToUser() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!validate()) return;
+    if (!validate()) {
+      if (selectedCards.length < 8) {
+        showSnackbar('Debes seleccionar al menos 8 cartas para asignar.', 'warning');
+      }
+      return;
+    }
 
     setAssigning(true);
 
@@ -88,10 +97,12 @@ export default function AssignCardsToUser() {
 
       if (response && response.success) {
         showSnackbar(response.message || 'Cartas asignadas correctamente.', 'success');
-        openDrawer();
         setSelectedCards([]);
         setSelectedUser('');
         setErrors({});
+        setTimeout(() => {
+          navigate('/menu');
+        }, 1200); // Espera breve para mostrar el snackbar antes de redirigir
       } else {
         showSnackbar(response?.message || 'Error al asignar cartas', 'error');
       }
@@ -100,6 +111,10 @@ export default function AssignCardsToUser() {
     } finally {
       setAssigning(false);
     }
+  };
+
+  const handleClearSelection = () => {
+    setSelectedCards([]);
   };
 
   return (
@@ -111,20 +126,19 @@ export default function AssignCardsToUser() {
       ) : (
         <form onSubmit={handleSubmit}>
           <Grid container spacing={4} justifyContent="center" sx={{ mt: 4 }}>
-         
             {/* Cartas */}
             <Grid item xs={12} sm={6} md={4}>
-             <Paper
-  sx={{
-    p: { xs: 2, sm: 3, md: 4 },
-    width: { xs: '100%', sm: 350, md: 400 },
-    height: { xs: 350, sm: 420, md: 500 },
-    mb: { xs: 2, sm: 0 },
-    overflowY: 'auto',
-    display: 'flex',
-    flexDirection: 'column',
-  }}
->
+              <Paper
+                sx={{
+                  p: { xs: 2, sm: 3, md: 4 },
+                  width: { xs: '100%', sm: 350, md: 400 },
+                  height: { xs: 350, sm: 420, md: 500 },
+                  mb: { xs: 2, sm: 0 },
+                  overflowY: 'auto',
+                  display: 'flex',
+                  flexDirection: 'column',
+                }}
+              >
                 <Typography variant="h6" gutterBottom>
                   Cartas
                 </Typography>
@@ -162,17 +176,17 @@ export default function AssignCardsToUser() {
 
             {/* Jugadores */}
             <Grid item xs={12} sm={6} md={4}>
-             <Paper
-  sx={{
-    p: { xs: 2, sm: 3, md: 4 },
-    width: { xs: '100%', sm: 350, md: 400 },
-    height: { xs: 350, sm: 420, md: 500 },
-    mb: { xs: 2, sm: 0 },
-    overflowY: 'auto',
-    display: 'flex',
-    flexDirection: 'column',
-  }}
->
+              <Paper
+                sx={{
+                  p: { xs: 2, sm: 3, md: 4 },
+                  width: { xs: '100%', sm: 350, md: 400 },
+                  height: { xs: 350, sm: 420, md: 500 },
+                  mb: { xs: 2, sm: 0 },
+                  overflowY: 'auto',
+                  display: 'flex',
+                  flexDirection: 'column',
+                }}
+              >
                 <Box>
                   <Typography variant="h6" gutterBottom>
                     Jugadores
@@ -207,6 +221,16 @@ export default function AssignCardsToUser() {
                 >
                   {assigning ? 'Asignando...' : 'Asignar Cartas'}
                 </Button>
+                <Button
+                  variant="outlined"
+                  color="secondary"
+                  fullWidth
+                  sx={{ mt: 2 }}
+                  onClick={handleClearSelection}
+                  disabled={selectedCards.length === 0}
+                >
+                  Limpiar selección
+                </Button>
               </Paper>
             </Grid>
           </Grid>
@@ -227,22 +251,6 @@ export default function AssignCardsToUser() {
           {message}
         </Alert>
       </Snackbar>
-
-      <Drawer anchor="right" open={open} onClose={closeDrawer}>
-        <Box sx={{ width: 300, p: 3 }}>
-          <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-            <IconButton onClick={closeDrawer}>
-              <CloseIcon />
-            </IconButton>
-          </Box>
-          <Typography variant="h6" gutterBottom>
-            Asignación exitosa
-          </Typography>
-          <Typography>
-            Las cartas fueron asignadas correctamente al jugador seleccionado.
-          </Typography>
-        </Box>
-      </Drawer>
     </>
   );
 }

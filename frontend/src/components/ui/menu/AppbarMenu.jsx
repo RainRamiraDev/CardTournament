@@ -3,12 +3,13 @@ import { styled } from '@mui/material/styles';
 import { Typography, IconButton, Box } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 
+// Cambia el fondo a un color sólido para evitar el degradado que invade el Drawer
 const AppBar = styled('div')(({ theme }) => ({
   width: '100%',
   position: 'fixed',
   top: 0,
   left: 0,
-  background: `linear-gradient(90deg, ${theme.palette.primary.main} 0%, ${theme.palette.secondary.main} 100%)`,
+  background: theme.palette.background.paper, // Fondo sólido igual al Drawer
   color: theme.palette.primary.contrastText,
   display: 'flex',
   alignItems: 'center',

@@ -304,6 +304,22 @@
     "ReturnTypes": []
   },
   {
+    "ContainingType": "CTApp.Controllers.User.OrganizerController",
+    "Method": "GetUserById",
+    "RelativePath": "api/Organizer/GetUserById",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "id_user",
+        "Type": "System.Int32",
+        "IsRequired": false
+      }
+    ],
+    "ReturnTypes": []
+  },
+  {
     "ContainingType": "CTApp.Controllers.User.PlayerController",
     "Method": "GetTournamentsInformation",
     "RelativePath": "api/Player/GetTournamentsInformation",

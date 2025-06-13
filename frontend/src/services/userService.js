@@ -91,3 +91,20 @@ export async function getAllUsers() {
 }
 
 
+export async function getUserById(id_User) {
+  try {
+    const response = await api.get('/Organizer/GetUserById', {
+      params: { id_user: id_User }
+    });
+    if (response.data && response.data.success) {
+      return response.data.data;
+    } else {
+      throw new Error(response.data?.message || 'Error al obtener usuario');
+    }
+  } catch (error) {
+    handleAxiosError(error, 'obtener usuario por ID');
+    throw error;
+  }
+}
+
+

@@ -4,6 +4,7 @@ using CTDataModels.Users.Admin;
 using CTDataModels.Users.LogIn;
 using CTDataModels.Users.Organizer;
 using CTDto.Card;
+using CTDto.Users.Admin;
 using CTDto.Users.Organizer;
 using System;
 using System.Collections.Generic;
@@ -45,5 +46,6 @@ namespace CTDao.Interfaces.User
         Task<int> AssignCardToPlayerAsync(AssignCardToPlayerModel assignCardToPlayerModel);
         Task<int> GetCardCountAsync(int id_user);
         Task<IEnumerable<ShowCardDataByUserIdModel>> GetCardsByUserAsync(int id_User);
+        Task<GetUserByIdModel> GetUserByIdAsync(int id_user);
     }
 }

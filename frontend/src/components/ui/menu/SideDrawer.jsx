@@ -7,7 +7,6 @@ import {
   ListItemButton,
   ListItemIcon,
   ListItemText,
-  IconButton,
   Box
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
@@ -15,31 +14,43 @@ import { styled } from '@mui/material/styles';
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import AddCardIcon from '@mui/icons-material/AddCard';
-import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 
 const drawerWidth = 240;
+
+const StyledDrawer = styled(Drawer)(({ theme }) => ({
+  '& .MuiDrawer-paper': {
+    width: drawerWidth,
+    height: '100vh',
+    minHeight: '100vh',
+    boxSizing: 'border-box',
+    background: theme.palette.background.paper,
+    borderRight: `2px solid ${theme.palette.primary.main}`,
+    color: theme.palette.text.primary,
+    boxShadow: `0 0 20px 2px ${theme.palette.primary.main}22`,
+    backdropFilter: 'blur(6px)',
+    borderBottomRightRadius: 24,
+    borderTopRightRadius: 0,
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
+    paddingBottom: theme.spacing(2),
+    overflow: 'hidden',
+    paddingTop: theme.spacing(2),
+  },
+}));
 
 const DrawerHeader = styled('div')(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
   padding: theme.spacing(0, 1),
   ...theme.mixins.toolbar,
+  minHeight: 56, // Ajusta el alto para que no quede muy pequeño ni muy grande
+  height: 56,
   justifyContent: 'flex-end',
-  background: `linear-gradient(90deg, ${theme.palette.primary.main} 0%, ${theme.palette.secondary.main} 100%)`,
-  boxShadow: `0 2px 8px 0 ${theme.palette.primary.main}33`,
-}));
-
-const StyledDrawer = styled(Drawer)(({ theme }) => ({
-  '& .MuiDrawer-paper': {
-    width: drawerWidth,
-    boxSizing: 'border-box',
-    background: `radial-gradient(circle at 30% 20%, ${theme.palette.background.paper} 80%, ${theme.palette.background.default} 100%)`,
-    borderRight: `2px solid ${theme.palette.primary.main}`,
-    color: theme.palette.text.primary,
-    boxShadow: `0 0 20px 2px ${theme.palette.primary.main}22`,
-    backdropFilter: 'blur(6px)',
-  },
+  background: theme.palette.background.paper, // Fondo sólido
+  boxShadow: 'none',
+  borderTopRightRadius: 0,
+  borderBottomRightRadius: 0,
 }));
 
 const StyledListItemButton = styled(ListItemButton)(({ theme }) => ({
@@ -72,11 +83,7 @@ const SideDrawer = ({ open, onClose, navigate, theme }) => {
       anchor="left"
       open={open}
     >
-      <DrawerHeader>
-        <IconButton onClick={onClose} sx={{ color: 'white' }}>
-          {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
-        </IconButton>
-      </DrawerHeader>
+      <DrawerHeader />
       <Divider />
       <List>
         {menuItems.map(({ text, icon, route }) => (
