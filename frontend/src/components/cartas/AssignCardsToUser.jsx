@@ -19,6 +19,7 @@ import {
   FormHelperText,
   Grid
 } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
 import { getAllCards, assignCardToPlayer } from '../../services/cardService';
 import { getAllUsers } from '../../services/userService';
@@ -26,6 +27,7 @@ import { useSnackbar } from '../../hooks/useSnackbar';
 
 export default function AssignCardsToUser() {
   const { message, showSnackbar, closeSnackbar, severity, open: snackbarOpen } = useSnackbar();
+  const navigate = useNavigate();
 
   const [cards, setCards] = useState([]);
   const [users, setUsers] = useState([]);
@@ -57,14 +59,21 @@ export default function AssignCardsToUser() {
     const errors = {};
     if (!selectedUser) errors.user = 'Selecciona un jugador';
     if (selectedCards.length === 0) errors.cards = 'Selecciona al menos una carta';
+    if (selectedCards.length < 8) errors.cards = 'Debes seleccionar al menos 8 cartas';
     setErrors(errors);
     return Object.keys(errors).length === 0;
   };
 
   const handleToggleCard = (cardId) => {
-    setSelectedCards((prev) =>
-      prev.includes(cardId) ? prev.filter((id) => id !== cardId) : [...prev, cardId]
-    );
+    if (selectedCards.includes(cardId)) {
+      setSelectedCards((prev) => prev.filter((id) => id !== cardId));
+    } else {
+      if (selectedCards.length >= 15) {
+        showSnackbar('No puedes asignar más de 15 cartas a un jugador.', 'warning');
+        return;
+      }
+      setSelectedCards((prev) => [...prev, cardId]);
+    }
   };
 
   const handleUserChange = (e) => {
@@ -74,7 +83,12 @@ export default function AssignCardsToUser() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!validate()) return;
+    if (!validate()) {
+      if (selectedCards.length < 8) {
+        showSnackbar('Debes seleccionar al menos 8 cartas para asignar.', 'warning');
+      }
+      return;
+    }
 
     setAssigning(true);
 
@@ -86,6 +100,9 @@ export default function AssignCardsToUser() {
         setSelectedCards([]);
         setSelectedUser('');
         setErrors({});
+        setTimeout(() => {
+          navigate('/menu');
+        }, 1200); // Espera breve para mostrar el snackbar antes de redirigir
       } else {
         showSnackbar(response?.message || 'Error al asignar cartas', 'error');
       }
@@ -94,6 +111,10 @@ export default function AssignCardsToUser() {
     } finally {
       setAssigning(false);
     }
+  };
+
+  const handleClearSelection = () => {
+    setSelectedCards([]);
   };
 
   return (
@@ -199,6 +220,16 @@ export default function AssignCardsToUser() {
                   disabled={assigning || !selectedUser || selectedCards.length === 0}
                 >
                   {assigning ? 'Asignando...' : 'Asignar Cartas'}
+                </Button>
+                <Button
+                  variant="outlined"
+                  color="secondary"
+                  fullWidth
+                  sx={{ mt: 2 }}
+                  onClick={handleClearSelection}
+                  disabled={selectedCards.length === 0}
+                >
+                  Limpiar selección
                 </Button>
               </Paper>
             </Grid>
